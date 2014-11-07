@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg3856"
+   version="1.1"
+   inkscape:version="0.47pre4 r22446"
+   sodipodi:docname="New document 12">
+  <defs
+     id="defs3858">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3864" />
+    <inkscape:perspective
+       id="perspective4420"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4442"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4442-1"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4542"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4556"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4556-4"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4556-2"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4556-5"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4556-28"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4625"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4651"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4665"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <filter
+       id="filter4715"
+       inkscape:label="Liquid drawing"
+       inkscape:menu-tooltip="Gives a fluid and wavy expressionist drawing effect to images"
+       inkscape:menu="Image effects"
+       x="-0.25"
+       width="1.5"
+       y="-0.25"
+       height="1.5"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4717"
+         result="result11"
+         stdDeviation="2" />
+      <feGaussianBlur
+         id="feGaussianBlur4719"
+         in="SourceGraphic"
+         stdDeviation="0.5"
+         result="result8" />
+      <feTurbulence
+         id="feTurbulence4721"
+         result="result9"
+         baseFrequency="0.08"
+         numOctaves="1"
+         type="fractalNoise" />
+      <feDisplacementMap
+         id="feDisplacementMap4723"
+         in2="result11"
+         result="result10"
+         xChannelSelector="G"
+         scale="100"
+         yChannelSelector="R" />
+      <feConvolveMatrix
+         id="feConvolveMatrix4725"
+         bias="0"
+         result="result0"
+         preserveAlpha="true"
+         targetY="1"
+         targetX="1"
+         divisor="1"
+         in="result10"
+         kernelMatrix="1 1 1 1 -8 1 1 1 1 "
+         order="3 3" />
+      <feColorMatrix
+         id="feColorMatrix4727"
+         in="result0"
+         values="0 -6 0 0 1 0 -6 0 0 1 0 -6 0 0 1 0 0 0 1 0 "
+         result="result3" />
+      <feComposite
+         id="feComposite4729"
+         in2="SourceGraphic"
+         operator="in"
+         in="result3"
+         result="fbSourceGraphic" />
+      <feBlend
+         id="feBlend4731"
+         in2="result8"
+         mode="multiply"
+         result="result12" />
+      <feGaussianBlur
+         id="feGaussianBlur4733"
+         stdDeviation="0.01"
+         in="result12"
+         result="result7" />
+      <feBlend
+         id="feBlend4735"
+         in2="result12"
+         mode="screen"
+         result="result13" />
+      <feComposite
+         id="feComposite4737"
+         in2="SourceGraphic"
+         operator="in" />
+    </filter>
+    <inkscape:perspective
+       id="perspective4747"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4805"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="166.48359"
+     inkscape:cy="866.30375"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="723"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3861">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <image
+       y="-6.6177197"
+       x="10.70579"
+       id="image4544"
+       height="147.07361"
+       width="249.74763"
+       xlink:href="file:///home/tsuname/Documents/lab/rhiju/rdat/rmdb/design/logo1_beta.png" />
+    <rect
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.342969;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect3866"
+       width="68.728462"
+       height="38.728458"
+       x="141.87363"
+       y="120.14081" />
+    <rect
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.342969;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect3866-9"
+       width="68.728462"
+       height="38.728458"
+       x="217.58791"
+       y="120.14082" />
+    <rect
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.342969;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect3866-0"
+       width="68.728462"
+       height="38.728458"
+       x="293.30219"
+       y="120.14081" />
+    <rect
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.43742347;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect3866-9-8"
+       width="112.07056"
+       height="38.634003"
+       x="368.05356"
+       y="120.18806" />
+    <rect
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.342969;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect3866-3"
+       width="68.728462"
+       height="38.728458"
+       x="487.1572"
+       y="119.13065" />
+    <rect
+       style="fill:#f9f9f9;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.342969;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect3866-9-1"
+       width="68.728462"
+       height="38.728458"
+       x="562.8714"
+       y="119.13068" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.17407513px;font-style:normal;font-weight:normal;fill:#666666;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="154.05759"
+       y="143.08549"
+       id="text4470"><tspan
+         sodipodi:role="line"
+         id="tspan4472"
+         x="154.05759"
+         y="143.08549">Home</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.17407513px;font-style:normal;font-weight:normal;fill:#666666;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="226.2401"
+       y="143.24023"
+       id="text4470-6"><tspan
+         sodipodi:role="line"
+         id="tspan4472-1"
+         x="226.2401"
+         y="143.24023">Browse</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.17407513px;font-style:normal;font-weight:normal;fill:#666666;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="305.03201"
+       y="144.2504"
+       id="text4470-2"><tspan
+         sodipodi:role="line"
+         id="tspan4472-2"
+         x="305.03201"
+         y="144.2504">Submit</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.17407513px;font-style:normal;font-weight:normal;fill:#666666;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="374.73254"
+       y="142.2301"
+       id="text4470-0"><tspan
+         sodipodi:role="line"
+         id="tspan4472-5"
+         x="374.73254"
+         y="142.2301">Specifications</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.17407513px;font-style:normal;font-weight:normal;fill:#666666;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="505.04224"
+       y="142.2301"
+       id="text4470-29"><tspan
+         sodipodi:role="line"
+         id="tspan4472-0"
+         x="505.04224"
+         y="142.2301">Help</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.17407513px;font-style:normal;font-weight:normal;fill:#666666;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="569.69196"
+       y="143.24025"
+       id="text4470-3"><tspan
+         sodipodi:role="line"
+         id="tspan4472-8"
+         x="569.69196"
+         y="143.24025">Contact</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#1a1a1a;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect4637"
+       width="209.10158"
+       height="24.243662"
+       x="517.19812"
+       y="54.33147" />
+    <text
+       xml:space="preserve"
+       style="font-size:11.49972057px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="412.91907"
+       y="71.371422"
+       id="text4639"><tspan
+         sodipodi:role="line"
+         id="tspan4641"
+         x="412.91907"
+         y="71.371422">Login/Register</tspan></text>
+    <image
+       y="50.88195"
+       x="693.67126"
+       id="image4653"
+       height="31"
+       width="31"
+       xlink:href="file:///home/tsuname/inkscape_pasted_image_20101229_225554.png" />
+    <image
+       y="58.011692"
+       x="491.58389"
+       id="image4749"
+       height="23.954288"
+       width="23.954288"
+       xlink:href="file:///home/tsuname/inkscape_pasted_image_20101229_225900.png" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4761"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       transform="translate(14.142136,-3.0304576)"><flowRegion
+         id="flowRegion4763"><rect
+           id="rect4765"
+           width="716.19818"
+           height="139.40105"
+           x="16.162441"
+           y="179.59038" /></flowRegion><flowPara
+         id="flowPara4767"
+         style="font-size:16px;font-weight:bold;text-align:center;text-anchor:middle;-inkscape-font-specification:AlArabiya Bold">A repository of RNA structure probing by chemical footprinting</flowPara><flowPara
+         style="font-size:16px;font-weight:bold;text-align:center;text-anchor:middle;-inkscape-font-specification:AlArabiya Bold"
+         id="flowPara4769" /><flowPara
+         style="font-size:16px;font-weight:bold;text-align:center;text-anchor:middle;-inkscape-font-specification:AlArabiya Bold"
+         id="flowPara4771" /></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4773"
+       style="font-size:13px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       transform="matrix(0.93540608,0,0,0.93540608,28.088303,-9.1174104)"><flowRegion
+         id="flowRegion4775"><rect
+           id="rect4777"
+           width="715.18799"
+           height="205.06097"
+           x="28.284271"
+           y="231.10817"
+           style="font-size:13px" /></flowRegion><flowPara
+         id="flowPara4779">The Stanford RNA Mapping Database is an archive that contains results of diverse chemical footprinting experiments performed on ribonucleic acids. Results submitted to the repository must be manually curated and annotated, ensuring that the data reported is reliable and of high quality.</flowPara><flowPara
+         id="flowPara4781" /><flowPara
+         id="flowPara4783">Specifications in data file formats and experimental protocol sharing are provided in order to make sharing of these experimental results easier and faster.</flowPara><flowPara
+         id="flowPara4787" /></flowRoot>    <text
+       xml:space="preserve"
+       style="font-size:14.17407608px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="51.021992"
+       y="353.7023"
+       id="text4793"><tspan
+         sodipodi:role="line"
+         id="tspan4795"
+         x="51.021992"
+         y="353.7023"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:AlBattar;-inkscape-font-specification:AlBattar">Latest News __________________________</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14.17407608px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="424.43338"
+       y="357.33466"
+       id="text4793-1"><tspan
+         sodipodi:role="line"
+         id="tspan4795-9"
+         x="424.43338"
+         y="357.33466"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:AlBattar;-inkscape-font-specification:AlBattar">RNA databases _______________________</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4822"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"><flowRegion
+         id="flowRegion4824"><rect
+           id="rect4826"
+           width="293.95438"
+           height="212.13203"
+           x="52.527931"
+           y="374.54984" /></flowRegion><flowPara
+         id="flowPara4832"
+         style="font-size:12px;font-weight:normal;-inkscape-font-specification:AlArabiya">* New dataset has been added!</flowPara><flowPara
+         style="font-size:12px"
+         id="flowPara4842" /><flowPara
+         id="flowPara4838"
+         style="font-size:12px;font-style:italic;-inkscape-font-specification:AlArabiya Italic">Thinking about cooperativity -  V. Lang, Chris</flowPara><flowPara
+         style="font-size:12px"
+         id="flowPara4846" /><flowPara
+         style="font-size:12px"
+         id="flowPara4848">A mutate map strategy reveals cooperativity on all known double aptamers. We provide clues that indicate ... <flowSpan
+   style="fill:#0000ff"
+   id="flowSpan4850">View data set</flowSpan></flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4852"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"><flowRegion
+         id="flowRegion4854"><rect
+           id="rect4856"
+           width="286.8833"
+           height="113.13708"
+           x="424.26407"
+           y="375.55997"
+           style="font-size:14px" /></flowRegion><flowPara
+         id="flowPara4858">- SNRNASM</flowPara><flowPara
+         id="flowPara4868">- Rfam</flowPara><flowPara
+         id="flowPara4864">- <flowSpan
+   style="fill:#800080"
+   id="flowSpan4870">Fr3D</flowSpan></flowPara><flowPara
+         id="flowPara4862">- DAT @ uaustin</flowPara></flowRoot>  </g>
+</svg>

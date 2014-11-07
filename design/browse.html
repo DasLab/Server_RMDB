@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Browse the RMDB by system</h2>
+<ul class="list-unstyled">
+{% for c in constructs %}
+{% if c.entries %}
+<li>
+<div class="panel panel-primary">
+<div class="panel-heading"><font size="4">{{ c.name }}</font></div> 
+<div class="panel-body">
+<div class="container">
+<div class="row">
+{% for e in c.entries %} 
+<div class="col-md-6">
+<a href="/repository/detail/{{ e.rmdb_id }}">{{ e.rmdb_id }}</a>, <b> Type: {{ e.get_type_display }}</b> 
+<br>
+<a href="/repository/detail/{{ e.rmdb_id }}" ><img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/></a>
+</div>
+</tr>
+{% endfor %}
+</div>
+</div>
+</div>
+</div>
+</li>
+{% endif %}
+{% endfor %}
+</ul>
+{% endblock %}

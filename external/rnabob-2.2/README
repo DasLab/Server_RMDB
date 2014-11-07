@@ -1,0 +1,48 @@
+rnabob - fast RNA motif searching
+Copyright (C) 1992-1996 Sean R. Eddy
+---------------------------------------
+
+The program "rnabob" searches for RNA motifs in sequence databases.
+Rather than searching simply for primary sequence matches, rnabob
+allows one to search for secondary and tertiary structural motifs as
+well.
+
+The underlying algorithm is a non-deterministic finite state machine
+very similar to that used by UNIX regular expression pattern matching
+algorithms, but with the modification that downstream nodes may be
+constructed dynamically based on matches at upstream nodes (thus, the
+ability to search for complementarity or other absolute covariances).
+
+Please read the following files:
+    INSTALL    - installation instructions
+    COPYING    - copyright notice and information on my distribution policy
+    GNULICENSE - GNU Public License, version 2 (see COPYING)
+
+    Print out the user's guide, rnabob.ps. (PostScript, xx pages) 
+    A man page is also provided (rnabob.man).
+
+
+ACKNOWLEDGEMENTS:
+-----------------
+Much of the underlying implementation was borrowed from Henry
+Spencer's "regexp" package. Thanks, Henry. However, I modified it
+heavily -- any bugs and mistakes are mine.
+
+Sequence i/o functions are originally from Don Gilbert's famous
+"readseq" library. Thanks, Don. Again, I've modified readseq heavily,
+and any mistakes are mine.
+
+BUGS, REQUESTS FOR ENHANCEMENT, COMMENTS:
+-----------------------------------------
+
+Please report any difficulties, suggestions, or pleasant words of
+encouragement to me:
+
+Sean Eddy   
+Email:      eddy@genetics.wustl.edu
+Snail mail: Dept. of Genetics
+            Washington University School of Medicine
+            660 S. Euclid Box 8232
+            St. Louis MO 63110
+
+ 

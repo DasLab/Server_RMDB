@@ -1,0 +1,52 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h2>Results</h2>
+{% for m in messages %}
+<p color="red">{{m}}</p>
+{% endfor %}
+<h3>Secondary structure visualization</h3>
+<p>Visualization provided by the VARNA applet</p>
+{% if panels %}
+{% if panels|length > 1 %}
+<p><a id="prev2" href="#">Previous</a> <a id="next2" href="#">Next</a></p>
+{% endif %}
+<div class="jqslideshow">
+{% for p in panels %}
+{% autoescape off %}{{ p }}{% endautoescape %}
+<!-- <applet  code="VARNA.class" codebase="http://varna.lri.fr/bin"
+    archive="VARNA.jar" width="400" height="600">
+  {% if ncols > 1 and ncols > 1%}
+  <param name="columns" value="{{ncols}}" />
+  <param name="rows" value="{{nrows}}" />
+  {% for sequence, structure, bonuses, titl, modifier in p.varnargs %}
+  <param name="sequenceDBN{{forloop.counter}}"  value="{{sequence}}"/>
+  <param name="structureDBN{{forloop.counter}}" value="{{structure}}"/>
+  {% if bonuses %}
+  <param name="colorMap{{forloop.counter}}" value="{{bonuses}}" />
+  {% endif %}
+  <param name="colorMapStyle{{forloop.counter}}" value="heat" />
+  <param name="colorMapCaption{{forloop.counter}}" value="{{modifier}}" />
+  <param name="title{{forloop.counter}}" value="{{titl}}" />
+  {% endfor %}
+  {% else %}
+  {% for sequence, structure, bonuses, titl, modifier in p.varnargs %}
+  <param name="sequenceDBN"  value="{{sequence}}"/>
+  <param name="structureDBN" value="{{structure}}"/>
+  {% if bonuses %}
+  <param name="colorMap" value="{{bonuses}}" />
+  {% endif %}
+  <param name="colorMapStyle" value="heat" />
+  <param name="colorMapCaption" value="{{modifier}}" />
+  <param name="title" value="{{titl}}" />
+  {% endfor %}
+  {% endif %}
+</applet>-->
+{% endfor %}
+</div>
+{% if bppmimg %}
+<h3>Predicted base pair probabilities</h3>
+<img src="/site_media/tmp/{{bppmimg}}"/>
+{% endif %}
+{% endif %}
+{% endblock %}

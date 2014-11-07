@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<p>
+You can use this form to display RNA secondary structure with pseudo energy bonuses applied by chemical
+footprinting data.
+</p>
+<ul color="red">
+{% for v in valerrors %}
+<li>{{ v }}</li>
+{% endfor %}
+</ul>
+<form class="niceform" enctype="multipart/form-data" action="/structureserver/" method="post">
+<table>
+    <tr>
+        {{ form.rdatfile.errors }}
+        <td >You can input an RDAT file:
+        <p>{{ form.rdatfile }}</p></td>
+    </tr>
+    <tr>
+        {{ form.rmdbid.errors }}
+        <td >Or input an RMDB id
+        <p>{{ form.rmdbid }}</p></td>
+    </tr>
+
+    <tr>
+        {{ form.predtype.errors }}
+        <td >Type of bonuses
+        <p>{{ form.predtype }}</p></td>
+    </tr>
+    <tr>
+        {{ form.slope.errors }}
+        {{ form.intercept.errors }}
+        {{ form.normalize.errors }}
+	<td>
+        <p >Slope:
+        {{ form.slope }}</p>
+        <p >Intercept:
+        {{ form.intercept }}</p>
+	<p>{{ form.normalize }} Renormalize</p>
+	</td>
+    </tr>
+    <tr>
+        <td>Or alternatively you can input sequences and bonuses manually</td>
+    </tr>
+    <tr>
+        {{ form.sequences.errors }}
+        <td >Input your sequences (in FASTA format):
+        <p>{{ form.sequences }}</p>
+	</td>
+    </tr>
+<!--
+    <tr>
+        {{ form.structures.errors }}
+        <td >Input any secondary structures that you want to visualize
+	    (if any, and in FASTA format, each entry being a secondary
+	    structure in dot bracket notation):
+        <p>{{ form.structures }}</p>
+	</td>
+    <tr>-->
+        {{ form.bonusfile.errors }}
+        <td >And provide the bonus file (see <a href='#'>here</a> for
+	     docs on the format of bonus files):
+        <p>{{ form.bonusfile }}</p></td>
+    </tr>
+
+ 
+</table>
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}

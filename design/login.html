@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Please log in</h1>
+<form class="niceform"  action="/repository/login/?next={{ next }}" method="post">
+<p color="red">{{ error_msg }}</p>
+<table>
+    <tr>
+        <td>Username:</td>
+        <td>{{ form.username }}</td>
+        <td class="form_errors">{{ form.username.errors }}</td>
+    </tr>
+    <tr>
+        <td>Password:</td>
+        <td>{{ form.password }}</td>
+        <td class="form_errors">{{ form.password.errors }}</td>
+    </tr>
+</table>
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}

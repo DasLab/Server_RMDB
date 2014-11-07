@@ -1,0 +1,15 @@
+# pseudoknot.des
+#
+# descriptor for a simple pseudoknotted structure. Not modeled
+# on anything in particular. Don't run this on anything bigger than
+# the T4BANK, it's extremely degenerate and makes a lot of matches.
+#
+
+
+h1 s1 h2 h1' s3 h2'
+
+h1 0:0 NNNNN:NNNNN
+h2 0:0 NNNNN:NNNNN
+
+s1 0   N**
+s3 0   NNN**

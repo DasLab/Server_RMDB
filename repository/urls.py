@@ -1,0 +1,37 @@
+from django.conf.urls.defaults import *
+
+# Uncomment the next two lines to enable the admin:
+# from django.contrib import admin
+# admin.autodiscover()
+
+urlpatterns = patterns('repository.views',
+    (r'^$', 'index'),
+    (r'^detail/(?P<rmdb_id>\w{,20})$', 'detail'),
+    (r'^get_area_peaks/$', 'get_area_peaks'),
+    (r'^submit$', 'upload'),
+    (r'^tools/validate/$', 'validate'),
+    (r'^search$', 'search'),
+    (r'^advanced_search/$', 'advanced_search'),
+    (r'^browse$', 'browse'),
+    (r'^tools/$', 'tools'),
+    (r'^contact/$', 'contact'),
+    (r'^specs/(?P<section>\w{,20})$', 'specs'),
+    (r'^login/$', 'user_login'),
+    (r'^register/$', 'register'),
+    (r'^logout$', 'user_logout'),
+    (r'^render_structure$', 'render_structure'),
+    (r'^api/entry/fetch/(?P<rmdb_id>\w+)$', 'api_fetch_entry'),
+    (r'^api/entry/all$', 'api_all_entries'),
+    (r'^api/entry/organism/(?P<organism_id>\w+)$', 'api_entries_by_organism'),
+    (r'^api/entry/system/(?P<system_id>\w+)$', 'api_entries_by_system'),
+    (r'^api/rmdbid/organism/(?P<organism_id>\w+)$', 'api_rmdb_ids_by_organism'),
+    (r'^api/rmdbid/system/(?P<system_id>\w+)$', 'api_rmdb_ids_by_system'),
+    (r'^api/rmdbid/all$', 'api_all_rmdb_ids'),
+    (r'^api/organism/all$', 'api_all_organisms'),
+    (r'^api/system/all$', 'api_all_systems'),
+    # Uncomment the admin/doc line below to enable admin documentation:
+    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+    # Uncomment the next line to enable the admin:
+    # (r'^admin/', include(admin.site.urls)),
+)

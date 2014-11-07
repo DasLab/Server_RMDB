@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title>RMDB entries</title>
+<link>http://rmdb.stanford.edu/repository</link>
+<description>The RNA Mapping Database is a repository of 
+experimental results on RNA structural probing using mapping (a.k.a.
+footprinting) techniques. This feed lists the current entries on the database.</description>
+
+    <item>
+        <title>RMDB TRP4P6_SHP_0003</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRP4P6_SHP_0003</link>
+        <guid>TRP4P6_SHP_0003</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRNAPH_SHP_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRNAPH_SHP_0002</link>
+        <guid>TRNAPH_SHP_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB CIDGMP_SHP_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/CIDGMP_SHP_0002</link>
+        <guid>CIDGMP_SHP_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRNAPH_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRNAPH_SHP_0001</link>
+        <guid>TRNAPH_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>  Averaged from 8 replicates over 4 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB 5SRRNA_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/5SRRNA_SHP_0001</link>
+        <guid>5SRRNA_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 8 replicates over 4 independent experiments.
+    Averaged from 8 replicates over 4 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB ADDRSW_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/ADDRSW_SHP_0001</link>
+        <guid>ADDRSW_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 15 replicates over 4 independent experiments.
+    Averaged from 15 replicates over 4 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB CIDGMP_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/CIDGMP_SHP_0001</link>
+        <guid>CIDGMP_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 12 replicates over 5 independent experiments.
+    Averaged from 10 replicates over 4 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_SHP_0001</link>
+        <guid>GLYCFN_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 18 replicates over 6 independent experiments.
+    Averaged from 2 replicates over 1 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRP4P6_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRP4P6_SHP_0001</link>
+        <guid>TRP4P6_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 24 replicates over 9 independent experiments.
+    Averaged from 10 replicates over 5 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB 5SRRNA_SHP_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/5SRRNA_SHP_0002</link>
+        <guid>5SRRNA_SHP_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB ADDRSW_SHP_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/ADDRSW_SHP_0002</link>
+        <guid>ADDRSW_SHP_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB ADDRSW_SHP_0004</title>
+        <link>http://rmdb.stanford.edu/repository/detail/ADDRSW_SHP_0004</link>
+        <guid>ADDRSW_SHP_0004</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB ADDRSW_SHP_0003</title>
+        <link>http://rmdb.stanford.edu/repository/detail/ADDRSW_SHP_0003</link>
+        <guid>ADDRSW_SHP_0003</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_SHP_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_SHP_0002</link>
+        <guid>GLYCFN_SHP_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_SHP_0003</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_SHP_0003</link>
+        <guid>GLYCFN_SHP_0003</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_SHP_0004</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_SHP_0004</link>
+        <guid>GLYCFN_SHP_0004</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_SHP_0005</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_SHP_0005</link>
+        <guid>GLYCFN_SHP_0005</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRP4P6_SHP_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRP4P6_SHP_0002</link>
+        <guid>TRP4P6_SHP_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB CIDGMP_SHP_0003</title>
+        <link>http://rmdb.stanford.edu/repository/detail/CIDGMP_SHP_0003</link>
+        <guid>CIDGMP_SHP_0003</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description> Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB ETOBCR_SHP_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/ETOBCR_SHP_0002</link>
+        <guid>ETOBCR_SHP_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Chemical mapping data for the EteRNA design project.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB X20H20_DMS_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/X20H20_DMS_0001</link>
+        <guid>X20H20_DMS_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure 2(c) in "A Mutate-and-Map Strategy for Inferring Base Pairs in Structured Nucleic Acids: Proof of Concept on a DNA/RNA Helix, Biochemistry (2010)."
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB X20H20_DMS_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/X20H20_DMS_0002</link>
+        <guid>X20H20_DMS_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure S1(b) in "A Mutate-and-Map Strategy for Inferring Base Pairs in Structured Nucleic Acids: Proof of Concept on a DNA/RNA Helix, Biochemistry (2010)."
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB SRPDIV_DMS_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/SRPDIV_DMS_0001</link>
+        <guid>SRPDIV_DMS_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure 2 and Supplementary Figure 6 in Das, R., Karanicolas, J., Baker., D (2010) "Atomic accuracy in predicting and designing noncanonical RNA structure". Nature Methods 7:291-294.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB MDLOOP_SHP_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/MDLOOP_SHP_0002</link>
+        <guid>MDLOOP_SHP_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure S1C in "A Mutate-and-Map Strategy Accurately Infers the Base Pairs of a 35-Nucleotide Model RNA" by Kladwang, Cordero, Das, RNA (2011)."
+  SHAPE Data acquired by W. Kladwang
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB MDLOOP_NMD_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/MDLOOP_NMD_0002</link>
+        <guid>MDLOOP_NMD_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure S1F in "A Mutate-and-Map Strategy Accurately Infers the Base Pairs of a 35-Nucleotide Model RNA" by Kladwang, Cordero, Das, RNA (2011)."
+  SHAPE Data acquired by W. Kladwang
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB MDLOOP_CMC_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/MDLOOP_CMC_0001</link>
+        <guid>MDLOOP_CMC_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure 1 & Figure S1B in "A Mutate-and-Map Strategy Accurately Infers the Base Pairs of a 35-Nucleotide Model RNA" by Kladwang, Cordero, Das, RNA (2011)."
+  CMCT Data acquired by R. Das
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB MDLOOP_CMC_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/MDLOOP_CMC_0002</link>
+        <guid>MDLOOP_CMC_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure S1E in "A Mutate-and-Map Strategy Accurately Infers the Base Pairs of a 35-Nucleotide Model RNA" by Kladwang, Cordero, Das, RNA (2011)."
+  CMCT Data acquired by W. Kladwang
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB MDLOOP_DMS_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/MDLOOP_DMS_0001</link>
+        <guid>MDLOOP_DMS_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure 1 & Figure S1A in "A Mutate-and-Map Strategy Accurately Infers the Base Pairs of a 35-Nucleotide Model RNA" by Kladwang, Cordero, Das, RNA (2011)."
+  DMS Data acquired by R. Das
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB MDLOOP_DMS_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/MDLOOP_DMS_0002</link>
+        <guid>MDLOOP_DMS_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure 1 & Figure S1A in "A Mutate-and-Map Strategy Accurately Infers the Base Pairs of a 35-Nucleotide Model RNA" by Kladwang, Cordero, Das, RNA (2011)."
+  DMS Data acquired by R. Das
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB MDLOOP_STD_0000</title>
+        <link>http://rmdb.stanford.edu/repository/detail/MDLOOP_STD_0000</link>
+        <guid>MDLOOP_STD_0000</guid>
+        <pubDate>Tue, 20 Mar 2012 18:36:00 GMT</pubDate>
+        <description>  Data associated with Figure 2 in "A Mutate-and-Map Strategy Accurately Infers the Base Pairs of a 35-Nucleotide Model RNA" by Kladwang, Cordero, Das, RNA (2011)."
+  DMS and CMCT accessibilities averaged over 18 and 12 measurements, respectively; measurements were made over 4 days and 3 independent preparations. SHAPE (NMIA) accessibilities averaged over 14 measurements spread over 3 days and 2 independent preparations.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB 5SRRNA_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/5SRRNA_SHP_0001</link>
+        <guid>5SRRNA_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 12 replicates over 6 independent experiments.
+    Averaged from 8 replicates over 4 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB ADDRSW_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/ADDRSW_SHP_0001</link>
+        <guid>ADDRSW_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 19 replicates over 6 independent experiments.
+    Averaged from 19 replicates over 6 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB CIDGMP_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/CIDGMP_SHP_0001</link>
+        <guid>CIDGMP_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 15 replicates over 6 independent experiments.
+    Averaged from 14 replicates over 6 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_SHP_0001</link>
+        <guid>GLYCFN_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 22 replicates over 8 independent experiments.
+    Averaged from 24 replicates over 9 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRNAPH_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRNAPH_SHP_0001</link>
+        <guid>TRNAPH_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 14 replicates over 7 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRP4P6_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRP4P6_SHP_0001</link>
+        <guid>TRP4P6_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 28 replicates over 11 independent experiments.
+    Averaged from 10 replicates over 5 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB RNASEP_SHP_0000</title>
+        <link>http://rmdb.stanford.edu/repository/detail/RNASEP_SHP_0000</link>
+        <guid>RNASEP_SHP_0000</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Results after 10 iterations of Maximum Likelihood Estimation (see Aviran et al. PNAS 2011). References: J. B. Lucks et al., Multiplexed RNA structure characterization with selective 2'-hydroxyl acylation analyzed by primer extension sequencing (SHAPE-Seq), Proc. Natl. Acad. Sci. USA, 2011;S. Aviran et al., Modeling and automation of sequencing-based characterization of RNA structure, Proc. Natl. Acad. Sci. USA, 2011
+    You can find the raw data in the Gene Expression Omnibus site <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE31573">here</a></description>
+    </item>
+    
+    <item>
+        <title>RMDB RNASEP_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/RNASEP_SHP_0001</link>
+        <guid>RNASEP_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Barcode validation of Ribonuclease P specificity domain, B. subtilis with 256 different barcodes
+    References: J. B. Lucks et al., Multiplexed RNA structure characterization with selective 2'-hydroxyl acylation analyzed by primer extension sequencing (SHAPE-Seq), Proc. Natl. Acad. Sci. USA, 2011;S. Aviran et al., Modeling and automation of sequencing-based characterization of RNA structure, Proc. Natl. Acad. Sci. USA, 2011
+    You can find the raw data in the Gene Expression Omnibus site <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE31573">here</a>
+</description>
+    </item>
+    
+    <item>
+        <title>RMDB 5SRRNA_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/5SRRNA_SHP_0001</link>
+        <guid>5SRRNA_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 12 replicates over 6 independent experiments.
+    Averaged from 8 replicates over 4 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB ADDRSW_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/ADDRSW_SHP_0001</link>
+        <guid>ADDRSW_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>Averaged from 19 replicates over 6 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB CIDGMP_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/CIDGMP_SHP_0001</link>
+        <guid>CIDGMP_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 15 replicates over 6 independent experiments.
+    Averaged from 14 replicates over 6 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_SHP_0001</link>
+        <guid>GLYCFN_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 22 replicates over 8 independent experiments.
+    Averaged from 24 replicates over 9 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRNAPH_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRNAPH_SHP_0001</link>
+        <guid>TRNAPH_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 14 replicates over 7 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRP4P6_SHP_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRP4P6_SHP_0001</link>
+        <guid>TRP4P6_SHP_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>    Averaged from 28 replicates over 11 independent experiments.
+    Averaged from 10 replicates over 5 independent experiments.
+ Auxiliary sequences are marked in lowercase.</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_KNK_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_KNK_0001</link>
+        <guid>GLYCFN_KNK_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>  Glycine riboswitch chemical mapping to validate structured linker between glycine aptamers, including a kink-turn.
+  See <a href="http://dx.doi.org/10.1021/ja2093508">"Automated RNA Structure Prediction Uncovers a Kink-Turn Linker in Double Glycine Riboswitches", Kladwang, Chou, Das, JACS.</a>
+  Auxiliary sequences marked in lowercase.
+</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_KNK_0001</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_KNK_0001</link>
+        <guid>GLYCFN_KNK_0001</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>  Glycine riboswitch chemical mapping to validate structured linker between glycine aptamers, including a kink-turn.
+  See <a href="http://dx.doi.org/10.1021/ja2093508">"Automated RNA Structure Prediction Uncovers a Kink-Turn Linker in Double Glycine Riboswitches", Kladwang, Chou, Das, JACS.</a>
+  Auxiliary sequences marked in lowercase.
+</description>
+    </item>
+    
+    <item>
+        <title>RMDB GLYCFN_KNK_0002</title>
+        <link>http://rmdb.stanford.edu/repository/detail/GLYCFN_KNK_0002</link>
+        <guid>GLYCFN_KNK_0002</guid>
+        <pubDate>Tue, 20 Mar 2012 19:13:11 GMT</pubDate>
+        <description>  Thermodynamics analysis of structured linker between glycine aptamers: glycine titrations.
+  One of 2-3 replicates.
+  See <a href="http://dx.doi.org/10.1021/ja2093508">"Automated RNA Structure Prediction Uncovers a Kink-Turn Linker in Double Glycine Riboswitches", Kladwang, Chou, Das, JACS.</a>
+  Auxiliary sequences marked in lowercase.
+</description>
+    </item>
+    
+    <item>
+        <title>RMDB TRP4P6_HRF_0003</title>
+        <link>http://rmdb.stanford.edu/repository/detail/TRP4P6_HRF_0003</link>
+        <guid>TRP4P6_HRF_0003</guid>
+        <pubDate>Sun, 22 Apr 2012 19:33:35 GMT</pubDate>
+        <description>  Data taken by R. Das, 2004, with 32P-end-labeled P4-P6 RNA.
+  Focused Mg(2+) titration in high [NaCl] background ("expt 104E")
+  Footprinted with 0.1 mM Fe(NH4)(SO4)2, 0.125 mM EDTA, and 10 mM sodium ascorbate
+  Quantitated in SAFA.
+  Published in: Das, R., Travers, K.J., Bai, Y., and Herschlag, D. (2005). "Determining the Mg2+ stoichiometry for folding an RNA's metal ion core", Journal of the American Chemical Society 127, 8272-8273
+</description>
+    </item>
+    
+</channel>
+</rss>

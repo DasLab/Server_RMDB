@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+<title>RMDB news</title>
+<link>http://rmdb.stanford.edu/repository</link>
+<description>The RNA Mapping Database is a repository of 
+experimental results on RNA structural probing using mapping (a.k.a.
+footprinting) techniques. This feed gives news updates relevant to the databse.</description>
+
+    <item>
+        <title>RMDB entries for SHAPE-Seq experiments on RNAse P (B. subtilis) have been posted! See entries <a href="http://rmdb.stanford.edu/repository/detail/RNASEP_SHP_0000">RNASEP_SHP_0000</a> and <a href="http://rmdb.stanford.edu/repository/detail/RNASEP_SHP_0001">RNASEP_SHP_0001</a></title>
+        <link></link>
+        <guid>1</guid>
+        <pubDate>Fri, 05 Aug 2011 00:00:00 GMT</pubDate>
+        <description>RMDB entries for SHAPE-Seq experiments on RNAse P (B. subtilis) have been posted! See entries <a href="http://rmdb.stanford.edu/repository/detail/RNASEP_SHP_0000">RNASEP_SHP_0000</a> and <a href="http://rmdb.stanford.edu/repository/detail/RNASEP_SHP_0001">RNASEP_SHP_0001</a></description>
+    </item>
+    
+    <item>
+        <title>If you use the RMDB in your investigations, please cite our draft paper located in the arXiv (article id <a href="http://arxiv.org/abs/1110.0235">1110.0235</a>). </title>
+        <link></link>
+        <guid>2</guid>
+        <pubDate>Mon, 03 Oct 2011 00:00:00 GMT</pubDate>
+        <description>If you use the RMDB in your investigations, please cite our draft paper located in the arXiv (article id <a href="http://arxiv.org/abs/1110.0235">1110.0235</a>). </description>
+    </item>
+    
+    <item>
+        <title>Self registration is now available. Go to <a href="/repository/register">the registration page</a> to start submitting your data!</title>
+        <link></link>
+        <guid>3</guid>
+        <pubDate>Mon, 23 Apr 2012 00:00:00 GMT</pubDate>
+        <description>Self registration is now available. Go to <a href="/repository/register">the registration page</a> to start submitting your data!</description>
+    </item>
+    
+</channel>
+</rss>

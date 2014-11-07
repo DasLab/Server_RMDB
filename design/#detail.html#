@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block content %}
+{% if entry.revision_status == 'PUB' %}
+
+{% for c in constructs %}
+<h3>{{ c.name }}</h3>
+<div id="slideshow" class="details">
+    <div class="detailsitem active">
+	<h1>Assigned peaks</h1>
+	<img class="detailsimg" src='/site_media/construct_img/{{ c.id }}/values.png'/>
+    </div>
+{% if entry.has_traces %}
+    <div class="detailsitem">
+	<h1>Raw traces</h1>
+	<img class="detailsimg" src='/site_media/construct_img/{{ c.id }}/trace.png'/>
+    </div>
+{% endif %}
+{% if entry.type == 'SS' %}
+    {% for i in c.data_count%}
+    <div class="detailsitem">
+	<h1>Mean values and error estimates for row {{ i }}</h1>
+	<img class="detailsimg"  src='/site_media/construct_img/{{ c.id }}/barplot{{ i }}.png'/>
+    </div>
+    {% endfor %}
+{% endif %}
+</div>
+{% endfor %}
+
+<h1>Details for entry {{ entry.rmdb_id }}</h1>
+<p>You can download the RDAT file <a href="/site_media/rdat_files/{{ entry.rmdb_id }}/{{ entry.rmdb_id }}.rdat">here</a></p>
+<h3>Description</h3>
+<p>{{ entry.description }}</p>
+<h3>Comments</h3>
+<p>{{ entry.comments }}</p>
+<h3>Publication</h3>
+<p>{{ publication.title }}</p>
+<h3>Authors</h3>
+<p>{{ entry.authors }}</p>
+<h3>General Annotations</h3>
+{% if entry.annotations %}
+<table class="annotation_table">
+<tr>
+<td><b>annotation name</b></td>
+<td><b>value</b></td>
+</tr>
+{% for a in entry.annotations %}
+<tr>
+<td>{{ a.name }}</td>
+<td>{{ a.value }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>No annotations</p>
+{% endif %}
+<h2>Constructs</h2>
+<p>This entry describes data for the following constructs:</p>
+{% for c in constructs %}
+
+<b>Sequence:</b> {{ c.sequence }}
+{% if c.seqpos %}
+<p><b>Sequence Positions:</b> {{ c.seqpos }}</p>
+{% endif %}
+<h4>Annotations for {{ c.name }}</h4>
+{% if c.annotations %}
+<table class="annotation_table">
+<tr>
+<td><b>annotation name</b></td>
+<td><b>value</b></td>
+</tr>
+{% for a in c.annotations %}
+<tr>
+<td>{{ a.name }}</td>
+<td>{{ a.value }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>No annotations for this construct</p>
+{% endif %}
+<h4>Data annotations</h4>
+{% if data_annotations_exist %}
+<table class="annotation_table">
+<tr>
+<td><b>data row index</b></td>
+<td><b>annotations</b></td>
+</tr>
+{% for d in c.datas %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>
+      {% for a in d.annotations %}
+       {{ a.name }}:{{ a.value }}, 
+      {% endfor %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>No data annotations</p>
+{% endif %}
+
+{% endfor %}
+{% else %}
+{% if entry.revision_status == 'REC' %}
+<p>Entry rm{{ entry.id }} has been received and is currently under review.</p>
+{% else %}
+<p>Entry rm{{ entry.id }} is either still under review or has been put on hold.</p>
+{% endif %}
+<p>Please contact <a href="mailto:tsuname@stanford.edu">tsuname@stanford.edu</a> for further information. </p>
+{% endif %}
+{% endblock %}

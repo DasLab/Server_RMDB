@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+<div class="row">
+<h3>Tools for analysis of electropherograms</h3>
+The RMDB provides tools that can be used for the analysis of electropherograms in the context of RNA structure mapping. The following is a list of the tools available at this time.
+</div>
+
+<div class="row">
+<div class="col-md-4">
+<h3>HiTRACE</h3>
+A complete matlab implementation of the HiTRACE analysis framework can be found in its <a href="https://simtk.org/home/hitrace">SimTK homepage</a>. For documentation on this tool, go to <a href="https://sites.google.com/site/rmdbwiki/hitrace">the HiTRACE docs</a>. You can download the source code directly with svn:
+<br>
+<br>
+<pre>
+svn checkout https://simtk.org/svn/hitrace
+</pre>
+<br>
+<br>
+
+</div>
+<div class="col-md-4">
+
+<h3>RDATkit: The RNA Dataset Toolkit </h3>
+A Python package and a set of MATLAB scripts are provided that facilitate saving and loading data to and from RDAT files. The toolset is part of the SimTK project and can be found <a href="https://simtk.org/home/rdatkit/">here</a>, while the documentation can be found <a href="https://sites.google.com/site/rmdbwiki/rdatparsing">here</a>. You can download the source code directly with svn:
+<br>
+<br>
+<pre>
+svn checkout https://simtk.org/svn/rdatkit
+</pre>
+<br>
+<br>
+
+</div>
+<div class="col-md-4">
+<h3>Structure server </h3>
+We have a structure server available for calculating the secondary structure of RNA molecules given one or two dimensional chemical mapping data, available <a href="http://rmdb.stanford.edu/structureserver">here</a>. We use <a href="http://rna.urmc.rochester.edu/RNAstructure.html">RNAstructure</a> as a backend for this server.
+
+</div>
+<div class="col-md-4">
+<h3>File format validation </h3>
+Want to check if a file with an experiment follows the standards and the data is consistent? Use <a href="validate">this form</a> to perform the validation.
+</div>
+</div>
+</div>
+{% endblock %}
