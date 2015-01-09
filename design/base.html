@@ -3,23 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <link rel="stylesheet" href="/site_media/css/rmdb.css" />
-    <link rel="stylesheet" href="/site_media/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/site_media/css/rmdb-bootstrap.css" />
+    <link rel="stylesheet" href="/site_media/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/site_media/css/theme.css" />
+
     <link rel='stylesheet' type='text/css' href="/site_media/jquery-ui-1.9.2/themes/base/jquery-ui.css" /> 
     <link rel="shortcut icon" href="/site_media/favicon.ico" />
     <link rel="icon" type-"image/gif" href="/site_media/animated_favicon1.gif" />
-    <!--<script language="javascript" type="text/javascript" src="/site_media/js/niceforms.js"></script>-->
-    <!--<script type="text/javascript" src="/site_media/js/jquery-1.4.4.min.js"></script>
-    <script language="javascript" type="text/javascript" src="/site_media/js/jquery.cycle.all.min.js"></script>-->
-    <!--
-    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'> </script> 
-    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js'> </script> 
-    <script type="text/javascript" src="http://cloud.github.com/downloads/malsup/cycle/jquery.cycle.all.latest.js"></script>-->
-    <script type='text/javascript' src="/site_media/js/jquery.min.js"> </script> 
+
+    <script type='text/javascript' src="/site_media/js/jquery-1.11.2.min.js"> </script> 
     <script type='text/javascript' src="/site_media/jquery-ui-1.9.2/ui/jquery-ui.js"> </script> 
     <script type="text/javascript" src="/site_media/js/jquery.cycle.all.latest.js"></script>
     <script type="text/javascript" src="/site_media/js/protovis-3.2/protovis-d3.2.js"></script>
     <script type="text/javascript" src="/site_media/js/jquery.mousewheel.js"></script>
+    <script type='text/javascript' src="/site_media/js/bootstrap.min.js"> </script> 
+
    <script type="text/javascript">
 	$(document).ready(function(){
 	browser = navigator.appName;
@@ -99,91 +96,166 @@
     </script>
  
 </head>
-    <script type="text/javascript">
-    $(document).ready(function() {
-	    $('.jqslideshow').cycle({
-				fx:      'fade',
-				next:   '#next2',
-				prev:   '#prev2',
-			        timeout:  0
 
-					});
-    });
-    </script>
-
-
-<script type="text/javascript">
-//<![CDATA[
-function slideSwitch() {
-    var $active = $('#slideshow div.active');
-    var $next =  $active.next().length ? $active.next()
-        : $('#slideshow div:first');
-
-    $active.addClass('last-active');
-
-    $next.css({opacity: 0.0})
-        .addClass('active')
-        .animate({opacity: 1.0}, 1000, function() {
-            $active.removeClass('active last-active');
-        });
-}
-
-$(function() {
-    setInterval( "slideSwitch()", 5000 );
-});
-//]]>
-</script>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-     <div class="container-fluid">
-      <div class="navbar-header"> 
-      <div class="navbar-collapse collapse" >
-       <div class="navbar-brand">RMDB</div>
-	{% block sidebar %}
-	<ul class="nav navbar-nav">
-	  <li class="active"><a href="/repository/">Home</a></li>
-	  <li><a href="/repository/browse">Browse</a></li>
-	  <li><a href="/repository/submit">Submit</a></li>
-	  <li><a href="/repository/specs">Specifications</a></li>
-	  <li><a href="/structureserver/">Structure Server</a></li>
-	  <li><a href="/repository/tools">Tools</a></li>
-	  <li><a href="/repository/contact">Contact us</a></li>
-	</ul>
-	{% endblock %}
-	</div>
-      </div>
-	<div class="navbar-collapse collapse">
-	   <ul class="nav navbar-nav navbar-right">
-	    {% if user.is_authenticated %}
-	    <li><a href="/repository/logout">Logout {{user.username}}</a></li>
-	    {% else %}
-	    <li><a href="/repository/login">Login</a></li>
-	    <li><a href="/repository/register">Register</a></li>
-	    {% endif %}
-	    <li><a href="/repository/advanced_search">Advanced Search</a></li>
-	   </ul>
-          <form class="navbar-form navbar-right" action="/repository/search" method="get">
-	   <div class="form-group">
-            <input type="text" class="form-control" name="searchtext"/><input type="submit" class="btn btn-success" value="Search"/> 
-           </div>
-          </form>
-	</div>
-      </div>
+	<div class="navbar navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/repository/" id="nav_logo">&nbsp;&nbsp;RMDB&nbsp;&nbsp;</a>
+			</div>
 
-       </div>
-      </div>
-    <div id="browser_warning" style="display:none" class="error_message">
-	<p>Your browser is not currently supported by the RMDB. Please use <a href="http://www.mozilla.com">Mozilla Firefox</a> or <a href="http://www.google.com/chrome">Google Chrome</a> for full support. Alternatively, if you want to use Internet Explorer, you need to download the <a href=http://code.google.com/chrome/chromeframe/"">Google Chrome Frame</a> (compatible with IE 8, but not IE 9), or similar SVG-enabling, plugins.</p>
-    </div>
-    <br>
-      <div id="content">
-        {% block content %}{% endblock %}
-      </div>
-      <footer class"bs-docs-footer" role="contentinfo">
-      <div id="bottombar">
- 	<p> Maintained by the <a href="http://stanford.edu/~rhiju">Das lab </a> </p>
-      <p> Powered by <a href="http://www.djangoproject.com/">django</a></p>
-    </div>
-    </body>
+			<div class="navbar-collapse collapse" >
+				<ul class="nav navbar-nav">
+					<li class="dropdown" id="nav_browse">
+						<a href="/repository/browse"  class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+							Browse
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/repository/browse#categoryGeneral">General</a></li>
+							<li><a href="/repository/browse#categoryPuzzle">RNA Puzzles</a></li>
+							<li><a href="/repository/browse#categoryEteRNA">eteRNA</a></li>
+						</ul>
+					</li>
+					<li class="dropdown" id="nav_deposit">
+						<a href="/repository/submit" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+							Deposit
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/repository/specs">Specs</a></li>
+							<li><a href="#">Validate</a></li>
+							<li class="divider"></li>
+							<li><a href="/repository/submit">Submit</a></li>
+						</ul>
+					</li>
+					<li class="dropdown" id="nav_analyze">
+						<a href="/structureserver/" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+							Analyze
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/structureserver/">Predict</a></li>
+							<li class="divider"></li>
+							<li><a href="/repository/tools">HiTRACE</a></li>
+							<li><a href="/repository/tools">RDAT Kit</a></li>
+						</ul>
+					</li>
+					<li class="dropdown" id="nav_about">
+						<a href="/repository/contact" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+							About
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/repository/contact">Contact us</a></li>
+							<li><a href="/repository/contact">Privacy</a></li>
+							<li><a href="/repository/contact">Citation</a></li>
+						</ul>
+					</li>
+				</ul>
+
+				<div class="pull-right row">
+					<ul class="nav navbar-nav">
+						<li class="dropdown">
+							<button href="" class="btn btn-info navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #ffffff;">
+								MyRMDB Login
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								{% if user.is_authenticated %}
+								<li><a href="/repository/logout">Logout {{user.username}}</a></li>
+								{% else %}
+								<li><a href="/repository/login">Login</a></li>
+								<li><a href="/repository/register">Register</a></li>
+								{% endif %}
+							</ul>
+						</li>
+
+					</ul>
+					<ul class="pull-right">
+						<li>
+							<a href="http://eterna.cmu.edu/" target="_blank"><img src="/site_media/logo_eterna.png" height="42"/></a>
+						</li>
+					</ul>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="jumbotron row bgimg">
+			<div class="col-md-6">
+				<img src="/site_media/logo_mini.png" style="clear:both;float:left;padding-right:20px;"/>
+				<p>
+					aaa
+				</p>
+			</div>
+			<div class="col-md-6">
+				<form class="pull-right" action="/repository/search" method="get">
+					<div class="input-group">
+						<input type="text" class="form-control" name="searchtext" placeholder="Search by accession ID" style="padding: 22px 22px;"/>
+						<div class="input-group-btn">
+							<input type="submit" class="btn btn-lg btn-success" value="Search"/> 
+						</div>
+					</div>
+				</form>
+				<br/><br/><br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;<a href="/repository/advanced_search">Advanced Search</a>
+			</div>
+		</div>
+	</div>
+    <hr/>
+
+	<div id="browser_warning" style="display:none" class="error_message">
+		<p>Your browser is not currently supported by the RMDB. Please use <a href="http://www.mozilla.com">Mozilla Firefox</a> or <a href="http://www.google.com/chrome">Google Chrome</a> for full support. Alternatively, if you want to use Internet Explorer, you need to download the <a href=http://code.google.com/chrome/chromeframe/"">Google Chrome Frame</a> (compatible with IE 8, but not IE 9), or similar SVG-enabling, plugins.</p>
+	</div>
+	
+	{% block content %}{% endblock %}
+	
+	<hr/>
+	<div class="container">
+		<div class="bs-docs-footer row">
+			<div class="col-md-10">
+				<img  src="/site_media/logo_mini.png" height="84" style="vertical-align: text-bottom; clear: both; float: left; padding-right: 15px;"/>
+				<p class="muted credit">
+					Maintained by the &nbsp;&nbsp;
+				<a href="http://daslab.stanford.edu" target="_blank">
+					<img src="/site_media/logo_das.jpg" height="42"/>
+				</a>
+				<a href="http://www.stanford.edu" target="_blank">
+					<img src="/site_media/logo_stanford.png" height="42"/>
+				</a>
+				<br/>
+				<br/>
+				<a href="">Copyright</a> &copy 2011-<span id="cp_year"></span> The Board of Trustees of the Leland Stanford Junior University. All Rights Reserved. 
+				</p>
+			</div>
+			<div class="col-md-2">
+				<p> 
+					powered by <a href="https://www.djangoproject.com/" target="_blank">Django</a>
+				</p>
+			</div> 
+		</div>
+	</div>
+
+	{% block script %}{% endblock %}
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var today = new Date();
+			$("#cp_year").text(today.getFullYear());
+			$('.dropdown-toggle').dropdown();
+			$(".dropdown").hover(
+	            function(){ $(this).addClass('open') },
+    	        function(){ $(this).removeClass('open') }
+        	);
+		});
+	</script>
+
+</body>
 </html>
-
