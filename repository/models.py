@@ -1,9 +1,13 @@
-import os
 from django.contrib.auth.models import User
 from django.db import models
 from django import forms
+
 from settings import *
+
+import os
 from simplejson import JSONEncoder
+
+
 def get_rdat_filename(instance, filename):
     dir = RDAT_FILE_DIR+'%s/'%instance.id
     if not os.path.exists(dir):
@@ -255,7 +259,6 @@ class AdvancedSearchForm(forms.Form):
     modifiers = forms.MultipleChoiceField(choices=MODIFIERS, widget=forms.CheckboxSelectMultiple)
     background_processed = forms.BooleanField(initial=True)
     numresults = forms.IntegerField(widget=forms.TextInput(attrs={'size':'10'}))
-
 
 
 
