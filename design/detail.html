@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_framework.html" %}
 {% load repository_extras %}
 {% block content %}
 {% block head %}
@@ -412,4 +412,42 @@ $(function() {
 <input name="offset" type="text"/>
 <input type="submit" value="sumbit"/>
 </form>
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.jqslideshow').cycle({
+				fx:      'fade',
+				next:   '#next2',
+				prev:   '#prev2',
+				timeout:  0
+			});
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_browse").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+		});
+	</script>
+
+	<script type="text/javascript">
+		//<![CDATA[
+		function slideSwitch() {
+		    var $active = $('#slideshow div.active');
+		    var $next =  $active.next().length ? $active.next()
+		        : $('#slideshow div:first');
+
+		    $active.addClass('last-active');
+		    $next.css({opacity: 0.0})
+		        .addClass('active')
+		        .animate({opacity: 1.0}, 1000, function() {
+		            $active.removeClass('active last-active');
+		        });
+		}
+
+		$(function() {
+		    setInterval( "slideSwitch()", 5000 );
+		});
+		//]]>
+	</script>
 {% endblock %}

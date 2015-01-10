@@ -169,10 +169,16 @@ h1.section>span.num {
   opacity: 0.5;
   background-color: #ffffff;
   background-repeat: no-repeat;
-  background-image: url("path_button_loading"); 
+  background-image: url("/site_media/fg_load.gif");
   background-position: center center;
-  background-size: 48px;
+  background-size: 72px;
 }
+
+a.active > p > .badge {
+  color: #428bca;
+  background-color: #ffffff;
+}
+
 
 @media (min-width: 979px) {
   #sidebar.affix-top {
@@ -199,11 +205,23 @@ h1.section>span.num {
 }
 
 .browse-rotate{
-    -ms-transform: rotate(90deg); /* IE 9 */
-    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
-    transform: rotate(90deg);
-    position: absolute;
+    -ms-transform: rotate(270deg); /* IE 9 */
+    -webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+    transform: rotate(270deg);
+    -webkit-transform-origin: right top;
+    -ms-transform-origin: right top;
+    transform-origin: right top;
+    position: relative;
     display: inline-block;
-    /*left: 20%;*/
-    /*top: 0%;*/
+}
+
+.eterna-panel{
+    display: block;
+    max-height: 280px;
+}
+
+.xx{
+    border-style: solid;
+    border-width: 5px;
+    border-color: green;
 }

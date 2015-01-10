@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_framework.html" %}
 {% block content %}
 <div class="container">
 <div class="row">
@@ -43,4 +43,16 @@ Want to check if a file with an experiment follows the standards and the data is
 </div>
 </div>
 </div>
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_analyze").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+		});
+	</script>
+
 {% endblock %}

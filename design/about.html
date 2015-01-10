@@ -1,0 +1,128 @@
+{% extends "_framework.html" %}
+{% block content %}
+<div class="container">
+
+	<div class="col-md-6" class="row" class="panel panel-primary">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h2 class="panel-title">Primerize Server</h2>
+			</div>
+			<div class="panel-body">
+				<img class="path_logo_primerize" src="" style="clear:both;float:right;" height="128"/>
+				<p class="cap">
+					Custom RNA synthesis is of high demand in biological and biotechnology research. While full synthesis is timely and costly, primer assembly of DNA templates and <i>in vitro</i> transcription provide an easy and fast alternative for noncoding RNAs with lengths up to 500 nucleotides. However, available primer design tools for such tasks are not currently effective: they do not optimize primer boundaries against mispriming; are mainly optimized to adjust codons for protein synthesis rather than the fixed sequences of RNA problems; and have not been widely tested for non-coding RNA synthesis.  
+				</p>
+				<p>
+					Since 2010, we have used an efficient algorithm for primer design that has been stringently tested in synthesis of nearly 1000 RNA sequences from our lab and from citizen scientists in the <a href="http://eterna.cmu.edu/" target="_blank">EteRNA</a> videogame/synthetic biology project, already fueling 15 publications including the first <i>in vivo</i> validated structure of a cellular internal ribosomal entry site. 
+				</p>
+				<p>
+					Previously, our command-line MATLAB scripts required nontrivial efforts for setup for other labs. Here we present an online version of <u><b>Primerize</b></u> that is integrative and user-friendly, and should be broadly used by the RNA community. The server itself has been prepared for 2015 NAR Web Server issue, and was launched in December 2014.
+				</p>
+			</div>
+		</div>
+
+		<div class="panel panel-danger" id="privacy">
+			<div class="panel-heading">
+				<h2 class="panel-title">Disclaimer</h2>
+			</div>
+			<div class="panel-body">
+				<p>
+					<b>Privacy</b>
+					<br/>
+					Users of the server are anonymized. Please note that input data and result on the servers are not encrypted by sessions, thus anyone with the job ID may download a particular result within expiration (7 days). However, the chance of guessing the randomly generated job ID of any particular result is relatively small. 
+				</p>
+				<p>
+					<b>Disclosure</b>
+					<br/>
+					No relevant financial relationship or commercial interest with <a href="http://www.idtdna.com">Integrated DNA Technologies (IDT)</a> exists.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6" class="row" class="panel panel-primary">
+		<div class="panel panel-success" >
+			<div class="panel-heading">
+				<h2 class="panel-title">Primerize</h2>
+			</div>
+			<div class="panel-body">
+				<p class="cap">
+					Primerize (previously named NA_thermo), is an in-house set of MATLAB scripts developed by the Das Lab. It is a small archive of primer design and nucleic acid thermodynamic scripts used by the Das lab at Stanford for high-throughput RNA synthesis and design.
+				</p>
+
+			</div>
+		</div>
+
+		<div class="panel panel-info" id="citation">
+			<div class="panel-heading">
+				<h2 class="panel-title">Citation</h2>
+			</div>
+		<div class="panel-body">
+			Please cite use of RMDB with:
+			<br/>
+			<blockquote class="h5">
+				<p>
+					Cordero P., <i>et al.</i> (<b>2012</b>). <a href="http://bioinformatics.oxfordjournals.org/content/28/22/3006.long" target="_blank">An RNA Mapping DataBase for curating RNA structure mapping experiments.</a> <i>Bioinformatics</i> <b>28(22)</b>: 3006-3008.
+				</p>
+			</blockquote>
+		</div>
+	</div>
+
+	<div class="panel panel-warning" id="contact">
+		<div class="panel-heading">
+			<h2 class="panel-title">Contact</h2>
+		</div>
+		<div class="panel-body">
+			<p>
+				Please feel free to contact the Das Lab for further questions/issues regarding the web server, suggestions for feature improvements, or citations. 
+			</p>
+			<br/>
+			<b>Principal Investigator:</b>
+			<br/>
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				Rhiju Das
+			</div>
+			<div class="col-md-2">
+				<a href="mailto:rhiju@stanford.edu" target="_blank">email</a>
+			</div>
+			<br/><br/>
+			<b>Database Server Team:</b>
+			<br/>
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				Siqi Tian
+				<br/>
+				Pablo Cordero
+				<br/>
+			</div>
+			<div class="col-md-2">
+				<a href="mailto:t47@stanford.edu" target="_blank">email</a>
+			</div>
+			<br/><br/><br/>
+			<p>
+				Please do not hesitate to let us know if you would like to share or integrate your data with our repository. You are welcome to report a bug or request user login autherization help. 
+			</p>
+		</div>
+	</div>
+</div>
+  
+
+<div class="col-md-4">
+<h3>About RMDB</h3>
+This database was originally an in-house repository of chemical mapping data collected by the <a href="http://www.stanford.edu/~rhiju">Das lab</a> at Stanford. To enable easy access to these data for the public, rapid visualization, and real-time reporting of data for projects like <a href="http://eterna.stanford.edu">Eterna</a> we have created the RMDB.
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_about").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+		});
+	</script>
+
+{% endblock %}

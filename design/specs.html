@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_framework.html" %}
 {% block content %}
 <h1>Specifications followed by this database</h1>
 
@@ -298,4 +298,16 @@ one experiment was done, this may be some measure of variation between the data 
 <li>When OFFSET has a value other than zero, it probably means that the sequence probed is the subsequence of a bigger RNA. In this case, the annotation sequenceSource should be present to indicate the source of the sequence.</li>
 <li>Experiments that are meant to test how well do several sequences fold into a specific structure can be described in RDAT format by setting SEQUENCE to NNNN...NNN (N times the length of the sequences), STRUCTURE to the desired structure, and adding annotations to ANNOTATION_DATA attributes that indicate a change of sequence (e.g. sequence:AAACUCUG).</li>
 </ul>
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_deposit").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+		});
+	</script>
+
 {% endblock %}

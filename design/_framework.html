@@ -6,16 +6,23 @@
     <link rel="stylesheet" href="/site_media/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/site_media/css/theme.css" />
 
-    <link rel='stylesheet' type='text/css' href="/site_media/jquery-ui-1.9.2/themes/base/jquery-ui.css" /> 
+    <link rel="stylesheet" type="text/css" href="/site_media/jquery-ui-1.9.2/themes/base/jquery-ui.css" /> 
     <link rel="shortcut icon" href="/site_media/favicon.ico" />
     <link rel="icon" type-"image/gif" href="/site_media/animated_favicon1.gif" />
 
-    <script type='text/javascript' src="/site_media/js/jquery-1.11.2.min.js"> </script> 
-    <script type='text/javascript' src="/site_media/jquery-ui-1.9.2/ui/jquery-ui.js"> </script> 
+    <script type="text/javascript" src="/site_media/js/jquery-1.11.2.min.js"> </script> 
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#wait").show().fadeOut(1000);
+		});
+	</script>
+
+    <script type="text/javascript" src="/site_media/jquery-ui-1.9.2/ui/jquery-ui.js"> </script> 
     <script type="text/javascript" src="/site_media/js/jquery.cycle.all.latest.js"></script>
     <script type="text/javascript" src="/site_media/js/protovis-3.2/protovis-d3.2.js"></script>
     <script type="text/javascript" src="/site_media/js/jquery.mousewheel.js"></script>
-    <script type='text/javascript' src="/site_media/js/bootstrap.min.js"> </script> 
+    <script type="text/javascript" src="/site_media/js/bootstrap.min.js"> </script> 
+
 
    <script type="text/javascript">
 	$(document).ready(function(){
@@ -36,14 +43,14 @@
 	}
 	function disable_scroll() {
 	  if (window.addEventListener) {
-	      window.addEventListener('DOMMouseScroll', wheel, false);
+	      window.addEventListener("DOMMouseScroll", wheel, false);
 	  }
 	  window.onmousewheel = document.onmousewheel = wheel;
 	}
 
 	function enable_scroll() {
 	    if (window.removeEventListener) {
-		window.removeEventListener('DOMMouseScroll', wheel, false);
+		window.removeEventListener("DOMMouseScroll", wheel, false);
 	    }
 	    window.onmousewheel = document.onmousewheel = null;  
 	}
@@ -59,7 +66,7 @@
 		if (!evt) evt = event;
 		return (evt.detail<0) ? 1 : (evt.wheelDelta>0) ? 1 : -1;
 	};
-	$(".appletdiv").bind('mousewheel', function(evt, delta){
+	$(".appletdiv").bind("mousewheel", function(evt, delta){
 		var distance  = wheelDistance(evt);
 		var direction = wheelDirection(evt);
 		console.log("event.wheelDelta: "+evt.wheelDelta+"<br>event.detail: "+evt.detail+"<br>Normalized Wheel Distance: "+distance+"<br>Wheel Direction: "+direction);
@@ -84,13 +91,13 @@
     <script type="text/javascript">
 
       var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-36037648-1']);
-      _gaq.push(['_trackPageview']);
+      _gaq.push(["_setAccount", "UA-36037648-1"]);
+      _gaq.push(["_trackPageview"]);
 
       (function() {
-	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+	ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+	var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
       })();
 
     </script>
@@ -100,7 +107,7 @@
 <body>
 	<div class="navbar navbar-fixed-top">
 		<div class="container">
-			<div class="navbar-header">
+			<div class="navbar-header clickable">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
@@ -111,13 +118,13 @@
 			</div>
 
 			<div class="navbar-collapse collapse" >
-				<ul class="nav navbar-nav">
+				<ul class="nav navbar-nav clickable">
 					<li class="dropdown" id="nav_browse">
 						<a href="/repository/browse"  class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							Browse
 							<span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu" role="menu">
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
 							<li><a href="/repository/browse#categoryGeneral">General</a></li>
 							<li><a href="/repository/browse#categoryPuzzle">RNA Puzzles</a></li>
 							<li><a href="/repository/browse#categoryEteRNA">eteRNA</a></li>
@@ -128,11 +135,11 @@
 							Deposit
 							<span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="/repository/specs">Specs</a></li>
-							<li><a href="#">Validate</a></li>
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<li><a href="/repository/specs">Format Specifications</a></li>
+							<li><a href="#">Validation Tools</a></li>
 							<li class="divider"></li>
-							<li><a href="/repository/submit">Submit</a></li>
+							<li><a href="/repository/submit">Submit Entry</a></li>
 						</ul>
 					</li>
 					<li class="dropdown" id="nav_analyze">
@@ -140,9 +147,10 @@
 							Analyze
 							<span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="/structureserver/">Predict</a></li>
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<li><a href="/structureserver/">Secondary Structure Prediction</a></li>
 							<li class="divider"></li>
+							<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<i style="text-decoration:underline; color:gray;">Repository Packages</i></p></li>
 							<li><a href="/repository/tools">HiTRACE</a></li>
 							<li><a href="/repository/tools">RDAT Kit</a></li>
 						</ul>
@@ -152,8 +160,8 @@
 							About
 							<span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="/repository/contact">Contact us</a></li>
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<li><a href="/repository/contact">Contact Us</a></li>
 							<li><a href="/repository/contact">Privacy</a></li>
 							<li><a href="/repository/contact">Citation</a></li>
 						</ul>
@@ -161,17 +169,21 @@
 				</ul>
 
 				<div class="pull-right row">
-					<ul class="nav navbar-nav">
+					<ul class="nav navbar-nav clickable">
 						<li class="dropdown">
 							<button href="" class="btn btn-info navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #ffffff;">
 								MyRMDB Login
 								<span class="caret"></span>
 							</button>
-							<ul class="dropdown-menu" role="menu">
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
 								{% if user.is_authenticated %}
-								<li><a href="/repository/logout">Logout {{user.username}}</a></li>
+								<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:underline; color:gray;">Signed In As:</span></p></li>
+								<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<i>{{ user.username }}</i></p></li>
+								<li class="divider"></li>
+								<li><a href="/repository/logout">Sign Out</a></li>
 								{% else %}
-								<li><a href="/repository/login">Login</a></li>
+								<li><a href="/repository/login">Sign In</a></li>
+								<li class="divider"></li>
 								<li><a href="/repository/register">Register</a></li>
 								{% endif %}
 							</ul>
@@ -201,12 +213,12 @@
 					<div class="input-group">
 						<input type="text" class="form-control" name="searchtext" placeholder="Search by accession ID" style="padding: 22px 22px;"/>
 						<div class="input-group-btn">
-							<input type="submit" class="btn btn-lg btn-success" value="Search"/> 
+							<input type="submit" class="btn btn-lg btn-success clickable" value="Search"/> 
 						</div>
 					</div>
 				</form>
 				<br/><br/><br/>
-				&nbsp;&nbsp;&nbsp;&nbsp;<a href="/repository/advanced_search">Advanced Search</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;<a href="/repository/advanced_search" class="clickable">Advanced Search</a>
 			</div>
 		</div>
 	</div>
@@ -219,7 +231,11 @@
 	{% block content %}{% endblock %}
 	
 	<hr/>
-	<div class="container">
+
+	<div id="wait" class="modal"></div>
+    <a href="#" id="up"><img style="position:fixed;display:block;right:5%;bottom:5%;opacity:0.85;" src="/site_media/fg_top.png" height="60"/></a>
+
+	<div class="container starter-template">
 		<div class="bs-docs-footer row">
 			<div class="col-md-10">
 				<img  src="/site_media/logo_mini.png" height="84" style="vertical-align: text-bottom; clear: both; float: left; padding-right: 15px;"/>
@@ -249,11 +265,18 @@
 		$(document).ready(function () {
 			var today = new Date();
 			$("#cp_year").text(today.getFullYear());
-			$('.dropdown-toggle').dropdown();
+			$(".dropdown-toggle").dropdown();
 			$(".dropdown").hover(
-	            function(){ $(this).addClass('open') },
-    	        function(){ $(this).removeClass('open') }
+	            function(){ $(this).addClass("open") },
+    	        function(){ $(this).removeClass("open") }
         	);
+			$("#up").on("click", function () {
+				$("html, body").stop().animate({scrollTop: 0}, 500);
+			});
+			$(".clickable").on("click", function () {
+				$("#wait").fadeIn(1000);
+			});
+
 		});
 	</script>
 
