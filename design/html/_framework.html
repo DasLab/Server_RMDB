@@ -9,15 +9,11 @@
     <link rel="stylesheet" type="text/css" href="/site_media/jquery-ui-1.9.2/themes/base/jquery-ui.css" /> 
     <link rel="shortcut icon" href="/site_media/favicon.ico" />
     <link rel="icon" type-"image/gif" href="/site_media/animated_favicon1.gif" />
+    <title>RMDB: RNA Mapping DataBase</title>
 
     <script type="text/javascript" src="/site_media/js/jquery-1.11.2.min.js"> </script> 
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$("#wait").show().fadeOut(1000);
-		});
-	</script>
-
-    <script type="text/javascript" src="/site_media/jquery-ui-1.9.2/ui/jquery-ui.js"> </script> 
+	
+	<script type="text/javascript" src="/site_media/jquery-ui-1.9.2/ui/jquery-ui.js"> </script> 
     <script type="text/javascript" src="/site_media/js/jquery.cycle.all.latest.js"></script>
     <script type="text/javascript" src="/site_media/js/protovis-3.2/protovis-d3.2.js"></script>
     <script type="text/javascript" src="/site_media/js/jquery.mousewheel.js"></script>
@@ -86,7 +82,7 @@
 
 	});
     </script>
-    <title>RMDB</title>
+
     {% block head %}{% endblock %}
     <script type="text/javascript">
 
@@ -101,11 +97,17 @@
       })();
 
     </script>
- 
 </head>
 
 <body>
-	<div class="navbar navbar-fixed-top">
+	<div id="wait" class="modal"></div>
+	<script type="text/javascript">
+		$("#wait").ready(function () {
+			$("#wait").show().fadeOut(500);
+		});
+	</script>
+
+	<div class="navbar navbar-fixed-top" id="nav_load">
 		<div class="container">
 			<div class="navbar-header clickable">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -125,21 +127,24 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked clickable" role="menu">
-							<li><a href="/repository/browse#categoryGeneral" id="navGeneral">General</a></li>
-							<li><a href="/repository/browse#categoryPuzzle" id="navPuzzle">RNA Puzzles</a></li>
-							<li><a href="/repository/browse#categoryEteRNA" id="navEteRNA">EteRNA</a></li>
+							<li class="nav-general"><a href="/repository/browse#categoryGeneral" id="navGeneral">General</a></li>
+							<li class="divider"></li>
+							<li class="nav-puzzle"><a href="/repository/browse#categoryPuzzle" id="navPuzzle">RNA Puzzles</a></li>
+							<li class="divider"></li>
+							<li class="nav-eterna" ><a href="/repository/browse#categoryEteRNA" id="navEteRNA">EteRNA</a></li>
 						</ul>
 					</li>
-					<li class="dropdown clickable" id="nav_deposit">
-						<a href="/repository/submit" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+					<li class="dropdown">
+						<a id="nav_deposit" href="/repository/submit" class="dropdown-toggle clickable disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							Deposit
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/repository/deposit/specs">RDAT Specifications</a></li>
-							<li><a href="/repository/deposit/validate">Validation Tools</a></li>
+							<li class="clickable"><a href="/repository/deposit/specs">RDAT Format Specifications
+							</a></li>
+							<li class="clickable"><a href="/repository/deposit/validate">Validation Tools</a></li>
 							<li class="divider"></li>
-							<li><a href="/repository/submit">Submit Entry</a></li>
+							<li class="clickable" id="nav_submit"><a href="/repository/submit">Submit Entry</a></li>
 						</ul>
 					</li>
 					<li class="dropdown" id="nav_analyze">
@@ -163,29 +168,31 @@
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
 							<li><a href="/repository/about#contact">Contact Us</a></li>
+							<li><a href="/repository/about#citation">Cite RMDB</a></li>
 							<li><a href="/repository/about#privacy">Privacy</a></li>
-							<li><a href="/repository/about#citation">Citation</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Web API</a></li>
 						</ul>
 					</li>
 				</ul>
 
 				<div class="pull-right row">
-					<ul class="nav navbar-nav clickable">
+					<ul class="nav navbar-nav">
 						<li class="dropdown">
-							<button href="" class="btn btn-info navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #ffffff;">
+							<button class="btn btn-info navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #ffffff;">
 								MyRMDB Login
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
 								{% if user.is_authenticated %}
-								<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:underline; color:gray;">Signed In As:</span></p></li>
-								<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<i>{{ user.username }}</i></p></li>
-								<li class="divider"></li>
-								<li><a href="/repository/logout">Sign Out</a></li>
+									<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:underline; color:gray;">Signed In As:</span></p></li>
+									<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<i>{{ user.username }}</i></p></li>
+									<li class="divider"></li>
+									<li><a class="clickable" href="/repository/logout">Sign Out</a></li>
 								{% else %}
-								<li><a href="/repository/login">Sign In</a></li>
-								<li class="divider"></li>
-								<li><a href="/repository/register">Register</a></li>
+									<li><a id="nav_login" data-toggle="modal" data-target=".login">Sign In</a></li>
+									<li class="divider"></li>
+									<li><a class="clickable" href="/repository/register">Sign Up</a></li>
 								{% endif %}
 							</ul>
 						</li>
@@ -196,7 +203,7 @@
 							<a href="http://eterna.cmu.edu/" target="_blank"><img src="/site_media/images/logo_eterna.png" height="42"/></a>
 						</li>
 					</ul>
-			</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -225,47 +232,82 @@
 	</div>
     <hr/>
 
-	<div id="browser_warning" style="display:none" class="error_message">
-		<p>Your browser is not currently supported by the RMDB. Please use <a href="http://www.mozilla.com">Mozilla Firefox</a> or <a href="http://www.google.com/chrome">Google Chrome</a> for full support. Alternatively, if you want to use Internet Explorer, you need to download the <a href=http://code.google.com/chrome/chromeframe/"">Google Chrome Frame</a> (compatible with IE 8, but not IE 9), or similar SVG-enabling, plugins.</p>
-	</div>
-	
 	{% block content %}{% endblock %}
 	
 	<hr/>
 
-	<div id="wait" class="modal"></div>
-    <a href="#" id="up"><img style="position:fixed;display:block;right:5%;bottom:5%;opacity:0.85;" src="/site_media/images/fg_top.png" height="60"/></a>
+	<div id="browser_warning" style="display:none" class="error_message">
+		<p>Your browser is not currently supported by the RMDB. Please use <a href="http://www.mozilla.com">Mozilla Firefox</a> or <a href="http://www.google.com/chrome">Google Chrome</a> for full support. Alternatively, if you want to use Internet Explorer, you need to download the <a href=http://code.google.com/chrome/chromeframe/"">Google Chrome Frame</a> (compatible with IE 8, but not IE 9), or similar SVG-enabling, plugins.</p>
+	</div>
+	
+	<div id="login" class="modal fade login" tabindex="-1" role="dialog" aria-labelledby="modalLogin" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content panel-primary">
+				<div class="modal-header panel-heading">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">MyRMDB Login</h4>
+				</div>
+				<form action="/repository/login/" method="post">
+					<div class="modal-body panel-body">
+			  			<h3>Please sign in to your account</h3>
+                        <div class="col-md-12 form-group">
+                        	<br><br>
+                            <div class="row form-inline">
+                                <div class="col-md-5">
+                                    <label for="id_username" class="pull-right">Username:</label>
+                                </div>
+                                <div class="col-md-7">
+                                   {{ login_form.username }}
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row form-inline">
+                                <div class="col-md-5">
+                                    <label for="id_passwors" class="pull-right">Password:</label>
+                                </div>
+                                <div class="col-md-7">
+                                    {{ login_form.password }}
+                                </div>
+                            </div>
 
-	<div class="container starter-template">
-		<div class="bs-docs-footer row">
-			<div class="col-md-10">
-				<img  src="/site_media/logo_mini.png" height="84" style="vertical-align: text-bottom; clear: both; float: left; padding-right: 15px;"/>
-				<p class="muted credit">
-					Maintained by the &nbsp;&nbsp;
-				<a href="http://daslab.stanford.edu" target="_blank">
-					<img src="/site_media/images/logo_das.jpg" height="42"/>
-				</a>
-				<a href="http://www.stanford.edu" target="_blank">
-					<img src="/site_media/images/logo_stanford.png" height="42"/>
-				</a>
-				<br/>
-				<br/>
-				<a href="">Copyright</a> &copy 2011-<span id="cp_year"></span> The Board of Trustees of the Leland Stanford Junior University. All Rights Reserved. 
-				</p>
+							{% if messages %}
+							<hr/>
+							<br/>
+                            <div class="alert alert-danger" role="alert">
+                                <p>
+                                    <b>ERROR</b>: The following messages were produced:
+                                </p>
+                                <br/>
+                                <ul>
+							    {% for message in messages %}
+							    	<li>{{ message }}</li>
+							    {% endfor %}
+                                </ul>
+                            </div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="modal-footer panel-footer">
+						<input type="submit" value="&nbsp;&nbsp;Sign In&nbsp;&nbsp;" class="btn btn-info clickable"/>
+						&nbsp;&nbsp;
+						<button type="button" class="btn btn-default" data-dismiss="modal" >&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+						&nbsp;&nbsp;
+					</div>
+				</form>
 			</div>
-			<div class="col-md-2">
-				<p> 
-					powered by <a href="https://www.djangoproject.com/" target="_blank">Django</a>
-				</p>
-			</div> 
 		</div>
 	</div>
 
-	{% block script %}{% endblock %}
+	<div class="container starter-template" id="footer"></div>
+    <a href="#" id="up"><img style="position:fixed;display:block;right:5%;bottom:5%;opacity:0.85;" src="/site_media/images/fg_top.png" height="60"/></a>
+
 	<script type="text/javascript">
 		$(document).ready(function () {
-			var today = new Date();
-			$("#cp_year").text(today.getFullYear());
+			$("#footer").load("/site_media/html/_footer.html", function () {
+				var today = new Date();
+				$("#cp_year").text(today.getFullYear());
+			});
+
 			$(".dropdown-toggle").dropdown();
 			$(".dropdown").hover(
 	            function(){ $(this).addClass("open") },
@@ -278,12 +320,36 @@
 				if ($("#buttonAll").length && $(this).attr("id") == "nav_browse") {
 					$("#wait").hide();
 				} else {
-					$("#wait").fadeIn(1000);
+					$("#wait").fadeIn(500);
 				}
 			});
+			$("#nav_login").on("click", function () {
+				$("#login").show();
+			});
+            $("#id_username").addClass("form-control");
+            $("#id_password").addClass("form-control");
 
+            $("#nav_deposit, #nav_submit").on("click", function(e) {
+            	{% if not user.is_authenticated %}
+            	    e.preventDefault();
+            	    $("#login").modal("show");
+            	    $("#wait").hide();
+        	    {% endif %}
+            })
+		});
+
+		{% if messages %}
+			$(window).load(function () {
+				$("#login").modal("show");
+			});
+		{% endif %}
+
+		$(window).on("beforeunload", function () {
+			$("#wait").fadeIn(500);
 		});
 	</script>
+
+	{% block script %}{% endblock %}
 
 </body>
 </html>

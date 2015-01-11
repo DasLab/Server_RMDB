@@ -1,7 +1,9 @@
 from django.http import Http404, HttpResponseRedirect, HttpResponse
-from django.template import RequestContext
+from django.template import RequestContext, Template
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
 from django import forms
 
@@ -159,6 +161,12 @@ def specs(request, section):
 
 def tools(request):
 	return render_to_response('html/tools.html', {}, context_instance=RequestContext(request))
+
+def tutorial_rdatkit(request):
+	return render_to_response('html/tutorial_rdatkit.html', {}, context_instance=RequestContext(request))
+
+def tutorial_hitrace(request):
+	return render_to_response('html/tutorial_hitrace.html', {}, context_instance=RequestContext(request))
 
 def about(request):
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
@@ -814,7 +822,7 @@ def upload(request):
 			print e
 	else:
 		form = UploadForm()
-	return render_to_response('upload.html', {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
+	return render_to_response('html/deposit.html', {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
 
 
 def get_font_size( labels ):
@@ -948,26 +956,22 @@ def apply_xlabels( construct_section ):
 
 
 def user_login(request):
-	if 'next' in request.GET:
-		next = request.GET['next']
-	else:
-		next = '/repository/'
+
 	if request.method == 'POST':
-		form = LoginForm(request.POST)
 		username = request.POST['username']
 		password = request.POST['password']
 		user = authenticate(username=username, password=password)
+
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				return HttpResponseRedirect(next)
+				return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
 			else:
-				return render_to_response('login.html', {'form':form, 'error_msg':'This account has been disabled', 'next':next}, context_instance=RequestContext(request))
+				messages.error(request, 'Inactive/disabled account. Please contact us.')
 		else:
-			return render_to_response('login.html', {'form':form, 'error_msg':'Username and/or password incorrect', 'next':next}, context_instance=RequestContext(request))
-	else:
-		form = LoginForm()
-		return render_to_response('login.html', {'form':form, 'error_msg':'', 'next':next}, context_instance=RequestContext(request))
+			messages.error(request, 'Invalid username and/or password. Please try again.')
+		
+		return redirect('/')
 
 
 def register(request):
@@ -995,10 +999,10 @@ def register(request):
 				other_errors.append('Password fields do not match')
 	else:
 		form = RegistrationForm()
-	return render_to_response('registration.html', {'form':form, 'other_errors':other_errors})
+	return render_to_response('html/registration.html', {'form':form, 'other_errors':other_errors})
 
 
 def user_logout(request):
 	logout(request)
-	return HttpResponseRedirect('/repository/')
+	return HttpResponseRedirect("/repository/")
 

@@ -101,6 +101,35 @@ label {
   }
 }
 
+li.nav-general {
+  background-color: #903;
+}
+
+li.nav-general > a:hover {
+  background-color: #ecc;
+}
+
+li.nav-puzzle {
+  background-color: #080;
+}
+
+li.nav-puzzle > a:hover {
+  background-color: #cec;
+}
+
+li.nav-eterna {
+  background-color: #112d52;
+}
+
+li.nav-eterna > a:hover {
+  background-color: #7cafd3;
+}
+
+li.nav-general > a, li.nav-puzzle > a, li.nav-eterna> a  {
+  color: #ffffff;
+  font-weight: bold;
+}
+
 .tutorial{
   opacity:0.5;
 }
@@ -158,20 +187,28 @@ h1.section>span.num {
     opacity:0.8;
 }
 
-.modal {
+#wait.modal {
   display:    none;
   position:   fixed;
-  z-index:    1000;
+  z-index:    99999;
   top:        0;
   left:       0;
   height:     100%;
   width:      100%;
+  background-position: center center;
+  background-size: 72px;
   opacity: 0.5;
   background-color: #ffffff;
   background-repeat: no-repeat;
-  background-image: url("/site_media/images/fg_load.gif");
-  background-position: center center;
-  background-size: 72px;
+  background-image: url("/site_media/images/fg_load.gif");  
+}
+
+.modal-dialog { 
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
 }
 
 a.active > p > .badge {

@@ -14,17 +14,19 @@ urlpatterns = patterns('repository.views',
 
     (r'^deposit/specs/(?P<section>\w{,20})$', 'specs'),
     (r'^deposit/validate/$', 'validate'),
-    (r'^submit$', 'upload'),
+    (r'^submit/$', 'upload'),
 
     (r'^analyze/tools/$', 'tools'),
     (r'^analyze/docs/rdatkit/$', 'tutorial_rdatkit'),
     (r'^analyze/docs/hitrace/$', 'tutorial_hitrace'),
 
-    (r'^search$', 'search'),
+    (r'^search/$', 'search'),
     (r'^advanced_search/$', 'advanced_search'),
+
     (r'^login/$', 'user_login'),
     (r'^register/$', 'register'),
-    (r'^logout$', 'user_logout'),
+    (r'^logout/$', 'user_logout'),
+
     (r'^render_structure$', 'render_structure'),
 
     (r'^api/entry/fetch/(?P<rmdb_id>\w+)$', 'api_fetch_entry'),

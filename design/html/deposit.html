@@ -1,5 +1,8 @@
-{% extends "_framework.html" %}
+{% extends "html/_framework.html" %}
+
 {% block content %}
+
+<a href="/repository/login">xxx</a>
 <h1>Submitting entries to the RMDB</h1>
 <p>New experimental data can be uploaded to the RMDB as a spreadsheet in the SNRNASM Isa-Tab format or in RDAT file format. Public release of the data requires passing review by the RMDB team; the data must include error estimates, information on estimated or known structure (at least at the level of secondary structure), and description of how the data were processed.</p>
 <form class="niceform" enctype="multipart/form-data" action="/repository/submit" method="post">
