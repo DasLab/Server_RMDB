@@ -6,20 +6,25 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('repository.views',
     (r'^$', 'index'),
+    (r'^browse/$', 'browse'),
+    (r'^about/$', 'about'),
+
     (r'^detail/(?P<rmdb_id>\w{,20})$', 'detail'),
     (r'^get_area_peaks/$', 'get_area_peaks'),
+
+    (r'^deposit/specs/(?P<section>\w{,20})$', 'specs'),
+    (r'^deposit/validate/$', 'validate'),
     (r'^submit$', 'upload'),
-    (r'^tools/validate/$', 'validate'),
+
+    (r'^analyze/tools/$', 'tools'),
+
     (r'^search$', 'search'),
     (r'^advanced_search/$', 'advanced_search'),
-    (r'^browse$', 'browse'),
-    (r'^tools/$', 'tools'),
-    (r'^contact/$', 'contact'),
-    (r'^specs/(?P<section>\w{,20})$', 'specs'),
     (r'^login/$', 'user_login'),
     (r'^register/$', 'register'),
     (r'^logout$', 'user_logout'),
     (r'^render_structure$', 'render_structure'),
+
     (r'^api/entry/fetch/(?P<rmdb_id>\w+)$', 'api_fetch_entry'),
     (r'^api/entry/all$', 'api_all_entries'),
     (r'^api/entry/organism/(?P<organism_id>\w+)$', 'api_entries_by_organism'),

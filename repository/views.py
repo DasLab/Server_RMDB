@@ -12,6 +12,7 @@ from rdatkit.mapping import MappingData
 
 from models import *
 from helpers import *
+from helper_deposit import *
 from helper_stats import *
 from settings import *
 
@@ -88,27 +89,6 @@ def get_area_peaks():
 	pass
 
 
-def get_spreadsheet(url):
-	url = os.popen('curl '+url+' -L -I -s -o /dev/null -w %{url_effective}').read().strip().replace('%3D','=').replace('%26','&')
-	idx=url.find('key=')
-	if idx > 0:
-		key = ''
-		idx = idx + 4
-		while url[idx] != '&' and idx < len(url):
-			key += url[idx]
-			idx += 1
-		authkey = os.popen('curl https://www.google.com/accounts/ClientLogin \
-							-d Email=stanfordrmdb@gmail.com -d Passwd=daslab4ever \
-							-d accountType=HOSTED_OR_GOOGLE \
-							-d source=Google-spreadsheet \
-							-d service=wise | grep Auth | cut -d\= -f2').read().strip()
-		os.popen('curl -L --silent --header "Authorization: GoogleLogin auth=%s"\
-					"http://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=%s&hl&exportFormat=xls" > /tmp/%s.xls' % (authkey, key, key))
-		return '/tmp/%s.xls' % key
-	else:
-		return ''
-
-
 def save_annotations(dictionary, section, cl):
 	count = 0
 	for d in dictionary:
@@ -161,21 +141,52 @@ def index(request):
 	news = NewsItem.objects.all().order_by('-date')[:10]
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
 
-	return render_to_response('index.html', {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints, 'news':news}, context_instance=RequestContext(request))
+	return render_to_response('html/index.html', {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints, 'news':news}, context_instance=RequestContext(request))
 
+def browse(request):
+	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
 
-def contact(request):
-	return render_to_response('contact.html', {}, context_instance=RequestContext(request))
+	constructs_general = get_rmdb_category('general')
+	constructs_puzzle = get_rmdb_category('puzzle')
+	constructs_eterna = get_rmdb_category('eterna')
 
-
-def tools(request):
-	return render_to_response('tools.html', {}, context_instance=RequestContext(request))
-
+	return render_to_response('html/browse.html', {'constructs_general':constructs_general, 'constructs_puzzle':constructs_puzzle, 'constructs_eterna':constructs_eterna, 'N_all':N_all, 'N_general':N_all-N_puzzle-N_eterna, 'N_puzzle':N_puzzle, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
 
 def specs(request, section):
 	if len(section) > 0:
-		return  HttpResponseRedirect('/repository/specs#' + section)
-	return render_to_response('specs.html', {}, context_instance=RequestContext(request))
+		return  HttpResponseRedirect('/repository/specs' + section)
+	return render_to_response('html/specs.html', {}, context_instance=RequestContext(request))
+
+def tools(request):
+	return render_to_response('html/tools.html', {}, context_instance=RequestContext(request))
+
+def about(request):
+	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
+	return render_to_response('html/about.html', {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints}, context_instance=RequestContext(request))
+
+
+def validate(request):
+	flag = -1
+	if request.method == 'POST':
+		form = ValidateForm(request.POST, request.FILES)
+		link = request.POST['link']
+		uploadfile = ''
+		if not link:
+			try:
+				uploadfile = request.FILES['file']
+				(errors, messages, flag) = validate_file(uploadfile, link, request.POST['type'])
+			except:
+				pass
+
+	if flag == -1:
+		messages = []
+		errors = []
+		form = ValidateForm()
+		flag = 0
+
+	return render_to_response('html/validate.html', {'form':form, 'valerrors':errors, 'messages':messages, 'flag':flag}, context_instance=RequestContext(request))
+
+
 
 
 def search(request):
@@ -301,66 +312,6 @@ def detail(request, rmdb_id):
 	return render_to_response('detail.html', {'codebase':get_codebase(request), 'entry':entry, 'constructs':constructs, 'publication':entry.publication, 'comments':comments, 'data_annotations_exist':data_annotations_exist, 'maxlen_flag':maxlen_flag}, context_instance=RequestContext(request))
 
 
-def browse(request):
-	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-
-	constructs_general = get_rmdb_category('general')
-	constructs_puzzle = get_rmdb_category('puzzle')
-	constructs_eterna = get_rmdb_category('eterna')
-
-	return render_to_response('browse.html', {'constructs_general':constructs_general, 'constructs_puzzle':constructs_puzzle, 'constructs_eterna':constructs_eterna, 'N_all':N_all, 'N_general':N_all-N_puzzle-N_eterna, 'N_puzzle':N_puzzle, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
-
-
-def validate(request):
-	if request.method == 'POST':
-		errors = []
-		form = ValidateForm(request.POST, request.FILES)
-		link = request.POST['link']
-		if not link:
-			uploadfile = request.FILES['file']
-		if request.POST['type'] == 'rdat':
-			rdatfile = RDATFile()
-			if link:
-				path = RDAT_FILE_DIR + link + '/' + link + '.rdat'
-				if os.exists(path):
-					rdatfile.load(open(path))
-				else:
-					errors = []
-					errors.append('Your RMDB ID is invalid')
-					form = ValidateForm()
-					messages = []
-					return render_to_response('validate.html', {'form':ValidateForm(), 'valerrors':errors,'messages':[]}, context_instance=RequestContext(request))
-				rf = open('/tmp/%s'%uploadfile.name, 'w')
-				rf.write(uploadfile.read())
-				rf.close()
-				rf = open('/tmp/%s'%uploadfile.name)
-				rdatfile.load(rf)
-			messages = rdatfile.validate()
-		else:
-			isatabfile = ISATABFile()
-			if link:
-				fname = get_spreadsheet(link)
-				if fname:
-					isatabfile.load(fname)
-				else:
-					errors = []
-					errors.append('Your link to the ISATAB file is invalid')
-					form = ValidateForm()
-					messages = []
-					return render_to_response('validate.html', {'form':ValidateForm(), 'valerrors':errors,'messages':[]}, context_instance=RequestContext(request))
-			else:
-				isf = open('/tmp/%s'%uploadfile.name, 'w')
-				isf.write(uploadfile.read())
-				isf.close()
-				isatabfile.load('/tmp/%s'%uploadfile.name)
-			messages = isatabfile.validate()
-		if not messages:
-			messages.append('LOOKS_GOOD! Your file has passed all tests.')
-	else:
-		messages = []
-		errors = []
-		form = ValidateForm()
-	return render_to_response('validate.html', {'form':form, 'messages':messages}, context_instance=RequestContext(request))
 
 
 def get_restricted_RDATFile_and_plot_data(constructs, numresults, qdata, searchid, ssdict, check_structure_balance):

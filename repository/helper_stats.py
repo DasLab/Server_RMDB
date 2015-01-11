@@ -4,7 +4,8 @@ from models import *
 def get_rmdb_stats():
 	rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
 	N_all = 0
-	N_RNA = ConstructSection.objects.values('name').distinct().count()
+	N_RNA = 0
+	# N_RNA = ConstructSection.objects.values('name').distinct().count()
 	N_puzzle = 0
 	N_eterna = 0
 	N_constructs = 0
@@ -15,6 +16,7 @@ def get_rmdb_stats():
 		# print rmdb_id
 		if len(entries) >= 0:
 			N_all += 1
+			N_RNA += len(entries)
 
 			if 'RNAPZ' in rmdb_id:
 				N_puzzle += 1
