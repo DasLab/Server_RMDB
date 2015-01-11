@@ -6,7 +6,7 @@ body {
 }
 
 .bgimg {
-  background-image: url("/site_media/bg_rna.png");
+  background-image: url("/site_media/images/bg_rna.png");
   background-repeat: no-repeat;
   background-position: right 200px top;
   background-size: 30%;
@@ -40,7 +40,7 @@ label {
 .navbar .navbar-brand {
   color: #fbad24;
   font-weight: bold;
-  background-image: url("/site_media/bg_rna.png");
+  background-image: url("/site_media/images/bg_rna.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -169,7 +169,7 @@ h1.section>span.num {
   opacity: 0.5;
   background-color: #ffffff;
   background-repeat: no-repeat;
-  background-image: url("/site_media/fg_load.gif");
+  background-image: url("/site_media/images/fg_load.gif");
   background-position: center center;
   background-size: 72px;
 }
@@ -219,6 +219,7 @@ a.active > p > .badge {
     display: block;
     max-height: 280px;
 }
+
 
 .xx{
     border-style: solid;

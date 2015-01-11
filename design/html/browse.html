@@ -1,4 +1,4 @@
-{% extends "_framework.html" %}
+{% extends "html/_framework.html" %}
 {% load repository_extras %}
 
 {% block content %}
@@ -48,7 +48,7 @@
 			<h2>Browse RMDB by category</h2>
 			<br/>
 
-			<div class="panel panel-success" id="categoryGeneral" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-success category" id="categoryGeneral" role="tablist" aria-multiselectable="true">
 
 				<div class="panel-heading">
 		            <h3 class="panel-title">General</h3>
@@ -114,7 +114,7 @@
 				</div>
 			</div>
 
-			<div class="panel panel-warning" id="categoryPuzzle" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-warning category" id="categoryPuzzle" role="tablist" aria-multiselectable="true">
 
 				<div class="panel-heading">
 		            <h3 class="panel-title">RNA Puzzles</h3>
@@ -180,12 +180,12 @@
 				</div>
 			</div>
 
-			<div class="panel panel-danger" id="categoryEteRNA" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-danger category" id="categoryEteRNA" role="tablist" aria-multiselectable="true">
 
 				<div class="panel-heading">
 		            <h3 class="panel-title">eteRNA</h3>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" id="panel-eterna">
 				{% for c in constructs_eterna %}
 					{% for e in c.entries %}
 					<div class="panel panel-default subpanel eterna-panel">
@@ -198,9 +198,9 @@
 								</span>
 							</div>
 						</div>
-						<div id="{{ e.rmdb_id|slugify }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ e.rmdb_id|slugify }}">
+						<div id="{{ e.rmdb_id|slugify }}" class="panel-collapse collapse eterna-subpanel" role="tabpanel" aria-labelledby="heading{{ e.rmdb_id|slugify }}">
 							<div class="panel-body">
-								<a href="/repository/detail/{{ e.rmdb_id }}" class="row browse-rotate thumbnail">
+								<a href="/repository/detail/{{ e.rmdb_id }}" class="row browse-rotate thumbnail pull-left">
 									<img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
 								</a>
 							</div>
@@ -231,48 +231,36 @@
       			}
 			});	
 			
-			$("#categoryGeneral>.panel-body>.subpanel:first>.panel-collapse").collapse("show");
-			$("#categoryPuzzle>.panel-body>.subpanel:first>.panel-collapse").collapse("show");
-			$("#categoryEteRNA>.panel-body>.subpanel:first>.panel-collapse").collapse("show");
+			$(".category").each(function () {
+				$(this).find(".panel-body>.subpanel:first>.panel-collapse").collapse("show");
+			});
+
+			$("#buttonAll, #buttonGeneral, #buttonPuzzle, #buttonEteRNA").on("click", function () {
+				$("#categoryGeneral, #categoryPuzzle, #categoryEteRNA").hide();
+				$("#buttonAll, #buttonGeneral, #buttonPuzzle, #buttonEteRNA").removeClass("active");
+			});
 
 			$("#buttonAll").on("click", function () {
-				$("#categoryGeneral").show();
-				$("#categoryPuzzle").show();
-				$("#categoryEteRNA").show();
+				$("#categoryGeneral, #categoryPuzzle, #categoryEteRNA").show();
 				$("#buttonAll").addClass("active");
-				$("#buttonGeneral").removeClass("active");
-				$("#buttonPuzzle").removeClass("active");
-				$("#buttonEteRNA").removeClass("active");
 			    $('html, body').stop().animate({scrollTop: 0}, 500);
 			});
+
 			$("#buttonGeneral").on("click", function () {
 				$("#categoryGeneral").show();
-				$("#categoryPuzzle").hide();
-				$("#categoryEteRNA").hide();
 				$("#buttonGeneral").addClass("active");
-				$("#buttonAll").removeClass("active");
-				$("#buttonPuzzle").removeClass("active");
-				$("#buttonEteRNA").removeClass("active");
 			    $('html, body').stop().animate({scrollTop: 0}, 500);
 			});
+
 			$("#buttonPuzzle").on("click", function () {
 				$("#categoryPuzzle").show();
-				$("#categoryGeneral").hide();
-				$("#categoryEteRNA").hide();
 				$("#buttonPuzzle").addClass("active");
-				$("#buttonAll").removeClass("active");
-				$("#buttonGeneral").removeClass("active");
-				$("#buttonEteRNA").removeClass("active");
 			    $('html, body').stop().animate({scrollTop: 0}, 500);
 			});
+
 			$("#buttonEteRNA").on("click", function () {
 				$("#categoryEteRNA").show();
-				$("#categoryPuzzle").hide();
-				$("#categoryGeneral").hide();
 				$("#buttonEteRNA").addClass("active");
-				$("#buttonAll").removeClass("active");
-				$("#buttonPuzzle").removeClass("active");
-				$("#buttonGeneral").removeClass("active");
 			    $('html, body').stop().animate({scrollTop: 0}, 500);
 			});
 

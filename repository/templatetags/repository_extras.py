@@ -44,4 +44,18 @@ def color_rmdb_id(value):
 register.filter('color_rmdb_id', color_rmdb_id)
 
 
+def color_eterna_id(value):
+
+	string = value.split('_')
+	s1 = '<span style=\"color: yellowgreen;\">'+string[1]+'</span>'
+	s2 = '<span style=\"color: skyblue;\">'+string[2]+'</span>'	
+	return string[0] + '<span style=\"color: lightpink;\">_</span>' + s1 + '<span style=\"color: lightpink;\">_</span>' + s2
+register.filter('color_eterna_id', color_eterna_id)
+
+
+def warning_strip(value):
+	return value[8:]
+register.filter('warning_strip', warning_strip)
+
+
 

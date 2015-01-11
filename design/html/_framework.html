@@ -118,31 +118,31 @@
 			</div>
 
 			<div class="navbar-collapse collapse" >
-				<ul class="nav navbar-nav clickable">
-					<li class="dropdown" id="nav_browse">
+				<ul class="nav navbar-nav">
+					<li class="dropdown clickable" id="nav_browse">
 						<a href="/repository/browse"  class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							Browse
 							<span class="caret"></span>
 						</a>
-						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/repository/browse#categoryGeneral">General</a></li>
-							<li><a href="/repository/browse#categoryPuzzle">RNA Puzzles</a></li>
-							<li><a href="/repository/browse#categoryEteRNA">eteRNA</a></li>
+						<ul class="dropdown-menu nav nav-pills nav-stacked clickable" role="menu">
+							<li><a href="/repository/browse#categoryGeneral" id="navGeneral">General</a></li>
+							<li><a href="/repository/browse#categoryPuzzle" id="navPuzzle">RNA Puzzles</a></li>
+							<li><a href="/repository/browse#categoryEteRNA" id="navEteRNA">eteRNA</a></li>
 						</ul>
 					</li>
-					<li class="dropdown" id="nav_deposit">
+					<li class="dropdown clickable" id="nav_deposit">
 						<a href="/repository/submit" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							Deposit
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/repository/specs">Format Specifications</a></li>
-							<li><a href="#">Validation Tools</a></li>
+							<li><a href="/repository/deposit/specs">Format Specifications</a></li>
+							<li><a href="/repository/deposit/validate">Validation Tools</a></li>
 							<li class="divider"></li>
 							<li><a href="/repository/submit">Submit Entry</a></li>
 						</ul>
 					</li>
-					<li class="dropdown" id="nav_analyze">
+					<li class="dropdown clickable" id="nav_analyze">
 						<a href="/structureserver/" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							Analyze
 							<span class="caret"></span>
@@ -155,15 +155,15 @@
 							<li><a href="/repository/tools">RDAT Kit</a></li>
 						</ul>
 					</li>
-					<li class="dropdown" id="nav_about">
-						<a href="/repository/contact" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+					<li class="dropdown clickable" id="nav_about">
+						<a href="/repository/about" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							About
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/repository/contact">Contact Us</a></li>
-							<li><a href="/repository/contact">Privacy</a></li>
-							<li><a href="/repository/contact">Citation</a></li>
+							<li><a href="/repository/about#contact">Contact Us</a></li>
+							<li><a href="/repository/about#privacy">Privacy</a></li>
+							<li><a href="/repository/about#citation">Citation</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -192,7 +192,7 @@
 					</ul>
 					<ul class="pull-right">
 						<li>
-							<a href="http://eterna.cmu.edu/" target="_blank"><img src="/site_media/logo_eterna.png" height="42"/></a>
+							<a href="http://eterna.cmu.edu/" target="_blank"><img src="/site_media/images/logo_eterna.png" height="42"/></a>
 						</li>
 					</ul>
 			</div>
@@ -233,7 +233,7 @@
 	<hr/>
 
 	<div id="wait" class="modal"></div>
-    <a href="#" id="up"><img style="position:fixed;display:block;right:5%;bottom:5%;opacity:0.85;" src="/site_media/fg_top.png" height="60"/></a>
+    <a href="#" id="up"><img style="position:fixed;display:block;right:5%;bottom:5%;opacity:0.85;" src="/site_media/images/fg_top.png" height="60"/></a>
 
 	<div class="container starter-template">
 		<div class="bs-docs-footer row">
@@ -242,10 +242,10 @@
 				<p class="muted credit">
 					Maintained by the &nbsp;&nbsp;
 				<a href="http://daslab.stanford.edu" target="_blank">
-					<img src="/site_media/logo_das.jpg" height="42"/>
+					<img src="/site_media/images/logo_das.jpg" height="42"/>
 				</a>
 				<a href="http://www.stanford.edu" target="_blank">
-					<img src="/site_media/logo_stanford.png" height="42"/>
+					<img src="/site_media/images/logo_stanford.png" height="42"/>
 				</a>
 				<br/>
 				<br/>
@@ -274,7 +274,11 @@
 				$("html, body").stop().animate({scrollTop: 0}, 500);
 			});
 			$(".clickable").on("click", function () {
-				$("#wait").fadeIn(1000);
+				if ($("#buttonAll").length && $(this).attr("id") == "nav_browse") {
+					$("#wait").hide();
+				} else {
+					$("#wait").fadeIn(1000);
+				}
 			});
 
 		});
