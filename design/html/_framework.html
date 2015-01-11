@@ -127,7 +127,7 @@
 						<ul class="dropdown-menu nav nav-pills nav-stacked clickable" role="menu">
 							<li><a href="/repository/browse#categoryGeneral" id="navGeneral">General</a></li>
 							<li><a href="/repository/browse#categoryPuzzle" id="navPuzzle">RNA Puzzles</a></li>
-							<li><a href="/repository/browse#categoryEteRNA" id="navEteRNA">eteRNA</a></li>
+							<li><a href="/repository/browse#categoryEteRNA" id="navEteRNA">EteRNA</a></li>
 						</ul>
 					</li>
 					<li class="dropdown clickable" id="nav_deposit">
@@ -136,23 +136,24 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/repository/deposit/specs">Format Specifications</a></li>
+							<li><a href="/repository/deposit/specs">RDAT Specifications</a></li>
 							<li><a href="/repository/deposit/validate">Validation Tools</a></li>
 							<li class="divider"></li>
 							<li><a href="/repository/submit">Submit Entry</a></li>
 						</ul>
 					</li>
-					<li class="dropdown clickable" id="nav_analyze">
-						<a href="/structureserver/" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+					<li class="dropdown" id="nav_analyze">
+						<a href="/structureserver/" class="dropdown-toggle disabled clickable" data-toggle="dropdown" role="button" aria-expanded="false">
 							Analyze
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/structureserver/">Secondary Structure Prediction</a></li>
+							<li><a class="clickable" href="/structureserver/">Secondary Structure Prediction</a></li>
 							<li class="divider"></li>
-							<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<i style="text-decoration:underline; color:gray;">Repository Packages</i></p></li>
-							<li><a href="/repository/analyze/tools">HiTRACE</a></li>
-							<li><a href="/repository/analyze/tools">RDAT Kit</a></li>
+							<li><a class="clickable" href="/repository/analyze/tools">Repository Packages</a></li>
+							<li><a class="disabled">Tool Tutorials</a></li>
+							<li><a class="clickable" href="/repository/analyze/docs/rdatkit">&nbsp;&nbsp;&nbsp;&nbsp;<i>RDATKit</i></a></li>
+							<li><a class="clickable" href="/repository/analyze/docs/hitrace">&nbsp;&nbsp;&nbsp;&nbsp;<i>HiTRACE</i></a></li>
 						</ul>
 					</li>
 					<li class="dropdown clickable" id="nav_about">

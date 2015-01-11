@@ -17,6 +17,8 @@ urlpatterns = patterns('repository.views',
     (r'^submit$', 'upload'),
 
     (r'^analyze/tools/$', 'tools'),
+    (r'^analyze/docs/rdatkit/$', 'tutorial_rdatkit'),
+    (r'^analyze/docs/hitrace/$', 'tutorial_hitrace'),
 
     (r'^search$', 'search'),
     (r'^advanced_search/$', 'advanced_search'),
@@ -34,6 +36,7 @@ urlpatterns = patterns('repository.views',
     (r'^api/rmdbid/all$', 'api_all_rmdb_ids'),
     (r'^api/organism/all$', 'api_all_organisms'),
     (r'^api/system/all$', 'api_all_systems'),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
