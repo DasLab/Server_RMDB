@@ -30,8 +30,13 @@
                                         <div class="col-md-5">
                                             <label for="id_file" class="pull-right">Upload File:</label>
                                         </div>
-                                        <div class="col-md-7">
-                                            {{ form.file }}
+                                        <div class="col-md-7 form-inline">
+                                            <input id="id_disp" class="form-control" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
+                                            &nbsp;&nbsp;
+                                            <div class="fileUpload btn btn-inverse">
+                                                <span>&nbsp;&nbsp;Browse&nbsp;&nbsp;</span>
+                                                {{ form.file }}
+                                            </div>
                                         </div>
                                     </div>
                                     <br/>
@@ -129,6 +134,9 @@
             $("#id_file").addClass("form-control");
             $("#id_link").addClass("form-control");
             $("#id_type").addClass("form-control");
+            $("#id_file").on("change", function () {
+                $("#id_disp").val($(this).val().replace("C:\\fakepath\\", ""));
+            });
         });
     </script>
 
