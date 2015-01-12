@@ -15,12 +15,14 @@ from rdatkit.mapping import MappingData
 from models import *
 from helpers import *
 from helper_deposit import *
+from helper_register import *
 from helper_stats import *
 from settings import *
 
 import datetime
 from email.mime.text import MIMEText
 from itertools import chain
+import MySQLdb
 import os
 import re
 import smtplib
@@ -965,7 +967,10 @@ def user_login(request):
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
+				next = request.META.get('HTTP_REFERER','/').replace("?login=1", "")
+				if "?login=0" in next:
+					next = "/repository/submit/"
+				return HttpResponseRedirect(next)
 			else:
 				messages.error(request, 'Inactive/disabled account. Please contact us.')
 		else:
@@ -975,31 +980,42 @@ def user_login(request):
 
 
 def register(request):
-	other_errors = []
+	error_msg = []
+	flag = 0
 	if request.method == 'POST':
-		validated = True
 		form = RegistrationForm(request.POST)
 		if form.is_valid():
-			if form.cleaned_data['password'] == form.cleaned_data['repeatpassword']:
-				user =  User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
-				rmdbuser = RMDBUser()
-				user.first_name = form.cleaned_data['firstname']
-				user.last_name = form.cleaned_data['lastname']
-				user.set_password(form.cleaned_data['password'])
-				user.is_active = True
-				user.save()
-				rmdbuser.user = user
-				rmdbuser.institution = form.cleaned_data['institution']
-				rmdbuser.department = form.cleaned_data['department']
-				rmdbuser.save()
-				authuser = authenticate(username=user.username, password=form.cleaned_data['password'])
-				login(request, authuser)
-				return HttpResponseRedirect('/repository/')
-			else:
-				other_errors.append('Password fields do not match')
+			error_msg = check_login_register(form)
+
+			if not error_msg:
+				try:
+					user =  User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
+					user.first_name = form.cleaned_data['firstname']
+					user.last_name = form.cleaned_data['lastname']
+					user.set_password(form.cleaned_data['password'])
+					user.is_active = True
+					user.save()
+
+					rmdbuser = RMDBUser()
+					rmdbuser.user = user
+					rmdbuser.institution = form.cleaned_data['institution']
+					rmdbuser.department = form.cleaned_data['department']
+					rmdbuser.save()
+
+					flag = 1
+
+				except:
+					error_msg.append('Username already exists. Try another.')
+				# authuser = authenticate(username=user.username, password=form.cleaned_data['password'])
+				# login(request, authuser)
+				# return HttpResponseRedirect('/repository/')
+		else:
+			error_msg.append('Form invalid: missing required field(s).')
+
 	else:
 		form = RegistrationForm()
-	return render_to_response('html/registration.html', {'form':form, 'other_errors':other_errors})
+
+	return render_to_response('html/register.html', {'reg_form':form, 'error_msg':error_msg, 'flag':flag})
 
 
 def user_logout(request):

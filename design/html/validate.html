@@ -20,7 +20,7 @@
                         </p>
                         <br/>
 
-                        <form enctype="multipart/form-data" action="/repository/deposit/validate" method="post">
+                        <form enctype="multipart/form-data" action="/repository/deposit/validate/" method="post">
                             <div class="row">
                                 <div class="col-md-12 form-group">
 <!--                                     {{ form.file.errors }}
@@ -33,7 +33,7 @@
                                         <div class="col-md-7 form-inline">
                                             <input id="id_disp" class="form-control" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
                                             &nbsp;&nbsp;
-                                            <div class="fileUpload btn btn-inverse">
+                                            <div class="fileUpload btn btn-info">
                                                 <span>&nbsp;&nbsp;Browse&nbsp;&nbsp;</span>
                                                 {{ form.file }}
                                             </div>
@@ -63,7 +63,7 @@
                                     <div class="form-inline">
                                         <div class="col-md-12">
                                             <p class="pull-right">
-                                                <input type="submit" value="&nbsp;&nbsp;Submit&nbsp;&nbsp;" class="btn btn-info clickable"/>
+                                                <input type="submit" value="&nbsp;&nbsp;Submit&nbsp;&nbsp;" class="btn btn-inverse clickable"/>
                                                 &nbsp;&nbsp;
                                                 <a class="btn btn-default clickable" href="/repository/deposit/validate">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;

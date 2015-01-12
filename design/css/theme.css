@@ -101,6 +101,12 @@ label {
   }
 }
 
+li.nav-general, li.nav-puzzle, li.nav-eterna {
+  border-width: 2px 10px;
+  border-color: #fff;
+  border-style: solid;
+}
+
 li.nav-general {
   background-color: #903;
 }
@@ -286,6 +292,10 @@ a.active > p > .badge {
 
 a.btn {
   color: #ffffff !important;
+}
+
+a.btn-default {
+  color: #000000 !important;
 }
 
 img.logo {

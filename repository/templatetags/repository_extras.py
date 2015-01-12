@@ -58,4 +58,3 @@ def warning_strip(value):
 register.filter('warning_strip', warning_strip)
 
 
-

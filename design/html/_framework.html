@@ -186,7 +186,18 @@
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
 								{% if user.is_authenticated %}
 									<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:underline; color:gray;">Signed In As:</span></p></li>
-									<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<i>{{ user.username }}</i></p></li>
+									<li>
+										<p>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											{{ user.first_name }} {{ user.last_name }}
+											(<i>{{ user.username }}</i>)
+										</p>
+										<p>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<u>{{ user.email }}</u>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+										</p>
+									</li>
 									<li class="divider"></li>
 									<li><a class="clickable" href="/repository/logout">Sign Out</a></li>
 								{% else %}
@@ -263,7 +274,7 @@
                             <br/>
                             <div class="row form-inline">
                                 <div class="col-md-5">
-                                    <label for="id_passwors" class="pull-right">Password:</label>
+                                    <label for="id_password" class="pull-right">Password:</label>
                                 </div>
                                 <div class="col-md-7">
                                     {{ login_form.password }}
@@ -288,10 +299,30 @@
 						</div>
 					</div>
 					<div class="modal-footer panel-footer">
-						<input type="submit" value="&nbsp;&nbsp;Sign In&nbsp;&nbsp;" class="btn btn-info clickable"/>
-						&nbsp;&nbsp;
-						<button type="button" class="btn btn-default" data-dismiss="modal" >&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
-						&nbsp;&nbsp;
+						<div class="row">
+							<span class="pull-left">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#login_help" aria-expanded="false" aria-controls="login_help">&nbsp;&nbsp;Help&nbsp;&nbsp;</button>
+							</span>
+							<span class="pull-right">
+								<input type="submit" value="&nbsp;&nbsp;Sign In&nbsp;&nbsp;" class="btn btn-info clickable"/>
+								&nbsp;&nbsp;
+								<button type="button" class="btn btn-default" data-dismiss="modal" >&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						</div>
+						<div class="row col-md-12">
+							<div class="collapse" id="login_help">
+								<br/>
+								<span class="pull-left" style="text-align:left;">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									For assistance related with account login issues (e.g. forgot password), 
+									<br/>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									please contact <a href="/repository/about#conact">site admin</a>.
+								</span>
+							</div>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -324,18 +355,30 @@
 				}
 			});
 			$("#nav_login").on("click", function () {
-				$("#login").show();
+				if ($("#id_repeatpassword").length) {
+					$(location).attr("href","/repository/?login=1");
+				} else {
+					$("#login").show();
+				}
 			});
+
             $("#id_username").addClass("form-control");
             $("#id_password").addClass("form-control");
 
             $("#nav_deposit, #nav_submit").on("click", function(e) {
             	{% if not user.is_authenticated %}
             	    e.preventDefault();
-            	    $("#login").modal("show");
-            	    $("#wait").hide();
+            	    if ($("#id_repeatpassword").length) {
+						$(location).attr("href","/repository/?login=1");
+					} else {
+						$(location).attr("href",$(location).attr("href") + "?login=0");
+					}
         	    {% endif %}
             })
+
+            if (($(location).attr("href").indexOf("?login=1") != -1) || ($(location).attr("href").indexOf("?login=0") != -1)) {
+				$("#login").modal("show");
+            }
 		});
 
 		{% if messages %}
