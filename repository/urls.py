@@ -14,7 +14,7 @@ urlpatterns = patterns('repository.views',
 
     (r'^deposit/specs/(?P<section>\w{,20})$', 'specs'),
     (r'^deposit/validate/$', 'validate'),
-    (r'^submit/$', 'upload'),
+    (r'^deposit/submit/$', 'upload'),
 
     (r'^analyze/tools/$', 'tools'),
     (r'^analyze/docs/rdatkit/$', 'tutorial_rdatkit'),

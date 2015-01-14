@@ -22,7 +22,6 @@ from settings import *
 import datetime
 from email.mime.text import MIMEText
 from itertools import chain
-import MySQLdb
 import os
 import re
 import smtplib
@@ -187,6 +186,9 @@ def validate(request):
 				(errors, messages, flag) = validate_file(uploadfile, link, request.POST['type'])
 			except:
 				pass
+		else:
+			(errors, messages, flag) = validate_file(uploadfile, link, request.POST['type'])
+			
 
 	if flag == -1:
 		messages = []
@@ -824,7 +826,7 @@ def upload(request):
 			print e
 	else:
 		form = UploadForm()
-	return render_to_response('html/deposit.html', {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
+	return render_to_response('html/submit.html', {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
 
 
 def get_font_size( labels ):

@@ -135,7 +135,7 @@
 						</ul>
 					</li>
 					<li class="dropdown">
-						<a id="nav_deposit" href="/repository/submit" class="dropdown-toggle clickable disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+						<a id="nav_deposit" href="/repository/deposit/submit" class="dropdown-toggle clickable disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							Deposit
 							<span class="caret"></span>
 						</a>
@@ -144,7 +144,7 @@
 							</a></li>
 							<li class="clickable"><a href="/repository/deposit/validate">Validation Tools</a></li>
 							<li class="divider"></li>
-							<li class="clickable" id="nav_submit"><a href="/repository/submit">Submit Entry</a></li>
+							<li class="clickable" id="nav_submit"><a href="/repository/deposit/submit">Submit Entry</a></li>
 						</ul>
 					</li>
 					<li class="dropdown" id="nav_analyze">
@@ -189,12 +189,12 @@
 									<li>
 										<p>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											{{ user.first_name }} {{ user.last_name }}
+											<b>{{ user.first_name }} {{ user.last_name }}</b>
 											(<i>{{ user.username }}</i>)
 										</p>
 										<p>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											<u>{{ user.email }}</u>
+											{{ user.email }}
 											&nbsp;&nbsp;&nbsp;&nbsp;
 										</p>
 									</li>
