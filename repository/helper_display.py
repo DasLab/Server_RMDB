@@ -318,16 +318,6 @@ def toIUPACregex(s):
 	return s
 
 
-def encode_entry(entry):
-	entry.annotations = EntryAnnotation.objects.filter(section=entry)
-	entry.constructs = ConstructSection.objects.filter(entry=entry)
-	for c in entry.constructs:
-		c.datas = DataSection.objects.filter(construct_section=c)
-		for d in c.datas:
-			d.annotations = DataAnnotation.objects.filter(section=d)
-	return RMDBJSONEncoder().default(entry)
-
-
 def get_font_size( labels ):
 	font_size = 'small'
 	if len( labels ) > 40: font_size = 'x-small'

@@ -109,3 +109,18 @@ def get_user_stats_last_date(user):
 	entries = RMDBEntry.objects.filter(owner=user).order_by('-creation_date')
 	return entries[0].creation_date
 register.filter('get_user_stats_last_date', get_user_stats_last_date)
+
+
+def get_rmdb_constructs(_):
+	N_constructs = 0
+	rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
+	for rmdb_id in rmdb_ids:
+		entries = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')
+		# print rmdb_id
+		if len(entries) >= 0:
+			e = entries[0]
+		N_constructs += e.constructcount
+
+	return N_constructs
+register.filter('get_rmdb_constructs', get_rmdb_constructs)
+

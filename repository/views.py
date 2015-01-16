@@ -50,6 +50,9 @@ def tools(request):
 def tutorial_predict(request):
 	return render_to_response('html/tutorial_predict.html', {}, context_instance=RequestContext(request))
 
+def tutorial_api(request):
+	return render_to_response('html/tutorial_api.html', {}, context_instance=RequestContext(request))
+
 def tutorial_rdatkit(request):
 	return render_to_response('html/tutorial_rdatkit.html', {}, context_instance=RequestContext(request))
 

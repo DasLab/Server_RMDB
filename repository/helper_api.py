@@ -5,10 +5,19 @@ from rmdb.repository.models import *
 import simplejson
 
 
-
 def get_constructs_by_ids():
 	constructs = [cdict.values()[0] for cdict in ConstructSection.objects.values('name').distinct()]
 	return constructs
+
+
+def encode_entry(entry):
+	entry.annotations = EntryAnnotation.objects.filter(section=entry)
+	entry.constructs = ConstructSection.objects.filter(entry=entry)
+	for c in entry.constructs:
+		c.datas = DataSection.objects.filter(construct_section=c)
+		for d in c.datas:
+			d.annotations = DataAnnotation.objects.filter(section=d)
+	return RMDBJSONEncoder().default(entry)
 
 
 def api_fetch_entry(request, rmdb_id):

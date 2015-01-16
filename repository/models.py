@@ -109,7 +109,7 @@ class RMDBJSONEncoder(JSONEncoder):
                     constructdict[att] = int(obj.offset)
                 else:
                     constructdict[att] = obj.__dict__[att]
-        return constructdict
+            return constructdict
 
         if isinstance(obj, DataSection):
             datadict = {}

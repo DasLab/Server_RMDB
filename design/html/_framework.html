@@ -161,6 +161,7 @@
 							<li class="divider"></li>
 							<li><a class="disabled">Tool Tutorials</a></li>
 							<li><a class="clickable" href="/repository/analyze/docs/predict">&nbsp;&nbsp;&nbsp;&nbsp;<i>Structural Server</i></a></li>
+							<li><a class="clickable" href="/repository/analyze/docs/api">&nbsp;&nbsp;&nbsp;&nbsp;<i>Website API</i></a></li>
 							<li><a class="clickable" href="/repository/analyze/docs/rdatkit">&nbsp;&nbsp;&nbsp;&nbsp;<i>RDATKit</i></a></li>
 							<li><a class="clickable" href="/repository/analyze/docs/hitrace">&nbsp;&nbsp;&nbsp;&nbsp;<i>HiTRACE</i></a></li>
 						</ul>
@@ -174,8 +175,6 @@
 							<li><a href="/repository/about#contact">Contact Us</a></li>
 							<li><a href="/repository/about#citation">Cite RMDB</a></li>
 							<li><a href="/repository/about#privacy">Privacy</a></li>
-							<li class="divider"></li>
-							<li><a href="#">Web API</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -226,24 +225,26 @@
 											<b><i>Statistics</i>:</b>
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											Entries: <code>{{ user|get_user_stats_entry }}</code>
+											# Entries: <code>{{ user|get_user_stats_entry }}</code>
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											Constructs: <code>{{ user|get_user_stats_const }}</code>
+											# Constructs: <code>{{ user|get_user_stats_const }}</code>
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											Data Points: <code>{{ user|get_user_stats_dtpt }}</code>
+											# Data Points: <code>{{ user|get_user_stats_dtpt }}</code>
 											<br/>
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp;
 											Most Recent Submission: 
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp;
-											<span class="label label-default">
-												{% autoescape off %}
-												{{ user|get_user_stats_last_entry|color_rmdb_id }}
-												{% endautoescape %}
-											</span>
+											<a href="/repository/detail/{{ user|get_user_stats_last_entry}}">
+												<span class="label label-default">
+													{% autoescape off %}
+													{{ user|get_user_stats_last_entry|color_rmdb_id }}
+													{% endautoescape %}
+												</span>
+											</a>
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp; 
 											On {{ user|get_user_stats_last_date|date:"SHORT_DATE_FORMAT" }}
@@ -274,9 +275,13 @@
 		<div class="jumbotron row bgimg">
 			<div class="col-md-6">
 				<img src="/site_media/logo_mini.png" style="clear:both;float:left;padding-right:20px;"/>
-				<p>
-					aaa
-				</p>
+				<span>
+					<b>An Information Portal to</b>
+					<br/>
+					<b>Chemical Mapping Data of</b>
+					<br/>
+					<u>{{ user|get_rmdb_constructs }}</u> <b>RNA Sequences</b>
+				</span>
 			</div>
 			<div class="col-md-6">
 				<form class="pull-right" action="/repository/search" method="get">
