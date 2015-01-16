@@ -2,6 +2,8 @@ from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
+from rmdb.repository.models import *
+
 register = template.Library()
 
 
@@ -57,4 +59,17 @@ def warning_strip(value):
 	return value[8:]
 register.filter('warning_strip', warning_strip)
 
+
+def get_exp_type(string):
+	for i in range(len(ENTRY_TYPE_CHOICES)):
+		if string in ENTRY_TYPE_CHOICES[i]:
+			return ENTRY_TYPE_CHOICES[i][1]
+register.filter('get_exp_type', get_exp_type)
+
+
+def get_stt_type(string):
+	for i in range(len(ENTRY_STATUS_CHOICES)):
+		if string in ENTRY_STATUS_CHOICES[i]:
+			return ENTRY_STATUS_CHOICES[i][1]
+register.filter('get_stt_type', get_stt_type)
 

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django import forms
 
-from settings import *
+from rmdb.repository.settings import *
 
 import os
 from simplejson import JSONEncoder
@@ -15,10 +15,10 @@ def get_rdat_filename(instance, filename):
     return dir+'%s.rdat'%instance.id
 
 ENTRY_TYPE_CHOICES = (
-    ('MM', 'Mutate and map'),
+    ('SS', 'StandardState'),
+    ('MM', 'MutateAndMap'),
     ('MA', 'MOHCA'),
     ('TT', 'Titration'),
-    ('SS', 'Standard state'),
 )
 
 MODIFIERS = (
@@ -31,6 +31,13 @@ MODIFIERS = (
 FORMAT_TYPE_CHOICES = (
     ('rdat', 'RDAT'),
     ('isatab', 'ISATAB'),
+)
+
+ENTRY_STATUS_CHOICES = (
+    ('REC', 'Received'),
+    ('REV', 'In review'),
+    ('HOL', 'On hold'),
+    ('PUB', 'Published'),
 )
 
 SEC_STRUCT_ELEMS_CHOICES = (
@@ -146,12 +153,6 @@ class Organism(models.Model):
 
 
 class RMDBEntry(models.Model):
-    ENTRY_STATUS_CHOICES = (
-        ('REC', 'Received'),
-        ('REV', 'In review'),
-        ('HOL', 'On hold'),
-        ('PUB', 'Published'),
-    )
     version = models.CharField(max_length=10)
     comments = models.TextField()
     publication = models.ForeignKey(Publication)
@@ -222,18 +223,18 @@ class RMDBUser(models.Model):
 
 class UploadForm(forms.Form):
     file = forms.FileField()
-    publication = forms.CharField()
-    pubmed_id = forms.CharField()
+    publication = forms.CharField(required=False)
+    pubmed_id = forms.CharField(required=False)
     authors = forms.CharField(required=True)
-    description = forms.CharField(widget=forms.Textarea)
+    description = forms.CharField(widget=forms.Textarea, required=False)
     rmdb_id = forms.CharField(required=True)
     type = forms.ChoiceField(choices=ENTRY_TYPE_CHOICES)
     filetype = forms.ChoiceField(choices=FORMAT_TYPE_CHOICES)
 
 
 class RegistrationForm(forms.Form):
-    usr = forms.CharField(required=True, max_length=31)
-    pwd = forms.CharField(widget=forms.PasswordInput, max_length=63)
+    username = forms.CharField(required=True, max_length=31)
+    password = forms.CharField(widget=forms.PasswordInput, max_length=63)
     repeatpassword = forms.CharField(widget=forms.PasswordInput, max_length=63)
     firstname = forms.CharField(required=True, max_length=255)
     lastname = forms.CharField(required=True, max_length=255)

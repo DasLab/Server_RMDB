@@ -156,7 +156,9 @@
 							<li><a class="clickable" href="/structureserver/">Secondary Structure Prediction</a></li>
 							<li class="divider"></li>
 							<li><a class="clickable" href="/repository/analyze/tools">Repository Packages</a></li>
+							<li class="divider"></li>
 							<li><a class="disabled">Tool Tutorials</a></li>
+							<li><a class="clickable" href="/repository/analyze/docs/predict">&nbsp;&nbsp;&nbsp;&nbsp;<i>Structural Server</i></a></li>
 							<li><a class="clickable" href="/repository/analyze/docs/rdatkit">&nbsp;&nbsp;&nbsp;&nbsp;<i>RDATKit</i></a></li>
 							<li><a class="clickable" href="/repository/analyze/docs/hitrace">&nbsp;&nbsp;&nbsp;&nbsp;<i>HiTRACE</i></a></li>
 						</ul>
@@ -183,20 +185,21 @@
 								MyRMDB Login
 								<span class="caret"></span>
 							</button>
-							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu" id="nav_user">
 								{% if user.is_authenticated %}
-									<li><p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:underline; color:gray;">Signed In As:</span></p></li>
 									<li>
-										<p>
-											&nbsp;&nbsp;&nbsp;&nbsp;
-											<b>{{ user.first_name }} {{ user.last_name }}</b>
-											(<i>{{ user.username }}</i>)
-										</p>
-										<p>
-											&nbsp;&nbsp;&nbsp;&nbsp;
-											{{ user.email }}
-											&nbsp;&nbsp;&nbsp;&nbsp;
-										</p>
+										<br/>
+										<p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:underline; color:gray;">Signed In As:</span></p>
+									</li>
+									<li id="nav_username" style="width:200px;">
+										&nbsp;&nbsp;&nbsp;&nbsp;
+										<b>{{ user.first_name }} {{ user.last_name }}</b>
+										(<i>{{ user.username }}</i>)
+									</li>
+									<li id="nav_email">
+										&nbsp;&nbsp;&nbsp;&nbsp;
+										{{ user.email }}
+										&nbsp;&nbsp;&nbsp;&nbsp;
 									</li>
 									<li class="divider"></li>
 									<li><a class="clickable" href="/repository/logout">Sign Out</a></li>
@@ -344,9 +347,13 @@
 	            function(){ $(this).addClass("open") },
     	        function(){ $(this).removeClass("open") }
         	);
+            $("[data-toggle='popover']").popover({trigger: "hover"});
+			$("[data-toggle='tooltip']").tooltip();
+
 			$("#up").on("click", function () {
 				$("html, body").stop().animate({scrollTop: 0}, 500);
 			});
+
 			$(".clickable").on("click", function () {
 				if ($("#buttonAll").length && $(this).attr("id") == "nav_browse") {
 					$("#wait").hide();
@@ -354,6 +361,9 @@
 					$("#wait").fadeIn(500);
 				}
 			});
+
+            $("#id_username").addClass("form-control");
+            $("#id_password").addClass("form-control");
 			$("#nav_login").on("click", function () {
 				if ($("#id_repeatpassword").length) {
 					$(location).attr("href","/repository/?login=1");
@@ -361,10 +371,6 @@
 					$("#login").show();
 				}
 			});
-
-            $("#id_username").addClass("form-control");
-            $("#id_password").addClass("form-control");
-
             $("#nav_deposit, #nav_submit").on("click", function(e) {
             	{% if not user.is_authenticated %}
             	    e.preventDefault();
@@ -375,6 +381,7 @@
 					}
         	    {% endif %}
             })
+
 
             if (($(location).attr("href").indexOf("?login=1") != -1) || ($(location).attr("href").indexOf("?login=0") != -1)) {
 				$("#login").modal("show");

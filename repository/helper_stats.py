@@ -1,4 +1,4 @@
-from models import *
+from rmdb.repository.models import *
 
 
 def get_rmdb_stats():
