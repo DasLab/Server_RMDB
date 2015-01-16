@@ -73,3 +73,39 @@ def get_stt_type(string):
 			return ENTRY_STATUS_CHOICES[i][1]
 register.filter('get_stt_type', get_stt_type)
 
+
+def get_user_stats_entry(user):
+	return len(RMDBEntry.objects.filter(owner=user))
+register.filter('get_user_stats_entry', get_user_stats_entry)
+
+
+def get_user_stats_const(user):
+	N_constructs = 0
+	entries = RMDBEntry.objects.filter(owner=user)
+	for e in entries:
+		N_constructs += e.constructcount
+
+	return N_constructs
+register.filter('get_user_stats_const', get_user_stats_const)
+
+
+def get_user_stats_dtpt(user):
+	N_datapoints = 0
+	entries = RMDBEntry.objects.filter(owner=user)
+	for e in entries:
+		N_datapoints += e.datacount
+
+	return N_datapoints
+register.filter('get_user_stats_dtpt', get_user_stats_dtpt)
+
+
+def get_user_stats_last_entry(user):
+	entries = RMDBEntry.objects.filter(owner=user).order_by('-creation_date')
+	return entries[0].rmdb_id
+register.filter('get_user_stats_last_entry', get_user_stats_last_entry)
+
+
+def get_user_stats_last_date(user):
+	entries = RMDBEntry.objects.filter(owner=user).order_by('-creation_date')
+	return entries[0].creation_date
+register.filter('get_user_stats_last_date', get_user_stats_last_date)

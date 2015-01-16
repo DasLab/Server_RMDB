@@ -62,4 +62,3 @@ def get_rmdb_category(flag):
 
 	return constructs
 
-

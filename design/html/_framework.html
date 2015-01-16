@@ -1,3 +1,5 @@
+{% load repository_extras %}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -191,15 +193,61 @@
 										<br/>
 										<p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:underline; color:gray;">Signed In As:</span></p>
 									</li>
-									<li id="nav_username" style="width:200px;">
+									<li id="nav_username" style="width:250px;">
 										&nbsp;&nbsp;&nbsp;&nbsp;
 										<b>{{ user.first_name }} {{ user.last_name }}</b>
-										(<i>{{ user.username }}</i>)
+										<kbd>{{ user.username }}</kbd>
 									</li>
 									<li id="nav_email">
 										&nbsp;&nbsp;&nbsp;&nbsp;
-										{{ user.email }}
+										<i>{{ user.email }}</i>
 										&nbsp;&nbsp;&nbsp;&nbsp;
+									</li>
+									<li>
+										<br/>
+										&nbsp;&nbsp;&nbsp;&nbsp;
+										Joined Since: {{ user.date_joined|date:"SHORT_DATE_FORMAT" }}
+										<br/>
+										&nbsp;&nbsp;&nbsp;&nbsp;
+										Last Login: {{ user.last_login|date:"SHORT_DATE_FORMAT" }}
+										<br/>
+										&nbsp;&nbsp;&nbsp;&nbsp;
+										{% if user.is_active %}
+										Status: <span class="label label-success">Active</span>
+										{% else %}
+										Status: <span class="label label-danger">Inactive</span>
+										{% endif %}
+										{% if user.is_staff %}, <span class="label label-warning">Staff</span>{% endif %}
+										{% if user.is_superuser %}, <span class="label label-primary">Admin</span>{% endif %}
+									</li>
+									<br/>
+									<li>
+										<div class="well">
+											<b><i>Statistics</i>:</b>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											Entries: <code>{{ user|get_user_stats_entry }}</code>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											Constructs: <code>{{ user|get_user_stats_const }}</code>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											Data Points: <code>{{ user|get_user_stats_dtpt }}</code>
+											<br/>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											Most Recent Submission: 
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<span class="label label-default">
+												{% autoescape off %}
+												{{ user|get_user_stats_last_entry|color_rmdb_id }}
+												{% endautoescape %}
+											</span>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp; 
+											On {{ user|get_user_stats_last_date|date:"SHORT_DATE_FORMAT" }}
+										</div>
 									</li>
 									<li class="divider"></li>
 									<li><a class="clickable" href="/repository/logout">Sign Out</a></li>
