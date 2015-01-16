@@ -5,7 +5,10 @@
 <div class="container">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h2 class="panel-title">Format Validation</h2>
+            <h2 class="panel-title">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;&nbsp;
+                Format Validation
+            </h2>
         </div>
         <div class="panel-body">
             <div class="col-md-12">
@@ -106,7 +109,7 @@
                                 </p>
                                 <br/>
                                 <ul>
-                                    {% for m in messages %}
+                                    {% for m in valmsgs %}
                                         <li>{{ m|warning_strip }} </li>
                                     {% endfor %}
                                 </ul>

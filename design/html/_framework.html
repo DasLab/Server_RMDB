@@ -118,7 +118,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/repository/" id="nav_logo">&nbsp;&nbsp;RMDB&nbsp;&nbsp;</a>
+				<a class="navbar-brand" href="/repository/" id="nav_logo">&nbsp;&nbsp;<span>RMDB</span>&nbsp;&nbsp;</a>
 			</div>
 
 			<div class="navbar-collapse collapse" >
@@ -129,11 +129,20 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked clickable" role="menu">
-							<li class="nav-general"><a href="/repository/browse#categoryGeneral" id="navGeneral">General</a></li>
+							<li class="nav-general"><a href="/repository/browse#categoryGeneral" id="navGeneral">
+								<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;&nbsp;
+								General</a>
+							</li>
 							<li class="divider"></li>
-							<li class="nav-puzzle"><a href="/repository/browse#categoryPuzzle" id="navPuzzle">RNA Puzzles</a></li>
+							<li class="nav-puzzle"><a href="/repository/browse#categoryPuzzle" id="navPuzzle">
+								<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>&nbsp;&nbsp;
+								RNA Puzzles</a>
+							</li>
 							<li class="divider"></li>
-							<li class="nav-eterna" ><a href="/repository/browse#categoryEteRNA" id="navEteRNA">EteRNA</a></li>
+							<li class="nav-eterna" ><a href="/repository/browse#categoryEteRNA" id="navEteRNA">
+								<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>&nbsp;&nbsp;
+								EteRNA</a>
+							</li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -142,11 +151,19 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li class="clickable"><a href="/repository/deposit/specs">RDAT Format Specifications
-							</a></li>
-							<li class="clickable"><a href="/repository/deposit/validate">Validation Tools</a></li>
+							<li class="clickable"><a href="/repository/deposit/specs">
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								RDAT Format Specifications</a>
+							</li>
+							<li class="clickable"><a href="/repository/deposit/validate">
+								<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								Validation Tools</a>
+							</li>
 							<li class="divider"></li>
-							<li class="clickable" id="nav_submit"><a href="/repository/deposit/submit">Submit Entry</a></li>
+							<li class="clickable" id="nav_submit"><a href="/repository/deposit/submit">
+								<span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span>&nbsp;&nbsp;
+								Submit Entry</a>
+							</li>
 						</ul>
 					</li>
 					<li class="dropdown" id="nav_analyze">
@@ -155,15 +172,32 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a class="clickable" href="/structureserver/">Secondary Structure Prediction</a></li>
+							<li><a class="clickable" href="/structureserver/">
+								<span class="glyphicon glyphicon-record" aria-hidden="true"></span>&nbsp;&nbsp;
+								Secondary Structure Prediction</a>
+							</li>
 							<li class="divider"></li>
-							<li><a class="clickable" href="/repository/analyze/tools">Repository Packages</a></li>
+							<li><a class="clickable" href="/repository/analyze/tools">
+								<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								Repository Packages</a>
+							</li>
 							<li class="divider"></li>
-							<li><a class="disabled">Tool Tutorials</a></li>
-							<li><a class="clickable" href="/repository/analyze/docs/predict">&nbsp;&nbsp;&nbsp;&nbsp;<i>Structural Server</i></a></li>
-							<li><a class="clickable" href="/repository/analyze/docs/api">&nbsp;&nbsp;&nbsp;&nbsp;<i>Website API</i></a></li>
-							<li><a class="clickable" href="/repository/analyze/docs/rdatkit">&nbsp;&nbsp;&nbsp;&nbsp;<i>RDATKit</i></a></li>
-							<li><a class="clickable" href="/repository/analyze/docs/hitrace">&nbsp;&nbsp;&nbsp;&nbsp;<i>HiTRACE</i></a></li>
+							<li><a class="disabled">
+								<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								Tool Tutorials</a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/predict">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>Structural Server</i></a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/api">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>Website API</i></a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/rdatkit">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>RDATKit</i></a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/hitrace">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>HiTRACE</i></a>
+							</li>
 						</ul>
 					</li>
 					<li class="dropdown clickable" id="nav_about">
@@ -172,9 +206,18 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/repository/about#contact">Contact Us</a></li>
-							<li><a href="/repository/about#citation">Cite RMDB</a></li>
-							<li><a href="/repository/about#privacy">Privacy</a></li>
+							<li><a href="/repository/about#contact">
+								<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;
+								Contact Us</a>
+							</li>
+							<li><a href="/repository/about#citation">
+								<span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;
+								Cite RMDB</a>
+							</li>
+							<li><a href="/repository/about#privacy">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								Privacy</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -194,34 +237,57 @@
 									</li>
 									<li id="nav_username" style="width:250px;">
 										&nbsp;&nbsp;&nbsp;&nbsp;
+										<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
 										<b>{{ user.first_name }} {{ user.last_name }}</b>
 										<kbd>{{ user.username }}</kbd>
 									</li>
 									<li id="nav_email">
 										&nbsp;&nbsp;&nbsp;&nbsp;
+										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;
 										<i>{{ user.email }}</i>
 										&nbsp;&nbsp;&nbsp;&nbsp;
 									</li>
 									<li>
 										<br/>
 										&nbsp;&nbsp;&nbsp;&nbsp;
+										<span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span>&nbsp;&nbsp;
 										Joined Since: {{ user.date_joined|date:"SHORT_DATE_FORMAT" }}
 										<br/>
 										&nbsp;&nbsp;&nbsp;&nbsp;
+										<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;&nbsp;
 										Last Login: {{ user.last_login|date:"SHORT_DATE_FORMAT" }}
 										<br/>
 										&nbsp;&nbsp;&nbsp;&nbsp;
+										<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;
+										Status:
 										{% if user.is_active %}
-										Status: <span class="label label-success">Active</span>
+										<span class="label label-success">
+											<span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>&nbsp;&nbsp;
+											Active
+										</span>
 										{% else %}
-										Status: <span class="label label-danger">Inactive</span>
+										<span class="label label-danger">
+											<span class="glyphicon glyphicon-volume-off" aria-hidden="true"></span>&nbsp;&nbsp;
+											Inactive
+										</span>
 										{% endif %}
-										{% if user.is_staff %}, <span class="label label-warning">Staff</span>{% endif %}
-										{% if user.is_superuser %}, <span class="label label-primary">Admin</span>{% endif %}
+										{% if user.is_staff %}, 
+										<span class="label label-warning">
+											<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>&nbsp;&nbsp;
+											Staff
+										</span>
+										{% endif %}
+										{% if user.is_superuser %}, 
+										<span class="label label-primary">
+											<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>&nbsp;&nbsp;
+											Admin
+										</span>
+										{% endif %}
 									</li>
 									<br/>
 									<li>
 										<div class="well">
+											<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;
 											<b><i>Statistics</i>:</b>
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp;
@@ -234,7 +300,7 @@
 											# Data Points: <code>{{ user|get_user_stats_dtpt }}</code>
 											<br/>
 											<br/>
-											&nbsp;&nbsp;&nbsp;&nbsp;
+											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;&nbsp;
 											Most Recent Submission: 
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp;
@@ -251,11 +317,20 @@
 										</div>
 									</li>
 									<li class="divider"></li>
-									<li><a class="clickable" href="/repository/logout">Sign Out</a></li>
+									<li><a class="clickable" href="/repository/logout">
+										<span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;&nbsp;
+										Sign Out</a>
+									</li>
 								{% else %}
-									<li><a id="nav_login" data-toggle="modal" data-target=".login">Sign In</a></li>
+									<li><a id="nav_login" data-toggle="modal" data-target=".login">
+										<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
+										Sign In</a>
+									</li>
 									<li class="divider"></li>
-									<li><a class="clickable" href="/repository/register">Sign Up</a></li>
+									<li><a class="clickable" href="/repository/register">
+										<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;&nbsp;
+										Sign Up</a>
+									</li>
 								{% endif %}
 							</ul>
 						</li>
@@ -273,7 +348,7 @@
 
 	<div class="container">
 		<div class="jumbotron row bgimg">
-			<div class="col-md-6">
+			<div class="col-md-5">
 				<img src="/site_media/logo_mini.png" style="clear:both;float:left;padding-right:20px;"/>
 				<span>
 					<b>An Information Portal to</b>
@@ -283,17 +358,23 @@
 					<u>{{ user|get_rmdb_constructs }}</u> <b>RNA Sequences</b>
 				</span>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-7">
 				<form class="pull-right" action="/repository/search" method="get">
 					<div class="input-group">
-						<input type="text" class="form-control" name="searchtext" placeholder="Search by keyword" style="padding: 22px 22px;"/>
+						<input type="text" class="form-control input-lg" name="searchtext" placeholder="Search by keyword"/>
 						<div class="input-group-btn">
-							<input type="submit" class="btn btn-lg btn-success clickable" value="Search"/> 
+							<button type="submit" class="btn btn-lg btn-success clickable">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;&nbsp;Search&nbsp;&nbsp;
+							</button> 
 						</div>
 					</div>
 				</form>
 				<br/><br/><br/>
-				&nbsp;&nbsp;&nbsp;&nbsp;<a href="/repository/advanced_search" class="clickable">Advanced Search</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/repository/advanced_search" class="clickable">
+					<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>&nbsp;
+					Advanced Search
+				</a>
 			</div>
 		</div>
 	</div>
@@ -312,7 +393,10 @@
 			<div class="modal-content panel-primary">
 				<div class="modal-header panel-heading">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">MyRMDB Login</h4>
+					<h4 class="modal-title" id="myModalLabel">
+						<span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
+						&nbsp;&nbsp;MyRMDB Login
+					</h4>
 				</div>
 				<form action="/repository/login/" method="post">
 					<div class="modal-body panel-body">
@@ -321,7 +405,10 @@
                         	<br><br>
                             <div class="row form-inline">
                                 <div class="col-md-5">
-                                    <label for="id_username" class="pull-right">Username:</label>
+                                    <label for="id_username" class="pull-right">
+                                    	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    	&nbsp;&nbsp;Username:
+                                    </label>
                                 </div>
                                 <div class="col-md-7">
                                    {{ login_form.username }}
@@ -330,7 +417,10 @@
                             <br/>
                             <div class="row form-inline">
                                 <div class="col-md-5">
-                                    <label for="id_password" class="pull-right">Password:</label>
+                                    <label for="id_password" class="pull-right">
+                                    	<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                                    	&nbsp;&nbsp;Password:
+                                    </label>
                                 </div>
                                 <div class="col-md-7">
                                     {{ login_form.password }}

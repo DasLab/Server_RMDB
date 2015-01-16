@@ -136,6 +136,38 @@ li.nav-general > a, li.nav-puzzle > a, li.nav-eterna> a  {
   font-weight: bold;
 }
 
+.nav-tab {
+  background-color: #112d52;
+}
+
+.nav-tab > li > a {
+  color: #7cafd3;
+  font-weight: normal;
+}
+
+.nav-tab > li > a:hover {
+  background-color: #011e46;
+  color: #fff;
+  text-shadow: 2px 2px 5px #7cafd3; 
+}
+
+.nav-tab > .active, .nav-tab > .active:hover, .nav-tab > .active:focus {
+  background-color: #011e46;
+}
+
+.nav-tab > .active > a, .nav-tab > .active > a:hover, .nav-tab > .active > a:focus {
+  background-color: #fff;
+  color: #011e46;
+  font-weight: bold !important;
+  text-shadow: 2px 2px 5px #7cafd3;
+}
+
+.nav-panel{
+    border-style: solid;
+    border-width: 1px;
+    border-color: #112d52;
+}
+
 .tutorial{
   opacity:0.5;
 }
@@ -322,8 +354,3 @@ img.logo {
   height: 72px;
 }
 
-.xx{
-    border-style: solid;
-    border-width: 5px;
-    border-color: green;
-}

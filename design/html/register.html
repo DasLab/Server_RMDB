@@ -89,6 +89,57 @@
                 <ul>
                     {% for msg in error_msg %}
                         <li>{{ msg }}</li>
+                        {% if "Username" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_username").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                        {% if "Password" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_password").parent().addClass("has-error");
+                                $("#id_repeatpassword").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                        {% if "First" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_firstname").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                        {% if "Last" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_lastname").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                        {% if "Institution" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_institution").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                        {% if "Department" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_department").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                        {% if "Email" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_email").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+
                     {% endfor %}
                 </ul>
             </div>
@@ -107,8 +158,8 @@
             $("#nav_deposit").addClass("active");
             $("#nav_logo").css("text-decoration","none");
 
-            $("#id_usr").addClass("form-control");
-            $("#id_pwd").addClass("form-control");
+            $("#id_username").addClass("form-control");
+            $("#id_password").addClass("form-control");
             $("#id_repeatpassword").addClass("form-control");
             $("#id_firstname").addClass("form-control");
             $("#id_lastname").addClass("form-control");
@@ -116,10 +167,15 @@
             $("#id_department").addClass("form-control");
             $("#id_email").addClass("form-control");
 
+            $("#id_username, #id_password, #id_repeatpassword, #id_firstname, #id_lastname, #id_institution, #id_department, #id_email").on("focusout", function() {
+                $(this).parent().removeClass("has-error");
+            });
+
+
+
             var col_h = Math.max($("#col-1").height(), $("#col-2").height());
             $("#col-1").css("height", col_h);
             $("#col-2").css("height", col_h);
-
         });
     </script>
 

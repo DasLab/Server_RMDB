@@ -85,7 +85,7 @@ def validate(request):
 		form = ValidateForm()
 		flag = 0
 
-	return render_to_response('html/validate.html', {'form':form, 'valerrors':errors, 'messages':messages, 'flag':flag}, context_instance=RequestContext(request))
+	return render_to_response('html/validate.html', {'form':form, 'valerrors':errors, 'valmsgs':messages, 'flag':flag}, context_instance=RequestContext(request))
 
 
 def detail(request, rmdb_id):
@@ -370,6 +370,13 @@ def register(request):
 				# login(request, authuser)
 				# return HttpResponseRedirect('/repository/')
 		else:
+			if 'username' in form.errors: error_msg.append('Username field is required.')
+			if 'password' in form.errors: error_msg.append('Password field is required.')
+			if 'firstname' in form.errors: error_msg.append('First name field is required.')
+			if 'lastname' in form.errors: error_msg.append('Last name field is required.')
+			if 'institution' in form.errors: error_msg.append('Institution field is required.')
+			if 'department' in form.errors: error_msg.append('Department field is required.')
+			if 'email' in form.errors: error_msg.append('Email field is required.')
 			error_msg.append('Form invalid: missing required field(s).')
 	else:
 		form = RegistrationForm()

@@ -1,8 +1,82 @@
 {% extends "html/_framework.html" %}
 
 {% block content %}
+<div class="container">
+
+  <div class="row nav-panel" role="tabpanel">
+    <div class="col-md-3">
+      <ul class="nav nav-stacked nav-tab" role="tablist">
+        <br/>
+        <li role="presentation" class="active">
+          <a href="#tab-home" aria-controls="home" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-browse" aria-controls="profile" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Browse</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-deposit" aria-controls="messages" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deposit</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-download" aria-controls="settings" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Download</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-analyze" aria-controls="settings" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analyze</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-analyze" aria-controls="settings" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Help</h4>
+          </a>
+        </li>
+        <br/>
+      </ul>
+    </div>
+
+    <div class="col-md-9 tab-content">
+      <div role="tabpanel" class="fade in tab-pane active" id="home">
+        <br/>
+        <div class="col-md-12">
+          <span class="glyphicon glyphicon-cloud-upload"></span>u<span class="glyphicon glyphicon-snowflake"></span>xx
+        </div>
+      </div>
+      <div role="tabpanel" class="fade tab-pane" id="profile">..b.</div>
+      <div role="tabpanel" class="fade tab-pane" id="messages">..c.</div>
+      <div role="tabpanel" class="fade tab-pane" id="settings">..d.</div>
+    </div>
+
+  </div>
+
+</div>
+
   <div class="jumbotron">
-        <img src="/site_media/images/fg_under_construction.gif" style="clear:both;float:left;padding-right:20px;height:540px;"/>
+        
     <img width="204pv" src="/site_media/img/rmdb_logo.png" >
     <h2>A repository of RNA structure probing by chemical or enzymatic mapping</h2>
     <p>
@@ -21,6 +95,8 @@
       The RMDB is currently housing {{ N_all }} entries, for more than {{ N_constructs }} sequences, comprising {{ N_datapoints }} datapoints.
     </p>
   </div>
+
+
 
   <table border="0">
     <tr>
@@ -145,7 +221,7 @@
   <script type="text/javascript">
     $(document).ready(function() {
       $('.dropdown-toggle').removeClass("active");
-      $("#nav_logo").css("text-decoration","underline");
+      $("#nav_logo>span").css("text-decoration","underline");
     });
   </script>
 

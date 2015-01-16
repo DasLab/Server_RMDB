@@ -4,10 +4,13 @@
 {% block content %}
 <div class="container">
     <form enctype="multipart/form-data" method="post" action="/repository/deposit/submit/">
-        <h3>Submit RMDB Entry</h3>
+        <h3>
+            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;&nbsp;
+            Submit RMDB Entry
+        </h3>
         <div class="row">
             <div class="col-md-11">
-                <p>New experimental data can be uploaded to the RMDB as a spreadsheet in either the SNRNASM <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank"><mark>ISATAB</mark></a> format or <a href="/repository/deposit/specs"><mark>RDAT</mark></a> format.</p>
+                <p>New experimental data can be uploaded to the RMDB as a spreadsheet in either the SNRNASM <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank"><mark>ISATAB</mark>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> format or <a href="/repository/deposit/specs"><mark>RDAT</mark></a> format.</p>
                 <p>Data must be reviewed and approved by RMDB team before public release. It should meet the following requirements:</p>
                 <ul>
                     <li>Includes error estimates;</li>
@@ -25,7 +28,10 @@
             <div class="col-md-7">
                 <div class="panel panel-primary" id="col-1">
                     <div class="panel-heading">
-                        <h2 class="panel-title">RDAT File</h2>
+                        <h2 class="panel-title">
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;
+                            RDAT File
+                        </h2>
                     </div>
                     <div class="panel-body">
                         <div class="row col-md-12">
@@ -75,7 +81,10 @@
             <div class="col-md-5">
                 <div class="panel panel-info" id="col-2">
                     <div class="panel-heading">
-                        <h2 class="panel-title">Associated Publication</h2>
+                        <h2 class="panel-title">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;
+                            Associated Publication
+                        </h2>
                     </div>
                     <div class="panel-body">
                         <div class="col-md-12">
@@ -146,6 +155,20 @@
                 <ul>
                     {% for msg in error_msg %}
                         <li>{{ msg }}</li>
+                        {% if "Authors" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_authors").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                        {% if "RMDB_ID" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_rmdb_id").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
@@ -180,6 +203,10 @@
             $("#id_use_name").on("click", function () {
                 $("#id_rmdb_id").val($("#id_disp").val());
                 $(this).attr("checked", false);
+            });
+
+            $("#id_rmdb_id, #id_authors").on("focusout", function() {
+                $(this).parent().removeClass("has-error");
             });
 
             var col_h = Math.max($("#col-1").height(), $("#col-2").height());

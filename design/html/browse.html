@@ -7,33 +7,48 @@
 		<div class="col-md-3">
 			<div class="panel panel-default" id="sidebar" data-spy="affix">
 				<div class="panel-heading">
-		            <h3 class="panel-title">Categories</h3>
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+              			&nbsp;&nbsp;Categories
+              		</h3>
 				</div>
 				<div class="panel-body">
 					<div class="list-group">
 						<a class="list-group-item active" id="buttonAll">
-							<h4 class="list-group-item-heading">All</h4>
+							<h4 class="list-group-item-heading">
+								<span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+              					&nbsp;&nbsp;All
+              				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
 								<span class="badge">{{ N_all }}</span>
 							</p>
 						</a>
 						<a class="list-group-item" id="buttonGeneral">
-							<h4 class="list-group-item-heading">General</h4>
+							<h4 class="list-group-item-heading">
+								<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+              					&nbsp;&nbsp;General
+              				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
 								<span class="badge">{{ N_general }}</span>
 							</p>
 						</a>
 						<a class="list-group-item" id="buttonPuzzle">
-							<h4 class="list-group-item-heading">RNA Puzzles</h4>
+							<h4 class="list-group-item-heading">
+								<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+              					&nbsp;&nbsp;RNA Puzzles
+              				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
 								<span class="badge">{{ N_puzzle }}</span>
 							</p>
 						</a>
 						<a class="list-group-item" id="buttonEteRNA">
-							<h4 class="list-group-item-heading">EteRNA</h4>
+							<h4 class="list-group-item-heading">
+								<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+              					&nbsp;&nbsp;EteRNA
+              				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
 								<span class="badge">{{ N_eterna }}</span>
@@ -45,13 +60,19 @@
 		</div>
 
 		<div class="col-md-9" id="main">
-			<h2>Browse RMDB by category</h2>
+			<h2>
+				<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+              	&nbsp;&nbsp;Browse RMDB by category
+              </h2>
 			<br/>
 
 			<div class="panel panel-danger category" id="categoryGeneral" role="tablist" aria-multiselectable="true">
 
 				<div class="panel-heading">
-		            <h3 class="panel-title">General</h3>
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+              			&nbsp;&nbsp;General
+              		</h3>
 				</div>
 				<div class="panel-body">
 				{% for c in constructs_general %}
@@ -59,7 +80,8 @@
 					<div class="panel panel-default subpanel">
 						<div id="heading{{ c.name|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryGeneral" href="#{{ c.name|slugify }}" aria-expanded="true" aria-controls="{{ c.name|slugify }}">
 							<h3 class="panel-title" >
-								<span>{{ c.name }}</span>
+								<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              					&nbsp;&nbsp;<span>{{ c.name }}</span>
 							</h3>
 						</div>
 						<div id="{{ c.name|slugify }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ c.name|slugify }}">
@@ -117,7 +139,10 @@
 			<div class="panel panel-success category" id="categoryPuzzle" role="tablist" aria-multiselectable="true">
 
 				<div class="panel-heading">
-		            <h3 class="panel-title">RNA Puzzles</h3>
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+              			&nbsp;&nbsp;RNA Puzzles
+              		</h3>
 				</div>
 				<div class="panel-body">
 				{% for c in constructs_puzzle %}
@@ -125,7 +150,8 @@
 					<div class="panel panel-default subpanel">
 						<div id="heading{{ c.name|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryPuzzle" href="#{{ c.name|slugify }}" aria-expanded="true" aria-controls="{{ c.name|slugify }}">
 							<h3 class="panel-title" >
-								<span>{{ c.name }}</span>
+								<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              					&nbsp;&nbsp;<span>{{ c.name }}</span>
 							</h3>
 						</div>
 						<div id="{{ c.name|slugify }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ c.name|slugify }}">
@@ -183,7 +209,10 @@
 			<div class="panel panel-info category" id="categoryEteRNA" role="tablist" aria-multiselectable="true">
 
 				<div class="panel-heading">
-		            <h3 class="panel-title">EteRNA</h3>
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+              			&nbsp;&nbsp;EteRNA
+              		</h3>
 				</div>
 				<div class="panel-body" id="panel-eterna">
 				{% for c in constructs_eterna %}
@@ -191,6 +220,8 @@
 					<div class="panel panel-default subpanel eterna-panel">
 						<div id="heading{{ e.rmdb_id|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryEteRNA" href="#{{ e.rmdb_id|slugify }}" aria-expanded="true" aria-controls="{{ e.rmdb_id|slugify }}">
 							<div class="panel-title" >
+								<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              					&nbsp;&nbsp;
 								<span class="label label-default" style="font-size:16px;">
 									{% autoescape off %}
 									{{ e.rmdb_id|color_eterna_id }}
