@@ -184,6 +184,16 @@ h1.section>span.num {
   font-style: italic;
 }
 
+.excerpt {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.8em;
+}
+
+.excerpt:hover {
+  height: auto;
+}
+
 .popover-title{
     background-color: #000;
     border-color: #fbad24;
@@ -222,7 +232,7 @@ h1.section>span.num {
     transform: translate(-50%, -50%) !important;
 }
 
-a.active > p > .badge {
+.active > p > .badge {
   color: #428bca;
   background-color: #fff;
 }
@@ -265,7 +275,8 @@ a.active > p > .badge {
 
 .eterna-panel{
     display: block;
-    max-height: 280px;
+    max-height: 280px !important;
+    overflow: hidden;
 }
 
 .fileUpload {

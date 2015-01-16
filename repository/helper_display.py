@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response #, redirect
 from rdatkit.view import VARNA
 from rdatkit.mapping import MappingData
 from rdatkit.secondary_structure import SecondaryStructure
+from rdatkit.datahandlers import RDATFile, RDATSection, ISATABFile
 
 from rmdb.repository.models import *
 

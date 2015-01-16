@@ -38,6 +38,7 @@ def browse(request):
 
 	return render_to_response('html/browse.html', {'constructs_general':constructs_general, 'constructs_puzzle':constructs_puzzle, 'constructs_eterna':constructs_eterna, 'N_all':N_all, 'N_general':N_all-N_puzzle-N_eterna, 'N_puzzle':N_puzzle, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
 
+
 def specs(request, section):
 	if len(section) > 0:
 		return  HttpResponseRedirect('/repository/specs' + section)
@@ -118,24 +119,35 @@ def detail(request, rmdb_id):
 
 def search(request):
 	sstring = request.GET['searchtext'].strip()
-	entriesbyname = RMDBEntry.objects.filter(constructsection__name__icontains=sstring)
-	entriesbyid = RMDBEntry.objects.filter(rmdb_id__icontains=sstring)
-	entriesbycomments = RMDBEntry.objects.filter(comments__icontains=sstring)
-	entriesbydescription = RMDBEntry.objects.filter(description__icontains=sstring)
-	entriesbydataannotation = RMDBEntry.objects.filter(constructsection__datasection__dataannotation__value__icontains=sstring)
-	entriesbyannotation = RMDBEntry.objects.filter(entryannotation__value__icontains=sstring)
-	combined_entries = list(chain(entriesbyname, entriesbyid, entriesbydescription, entriesbydataannotation, entriesbyannotation, entriesbycomments))
-	entryids = []
-	entries = []
+	entry_by_name = RMDBEntry.objects.filter(constructsection__name__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
+	entry_by_id = RMDBEntry.objects.filter(rmdb_id__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
+	entry_by_comment = RMDBEntry.objects.filter(comments__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
+	entry_by_desp = RMDBEntry.objects.filter(description__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
+	entry_by_data_anno = RMDBEntry.objects.filter(constructsection__datasection__dataannotation__value__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
+	entry_by_anno = RMDBEntry.objects.filter(entryannotation__value__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
+	entry_all = list(chain(entry_by_name, entry_by_id, entry_by_desp, entry_by_data_anno, entry_by_anno, entry_by_comment))
+	
+	entry_ids = []
+	entries_general = []
+	entries_eterna = []
 	etypenames = dict(ENTRY_TYPE_CHOICES)
-	for e in combined_entries:
-		if e.rmdb_id not in entryids:
-			e.constructs = ConstructSection.objects.filter(entry=e)
-			e.short_description = e.comments
+
+	for e in entry_all:
+		if e.rmdb_id not in entry_ids:
+			e.constructs = ConstructSection.objects.filter(entry=e).values('name').distinct()
 			e.typename = etypenames[e.type]
-			entryids.append(e.rmdb_id)
-			entries.append(e)
-	return render_to_response('results.html', {'entries':entries, 'sstring':sstring}, context_instance=RequestContext(request))
+			e.cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
+
+			entry_ids.append(e.rmdb_id)
+			if 'ETERNA' in e.rmdb_id:
+				entries_eterna.append(e)
+			else:
+				entries_general.append(e)
+
+	(N_all, _, _, _, _, _) = get_rmdb_stats()
+	N_general = len(entries_general)
+	N_eterna = len(entries_eterna)
+	return render_to_response('html/search_result.html', {'entries_general':entries_general, 'entries_eterna':entries_eterna, 'sstring':sstring, 'N_all':N_all, 'N_general':N_general, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
 
 
 def advanced_search(request):
@@ -196,7 +208,7 @@ def advanced_search(request):
 					query_data['all'] = True
 
 				if 'background_processed' in request.POST:
-					bp_entryids = [d.section.rmdb_id for d in EntryAnnotation.objects.filter(name='processing', value='backgroundSubtraction')]
+					bp_entry_ids = [d.section.rmdb_id for d in EntryAnnotation.objects.filter(name='processing', value='backgroundSubtraction')]
 				for field in constructs_byquery:
 					entry_types = request.POST.getlist('entry_type')
 					modifiers = request.POST.getlist('modifiers')
@@ -210,7 +222,7 @@ def advanced_search(request):
 					if 'include_eterna' not in request.POST:
 						constructs_byquery[field] = constructs_byquery[field].exclude(entry__from_eterna=True)
 					if 'background_processed' in request.POST:
-						constructs_byquery[field] = constructs_byquery[field].filter(entry__rmdb_id__in=bp_entryids)
+						constructs_byquery[field] = constructs_byquery[field].filter(entry__rmdb_id__in=bp_entry_ids)
 
 				constructs = constructs_byquery.values()[0]
 				for k, v in constructs_byquery.iteritems():
@@ -223,9 +235,11 @@ def advanced_search(request):
 						unique_constructs.append(c)
 						entries_visited.append(c.entry.rmdb_id)
 				rdat, all_values, cell_labels, values_min, values_max, values_min_heatmap, values_max_heatmap, unpaired_bins, paired_bins, unpaired_bin_anchors, paired_bin_anchors, rmdb_ids, messages, numallresults, render = get_restricted_RDATFile_and_plot_data(unique_constructs, numresults, query_data, searchid, construct_secstructelemdicts, check_structure_balance)
+				
 				rdat_path = '/search/%s.rdat' % searchid
 				rdat.save(RDAT_FILE_DIR + rdat_path, version=0.24)
-				return render_to_response('advanced_search_results.html', \
+
+				return render_to_response('html/search_advanced_results.html', \
 						{'rdat_path':rdat_path, 'all_values':simplejson.dumps(all_values), 'values_min':values_min, 'values_max':values_max, \
 						'values_min_heatmap':values_min_heatmap, 'values_max_heatmap':values_max_heatmap, \
 						'rmdb_ids':simplejson.dumps(rmdb_ids), 'messages':messages, \
@@ -234,12 +248,13 @@ def advanced_search(request):
 						'render':render, 'render_paired_histogram':len(paired_bins) > 0, 'render_unpaired_histogram':len(unpaired_bins) > 0,\
 						'form':form, 'numresults':numallresults, 'cell_labels':simplejson.dumps(cell_labels), 'all_results_rendered':numallresults <= numresults},\
 						context_instance=RequestContext(request) )
+
 		except ValueError as e:
-			return render_to_response('advanced_search_results.html', {'render':False}, context_instance=RequestContext(request))
+			return render_to_response('html/search_advanced_results.html', {'render':False}, context_instance=RequestContext(request))
 
 	else:
 		form = AdvancedSearchForm()
-	return render_to_response('advanced_search.html', {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
+	return render_to_response('html/search_advanced.html', {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
 
 
 @login_required
