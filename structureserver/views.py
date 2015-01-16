@@ -11,7 +11,7 @@ from django import forms
 from rdatkit import rna, secondary_structure, mapping, view
 import tempfile
 import os
-import numpy
+from numpy import *
 import simplejson
 
 def bpdict_to_str(d):
@@ -82,7 +82,7 @@ def index(request):
 		else:
 		    rmdbid = request.POST['rmdbid'].strip()
 		    version = RMDBEntry.get_current_version(rmdbid)
-		    rf = open('/home/daslab/rdat/rmdb/design/rdat_files/%s/%s_%s.rdat' % (rmdbid, rmdbid, version))
+		    rf = open(RDAT_FILE_DIR + '/%s/%s_%s.rdat' % (rmdbid, rmdbid, version))
 		rdatfile.load(rf)
 		modifieddata = 'modifier' in rdatfile.annotations
 		if modifieddata:
