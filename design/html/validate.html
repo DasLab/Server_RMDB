@@ -86,6 +86,7 @@
 
                         {% if flag == 1 %}
                             <div class="alert alert-danger" role="alert">
+                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
                                 <b>ERROR</b>: The following messages were produced:
                                 <br/>
                                 <ul>
@@ -98,6 +99,7 @@
 
                         {% if flag == 2 %}
                             <div class="alert alert-success" role="alert">
+                                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
                                 <b>SUCCESS</b>: Your file has passed all tests.
                             </div>
                         {% endif %}
@@ -105,6 +107,7 @@
                         {% if flag == 3 %}
                             <div class="alert alert-warning" role="alert">
                                 <p>
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;
                                     <b>WARNING</b>: The following messages were produced:
                                 </p>
                                 <br/>
