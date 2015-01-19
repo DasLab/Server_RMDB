@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
 
+
 PRED_TYPE_CHOICES = (
     ('1D', '1D'),
     ('2D', '2D'),
