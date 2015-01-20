@@ -3,9 +3,9 @@ from django import forms
 
 
 PRED_TYPE_CHOICES = (
-    ('1D', '1D'),
-    ('2D', '2D'),
-    ('NN', 'None'),
+    ('1D', '  1-Dimensional (Traditional Chemical Mapping)  '),
+    ('2D', '  2-Dimensional (Mutate-and-Map)  '),
+    ('NN', '  None (No data)  '),
 )
 
 MOD_TYPE_CHOICES = (
@@ -13,6 +13,7 @@ MOD_TYPE_CHOICES = (
     ('DMS', 'DMS'),
     ('CMCT', 'CMCT'),
 )
+
 class VisualizerForm(forms.Form):
     sequences = forms.CharField(widget=forms.Textarea)
     structures = forms.CharField(widget=forms.Textarea)
@@ -23,27 +24,32 @@ class VisualizerForm(forms.Form):
     base_annotations = forms.CharField(widget=forms.Textarea)
     refstruct = forms.CharField()
 
+
 class PredictionForm(forms.Form):
     sequences = forms.CharField(widget=forms.Textarea)
     structures = forms.CharField(widget=forms.Textarea)
-    bonuses_1d = forms.CharField(widget=forms.Textarea)
-    bonuses_2d = forms.CharField(widget=forms.Textarea)
     annotations = forms.CharField(widget=forms.Textarea)
+    clipsequence = forms.BooleanField(initial=False)
     bonusfile = forms.FileField()
-    predtype = forms.ChoiceField(choices=PRED_TYPE_CHOICES)
-    modtype = forms.ChoiceField(choices=MOD_TYPE_CHOICES)
     rdatfile = forms.FileField()
-    temperature = forms.CharField(initial='37')
-    refstruct = forms.CharField()
+    rmdbid = forms.CharField(required=False)
+
+    modtype = forms.ChoiceField(choices=MOD_TYPE_CHOICES)
+    bonuses_1d = forms.CharField(widget=forms.Textarea)
     slope_1d = forms.CharField(initial='2.6')
     intercept_1d = forms.CharField(initial='-0.8')
-    slope_2d = forms.CharField(initial='1.0')
-    applyzscores = forms.BooleanField(initial=True)
-    clipsequence = forms.BooleanField(initial=False)
-    intercept_2d = forms.CharField(initial='0.0')
-    normalize = forms.BooleanField(initial=True)
-    rmdbid = forms.CharField(required=False)
-    nbootstraps_1d = forms.CharField()
-    nbootstraps_2d = forms.CharField()
     raw_bonuses = forms.BooleanField(initial=False)
+
+    bonuses_2d = forms.CharField(widget=forms.Textarea)
+    slope_2d = forms.CharField(initial='1.0')
+    intercept_2d = forms.CharField(initial='0.0')
+    applyzscores = forms.BooleanField(initial=True)
+
+    predtype = forms.ChoiceField(choices=PRED_TYPE_CHOICES)
+    normalize = forms.BooleanField(initial=True)
+    temperature = forms.CharField(initial='37')
+    refstruct = forms.CharField(widget=forms.Textarea)
+
+    nbootstraps_1d = forms.CharField(initial='100')
+    nbootstraps_2d = forms.CharField(initial='100')
     

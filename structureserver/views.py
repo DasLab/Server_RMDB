@@ -197,7 +197,7 @@ def index(request):
 				elif 'CMCT' in modifiers:
 					form_params['modtype'] = 'CMCT'
 				form = PredictionForm(form_params)
-				return render_to_response('html/structureserver.html', {'form':form, 'rdatloaded':True, 'valerrors':valerrors})
+				return render_to_response('html/predict.html', {'form':form, 'rdatloaded':True, 'valerrors':valerrors})
 
 	#======  End RDAT file and RMDB entry parsing ======
 
@@ -221,7 +221,7 @@ def index(request):
 						structures.append(l)
 			if not sequences:
 				messages.append('No sequences found: This is either because you did not input any sequences or your RDAT file contains no chemically modified lanes')
-				return render_to_response('html/view_structures.html', {'panels':[], 'messages':messages,'bppmimg':'', 'ncols':0, 'nrows':0}, context_instance=RequestContext(request))
+				return render_to_response('html/predict_result.html', {'panels':[], 'messages':messages,'bppmimg':'', 'ncols':0, 'nrows':0}, context_instance=RequestContext(request))
 
 			if request.POST['predtype'] == '1D':
 				apply_bonuses = True
@@ -395,14 +395,14 @@ def index(request):
 			visform_params['base_annotations'] = '\n'.join([bpdict_to_str(ann) for ann in base_annotations])
 			visform_params['refstruct'] = refstruct.dbn
 			visform = VisualizerForm(visform_params)
-			return render_to_response('html/view_structures.html', {'panels':panels, 'messages':messages,'ncols':ncols, 'nrows':nrows, 'form':visform}, context_instance=RequestContext(request))
+			return render_to_response('html/predict_result.html', {'panels':panels, 'messages':messages,'ncols':ncols, 'nrows':nrows, 'form':visform}, context_instance=RequestContext(request))
 		except IndexError:
 			print e
-			return render_to_response('html/structureserver.html', {'form':PredictionForm(), 'rdatloaded':False, 'other_errors':['Invalid input. Please check your inputs and try again.']})
+			return render_to_response('html/predict.html', {'form':PredictionForm(), 'rdatloaded':False, 'other_errors':['Invalid input. Please check your inputs and try again.']})
 
 	else:
 		form = PredictionForm()
-		return render_to_response('html/structureserver.html', {'form':form, 'rdatloaded':False, 'other_errors':[]}, context_instance=RequestContext(request))
+		return render_to_response('html/predict.html', {'form':form, 'rdatloaded':False, 'other_errors':[]}, context_instance=RequestContext(request))
 
 
 def render_to_varna(sequences, structures, modifiers, titles, mapping_data, base_annotations, refstruct):
@@ -457,5 +457,5 @@ def viewstructures(request):
 			modifiers = ['Pseudo energy' for y in sequences]
 		panels, ncols, nrows = render_to_varna(sequences, structures, modifiers, titles, mapping_data, base_annotations, refstruct)
 		form = VisualizerForm(request.POST)
-		return render_to_response('html/view_structures.html', {'panels':panels, 'messages':messages,'ncols':ncols, 'nrows':nrows, 'form':form}, context_instance=RequestContext(request))
+		return render_to_response('html/predict_result.html', {'panels':panels, 'messages':messages,'ncols':ncols, 'nrows':nrows, 'form':form}, context_instance=RequestContext(request))
 
