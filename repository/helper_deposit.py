@@ -223,9 +223,9 @@ def submit_rmdb_entry(form, request, rdatfile, isatabfile):
 	else:
 		current_version = 0
 		owner = None
-	# if current_version > 0 and owner != request.user:
-	# 	error_msg.append('RMDB entry %s exists and you cannot update it since you are not the owner.' % request.POST['rmdb_id'])
-	# 	return error_msg
+	if current_version > 0 and owner != request.user and (not request.user.is_staff):
+		error_msg.append('RMDB entry %s exists and you cannot update it since you are not the owner.' % request.POST['rmdb_id'])
+		return error_msg
 
 	entry = RMDBEntry()
 	entry.comments = rdatfile.comments
