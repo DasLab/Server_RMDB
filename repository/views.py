@@ -25,9 +25,14 @@ from itertools import chain
 
 def index(request):
 	news = NewsItem.objects.all().order_by('-date')[:10]
+	entries = RMDBEntry.objects.all().order_by('-creation_date')[:10]
+	for e in entries:
+		e.constructs = ConstructSection.objects.filter(entry=e).values('name').distinct()
+		e.cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
+
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
 
-	return render_to_response('html/index.html', {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints, 'news':news}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['index'], {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints, 'news':news, 'entries':entries}, context_instance=RequestContext(request))
 
 def browse(request):
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
@@ -36,32 +41,32 @@ def browse(request):
 	constructs_puzzle = get_rmdb_category('puzzle')
 	constructs_eterna = get_rmdb_category('eterna')
 
-	return render_to_response('html/browse.html', {'constructs_general':constructs_general, 'constructs_puzzle':constructs_puzzle, 'constructs_eterna':constructs_eterna, 'N_all':N_all, 'N_general':N_all-N_puzzle-N_eterna, 'N_puzzle':N_puzzle, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['browse'], {'constructs_general':constructs_general, 'constructs_puzzle':constructs_puzzle, 'constructs_eterna':constructs_eterna, 'N_all':N_all, 'N_general':N_all-N_puzzle-N_eterna, 'N_puzzle':N_puzzle, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
 
 
 def specs(request, section):
 	if len(section) > 0:
 		return  HttpResponseRedirect('/repository/specs' + section)
-	return render_to_response('html/specs.html', {}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['specs'], {}, context_instance=RequestContext(request))
 
 def tools(request):
-	return render_to_response('html/tools.html', {}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['repos'], {}, context_instance=RequestContext(request))
 
 def tutorial_predict(request):
-	return render_to_response('html/tutorial_predict.html', {}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['tt_predict'], {}, context_instance=RequestContext(request))
 
 def tutorial_api(request):
-	return render_to_response('html/tutorial_api.html', {}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['tt_api'], {}, context_instance=RequestContext(request))
 
 def tutorial_rdatkit(request):
-	return render_to_response('html/tutorial_rdatkit.html', {}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['tt_rdatkit'], {}, context_instance=RequestContext(request))
 
 def tutorial_hitrace(request):
-	return render_to_response('html/tutorial_hitrace.html', {}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['tt_hitrace'], {}, context_instance=RequestContext(request))
 
 def about(request):
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-	return render_to_response('html/about.html', {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['about'], {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints}, context_instance=RequestContext(request))
 
 
 def validate(request):
@@ -85,7 +90,7 @@ def validate(request):
 		form = ValidateForm()
 		flag = 0
 
-	return render_to_response('html/validate.html', {'form':form, 'valerrors':errors, 'valmsgs':messages, 'flag':flag}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['validate'], {'form':form, 'valerrors':errors, 'valmsgs':messages, 'flag':flag}, context_instance=RequestContext(request))
 
 
 def detail(request, rmdb_id):
@@ -117,7 +122,7 @@ def detail(request, rmdb_id):
 	except RMDBEntry.DoesNotExist:
 		raise Http404
 	
-	return render_to_response('detail.html', {'codebase':get_codebase(request), 'entry':entry, 'constructs':constructs, 'publication':entry.publication, 'comments':comments, 'data_annotations_exist':data_annotations_exist, 'maxlen_flag':maxlen_flag}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['detail'], {'codebase':get_codebase(request), 'entry':entry, 'constructs':constructs, 'publication':entry.publication, 'comments':comments, 'data_annotations_exist':data_annotations_exist, 'maxlen_flag':maxlen_flag}, context_instance=RequestContext(request))
 
 
 def search(request):
@@ -150,7 +155,7 @@ def search(request):
 	(N_all, _, _, _, _, _) = get_rmdb_stats()
 	N_general = len(entries_general)
 	N_eterna = len(entries_eterna)
-	return render_to_response('html/search_result.html', {'entries_general':entries_general, 'entries_eterna':entries_eterna, 'sstring':sstring, 'N_all':N_all, 'N_general':N_general, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['search_res'], {'entries_general':entries_general, 'entries_eterna':entries_eterna, 'sstring':sstring, 'N_all':N_all, 'N_general':N_general, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
 
 
 def advanced_search(request):
@@ -253,11 +258,11 @@ def advanced_search(request):
 						context_instance=RequestContext(request) )
 
 		except ValueError as e:
-			return render_to_response('html/search_advanced_results.html', {'render':False}, context_instance=RequestContext(request))
+			return render_to_response(HTML_PATH['adv_search_res'], {'render':False}, context_instance=RequestContext(request))
 
 	else:
 		form = AdvancedSearchForm()
-	return render_to_response('html/search_advanced.html', {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['adv_search'], {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -316,7 +321,7 @@ def upload(request):
 			error_msg.append('Input file invalid; please check and resubmit.')
 	else:
 		form = UploadForm()
-	return render_to_response('html/submit.html', {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['upload'], {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
 
 
 def user_login(request):
@@ -381,7 +386,7 @@ def register(request):
 	else:
 		form = RegistrationForm()
 
-	return render_to_response('html/register.html', {'reg_form':form, 'error_msg':error_msg, 'flag':flag})
+	return render_to_response(HTML_PATH['register'], {'reg_form':form, 'error_msg':error_msg, 'flag':flag})
 
 
 def user_logout(request):

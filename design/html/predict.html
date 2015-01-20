@@ -480,24 +480,36 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
 
             $("#id_predtype").on("change", function() {
                 $("#bonus1D, #bonus2D, #bonusNN").hide();
-                if ($(this).val() == "1D") {
-                    $("#bonus1D").show();
-                } else if ($(this).val() == "2D") {
-                    $("#bonus2D").show();
-                } else {
+                if ($(this).val() == "NN") {
                     $("#bonusNN").show();
+                    $("#id_normalize").attr("disabled", true);
+                    $("#id_normalize").attr("checked", false);
+                    $("#id_nbootstraps_1d").attr("disabled", true);
+                } else {
+                    if ($(this).val() == "2D") {
+                    $("#bonus2D").show();
+                    } else {
+                    $("#bonus1D").show();
+                    }
+                    $("#id_normalize").attr("disabled", false);
+                    $("#id_nbootstraps_1d").attr("disabled", false);
                 }
             });
             $("#bonus1D, #bonus2D, #bonusNN").hide();
-            if ($("#id_predtype").val() == "1D") {
-                $("#bonus1D").show();
-            } else if ($("#id_predtype").val() == "2D") {
-                $("#bonus2D").show();
-            } else {
+            if ($(this).val() == "NN") {
                 $("#bonusNN").show();
+                $("#id_normalize").attr("disabled", true);
+                $("#id_normalize").attr("checked", false);
+                $("#id_nbootstraps_1d").attr("disabled", true);
+            } else {
+                if ($(this).val() == "2D") {
+                $("#bonus2D").show();
+                } else {
+                $("#bonus1D").show();
+                }
+                $("#id_normalize").attr("disabled", false);
+                $("#id_nbootstraps_1d").attr("disabled", false);
             }
-
-
             // $("#id_rmdb_id, #id_authors").on("focusout", function() {
             //     $(this).parent().removeClass("has-error");
             // });

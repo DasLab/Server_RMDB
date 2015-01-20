@@ -3,123 +3,6 @@
 
 {% block content %}
 <div class="container">
-    <form enctype="multipart/form-data" method="post" action="/repository/deposit/submit/">
-        <h3>
-            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;&nbsp;
-            Submit RMDB Entry
-        </h3>
-        <div class="row">
-            <div class="col-md-11">
-                <p>New experimental data can be uploaded to the RMDB as a spreadsheet in either the SNRNASM <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank"><mark>ISATAB</mark>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> format or <a href="/repository/deposit/specs"><mark>RDAT</mark></a> format.</p>
-                <p>Data must be reviewed and approved by RMDB team before public release. It should meet the following requirements:</p>
-                <ul>
-                    <li>Includes error estimates;</li>
-                    <li>Contains information on estimated or known structure (at least at the level of secondary structure);</li>
-                    <li>Provides description of how the data were processed.</li>
-                </ul>
-            </div>
-            <div class="col-md-1">
-                <br/><br/><br/><br/>
-                <a href="/repository/deposit/validate/" class="btn btn-warning pull-right">&nbsp;&nbsp;Validate&nbsp;&nbsp;</a>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="col-md-7">
-                <div class="panel panel-primary" id="col-1">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;
-                            RDAT File
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row col-md-12">
-                            <div class="col-md-2">Format:</div>
-                            <div class="col-md-3">{{ form.filetype }}</div>
-                            <div class="col-md-3">Experiment Type:</div>
-                            <div class="col-md-4">{{ form.type }}</div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="RMDB ID" data-content="It must be of the format XXXXX_YYY_DDDD, where X and Y are alphanumeric uppercase characters and D are digits. X can be 5-7 length, Y can only be 3 and D can only be 4. Example: RNAPZ6_DMS_0001.">
-                            <div class="col-md-3">RMDB ID:</div>
-                            <div class="col-md-9">{{ form.rmdb_id }}</div>
-                        </div>
-                        <br/><br/>
-                        <div class="row col-md-12">
-                            <div class="col-md-3"></div>
-                            <div class="col-md-9">
-                                <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="id_use_name"> Use file name as RMDB ID
-                                </label>
-                            </div>
-                            </div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row col-md-12">
-                            <div class="col-md-3">Upload File:</div>
-                            <div class="col-md-9 form-inline">
-                                <input id="id_disp" class="form-control" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
-                                &nbsp;&nbsp;
-                                <div class="fileUpload btn btn-info">
-                                    <span>&nbsp;&nbsp;Browse&nbsp;&nbsp;</span>
-                                    {{ form.file }}
-                                </div>
-                            </div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row col-md-12">
-                            <div class="col-md-3">Description: (<i>optional</i>)</div>
-                            <div class="col-md-9">{{ form.description }}</div>
-                        </div>
-                    </div>
-                    <br/>
-                </div>
-            </div>
-
-            <div class="col-md-5">
-                <div class="panel panel-info" id="col-2">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;
-                            Associated Publication
-                        </h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="col-md-12">
-                            <p>Please specify authorship. The other publication information fields are optional. If left blank, <samp>N/A</samp> will be filled in as default.</p>
-                        </div>
-                        <br/><br/><br/><br/>
-                        <div class="row col-md-12">
-                            <div class="col-md-5">Authors:</div>
-                            <div class="col-md-7">{{ form.authors }}</div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row col-md-12">
-                            <div class="col-md-5">Pubmed ID: (<i>optional</i>)</div>
-                            <div class="col-md-7">{{ form.pubmed_id }}</div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row col-md-12">
-                            <div class="col-md-5">Publication Title: (<i>optional</i>)</div>
-                            <div class="col-md-7">{{ form.publication }}</div>
-                        </div>
-                        <br/><br/><br/><br/><br/>
-                        <div class="col-md-12">
-                            <span class="pull-right">
-                                <input type="submit" class="btn btn-inverse" value="&nbsp;Submit&nbsp;"/>
-                                &nbsp;&nbsp;
-                                <a href="/repository/deposit/submit/" class="btn btn-default">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
-                            </span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-
     <div class="row col-md-12">
         {% if flag == 2 %}
             <div class="alert alert-success" role="alert">
@@ -174,7 +57,127 @@
                     {% endfor %}
                 </ul>
             </div>
+            <hr/>
         {% endif %}
+    </div>
+
+    <div class="row col-md-12">
+        <form enctype="multipart/form-data" method="post" action="/repository/deposit/submit/">
+            <h3>
+                <span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;&nbsp;
+                Submit RMDB Entry
+            </h3>
+            <div class="row">
+                <div class="col-md-11">
+                    <p>New experimental data can be uploaded to the RMDB as a spreadsheet in either the SNRNASM <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank"><mark>ISATAB</mark>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> format or <a href="/repository/deposit/specs"><mark>RDAT</mark></a> format.</p>
+                    <p>Data must be reviewed and approved by RMDB team before public release. It should meet the following requirements:</p>
+                    <ul>
+                        <li>Includes error estimates;</li>
+                        <li>Contains information on estimated or known structure (at least at the level of secondary structure);</li>
+                        <li>Provides description of how the data were processed.</li>
+                    </ul>
+                </div>
+                <div class="col-md-1">
+                    <br/><br/><br/><br/>
+                    <a href="/repository/deposit/validate/" class="btn btn-warning pull-right">&nbsp;&nbsp;Validate&nbsp;&nbsp;</a>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="panel panel-primary" id="col-1">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">
+                                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;
+                                RDAT File
+                            </h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row col-md-12">
+                                <div class="col-md-2">Format:</div>
+                                <div class="col-md-3">{{ form.filetype }}</div>
+                                <div class="col-md-3">Experiment Type:</div>
+                                <div class="col-md-4">{{ form.type }}</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="RMDB ID" data-content="It must be of the format XXXXX_YYY_DDDD, where X and Y are alphanumeric uppercase characters and D are digits. X can be 5-7 length, Y can only be 3 and D can only be 4. Example: RNAPZ6_DMS_0001.">
+                                <div class="col-md-3">RMDB ID:</div>
+                                <div class="col-md-9">{{ form.rmdb_id }}</div>
+                            </div>
+                            <br/><br/>
+                            <div class="row col-md-12">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="id_use_name"> Use file name as RMDB ID
+                                    </label>
+                                </div>
+                                </div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row col-md-12">
+                                <div class="col-md-3">Upload File:</div>
+                                <div class="col-md-9 form-inline">
+                                    <input id="id_disp" class="form-control" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
+                                    &nbsp;&nbsp;
+                                    <div class="fileUpload btn btn-info">
+                                        <span>&nbsp;&nbsp;Browse&nbsp;&nbsp;</span>
+                                        {{ form.file }}
+                                    </div>
+                                </div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row col-md-12">
+                                <div class="col-md-3">Description: (<i>optional</i>)</div>
+                                <div class="col-md-9">{{ form.description }}</div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="panel panel-info" id="col-2">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;
+                                Associated Publication
+                            </h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <p>Please specify authorship. The other publication information fields are optional. If left blank, <samp>N/A</samp> will be filled in as default.</p>
+                            </div>
+                            <br/><br/><br/><br/>
+                            <div class="row col-md-12">
+                                <div class="col-md-5">Authors:</div>
+                                <div class="col-md-7">{{ form.authors }}</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row col-md-12">
+                                <div class="col-md-5">Pubmed ID: (<i>optional</i>)</div>
+                                <div class="col-md-7">{{ form.pubmed_id }}</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row col-md-12">
+                                <div class="col-md-5">Publication Title: (<i>optional</i>)</div>
+                                <div class="col-md-7">{{ form.publication }}</div>
+                            </div>
+                            <br/><br/><br/><br/><br/>
+                            <div class="col-md-12">
+                                <span class="pull-right">
+                                    <input type="submit" class="btn btn-inverse" value="&nbsp;Submit&nbsp;"/>
+                                    &nbsp;&nbsp;
+                                    <a href="/repository/deposit/submit/" class="btn btn-default">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 
 </div>

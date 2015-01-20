@@ -2,10 +2,14 @@
 import os
 
 
+T47_DEV = 1
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/MATLAB_code/rmdb/design'
+if T47_DEV:
+    MEDIA_ROOT = '/MATLAB_code/rmdb/design'
+else:
+    MEDIA_ROOT = '/home/daslab/rdat/rmdb/design'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"

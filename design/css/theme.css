@@ -101,7 +101,7 @@ label {
   }
 }
 
-li.nav-general, li.nav-puzzle, li.nav-eterna {
+.nav-general, .nav-puzzle, .nav-eterna {
   border-width: 2px 10px;
   border-color: #fff;
   border-style: solid;
@@ -112,7 +112,7 @@ li.nav-general {
 }
 
 li.nav-general > a:hover {
-  background-color: #ecc;
+  background-color: #eaa;
 }
 
 li.nav-puzzle {
@@ -120,7 +120,7 @@ li.nav-puzzle {
 }
 
 li.nav-puzzle > a:hover {
-  background-color: #cec;
+  background-color: #aea;
 }
 
 li.nav-eterna {
@@ -164,6 +164,7 @@ li.nav-general > a, li.nav-puzzle > a, li.nav-eterna> a  {
 
 .nav-panel{
     border-style: solid;
+    border-radius: 5px;
     border-width: 1px;
     border-color: #112d52;
 }
@@ -354,3 +355,18 @@ img.logo {
   height: 72px;
 }
 
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+
+.carousel-indicators li {
+  background-color: #7cafd3;
+}
+
+.carousel-indicators .active {
+  background-color: #112d52;
+}
+
+.carousel-indicators {
+  top:0px;
+}

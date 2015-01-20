@@ -3,76 +3,9 @@
 
 {% block content %}
 <div class="container">
-    <form method="post" action="/repository/register/">
-        <h3>MyRMDB Account Registration</h3>
-        <br/>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="panel panel-primary" id="col-1">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">Account Login</h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="User ID" data-content="It must be at least 3 characters long. Alphanumeric characters only. Previously used User IDs are not available.">
-                            <div class="col-md-5">User Name: </div>
-                            <div class="col-md-7">{{ reg_form.username }}</div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Password" data-content="It must be at least 6 characters long. No limit on combinations.">
-                            <div class="col-md-5">Password: </div>
-                            <div class="col-md-7">{{ reg_form.password }}</div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Password" data-content="Type your password for a second time. Both times must match.">
-                            <div class="col-md-5"><i>Repeat</i> Password: </div>
-                            <div class="col-md-7">{{ reg_form.repeatpassword }}</div>
-                        </div>
-                        <br/><br/><br/>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-md-8">
-                <div class="panel panel-info" id="col-2">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">Contact Information</h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Contact Name" data-content="First name must be at least 3 characters, while last time must be at least 2 characters.">
-                            <div class="col-md-2">First Name: </div>
-                            <div class="col-md-4">{{ reg_form.firstname }}</div>
-                            <div class="col-md-2">Last Name: </div>
-                            <div class="col-md-4">{{ reg_form.lastname }}</div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Affiliation" data-content="Institution and department names must be at least 4 characters long.">
-                            <div class="col-md-2">Insititution: </div>
-                            <div class="col-md-4">{{ reg_form.institution }}</div>
-                            <div class="col-md-2">Department: </div>
-                            <div class="col-md-4">{{ reg_form.department }}</div>
-                        </div>
-                        <br/><br/><br/>
-                        <div class="row" data-toggle="popover" data-placement="bottom" title="Email" data-content="Please use valid email address.">
-                            <div class="col-md-3">&nbsp;&nbsp;&nbsp;&nbsp;E-mail Address:</div>
-                            <div class="col-md-8">{{ reg_form.email }}</div>
-                            <div class="col-md-1"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row col-md-12">
-            <div class="pull-right">
-                <input type="submit" class="btn btn-inverse" value="&nbsp;Submit&nbsp;"/>
-                &nbsp;&nbsp;
-                <a href="/repository/register/" class="btn btn-default">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
-            </div>
-        </div>
-        <br/><br/><br/>
-    </form>
-
-    <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
         {% if flag == 1 %}
             <div class="alert alert-success" role="alert">
                 <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
@@ -145,9 +78,84 @@
                     {% endfor %}
                 </ul>
             </div>
+            <hr/>
         {% endif %}
     </div>
-    
+
+    <div class="row col-md-12">
+        <form method="post" action="/repository/register/">
+            <h3>
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;
+                MyRMDB Account Registration
+            </h3>
+            <br/>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-primary" id="col-1">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Account Login</h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="User ID" data-content="It must be at least 3 characters long. Alphanumeric characters only. Previously used User IDs are not available.">
+                                <div class="col-md-5">User Name: </div>
+                                <div class="col-md-7">{{ reg_form.username }}</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Password" data-content="It must be at least 6 characters long. No limit on combinations.">
+                                <div class="col-md-5">Password: </div>
+                                <div class="col-md-7">{{ reg_form.password }}</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Password" data-content="Type your password for a second time. Both times must match.">
+                                <div class="col-md-5"><i>Repeat</i> Password: </div>
+                                <div class="col-md-7">{{ reg_form.repeatpassword }}</div>
+                            </div>
+                            <br/><br/><br/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="panel panel-info" id="col-2">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Contact Information</h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Contact Name" data-content="First name must be at least 3 characters, while last time must be at least 2 characters.">
+                                <div class="col-md-2">First Name: </div>
+                                <div class="col-md-4">{{ reg_form.firstname }}</div>
+                                <div class="col-md-2">Last Name: </div>
+                                <div class="col-md-4">{{ reg_form.lastname }}</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Affiliation" data-content="Institution and department names must be at least 4 characters long.">
+                                <div class="col-md-2">Insititution: </div>
+                                <div class="col-md-4">{{ reg_form.institution }}</div>
+                                <div class="col-md-2">Department: </div>
+                                <div class="col-md-4">{{ reg_form.department }}</div>
+                            </div>
+                            <br/><br/><br/>
+                            <div class="row" data-toggle="popover" data-placement="bottom" title="Email" data-content="Please use valid email address.">
+                                <div class="col-md-3">&nbsp;&nbsp;&nbsp;&nbsp;E-mail Address:</div>
+                                <div class="col-md-8">{{ reg_form.email }}</div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-md-12">
+                <div class="pull-right">
+                    <input type="submit" class="btn btn-inverse" value="&nbsp;Submit&nbsp;"/>
+                    &nbsp;&nbsp;
+                    <a href="/repository/register/" class="btn btn-default">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
+                </div>
+            </div>
+            <br/><br/><br/>
+        </form>
+    </div>
+
 </div>
 <br/>
 {% endblock %}
