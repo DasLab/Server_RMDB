@@ -101,7 +101,7 @@ INSTALLED_APPS = (
 #    'mptt',
 #    'publisher'
     'rmdb.repository',
-    'rmdb.structureserver',
+    # 'rmdb.structureserver',
     # 'south',
 )
 TEMPLATE_CONTEXT_PROCESSORS = (

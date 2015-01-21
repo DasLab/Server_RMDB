@@ -1,25 +1,20 @@
 {% extends "html/_framework.html" %}
 
 {% block content %}
-{% if other_errors %}
-<ul class="form_errors">
-{% for e in other_errors %}
-<li> {{ e }} </i>
+<ul class="alert alert-warning">
+{% for v in msg_y %}
+<li>{{ v }}</li>
 {% endfor %}
 </ul>
-{% endif %}
-<ul class="error_message">
-{% for v in valerrors %}
+<ul class="alert alert-danger">
+{% for v in msg_r %}
 <li>{{ v }}</li>
 {% endfor %}
 </ul>
 
-{{ form.rdatfile.errors }}
-
-
 
 <div class="container">
-    <form id="structureform" enctype="multipart/form-data" method="post" action="/structureserver/">
+    <form id="structureform" enctype="multipart/form-data" method="post" action="/repository/analyze/predict/">
         <h3>
             <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>&nbsp;&nbsp;
             Structural Server: Predict Secondary Structures
@@ -88,16 +83,16 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <p><b>Sequences</b>: (in FASTA format)</p>
-                                                {{ form.sequences }}
+                                                {{ secstr_form.sequences }}
                                             </div>
                                             <div class="col-md-2">
                                                 <p><b>Data Annotations</b>:<p>
-                                                {{ form.annotations }}
+                                                {{ secstr_form.annotations }}
                                             </div>
                                         </div>
                                     {% else %}
                                         <p><b>Sequences</b>: (in FASTA format)</p>
-                                        {{ form.sequences }}
+                                        {{ secstr_form.sequences }}
                                     {% endif %}
                                     </div>
                                     <div class="col-md-1"></div>
@@ -117,10 +112,10 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                                 <div class="col-md-2">
                                                     <div class="fileUpload btn btn-info">
                                                         <span>&nbsp;&nbsp;Browse&nbsp;&nbsp;</span>
-                                                        {{ form.rdatfile }}
+                                                        {{ secstr_form.rdatfile }}
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2"><input type="submit" class="btn btn-inverse" value="&nbsp;Upload&nbsp;"/></div>
+                                                <div class="col-md-2"><input type="submit" class="btn btn-inverse clickable" value="&nbsp;Upload&nbsp;"/></div>
                                             </div>
                                             <br/>
                                             <div class="row">
@@ -128,7 +123,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                                 <div class="col-md-9">
                                                     <div class="checkbox">
                                                     <label>
-                                                        {{ form.clipsequence }} Trims sequences down to regions where mapping data is available
+                                                        {{ secstr_form.clipsequence }} Trims sequences down to regions where mapping data is available
                                                     </label>
                                                 </div>
                                                 </div>
@@ -145,8 +140,8 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                         <br/>
                                         <div class="row">
                                             <div class="col-md-3">RMDB ID:</div>
-                                            <div class="col-md-7">{{ form.rmdbid }}</div>
-                                            <div class="col-md-2"><input type="submit" class="btn btn-inverse" value="&nbsp;Retrieve&nbsp;"/></div>
+                                            <div class="col-md-7">{{ secstr_form.rmdbid }}</div>
+                                            <div class="col-md-2"><input type="submit" class="btn btn-inverse clickable" value="&nbsp;Retrieve&nbsp;"/></div>
                                         </div>
                                         <br/>
                                         <div class="row">
@@ -154,7 +149,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                             <div class="col-md-9">
                                                 <div class="checkbox">
                                                 <label>
-                                                    {{ form.clipsequence }} Trims sequences down to regions where mapping data is available
+                                                    {{ secstr_form.clipsequence }} Trims sequences down to regions where mapping data is available
                                                 </label>
                                             </div>
                                             </div>
@@ -172,7 +167,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                 <div class="row">
                                     <div class="col-md-12 form-inline">
                                         <br/>
-                                        <p><b>Type of Bonus</b>:&nbsp;&nbsp;&nbsp;&nbsp;{{ form.predtype }}</p>
+                                        <p><b>Type of Bonus</b>:&nbsp;&nbsp;&nbsp;&nbsp;{{ secstr_form.predtype }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -197,22 +192,22 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                 <div class="col-md-1"></div>
                                 <div class="col-md-6">
                                     <p><b>Input Bonuses</b>:</p>
-                                    {{ form.bonuses_1d }}
+                                    {{ secstr_form.bonuses_1d }}
                                 </div>
                                 <div class="col-md-4">
                                     <div class="row">
                                         <div class="col-md-5 text-right"><b>Modifier Type</b>:</div>
-                                        <div class="col-md-7">{{ form.modtype }}</div>
+                                        <div class="col-md-7">{{ secstr_form.modtype }}</div>
                                     </div>
                                     <br/>
                                     <div class="row">
                                         <div class="col-md-5 text-right"><b>Slope</b>:</div>
-                                        <div class="col-md-7">{{ form.slope_1d }}</div>
+                                        <div class="col-md-7">{{ secstr_form.slope_1d }}</div>
                                     </div>
                                     <br/>
                                     <div class="row">
                                         <div class="col-md-5 text-right"><b>Intercept</b>:</div>
-                                        <div class="col-md-7">{{ form.intercept_1d }}</div>
+                                        <div class="col-md-7">{{ secstr_form.intercept_1d }}</div>
                                     </div>
                                     <br/>
                                     <div class="row">
@@ -220,7 +215,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                         <div class="col-md-7">
                                             <div class="checkbox">
                                             <label>
-                                                {{ form.raw_bonuses }}
+                                                {{ secstr_form.raw_bonuses }}
                                                 &nbsp;&nbsp;&nbsp;&nbsp;Apply raw bonuses as-is 
                                                 <br/>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;(no pseudo-energy 
@@ -255,17 +250,17 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                 <div class="col-md-1"></div>
                                 <div class="col-md-7">
                                     <p><b>Input Bonuses</b>:</p>
-                                    {{ form.bonuses_2d }}
+                                    {{ secstr_form.bonuses_2d }}
                                 </div>
                                 <div class="col-md-3">
                                     <div class="row">
                                         <div class="col-md-5 text-right"><b>Slope</b>:</div>
-                                        <div class="col-md-7">{{ form.slope_2d }}</div>
+                                        <div class="col-md-7">{{ secstr_form.slope_2d }}</div>
                                     </div>
                                     <br/>
                                     <div class="row">
                                         <div class="col-md-5 text-right"><b>Intercept</b>:</div>
-                                        <div class="col-md-7">{{ form.intercept_2d }}</div>
+                                        <div class="col-md-7">{{ secstr_form.intercept_2d }}</div>
                                     </div>
                                     <br/>
                                     <div class="row">
@@ -273,7 +268,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                         <div class="col-md-7">
                                             <div class="checkbox">
                                             <label>
-                                                {{ form.applyzscores }}
+                                                {{ secstr_form.applyzscores }}
                                                 &nbsp;&nbsp;&nbsp;&nbsp;Apply Z-score 
                                                 <br/>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;filter 
@@ -321,7 +316,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                             <div class="col-md-1"></div>
                             <div class="col-md-6">
                                 <p><b>Reference Structure</b>:</p>
-                                {{ form.refstruct }}
+                                {{ secstr_form.refstruct }}
                             </div>
                             <div class="col-md-4">
                                 <div class="row">
@@ -329,7 +324,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                     <div class="col-md-7">
                                         <div class="checkbox">
                                         <label>
-                                            {{ form.normalize }} 
+                                            {{ secstr_form.normalize }} 
                                             &nbsp;&nbsp;&nbsp;&nbsp;Apply box-plot scaling
                                         </label>
                                         </div>
@@ -340,7 +335,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                     <div class="col-md-5 text-right"><b>Temperature</b>:</div>
                                     <div class="col-md-7">
                                         <div class="input-group">
-                                            {{ form.temperature }}
+                                            {{ secstr_form.temperature }}
                                             <span class="input-group-addon">&deg;C</span>
                                         </div>
                                     </div>
@@ -348,7 +343,7 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                                 <br/>
                                 <div class="row">
                                     <div class="col-md-5 text-right"><b># of Bootstrap</b>:</div>
-                                    <div class="col-md-7">{{ form.nbootstraps_1d }}</div>
+                                    <div class="col-md-7">{{ secstr_form.nbootstraps }}</div>
                                 </div>
                             </div>
                             <div class="col-md-1"></div>
@@ -365,13 +360,6 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                             </div>
                             <div class="col-md-1"></div>
                         </div>
-
-                                     <br/>
-                                    <div class="row">
-                                        <div class="col-md-5 text-right"><b># of Bootstrap</b>:</div>
-                                        <div class="col-md-7">{{ form.nbootstraps_2d }}</div>
-                                    </div>
-                                     <br/>
                     </div>
                 </div>
             </div>
@@ -457,11 +445,10 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
             $("#id_intercept_1d").addClass("form-control");
             $("#id_slope_1d").addClass("form-control");
             $("#id_bonuses_1d").addClass("form-control");
-            $("#id_nbootstraps_1d").addClass("form-control");
+            $("#id_nbootstraps").addClass("form-control");
             $("#id_intercept_2d").addClass("form-control");
             $("#id_slope_2d").addClass("form-control");
             $("#id_bonuses_2d").addClass("form-control");
-            $("#id_nbootstraps_2d").addClass("form-control");
 
             $("#id_temperature").addClass("form-control");
             $("#id_refstruct").addClass("form-control");
@@ -484,15 +471,15 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                     $("#bonusNN").show();
                     $("#id_normalize").attr("disabled", true);
                     $("#id_normalize").attr("checked", false);
-                    $("#id_nbootstraps_1d").attr("disabled", true);
+                    $("#id_nbootstraps").attr("disabled", true);
                 } else {
                     if ($(this).val() == "2D") {
-                    $("#bonus2D").show();
+                        $("#bonus2D").show();
                     } else {
-                    $("#bonus1D").show();
+                        $("#bonus1D").show();
                     }
                     $("#id_normalize").attr("disabled", false);
-                    $("#id_nbootstraps_1d").attr("disabled", false);
+                    $("#id_nbootstraps").attr("disabled", false);
                 }
             });
             $("#bonus1D, #bonus2D, #bonusNN").hide();
@@ -500,15 +487,15 @@ This server makes use of the current version of <a href="http://rna.urmc.rochest
                 $("#bonusNN").show();
                 $("#id_normalize").attr("disabled", true);
                 $("#id_normalize").attr("checked", false);
-                $("#id_nbootstraps_1d").attr("disabled", true);
+                $("#id_nbootstraps").attr("disabled", true);
             } else {
                 if ($(this).val() == "2D") {
-                $("#bonus2D").show();
+                    $("#bonus2D").show();
                 } else {
-                $("#bonus1D").show();
+                    $("#bonus1D").show();
                 }
                 $("#id_normalize").attr("disabled", false);
-                $("#id_nbootstraps_1d").attr("disabled", false);
+                $("#id_nbootstraps").attr("disabled", false);
             }
             // $("#id_rmdb_id, #id_authors").on("focusout", function() {
             //     $(this).parent().removeClass("has-error");

@@ -40,7 +40,7 @@ def write_temp_file(file_name):
 	tmp_file = open('/tmp/%s'%file_name.name, 'w')
 	tmp_file.write(file_name.read())
 	tmp_file.close()
-	tmp_file = open('/tmp/%s'%file_name.name)
+	tmp_file = open('/tmp/%s'%file_name.name, 'r')
 	return tmp_file
 
 

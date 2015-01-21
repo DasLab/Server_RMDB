@@ -9,6 +9,7 @@ CONSTRUCT_IMG_DIR = REPO_DIR + 'design/construct_img/'
 CONSTRUCT_THMB_DIR = REPO_DIR + 'design/construct_img/thumbs/'
 RDAT_FILE_DIR = REPO_DIR + 'design/rdat_files/'
 ISATAB_FILE_DIR = REPO_DIR + 'design/isatab_files/'
+TMPDIR = REPO_DIR + 'structureserver/tmp/'
 
 HTML_PATH = {
 	'index': 'html/index.html',
@@ -20,6 +21,8 @@ HTML_PATH = {
 	'validate': 'html/validate.html',
 	'upload': 'html/submit.html',
 
+	'predict': 'html/predict.html',
+	'predict_res': 'html/predict_results.html',
 	'repos': 'html/tools.html',
 	'tt_predict': 'html/tutorial_predict.html',
 	'tt_api': 'html/tutorial_api.html',

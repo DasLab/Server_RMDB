@@ -16,6 +16,7 @@ urlpatterns = patterns('repository.views',
     (r'^deposit/validate/$', 'validate'),
     (r'^deposit/submit/$', 'upload'),
 
+    (r'^analyze/predict/$', 'predict'),
     (r'^analyze/tools/$', 'tools'),
     (r'^analyze/docs/predict/$', 'tutorial_predict'),
     (r'^analyze/docs/api/$', 'tutorial_api'),
