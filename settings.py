@@ -1,8 +1,9 @@
 # Django settings for rmdb project.
 import os
 
+from t47_dev import *
 
-T47_DEV = 1
+
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
