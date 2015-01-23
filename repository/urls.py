@@ -7,7 +7,10 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('repository.views',
     (r'^$', 'index'),
     (r'^browse/$', 'browse'),
-    (r'^about/$', 'about'),
+
+    (r'^help/about$', 'about'),
+    (r'^help/license$', 'license'),
+    (r'^help/history$', 'history'),
 
     (r'^detail/(?P<rmdb_id>\w{,20})$', 'detail'),
     (r'^get_area_peaks/$', 'get_area_peaks'),
@@ -18,10 +21,14 @@ urlpatterns = patterns('repository.views',
 
     (r'^analyze/predict/$', 'predict'),
     (r'^analyze/tools/$', 'tools'),
+    (r'^analyze/tools/mapseeker/license/$', 'license_mapseeker'),
+    (r'^analyze/tools/mapseeker/download/$', 'download_mapseeker'),
+
     (r'^analyze/docs/predict/$', 'tutorial_predict'),
     (r'^analyze/docs/api/$', 'tutorial_api'),
     (r'^analyze/docs/rdatkit/$', 'tutorial_rdatkit'),
     (r'^analyze/docs/hitrace/$', 'tutorial_hitrace'),
+    (r'^analyze/docs/mapseeker/$', 'tutorial_mapseeker'),
 
     (r'^search/$', 'search'),
     (r'^advanced_search/$', 'advanced_search'),

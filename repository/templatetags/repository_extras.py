@@ -124,3 +124,10 @@ def get_rmdb_constructs(_):
 	return N_constructs
 register.filter('get_rmdb_constructs', get_rmdb_constructs)
 
+
+def get_affiliation(user):
+	request_usr = User.objects.filter(username=user.username)
+	request_usr = RMDBUser.objects.filter(user=request_usr)
+	return ("%s - %s\n" %(request_usr.values('institution')[0]['institution'], request_usr.values('department')[0]['department']))
+register.filter('get_affiliation', get_affiliation)
+

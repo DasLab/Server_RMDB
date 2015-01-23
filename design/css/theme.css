@@ -169,6 +169,10 @@ li.nav-general > a, li.nav-puzzle > a, li.nav-eterna> a  {
     border-color: #112d52;
 }
 
+.nav-list{
+  padding-left: 20px;
+}
+
 .tutorial{
   opacity:0.5;
 }

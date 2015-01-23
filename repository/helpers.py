@@ -201,14 +201,6 @@ def normalize(bonuses):
 	return wtdata
 
 
-def bootstrap_annotations(mol, data, nbootstraps, fold_opts, bonus2d):
-	ba = mol.bootstrap(data, nbootstraps, fold_opts=fold_opts, replacement=True, bonus2d=bonus2d)
-	for b in ba:
-		if ba[b] == None:
-			ba[b] = '0.0%'
-		else:
-			ba[b] = str(ba[b]) + '%'
-	return ba
 
 
 

@@ -21,6 +21,7 @@ from helper_register import *
 from helper_stats import *
 
 from itertools import chain
+import time
 # from sys import stderr
 
 
@@ -53,6 +54,21 @@ def specs(request, section):
 def tools(request):
 	return render_to_response(HTML_PATH['repos'], {}, context_instance=RequestContext(request))
 
+def license_mapseeker(request):
+	return render_to_response(HTML_PATH['license_mapseeker'], {}, context_instance=RequestContext(request))
+
+@login_required
+def download_mapseeker(request):
+	f = open(MEDIA_ROOT + "/code/mapseeker_user.csv", "a")
+	f.write("%s," % time.strftime("%c"))
+	request_usr = request.user
+	f.write("%s,%s,%s %s," % (request_usr.username, request_usr.email, request_usr.first_name, request_usr.last_name))
+	request_usr = User.objects.filter(username=request_usr.username)
+	request_usr = RMDBUser.objects.filter(user=request_usr)
+	f.write("%s - %s\n" %(request_usr.values('institution')[0]['institution'], request_usr.values('department')[0]['department']))
+	f.close()
+	return render_to_response(HTML_PATH['link_mapseeker'], {}, context_instance=RequestContext(request))
+
 def tutorial_predict(request):
 	return render_to_response(HTML_PATH['tt_predict'], {}, context_instance=RequestContext(request))
 
@@ -65,9 +81,18 @@ def tutorial_rdatkit(request):
 def tutorial_hitrace(request):
 	return render_to_response(HTML_PATH['tt_hitrace'], {}, context_instance=RequestContext(request))
 
+def tutorial_mapseeker(request):
+	return render_to_response(HTML_PATH['tt_mapseeker'], {}, context_instance=RequestContext(request))
+
 def about(request):
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
 	return render_to_response(HTML_PATH['about'], {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints}, context_instance=RequestContext(request))
+
+def license(request):
+	return render_to_response(HTML_PATH['license'], {}, context_instance=RequestContext(request))
+
+def history(request):
+	return render_to_response(HTML_PATH['history'], {}, context_instance=RequestContext(request))
 
 
 def validate(request):
@@ -403,6 +428,8 @@ def user_login(request):
 				next = request.META.get('HTTP_REFERER','/').replace("?login=1", "")
 				if "?login=0" in next:
 					next = "/repository/deposit/submit/"
+				if "?login=-1" in next:
+					next = "/repository/analyze/tools/mapseeker/download/"
 				return HttpResponseRedirect(next)
 			else:
 				messages.error(request, 'Inactive/disabled account. Please contact us.')

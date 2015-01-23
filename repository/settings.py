@@ -15,7 +15,10 @@ HTML_PATH = {
 	'index': 'html/index.html',
 	'browse': 'html/browse.html',
 	'detail': 'detail.html',
+
 	'about': 'html/about.html',
+	'license': 'html/license.html',
+	'history': 'html/history.html',
 
 	'specs': 'html/specs.html',
 	'validate': 'html/validate.html',
@@ -24,10 +27,13 @@ HTML_PATH = {
 	'predict': 'html/predict.html',
 	'predict_res': 'html/predict_results.html',
 	'repos': 'html/tools.html',
+	'license_mapseeker': 'html/tools_mapseeker_license.html',
+	'link_mapseeker': 'html/tools_mapseeker_download.html',
 	'tt_predict': 'html/tutorial_predict.html',
 	'tt_api': 'html/tutorial_api.html',
 	'tt_rdatkit': 'html/tutorial_rdatkit.html',
 	'tt_hitrace': 'html/tutorial_hitrace.html',
+	'tt_mapseeker': 'html/tutorial_mapseeker.html',
 
 	'search_res': 'html/search_results.html',
 	'adv_search': 'html/search_advanced.html',

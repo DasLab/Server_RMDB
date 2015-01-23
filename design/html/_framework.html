@@ -194,25 +194,33 @@
 							<li><a class="clickable" href="/repository/analyze/docs/hitrace">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>HiTRACE</i></a>
 							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/mapseeker">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>MAPseeker</i></a>
+							</li>
 						</ul>
 					</li>
-					<li class="dropdown clickable" id="nav_about">
-						<a href="/repository/about" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+					<li class="dropdown" id="nav_about">
+						<a href="/repository/help/about" class="dropdown-toggle disabled clickable" data-toggle="dropdown" role="button" aria-expanded="false">
 							About
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/repository/about#contact">
+							<li id="nav_contact" class="clickable"><a href="/repository/help/about#contact">
 								<span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;&nbsp;
 								Contact Us</a>
 							</li>
-							<li><a href="/repository/about#citation">
+							<li id="nav_cite" class="clickable"><a href="/repository/help/about#citation">
 								<span class="glyphicon glyphicon-education" aria-hidden="true"></span>&nbsp;&nbsp;
 								Cite RMDB</a>
 							</li>
-							<li><a href="/repository/about#privacy">
-								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-								Privacy</a>
+							<li class="clickable"><a href="/repository/help/license">
+								<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>&nbsp;&nbsp;
+								License</a>
+							</li>
+							<li class="divider"></li>
+							<li class="clickable"><a href="/repository/help/history">
+								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;&nbsp;
+								History</a>
 							</li>
 						</ul>
 					</li>
@@ -227,33 +235,32 @@
 							</button>
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu" id="nav_user">
 								{% if user.is_authenticated %}
-									<li>
+									<li class="nav-list">
 										<br/>
-										<p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration:underline; color:gray;">Signed In As:</span></p>
+										<p><span style="text-decoration:underline; color:gray;">Signed In As:</span></p>
 									</li>
-									<li id="nav_username" style="width:250px;">
-										&nbsp;&nbsp;&nbsp;&nbsp;
+									<li id="nav_username" style="width:250px;" class="nav-list">
 										<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
 										<b>{{ user.first_name }} {{ user.last_name }}</b>
 										<kbd>{{ user.username }}</kbd>
 									</li>
-									<li id="nav_email">
-										&nbsp;&nbsp;&nbsp;&nbsp;
+									<li id="nav_email" class="nav-list">
 										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;
 										<i>{{ user.email }}</i>
-										&nbsp;&nbsp;&nbsp;&nbsp;
 									</li>
-									<li>
+									<li id="nav_email" class="nav-list">
+										<span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;
+										{{ user|get_affiliation }}
+									</li>
+									
+									<li class="nav-list">
 										<br/>
-										&nbsp;&nbsp;&nbsp;&nbsp;
 										<span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span>&nbsp;&nbsp;
 										Joined Since: {{ user.date_joined|date:"SHORT_DATE_FORMAT" }}
 										<br/>
-										&nbsp;&nbsp;&nbsp;&nbsp;
 										<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;&nbsp;
 										Last Login: {{ user.last_login|date:"SHORT_DATE_FORMAT" }}
 										<br/>
-										&nbsp;&nbsp;&nbsp;&nbsp;
 										<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;
 										Status:
 										{% if user.is_active %}
@@ -282,7 +289,7 @@
 									</li>
 									<br/>
 									<li>
-										<div class="well">
+										<div class="well" class="nav-list">
 											<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;
 											<b><i>Statistics</i>:</b>
 											<br/>
@@ -462,7 +469,7 @@
 									For assistance related with account login issues (e.g. forgot password), 
 									<br/>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									please contact <a href="/repository/about#conact">site admin</a>.
+									please contact <a href="/repository/help/about#conact">site admin</a>.
 								</span>
 							</div>
 						</div>
@@ -506,7 +513,11 @@
             $("#id_password").addClass("form-control");
 			$("#nav_login").on("click", function () {
 				if ($("#id_repeatpassword").length) {
-					$(location).attr("href","/repository/?login=1");
+					if ($(location).attr("href").indexOf("?login=1") == -1) {
+						$(location).attr("href",$(location).attr("href") + "?login=1");
+					} else {
+						$(location).attr("href",$(location).attr("href"));
+					}
 				} else {
 					$("#login").show();
 				}
@@ -517,13 +528,16 @@
             	    if ($("#id_repeatpassword").length) {
 						$(location).attr("href","/repository/?login=1");
 					} else {
-						$(location).attr("href",$(location).attr("href") + "?login=0");
+						if ($(location).attr("href").indexOf("?login=0") == -1) {
+							$(location).attr("href",$(location).attr("href") + "?login=0");
+						} else {
+							$(location).attr("href",$(location).attr("href"));
+						}
 					}
         	    {% endif %}
-            })
+            });
 
-
-            if (($(location).attr("href").indexOf("?login=1") != -1) || ($(location).attr("href").indexOf("?login=0") != -1)) {
+            if (($(location).attr("href").indexOf("?login=1") != -1) || ($(location).attr("href").indexOf("?login=0") != -1) || ($(location).attr("href").indexOf("?login=-1") != -1)) {
 				$("#login").modal("show");
             }
 		});

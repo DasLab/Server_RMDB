@@ -3,7 +3,7 @@
 <div class="container">
 
 	<div class="col-md-8" class="row">
-		<div class="panel panel-success">
+		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h2 class="panel-title">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;
@@ -11,7 +11,6 @@
 				</h2>
 			</div>
 			<div class="panel-body">
-				<img class="path_logo_primerize" src="" style="clear:both;float:right;"/>
 				<p class="cap">
 					RMDB was originally an in-house repository of chemical mapping data collected by the <a href="http://daslab.stanford.edu" target="_blank">Das lab&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> at Stanford University. It was created to enable structural, thermodynamic and kinetic comparisons across single-nucleotide-resolution RNA structure mapping experiments.
 				</p>
@@ -24,7 +23,7 @@
 			</div>
 		</div>
 
-		<div class="panel panel-warning" id="citation">
+		<div class="panel panel-success" id="citation">
 			<div class="panel-heading">
 				<h2 class="panel-title"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;Citation</h2>
 			</div>
@@ -39,20 +38,10 @@
 			</div>
 		</div>
 
-		<div class="panel panel-danger" id="privacy">
-			<div class="panel-heading">
-				<h2 class="panel-title"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;Privacy</h2>
-			</div>
-			<div class="panel-body">
-				<p>
-					TBD
-				</p>
-			</div>
-		</div>
 	</div>
 
 	<div class="col-md-4" class="row">
-		<div class="panel panel-primary" id="contact">
+		<div class="panel panel-info" id="contact">
 			<div class="panel-heading">
 				<h2 class="panel-title"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;Contact</h2>
 			</div>
@@ -109,6 +98,13 @@
 			$('.dropdown-toggle').removeClass("active");
 			$("#nav_about").addClass("active");
 	    	$("#nav_logo").css("text-decoration","none");
+	    	$(".clickable").on("click", function () {
+	    		var click_id = $(this).attr("id")
+	    		if ( click_id == "nav_contact" | click_id == "nav_cite") {
+	    			$("#wait").hide();
+	    		}
+	    		
+	    	});
 		});
 	</script>
 
