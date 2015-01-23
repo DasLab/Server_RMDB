@@ -8,7 +8,7 @@ body {
 .bgimg {
   background-image: url("/site_media/images/bg_rna.png");
   background-repeat: no-repeat;
-  background-position: right 200px top;
+  background-position: right 200px bottom 25px;
   background-size: 30%;
 }
 

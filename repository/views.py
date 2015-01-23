@@ -132,7 +132,7 @@ def detail(request, rmdb_id):
 			entry.pdb_ids = [x.strip() for x in entry.pdb_entries.split(',')]
 		else:
 			entry.pdb_ids = []
-			constructs = ConstructSection.objects.filter(entry=entry)
+		constructs = ConstructSection.objects.filter(entry=entry)
 		for c in constructs:
 			c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures  = get_plot_data(c.id, entry.type, maxlen)
 			c.datas = DataSection.objects.filter(construct_section=c).order_by('id')

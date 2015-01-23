@@ -3,7 +3,7 @@ from rmdb.settings import T47_DEV
 if T47_DEV:
 	REPO_DIR = '/MATLAB_code/rmdb/'
 else:
-	REPO_DIT = '/home/daslab/rdat/rmdb/'
+	REPO_DIR = '/home/daslab/rdat/rmdb/'
 
 CONSTRUCT_IMG_DIR = REPO_DIR + 'design/construct_img/'
 CONSTRUCT_THMB_DIR = REPO_DIR + 'design/construct_img/thumbs/'

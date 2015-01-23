@@ -350,17 +350,15 @@
 
 	<div class="container">
 		<div class="jumbotron row bgimg">
-			<div class="col-md-5">
-				<img src="/site_media/logo_mini.png" style="clear:both;float:left;padding-right:20px;"/>
+			<div class="col-md-4">
+				<img src="/site_media/images/logo_rmdb_2.png"/>
+			</div>
+			<div class="col-md-2">
 				<span>
-					<b>An Information Portal to</b>
-					<br/>
-					<b>Chemical Mapping Data of</b>
-					<br/>
-					<u>{{ user|get_rmdb_constructs }}</u> <b>RNA Sequences</b>
+					<b>Information Portal to Chemical Mapping Data of </b> <u>{{ user|get_rmdb_constructs }}</u> <b>RNA Sequences</b>
 				</span>
 			</div>
-			<div class="col-md-7">
+			<div class="col-md-6">
 				<form class="pull-right" action="/repository/search" method="get">
 					<div class="input-group">
 						<input type="text" class="form-control input-lg" name="searchtext" placeholder="Search by keyword"/>
