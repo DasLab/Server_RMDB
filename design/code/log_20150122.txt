@@ -1,4 +1,5 @@
 #RMDB 2.0 BETA, phase I
+!T47
 
 Complete redesign of RMDB front-end interface graphics, reorganization of site map, bug fixes for user login system, improvement for RDAT submission system.
 
@@ -6,7 +7,7 @@ Complete redesign of RMDB front-end interface graphics, reorganization of site m
 -\Redesign of index.html, using Bootstrap style elements. Added alert notice for BETA preview.
 -\Reorganize navigation bar, group into Browse, Deposit, Analyze, and About categories. Added EteRNA permanent link.
 -\Moved “Search” function down and made new header section.
--\Added front page tab navigation, for all sections of RMDB.
+-\Added front page tab navigation, for all sections of RMDB; included links to RNA Puzzles and EteRNA platforms.
 -\Added carousel for latest entry slide show; added table view for RMDB news.
 -\Designed new footer, with RMDB logo and Das Lab affiliation, and license information.
 -\Added move to top button, active nav bar tracking.

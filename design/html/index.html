@@ -324,12 +324,30 @@
           <br/>
           <div class="row">
             <div class="col-md-8">
-            <p>
-              
-            </p>
+              <p>
+                RMDB has upgraded to version 2.0 BETA for online preview. More changes and updates are in progress. Please report bugs and make suggestions. We really appreciate your feedback.
+              </p>
+              <p>To learn more about RMDB usage and changes, use these links:</p>
             </div>
             <div class="col-md-4">
-
+              <div class="list-group">
+                <a href="/repository/help/about#contact" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Contact Us
+                </a>
+                <a href="/repository/help/about#citation" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Cite RMDB
+                </a>
+                <a href="/repository/help/license" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+                  &nbsp;&nbsp;License
+                </a>
+                <a href="/repository/help/history" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                 &nbsp;&nbsp; History
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -360,7 +378,7 @@
 
               <div class="carousel-inner" role="listbox">
                 {% for e in entries %}
-                <div class="item">
+                <div class="item" style="height:400px;">
                   <div class="row">
                     {% for c in e.constructs %}
                     <img src="/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif" class="center-block"/>

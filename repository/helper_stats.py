@@ -1,4 +1,8 @@
 from rmdb.repository.models import *
+from rmdb.settings import *
+
+import glob
+import time
 
 
 def get_rmdb_stats():
@@ -62,3 +66,45 @@ def get_rmdb_category(flag):
 
 	return constructs
 
+
+def get_history():
+	file_list = glob.glob(MEDIA_ROOT + "/code/log_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].txt")
+	log_content = []
+
+	for log_file in file_list:
+		f = open(log_file, 'r')
+		lines = [line for line in f.readlines() if line.strip()]
+		f.close()
+
+		ls_1_flag = 0
+		ls_2_flag = 0
+		for i in range(len(lines)):
+			lines[i] = lines[i].rstrip()
+			if lines[i][0] == "#":
+				lines[i] = "<span class=\"lead\"><b>" + lines[i][1:] + "</b></span><br/>"
+			elif lines[i][0] != '-':
+				if lines[i][0] == "!":
+					lines[i] = "by <kbd><i>" + lines[i][1:] + "</i></kbd><br/><br/>"
+				else:
+					lines[i] = "<p>" + lines[i] + "</p><p><ul>"
+				
+			else:
+				if lines[i][:2] != '-\\':
+					lines[i] = "<li><u>" + lines[i][1:] + "</u></li>"
+					if ls_1_flag:
+						lines[i] = "</ul></p>" + lines[i]
+					ls_1_flag = i
+
+				else:
+					lines[i] = "<li>" + lines[i][2:] + "</li>"
+					if ls_2_flag < ls_1_flag:
+						lines[i] = "<ul><p>" + lines[i]
+					ls_2_flag = i
+
+		lines.append("</ul></ul><br/><hr/>")
+		date_string = log_file[log_file.find("log_")+4 :-4]
+		date_string = time.strftime("%b %d, %Y (%a)", time.strptime(date_string, "%Y%m%d"))
+		lines.insert(0, "<i>%s</i><br/>" % date_string)
+		log_content.insert(0, "".join(lines))
+
+	return log_content
