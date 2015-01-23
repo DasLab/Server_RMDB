@@ -11,7 +11,7 @@
 				</h2>
 			</div>
 			<div class="panel-body">
-	            <img src="/site_media/images/logo_rmdb_2.png" class="logo"/>
+				<a href="#" id="logo"><img src="/site_media/images/logo_rmdb_2.png" class="logo"/></a>
 				<p class="cap">
 					RMDB was originally an in-house repository of chemical mapping data collected by the <a href="http://daslab.stanford.edu" target="_blank">Das lab&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> at Stanford University. It was created to enable structural, thermodynamic and kinetic comparisons across single-nucleotide-resolution RNA structure mapping experiments.
 				</p>
@@ -88,6 +88,23 @@
 		</div>
 	</div>
 
+	<div id="show_logo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">
+						<span class="glyphicon glyphicon-scissors" aria-hidden="true"></span>
+						&nbsp;&nbsp;RMDB Logo
+					</h4>
+				</div>
+				<div class="modal-body">
+					<img src="/site_media/images/logo_rmdb_2_lg.png" class="center-block"/>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
   
 {% endblock %}
@@ -104,7 +121,11 @@
 	    		if ( click_id == "nav_contact" | click_id == "nav_cite") {
 	    			$("#wait").hide();
 	    		}
-	    		
+	    	});
+
+	    	$("#logo").on("click", function (e) {
+	    		e.preventDefault();
+	    		$("#show_logo").modal("show");
 	    	});
 		});
 	</script>
