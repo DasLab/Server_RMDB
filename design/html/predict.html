@@ -1,0 +1,508 @@
+{% extends "html/_framework.html" %}
+
+{% block content %}
+<ul class="alert alert-warning">
+{% for v in msg_y %}
+<li>{{ v }}</li>
+{% endfor %}
+</ul>
+<ul class="alert alert-danger">
+{% for v in msg_r %}
+<li>{{ v }}</li>
+{% endfor %}
+</ul>
+
+
+<div class="container">
+    <form id="structureform" enctype="multipart/form-data" method="post" action="/repository/analyze/predict/">
+        <h3>
+            <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>&nbsp;&nbsp;
+            Structural Server: Predict Secondary Structures
+        </h3>
+        <div class="row">
+            <div class="col-md-11">
+<p>
+You can use this form to apply and to display pseudo-energy bonuses from 1D or 2D chemical mapping data to model RNA secondary structure. 
+</p>
+<p>
+This server makes use of the current version of <a href="http://rna.urmc.rochester.edu/RNAstructure.html">RNAstructure</a>. Some of the methods used are described in the papers by <a href="http://www.pnas.org/content/106/1/97.short">Deigan et al. (2008)</a>, <a href="http://arxiv.org/abs/1103.5458"> Kladwang et al. (2011)</a>, and another <a href="http://arxiv.org/abs/1104.0979"> Kladwang et al. (2011)</a>.
+</p>
+<p>For more details and help on how to use this server <a href="#" id="help">click here</a>. </p>
+
+            </div>
+            <div class="col-md-1">
+
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary" id="col-1">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            <span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span>&nbsp;&nbsp;
+                            Input
+                        </h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-11">
+                                    <p class="lead">Choose one of the input methods:</p>
+                                    <ul>
+                                        <li>Manually input your RNA sequences and bonus.</li>
+                                        <li>Upload and parse data from an RDAT file.</li>
+                                        <li>Retrieve data from an RMDB entry.</li>
+                                    </ul>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 btn-group" role="tablist">
+                                <div class="col-md-4">
+                                    <a href="#panelManual" class="btn btn-lg btn-danger center-block" id="buttonManual" aria-controls="home" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>&nbsp;&nbsp;Manual Input</a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#panelRDAT" class="btn btn-lg btn-warning center-block" id="buttonRDAT" aria-controls="home" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span>&nbsp;&nbsp;Upload RDAT</a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#panelRMDB" class="btn btn-lg btn-success center-block" id="buttonRMDB" aria-controls="home" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;Retrieve RMDB</a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <div class="row tab-content">
+                            <div role="tabpanel" class="fade in tab-pane active" id="panelManual">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                    {% if rdatloaded %}
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <p><b>Sequences</b>: (in FASTA format)</p>
+                                                {{ secstr_form.sequences }}
+                                            </div>
+                                            <div class="col-md-2">
+                                                <p><b>Data Annotations</b>:<p>
+                                                {{ secstr_form.annotations }}
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <p><b>Sequences</b>: (in FASTA format)</p>
+                                        {{ secstr_form.sequences }}
+                                    {% endif %}
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="fade tab-pane" id="panelRDAT">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                        <div class="col-md-10">
+                                            <p>Data from RDAT file will be loaded into fields for inspection before submission.</p>
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-md-3">Upload File:</div>
+                                                <div class="col-md-5">
+                                                    <input id="id_rdatdisp" class="form-control" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="fileUpload btn btn-info">
+                                                        <span>&nbsp;&nbsp;Browse&nbsp;&nbsp;</span>
+                                                        {{ secstr_form.rdatfile }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2"><input type="submit" class="btn btn-inverse clickable" value="&nbsp;Upload&nbsp;"/></div>
+                                            </div>
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-md-3">Trim Sequences:</div>
+                                                <div class="col-md-9">
+                                                    <div class="checkbox">
+                                                    <label>
+                                                        {{ secstr_form.clipsequence }} Trims sequences down to regions where mapping data is available
+                                                    </label>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="fade tab-pane" id="panelRMDB">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <p>Data from RMDB entry will be loaded into fields for inspection before submission.</p>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-md-3">RMDB ID:</div>
+                                            <div class="col-md-7">{{ secstr_form.rmdbid }}</div>
+                                            <div class="col-md-2"><input type="submit" class="btn btn-inverse clickable" value="&nbsp;Retrieve&nbsp;"/></div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-md-3">Trim Sequences:</div>
+                                            <div class="col-md-9">
+                                                <div class="checkbox">
+                                                <label>
+                                                    {{ secstr_form.clipsequence }} Trims sequences down to regions where mapping data is available
+                                                </label>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-12 form-inline">
+                                        <br/>
+                                        <p><b>Type of Bonus</b>:&nbsp;&nbsp;&nbsp;&nbsp;{{ secstr_form.predtype }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+
+                        <div class="row" id="bonus1D">
+                            <br/>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <h3 class="alert alert-info">1D Bonus</h3>
+                                    <ul>
+                                        <li>Use these options to apply pseudoenergy bonuses per <b>single base</b>, as with classical mapping experiments. Bonuses must be in <a href="http://rna.urmc.rochester.edu/Text/File_Formats.html#SHAPE">RNAstructure format</a>.</li>
+                                        <li>To define more than one set of bonuses (i.e. for multiple sequences), separate each set with a line starting with <b>#</b>.</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-6">
+                                    <p><b>Input Bonuses</b>:</p>
+                                    {{ secstr_form.bonuses_1d }}
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-5 text-right"><b>Modifier Type</b>:</div>
+                                        <div class="col-md-7">{{ secstr_form.modtype }}</div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-5 text-right"><b>Slope</b>:</div>
+                                        <div class="col-md-7">{{ secstr_form.slope_1d }}</div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-5 text-right"><b>Intercept</b>:</div>
+                                        <div class="col-md-7">{{ secstr_form.intercept_1d }}</div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-5 text-right"><b>Apply Raw</b>:</div>
+                                        <div class="col-md-7">
+                                            <div class="checkbox">
+                                            <label>
+                                                {{ secstr_form.raw_bonuses }}
+                                                &nbsp;&nbsp;&nbsp;&nbsp;Apply raw bonuses as-is 
+                                                <br/>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;(no pseudo-energy 
+                                                <br/>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;calculation)
+                                            </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="bonus2D">
+                            <br/>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <h3 class="alert alert-info">2D Bonus</h3>
+                                    <ul>
+                                        <li>Use these options to apply pseudoenergy bonuses per <b>base pair</b>. Bonuses must be in the form of a matrix (see <a href="http://rna.urmc.rochester.edu/Text/File_Formats.html#Experimental">RNAstructure's help</a> for format examples)</li>
+                                        <li><b>Note:</b> Bonuses will be applied to the first structure in the list only.</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-7">
+                                    <p><b>Input Bonuses</b>:</p>
+                                    {{ secstr_form.bonuses_2d }}
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row">
+                                        <div class="col-md-5 text-right"><b>Slope</b>:</div>
+                                        <div class="col-md-7">{{ secstr_form.slope_2d }}</div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-5 text-right"><b>Intercept</b>:</div>
+                                        <div class="col-md-7">{{ secstr_form.intercept_2d }}</div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-5 text-right"><b>Z-score</b>:</div>
+                                        <div class="col-md-7">
+                                            <div class="checkbox">
+                                            <label>
+                                                {{ secstr_form.applyzscores }}
+                                                &nbsp;&nbsp;&nbsp;&nbsp;Apply Z-score 
+                                                <br/>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;filter 
+                                            </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>                        
+                        </div>
+                        
+                        <div class="row" id="bonusNN">
+                            <br/>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <h3 class="alert alert-info">No Bonus</h3>
+                                    <ul>
+                                        <li>Predict the secondary structure with no pseudoenergies or experimental constraints.</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default" id="col-2">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;
+                            Additional Options
+                        </h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-6">
+                                <p><b>Reference Structure</b>:</p>
+                                {{ secstr_form.refstruct }}
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-5 text-right"><b>Renormalize</b>:</div>
+                                    <div class="col-md-7">
+                                        <div class="checkbox">
+                                        <label>
+                                            {{ secstr_form.normalize }} 
+                                            &nbsp;&nbsp;&nbsp;&nbsp;Apply box-plot scaling
+                                        </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-md-5 text-right"><b>Temperature</b>:</div>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            {{ secstr_form.temperature }}
+                                            <span class="input-group-addon">&deg;C</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-md-5 text-right"><b># of Bootstrap</b>:</div>
+                                    <div class="col-md-7">{{ secstr_form.nbootstraps }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+                        <br/><br/>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10">
+                                <span class="pull-right">
+                                    <input type="submit" class="btn btn-inverse" value="&nbsp;Submit&nbsp;"/>
+                                    &nbsp;&nbsp;
+                                    <a href="/repository/deposit/submit/" class="btn btn-default">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
+                                </span>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row col-md-12">
+        {% if flag == 2 %}
+            <div class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                <b>SUCCESS</b>: Your RMDB entry has been submitted.
+                <br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <br/>
+                <p>
+                    Entry <i>RMDB ID</i>: <b><u>{{ entry.rmdb_id }}</u></b> , <i>Version</i>: <b><u>{{ entry.version }}</u></b>
+                    <br/>
+                    Entry <i>Experiment Type</i>: <u>{{ entry.type }}</u>
+                    <br/>
+                    Entry <i>Owner</i>: <u>{{ entry.owner }}</u>, <i>Authors</i>: <u>{{ entry.authors }}</u>
+                    <br/>
+                    Entry <i>Statistics</i>: <i># of Constructs</i>: <u>{{ entry.constructcount }}</u>, <i># of Data Points</i>: <u>{{ entry.datacount }}</u>
+                    <br/><br/>
+                    Entry <i>Status</i>: <b><u>{{ entry.revision_status }}</u></b>
+                    {% if entry.revision_status == 'REV' %}
+                        <br/>
+                        ** Your submission has been acknowledged by the RMDB team. We will review your entry shortly. For any questions, please feel free to <a href="/repository/help/about#contact">contact</a> us.
+                    {% else %}
+                        <br/>
+                        ** To visit your entry, click <a href="/repository/detail/{{ entry.rmdb_id }}">here</a>.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+
+        {% if flag == 1 and error_msg %}
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                <b>ERROR</b>: The following messages were produced:
+                <br/>
+                <ul>
+                    {% for msg in error_msg %}
+                        <li>{{ msg }}</li>
+                        {% if "Authors" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_authors").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                        {% if "RMDB_ID" in msg %}
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#id_rmdb_id").parent().addClass("has-error");
+                            });
+                        </script>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+<br/>
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.dropdown-toggle').removeClass("active");
+            $("#nav_deposit").addClass("active");
+            $("#nav_logo").css("text-decoration","none");
+
+            $("#id_sequences").addClass("form-control");
+            $("#id_rmdbid").addClass("form-control");
+            $("#id_rdatfile").addClass("form-control");
+            $("#id_annotations").addClass("form-control");
+            $("#id_predtype").addClass("form-control");
+
+            $("#id_modtype").addClass("form-control");
+            $("#id_intercept_1d").addClass("form-control");
+            $("#id_slope_1d").addClass("form-control");
+            $("#id_bonuses_1d").addClass("form-control");
+            $("#id_nbootstraps").addClass("form-control");
+            $("#id_intercept_2d").addClass("form-control");
+            $("#id_slope_2d").addClass("form-control");
+            $("#id_bonuses_2d").addClass("form-control");
+
+            $("#id_temperature").addClass("form-control");
+            $("#id_refstruct").addClass("form-control");
+
+            $("#id_rdatfile").on("change", function () {
+                $("#id_rdatdisp").val($(this).val().replace("C:\\fakepath\\", ""));
+            });
+
+            {% if not rdatloaded %}
+                $("#id_sequences").attr("rows",5);
+            {% endif %}
+            $("#id_bonuses_1d").attr("rows",10);
+            $("#id_refstruct").attr("rows",5);
+            $("#id_sequences").css("font-family","monospace");
+            $("#id_refstruct").css("font-family","monospace");
+
+            $("#id_predtype").on("change", function() {
+                $("#bonus1D, #bonus2D, #bonusNN").hide();
+                if ($(this).val() == "NN") {
+                    $("#bonusNN").show();
+                    $("#id_normalize").attr("disabled", true);
+                    $("#id_normalize").attr("checked", false);
+                    $("#id_nbootstraps").attr("disabled", true);
+                } else {
+                    if ($(this).val() == "2D") {
+                        $("#bonus2D").show();
+                    } else {
+                        $("#bonus1D").show();
+                    }
+                    $("#id_normalize").attr("disabled", false);
+                    $("#id_nbootstraps").attr("disabled", false);
+                }
+            });
+            $("#bonus1D, #bonus2D, #bonusNN").hide();
+            if ($(this).val() == "NN") {
+                $("#bonusNN").show();
+                $("#id_normalize").attr("disabled", true);
+                $("#id_normalize").attr("checked", false);
+                $("#id_nbootstraps").attr("disabled", true);
+            } else {
+                if ($(this).val() == "2D") {
+                    $("#bonus2D").show();
+                } else {
+                    $("#bonus1D").show();
+                }
+                $("#id_normalize").attr("disabled", false);
+                $("#id_nbootstraps").attr("disabled", false);
+            }
+            // $("#id_rmdb_id, #id_authors").on("focusout", function() {
+            //     $(this).parent().removeClass("has-error");
+            // });
+        });
+    </script>
+
+{% endblock %}
+
+

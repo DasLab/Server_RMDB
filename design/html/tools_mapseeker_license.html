@@ -1,0 +1,57 @@
+{% extends "html/_framework.html" %}
+
+{% block content %}
+    <div class="container theme-showcase" role="main">
+
+      <div class="starter-template">
+        <div class="row" class="form_control">
+         <h3>Please read the following LICENSE carefully. 
+          <br/>
+          To continue downloading source code, you must accept the agreement.
+         </h3>
+         <br/>
+         <div class="alert alert-info" id="license_content">
+          {{ license_txt }}
+         </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-md-2">
+            <a class="btn btn-success clikable" href="/repository/analyze/tools/mapseeker/download" id="btn_accept">&nbsp;&nbsp;&nbsp;Accept&nbsp;&nbsp;&nbsp;</a>
+          </div>
+          <div class="col-md-8">
+            {% if not user.is_authenticated %}
+              <b>Note</b>: To download, myRMDB login is <i>required</i>.
+            {% endif %}
+          </div>
+          <div class="col-md-2">
+            <a class="btn btn-danger pull-right clikable" href="/repository/">&nbsp;&nbsp;&nbsp;Decline&nbsp;&nbsp;&nbsp;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <hr/>
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#license_content").load("/site_media/code/mapseeker_license.md", function (txt) {
+        $(this).html(txt.split(/\n/).join("<br>") + "</strong>");
+      });
+
+      $("#btn_accept").on("click", function(e) {
+        {% if not user.is_authenticated %}
+          e.preventDefault();
+          if ($(location).attr("href").indexOf("?login=-1") == -1) {
+            $(location).attr("href",$(location).attr("href") + "?login=-1");
+          } else {
+            $(location).attr("href",$(location).attr("href"));
+          }
+        {% endif %}
+      });
+    });
+  </script>
+
+{% endblock %}

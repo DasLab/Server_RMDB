@@ -4,27 +4,13 @@ import pdb
 import numpy
 import os
 from rmdb.repository.settings import *
-from rdatkit.view import VARNA
-from rdatkit import secondary_structure, mapping
+from rdatkit import rna, secondary_structure, mapping, view
 from rmdb import settings
 from django.core.management  import setup_environ
 setup_environ(settings)
-from django.template.defaultfilters import slugify
 from rmdb.repository.models import *
 from rmdb.repository.views import *
 
-def save_annotations(dictionary, section, cl):
-    count = 0
-    for d in dictionary:
-	for value in dictionary[d]:
-	    a = cl()
-	    a.name = d.strip()
-	    if d.strip() == 'mutation':
-		count += 1
-	    a.value = value
-	    a.section = section
-	    a.save()
-    return count
 
 def get_correct_mapping_bonuses(data, construct):
     vals = [float(x) for x in data.values.split(',')]
@@ -65,140 +51,6 @@ def precalculate_structures(entry):
         print 'FATAL! There are no constructs for entry %s' % entry.rmdb_id
 	    
    
-
-def generate_varna_thumbnails(entry):
-    try:
-        constructs = ConstructSection.objects.filter(entry=entry)
-	for c in constructs:
-	    path = '%s%s' % (CONSTRUCT_THMB_DIR, c.id)
-	    fname = '%s/%s' % (path, slugify(c.name))
-	    datas = DataSection.objects.filter(construct_section=c)
-	    if not os.path.exists(path):
-		os.mkdir(path)
-                os.system('chmod 777 %s' % path)
-            if not c.structure or '(' not in c.structure or entry.type == 'MM' or len(datas) > 100:
-		peakfname = '%s%s/values.png' % (CONSTRUCT_IMG_DIR, c.id) 
-		os.popen('cp %s %s.png' % (peakfname, fname))
-		os.popen('convert %s.png %s.gif' % (fname, fname))
-                height = min(len(datas), 1000)
-                width = 200
-	    else:
-                height = 200
-                width = 200
-		os.popen('rm %s/*.png' % path)
-		for i, data in enumerate(datas[:5]):
-		    bonuses = get_correct_mapping_bonuses(data, c)
-		    cms = VARNA.get_colorMapStyle(bonuses)
-		    VARNA.cmd(' '*len(c.sequence), c.structure, '%s_%s.png' % (fname, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400} )
-		print path
-                os.popen('convert -delay 100 -resize 300x300 infile.jpg -background none -gravity center -extent 300x300 -loop 0 %s/*.png %s.gif' % (path, fname))
-	    os.popen('mogrify -format gif -thumbnail %sx%s! %s.gif' % (width, height, fname))
-    except ConstructSection.DoesNotExist:
-        print 'FATAL! There are no constructs for entry %s' % entry.rmdb_id
-
-def generate_images(construct_model, construct_section, entry_type, engine='matplotlib'):
-    data = DataSection.objects.filter(construct_section=construct_model)
-    values = []
-    traces = []
-    reads = []
-    xsels = []
-    errors = []
-    for d in data:
-	values.append([float(x) for x in d.values.strip().split(',')])
-	if d.trace:
-	    traces.append([float(x) for x in d.trace.strip().split(',')])
-	if d.reads:
-	    reads.append([float(x) for x in d.reads.strip().split(',')])
-	if d.errors:
-	    errors.append([float(x) for x in d.errors.strip().split(',')])
-	if d.xsel:
-	    xsels.append([int(x) for x in d.xsel.strip().split(',')])
-    values_array, trace_array, reads_array, xsel_array, errors_array = array(values), array(traces), array(reads), array(xsels), array(errors)
-    dir = CONSTRUCT_IMG_DIR+'%s/'%construct_model.id
-    if not os.path.exists(dir):
-	os.mkdir(dir)
-	os.system('chmod 777 %s' % dir)
-    values_array, trace_array, reads_array, xsel_array, errors_array = get_arrays(construct_section.data)
-    values_dims = shape(values_array)
-    trace_dims = shape(trace_array)
-    values_mean = values_array.mean(axis=-1)
-    values_std = values_array.std(axis=0)
-    if entry_type == 'MM':
-	order = []
-	order_offset = 0
-	for i, data in enumerate(construct_section.data):
-	    if 'mutation' in data.annotations:
-		if data.annotations['mutation'][0].upper() == 'WT':
-		    order.append(order_offset)
-		    order_offset += 1
-		else:
-		    order.append(int(data.annotations['mutation'][0].replace('Lib1-','').replace('Lib2-', '')[1:-1]))
-	    else:
-		order.append(i)
-	order = [i[0] for i in sorted(enumerate(order), key=lambda x:x[1])][::-1]
-    else:
-	order = range(values_dims[0])
-    if engine == 'matplotlib':
-        has_traces = False
-	if size(trace_array) > 0:
-	    figure(2)
-	    aspect_ratio = "auto"
-	    if (entry_type == 'MM'):  aspect_ratio = shape( trace_array[order, :] )[1] / float( shape( trace_array)[0]  )
-	    #imshow(trace_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=trace_array.mean(), aspect=aspect_ratio, interpolation='nearest')
-	    imshow(trace_array[order, :], cmap=get_cmap('Greys'))
-	    #apply_xlabels( construct_section )
-	    xticks( [],[] )
-	    #apply_ylabels( construct_section )
-	    savefig(dir+'/trace.png')
-	    has_traces = True
-	if size(reads_array) > 0:
-	    figure(2)
-	    aspect_ratio = "auto"
-	    if (entry_type == 'MM'):  aspect_ratio = shape( reads_array[order, :] )[1] / float( shape(reads_array)[0]  )
-	    #imshow(trace_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=trace_array.mean(), aspect=aspect_ratio, interpolation='nearest')
-	    imshow(reads_array[order, :], cmap=get_cmap('Greys'))
-	    #apply_xlabels( construct_section )
-	    xticks( [],[] )
-	    #apply_ylabels( construct_section )
-	    savefig(dir+'/trace.png')
-	    has_traces = True
-
-
-	figure(2)
-	clf()
-
-	aspect_ratio = "auto"
-	if (entry_type == 'MM'):  aspect_ratio = "equal" #aspect_ratio = shape(values_array)[0]/ float( shape( values_array )[1] )
-
-	imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=values_array.mean(), aspect=aspect_ratio, interpolation='nearest')
-
-
-        frame = gca()
-	frame.axes.get_xaxis().set_visible(False)
-	frame.axes.get_yaxis().set_visible(False)
-	#apply_xlabels( construct_section )
-	#apply_ylabels( construct_section )
-	ylim( [-0.5, shape( values_array )[0]-0.5  ] )
-	savefig(dir+'/values.png')
-
-	#figure(1)
-	#clf()
-	#matshow(corrcoef(values_array.T)**10)
-	#savefig(dir+'/corrcoef.png')
-	if entry_type == 'SS' and values_dims[0] < 100:
-	    for j in range(values_dims[0]):
-		figure(1)
-		clf()
-		bar(range(values_dims[1]), values_array[j,:], yerr=errors_array[j,:])
-		bartitle = '  '.join( [','.join(x) if type(x) == list else str(x) for x in construct_section.data[j].annotations.values()] )
-		suptitle( bartitle )
-		apply_xlabels( construct_section )
-		xlim( [0, shape( values_array )[1] ] )
-		savefig(dir+'/barplot%s.png'%j)
-
-    return has_traces
-
-
 
 def upload_file(uploadfile, publication, description, authors, type, pubmed_id, filetype='rdat'):
     filename = uploadfile.name[uploadfile.name.rfind('/')+1:]
@@ -312,6 +164,101 @@ def upload_file(uploadfile, publication, description, authors, type, pubmed_id, 
 		generate_varna_thumbnails(entry)
 		#precalculate_structures(entry)
 
+
+def bpdict_to_str(d):
+	res = ''
+	for bp in d:
+		res += '%s,%s,%s;' % (bp[0], bp[1], d[bp])
+	return res.strip(';')
+
+
+def str_to_bpdict(s):
+	res = {}
+	for e in s.split(';'):
+		fields = e.split(',')
+		res[(fields[0], fields[1])] = fields[2]
+	return res
+
+
+def normalize(bonuses):
+	l = len(bonuses)
+	wtdata = array(bonuses)
+	if wtdata.min() < 0:
+		wtdata -= wtdata.min()
+	interquart = stats.scoreatpercentile(wtdata, 75) - stats.scoreatpercentile(wtdata, 25)
+	for i in range(l):
+		if wtdata[i] > interquart*1.5:
+			wtdata[i] = 999
+	tenperc = stats.scoreatpercentile(wtdata, 90)
+	maxcount = 0
+	maxav = 0.
+	for i in range(l):
+		if wtdata[i] >= tenperc:
+			maxav += wtdata[i]
+			maxcount += 1
+	maxav /= maxcount
+	wtdata = wtdata/maxav
+	return wtdata
+
+
+
+
+
+
+
+def render_to_varna(sequences, structures, modifiers, titles, mapping_data, base_annotations, refstruct):
+	panels = []
+	ncols = min(4, len(sequences))
+	nrows = 4
+	if ncols < 4:
+		nrows = 1
+	nelems = nrows * ncols
+	for i in range(len(sequences)):
+		v = view.VARNA(sequences[i:i+nelems], structures[i:i+nelems], mapping_data=mapping_data[i:i+nelems])
+		v.title = titles[i:i+nelems]
+		v.colorMapCaption = modifiers[i:i+nelems]
+		v.codebase = 'http://rmdb.stanford.edu/site_media/bin'
+		v.bpStyle = 'simple'
+		v.baseInner = '#FFFFFF'
+		v.baseOutline = '#FFFFFF'
+		v.width = 400
+		v.height = 600
+		panels.append(v.render(base_annotations=base_annotations[i:i+nelems], annotation_by_helix=True, annotation_def_val='0.0%', helix_function=(lambda x, y: str(max(float(str(x).strip('%')), float(str(y).strip('%')))) + '%'), reference_structure=refstruct))
+	return panels, ncols, nrows
+
+
+def viewstructures(request):
+	if request.method == 'POST':
+		sequences = request.POST['sequences'].split('\n')
+		titles  = request.POST['titles'].split('\n')
+		dbns = request.POST['structures'].split('\n')
+		md_seqposes = request.POST['md_seqposes'].split('\n')
+		md_datas = request.POST['md_datas'].split('\n')
+		bpa = request.POST['base_annotations'].split('\n')
+		refstruct = secondary_structure.SecondaryStructure(dbn=request.POST['refstruct'])
+		messages = []
+		structures = []
+		mapping_data = []
+		base_annotations = []
+		for dbn in dbns:
+			structures.append(secondary_structure.SecondaryStructure(dbn=dbn))
+		for i in range(len(md_seqposes)):
+			seqpos = [int(pos) for pos in md_seqposes[i].split(',')]
+			data = [float(d) for d in md_datas[i].split(',')]
+			mapping_data.append(mapping.MappingData(data=data, seqpos=seqpos))
+		for annotations in bpa:
+			if len(annotations) > 0:
+				try:
+					base_annotations.append(str_to_bpdict(annotations)) 
+				except ValueError:
+					messages.append('An error occurred when annotating helices, please contact tsuname [at] stanford [dot] edu to report this bug')
+		if len(request.POST['modifiers']):
+			modifiers = request.POST['modifiers'].split(',')
+		else:
+			modifiers = ['Pseudo energy' for y in sequences]
+		panels, ncols, nrows = render_to_varna(sequences, structures, modifiers, titles, mapping_data, base_annotations, refstruct)
+		form = VisualizerForm(request.POST)
+		return render_to_response('html/predict_result.html', {'panels':panels, 'messages':messages,'ncols':ncols, 'nrows':nrows, 'form':form}, context_instance=RequestContext(request))
 
 
 if __name__ == '__main__':

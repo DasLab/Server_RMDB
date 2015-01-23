@@ -1,0 +1,87 @@
+{% extends "html/_framework.html" %}
+
+{% block content %}
+<p>The advanced search tool allows for detailed searching of the experimental data contained in RMDB entries. Data retrieved through this tool can be restricted to regions defined by sequence and structural motifs. The results of an advanced search are shown as heatmap visualizations and are collated into a downloadable RDAT file. For basic browsing and searching we recommend using the search box at the upper right corner of the page.</p>
+<p>For help on how to use the advanced search functions <a href="#" id="help">click here</a>. </p>
+
+<h1>Advanced Search</h1>
+{% if other_errors %}
+<ul class="form_errors">
+{% for e in other_errors %}
+<li> {{ e }} </i>
+{% endfor %}
+</ul>
+{% endif %}
+<div class="form_errors">{{ form.non_field_errors }}</div>
+<h3 class="sectionheader"> Query options </h3>
+<form id="advanced_search_form" class="niceform"  action="/repository/advanced_search/" method="post">
+<table>
+    <tr>
+    	<i>The following search fields accept regular expressions.</i>
+    </tr>
+    <tr>
+        <td>Contains sequence:</td>
+        <td>{{ form.sequence }}</td>
+        <td><span class="help_text">In IUPAC-encoded residues [e.g. "NNGNRANN"]</span>
+        <span class="form_errors">{{ form.sequence.errors }}</span></td>
+    </tr>
+    <tr>
+        <td>Has structure motif:</td>
+        <td>{{ form.structure }}</td>
+        <td><span class="help_text">In dot bracket notation [e.g. "((....))"]</span>
+        <span class="form_errors">{{ form.structure.errors }}</span></td>
+    </tr>
+    <tr>
+        <td>Has secondary structure elements:</td>
+        <td>{{ form.secstructelems }}</td>
+    </tr>
+</table>
+<h3 class="sectionheader"> Filter options </h3>
+<table>
+    <tr>
+        <td>Entry types</td>
+        <td>{{ form.entry_type }}</td>
+    </tr>
+    <tr>
+        <td>Is modified by</td>
+        <td>{{ form.modifiers }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.include_eterna }} Include designs from EteRNA</td>
+    </tr>
+    <tr>
+        <td>{{ form.background_processed }} Only background-subtracted entries</td>
+    </tr>
+    <tr>
+        <td>Number of results to show</td>
+        <td>{{ form.numresults }}</td>
+        <td>{{ form.numresults.errors }}</td>
+    </tr>
+
+
+</table>
+<button id="submitform" type="submit">Submit</button>
+</form>
+<div id="helpdialog" class="hidden" title="Advanced search help">
+<h3>Query options</h3>
+<p>Fields in this section can be used to define your query in terms of nucleotide sequence, structural motif, or secondary structure element.</p>
+<ul>
+<li>The sequence field accepts the typical A,C,G,U nucleotide characters plus any other character described by the IUPAC nucleotide codes (such as R for A or G).</li>
+
+<li>The structure motif field accepts structural motifs typed in dot bracket notation (e.g. "." for single stranded nucleotides "(" for nucleotides that open a helix and ")" for nucleotides that close it in 5' to 3' order. Additional helices to describe pseudoknots can be entered by using the "{" and "}" characters respectively (e.g. "..(((...{% templatetag openvariable %}))).{% templatetag closevariable %}"). </li>
+<li>For greater expressivity, you can enter gaps in a structure motif, representing well-formed substructured. Thus, "(( ))" would match any structure that starts with at least a two-nucleotide helix.</li>
+<li>General secondary structure motifs or elements (bulges, hairpins, etc.) are available as check-boxes for quick searching.</li>
+</ul>
+<p>The sequence and structure motif fields accept regular expressions. The regular expression syntax is identical to <a href="http://docs.python.org/release/2.3/lib/re-syntax.html">python's re syntax</a> with the following important exception: to avoid conflicts with the reserved characters in dot bracket notation, <b>the characters ".(){}" are interpreted as being automatically escaped</b> (e.g. "." is interpreted as "\."). In order to use those characters as regular expression descriptors, they must be "de-escaped" using a backslash (e.g. to use "." as the descriptor that described any character, write "\.").</p>
+<p>Absence of input in any of the above fields is interpreted as being an unrestricted search (e.g. not checking any secondary structure element box is interpreted as querying data in any secondary structure).</p>
+<h3>Filter options</h3>
+<p>Filter options restrict the entries that are searched depending on their experiment type or modifier/probe. Modifiers and probes available as filters are limited to those contained by entries in the database.</p>
+<p>Un-checking any box in these options automatically excludes that type of data from the search</p>
+<h3>Advanced Search Examples</h3>
+<ul>
+<li>To retrieve SHAPE mapping data on all GNRA tetraloops in the standard state entries, input "NGNRAN" in the sequence field and "(....)" in the structure field. Leave the secondary structure elements unchecked in Query options and uncheck all boxes except the SHAPE (modifiers field) and Standard State (entry type field) boxes in Filter options. Click the Submit button.</li>
+<li>To retrieve all one-nucleotide internal loops, leave the sequence field blank and put "((.(( )).))". Click submit. </li> 
+<li>To retrieve N-way junctions with at least three-nucleotide helices with N &geq; 3, leave the sequence field blank and put "((( ((( ))) ((( ))) )))". Click submit. </li> 
+</ul>
+</div>
+{% endblock %}
