@@ -1,0 +1,288 @@
+{% extends "html/_framework.html" %}
+
+{% block content %}
+<div class="panel-group" id="categories">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="panel panel-success" id="sidebar" data-spy="affix">
+				<div class="panel-heading">
+		            <h3 class="panel-title">Sections</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<a id="sec-install" href="#install">
+							<li class="list-group-item btn-inverse">Installation</li>
+						</a>
+						<a id="sec-py-depent" href="#python_dependency">
+							<li class="list-group-item list-group-item-danger btn-danger">
+								<ul><li>Python Dependencies</li></ul>
+							</li>
+						</a>
+						<a id="sec-mt-set" href="#matlab_setup">
+							<li class="list-group-item list-group-item-danger btn-danger">
+								<ul><li>MATLAB<sup>&reg;</sup> Setup</li></ul>
+							</li>
+						</a>
+						<a id="sec-rdat-h" href="#rdat_handling">
+							<li class="list-group-item active btn-primary">RDAT Files Handling</li>
+						</a>
+						<a id="sec-rdat-py" href="#rdat_python">
+							<li class="list-group-item list-group-item-info btn-info">
+								<ul><li>For Python</li></ul>
+							</li>
+						<a id="sec-rdat-mt" href="#rdat_matlab">
+							<li class="list-group-item list-group-item-info btn-info">						
+								<ul><li>For MATLAB<sup>&reg;</sup></li></ul>
+							</li>
+						</a>
+						<a id="sec-ist-h" href="#isatab_handling">
+							<li class="list-group-item list-group-item-warning btn-warning">ISATAB Files Handling</li>
+						</a>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-9" id="main">
+			<h2>
+				<span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;
+				Tutorial: RDATkit (RNA Dataset Toolkit)
+			</h2>
+			<br/>
+			<p class="cap">
+				RDATKit is a package provides a set of Python and MATLAB<sup>&reg;</sup> scripts that facilitate saving and loading data to and from files with RDAT format. It also supports the ISATAB file format (see <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank">SNRNASM&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>).
+			</p>
+			<p>For more information about the RDAT format, visit the <a href="/repository/deposit/specs">specification</a> page.</p> 
+			<br/>
+
+			<div class="well well-lg" style="background-color:#fff;">
+	            <p class="lead" id="install"><b>Installation</b></p>
+	            <div class="row">
+	            	<div class="col-md-12">
+			            <p>The toolset is available as a GitHub repository: <a href="https://github.com/hitrace/rdatkit" target="_blank"><code>hitrace/rdatkit</code>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>. You can download the source code directly with:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p><pre>git clone https://github.com/hitrace/rdatkit.git<br/>cd rdatkit/</pre></p>
+				            </div>
+				        </div>
+			            <blockquote class="h5" style="font-weight:normal;">
+							<h5><i>Optional: </i>Path settings for external RNA secondary structure tools </h5>
+							RDATKit uses the following analysis tools and wrappers:
+							<ul>
+								<li>Secondary structure prediction algorithms:
+									<ul>
+										<li><a href="http://rna.urmc.rochester.edu/RNAstructure.html" target="_blank">RNAstructure&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></li>
+										<li><a href="http://www.tbi.univie.ac.at/RNA/" target="_blank">ViennaRNA&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></li>
+									</ul>
+								</li>
+								<li>Secondary structure visualization:
+									<ul>
+										<li><a href="http://varna.lri.fr/" target="_blank">VARNA&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></li>
+									</ul>
+								</li>
+							</ul>
+							Steps:
+							<ul>
+								<li>
+									Open and edit <samp>settings.py.example</samp>. 
+								</li>
+								<li>
+									Copy <samp>settings.py.example</samp> to <samp>rdatkit/rdatkit/settings.py</samp>
+								</li>
+							</ul> 
+			            </blockquote>
+			            <p>Run:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p><pre>python setup.py install</pre></p>
+				            </div>
+				        </div>
+			            <p>(If performing a system-wide installation, this command should be executed as <samp>root</samp>).</p>
+			        </div>
+		            <br/>
+		        </div>
+
+	            <hr/ id="python_dependency">
+	            <p class="lead">
+					<ul><li class="lead">Python Dependencies</li></ul>
+	            </p>
+	            <div class="row">
+	            	<div class="col-md-12">
+			            <p>
+				            The RDAT toolkit depends on the following modules:
+				            <ul>
+				            	<li><a href="http://biopython.org/" target="_blank">biopython&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></li>
+				            	<li><a href="https://pypi.python.org/pypi/xlwt" target="_blank">xlwt&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></li>
+				            	<li><a href="https://pypi.python.org/pypi/xlrd" target="_blank">xlrd&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></li>
+				            </ul>
+				        </p>
+				        <p>To check if the modules are installed, run:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p><pre>pip list</pre></p>
+				            </div>
+				        </div>
+				        <p>To install the modules, run:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p><pre>pip install biopython xlwt xlrd</pre></p>
+				            </div>
+				        </div>
+
+				    </div>
+				</div>
+
+	            <hr/ id="matlab_setup">
+	            <p class="lead">
+					<ul><li class="lead">MATLAB<sup>&reg;</sup> Setup</li></ul>
+	            </p>
+	            <div class="row">
+	            	<div class="col-md-12">
+	            		<ul>
+	            			<li>Go to <samp>Menu > Set Path > Add with Subfolders</samp></li>
+					        <li>Choose the <samp>rdatkit/matlab_scripts</samp> folder.</li>
+					        <li><samp>Save</samp> and <samp>Close</samp></li>
+					    </ul>
+				    </div>
+				</div>
+
+	            <hr/>
+	            <p class="lead" id="rdat_handling"><b>RDAT Files Handling</b></p>
+	            <p class="lead" id="rdat_python">
+					<ul><li class="lead">For Python</li></ul>
+	            </p>
+	            <div class="row">
+	            	<div class="col-md-12">
+	            		<p>To read an RDAT file into session:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p>
+<pre>from rdatkit import datahandlers
+
+<span class="comment"># create RDATFile instance</span>
+rdat = datahandlers.RDATFile()
+<span class="comment"># load RDAT file</span>
+rdat.load(open('myRDATFile.rdat'))</pre>
+								</p>
+				            </div>
+				        </div>
+						<p>
+							The <code>RDATFile</code> object has a <samp>dictionary</samp> constructs that contains all of the expected information for each <samp>construct</samp> in the file. For convenience, data are saved as dictionaries of matrices (indexed by the <samp>construct</samp> names): <samp>values</samp>, <samp>xsels</samp>, <samp>errors</samp>, and <samp>traces</samp>, respectively. You can use the <code>save</code> method of the <code>RDATFile</code> to write back the changes you have made to the data.
+						</p>
+						<p>
+							To validate the data contained in a RDAT file (e.g. checking that the sequence positions specified in <samp>seqpos</samp> are the same length as the peak values called), simply call: 
+						</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p>
+<pre>
+<span class="comment"># validate RDAT file</span>
+rdat.validate()</pre>
+								</p>
+				            </div>
+				        </div>
+						<p>This will produce a bunch of warnings if the file suffers inconsistencies.</p>
+						<p>Finally, <code>RDATFile</code> objects can be converted to <code>ISATABFile</code> objects for format convertions:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p>
+<pre>
+<span class="comment"># convert RDAT to ISATAB</span>
+isatab = rdat.toISATAB()</pre>
+								</p>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+
+	            <hr/ id="rdat_matlab">
+	            <p class="lead">
+					<ul><li class="lead">For MATLAB<sup>&reg;</sup></li></ul>
+				</p>
+	            <div class="row">
+	            	<div class="col-md-12">
+	            		<p>To read an RDAT file into session:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p><pre>rdatfile = read_rdat_file('myRDATFile.rdat');</pre></p>
+				            </div>
+				        </div>
+	            		<p>
+	            			The resulting rdatfile is an object containing various attribute fields, including the <samp>area_peak</samp>, <Samp>area_peak_errors</samp>, <samp>traces</samp>, <samp>data_annotations</samp> for peak values, peak value errors, traces, and <samp>construct</samp> annotations, respectively.
+	            		</p>
+	            		<p>To visualize the data, run:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p><pre>show_rdat(rdatfile);</pre></p>
+				            </div>
+				        </div>
+	            		
+	            		<p>To validate a RDAT file content, simply use:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+								<p><pre>check_rdat(rdatfile);</pre></p>
+				            </div>
+				        </div>
+            		</div>
+            	</div>
+
+	            <hr/ id="isatab_handling">
+	            <p class="lead"><b>ISATAB Files Handling</b></p>
+	            <div class="row">
+	            	<div class="col-md-12">
+	            		<p>ISATAB files are handled in a similar way in Python, but under <code>ISATABFile</code> class instead of <code>RDATFile</code> class. Here is a summary script of ISATAB file handling similar to what has been previously demonstrated with RDAT file:</p>
+			            <div class="row">
+				            <div class="col-md-8">
+	            		<p><pre>
+from rdatkit import datahandlers
+
+<span class="comment"># create ISATABFile instance</span>
+isatab = datahandlers.ISATABFile()
+<span class="comment"># load ISATAB file</span>
+filename = 'myISATABfile.xls'
+isatab.load(filename, type='xls')
+<span class="comment"># load ISATAB files from directory</span>
+dirname = 'isatab_files/'
+isatab.load(dirname, type='dir')
+<span class="comment"># validate ISATAB file</span>
+isatab.validate()
+<span class="comment"># write to ISATAB file</span>
+isatab.save('test.xls', type='xls')</pre></p>
+				            </div>
+				        </div>
+	            		<p>
+	            			The <samp>type</samp> option in the <code>save</code> and <code>load</code> methods specifies whether to <code>save/load</code> from/to an excel <samp>.xls</samp> file or a directory of <samp>csv</samp> files (one for each sheet).
+	            		</p>
+	            		<p>Note: Currently, there is no MATLAB<sup>&reg;</sup> support for ISATAB files in RDATKit yet.</p>
+	            		<p>For more information about the ISATAB file specification, specifically used in the RNA mapping field, visit <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank">SNRNASM&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>.</p>
+            		</div>
+            	</div>
+
+		    </div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_analyze").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+
+	    	$("#sidebar").css("width", $("#sidebar").width());
+			$("#sidebar").affix({
+	  			offset: {
+	  		  	top: $("#main").position().top
+	  			}
+			});	
+
+			$("[id^=sec-]").on("click", function () {
+			    $('html, body').stop().animate({scrollTop: $($(this).attr("href")).offset().top - 100}, 500);
+			});
+		});
+	</script>
+
+{% endblock %}

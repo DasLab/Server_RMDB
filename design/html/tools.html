@@ -1,0 +1,186 @@
+{% extends "html/_framework.html" %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h3>
+				<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;
+				Tools for Electropherogram Analyses
+			</h3>
+			<br/>
+			<p>
+				RMDB provides the following tools that can be used for the analysis of electropherograms in the context of RNA structure mapping. 
+			</p>
+		</div>
+	</div>
+	<br/>
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-primary" id="rdatkit">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;&nbsp;
+						RDATkit: <u><i>R</i></u>NA <u><i>Dat</i></u>aset Tool<u><i>kit</i></u>
+					</h2>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12">
+						<p class="cap">
+							RDATKit is a package provides a set of Python and MATLAB<sup>&reg;</sup> scripts that facilitate saving and loading data to and from files with RDAT format. It also supports the ISATAB file format (see <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank">SNRNASM&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>).
+						</p>
+						<p>
+							The toolset is available as a GitHub repository: <a href="https://github.com/hitrace/rdatkit" target="_blank"><code>hitrace/rdatkit</code>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>. You can download the source code directly with:
+						</p>
+						<p>
+							<pre>git clone https://github.com/hitrace/rdatkit.git</pre>
+						</p>
+						<br/>
+						<p>
+							For tutorial and documentation of the RDATKit, see
+							<a href="/repository/analyze/docs/rdatkit" class="btn btn-warning pull-right">&nbsp;&nbsp;Tutorial&nbsp;&nbsp;</a>
+						</p>
+						<br/>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-info" id="primerize">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<span class="glyphicon glyphicon-indent-left" aria-hidden="true"></span>&nbsp;&nbsp;
+						Primerize: PCR Assembly Primer Design
+					</h2>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12">
+			            <img src="/site_media/images/logo_primerize.png" class="logo"/>
+						<p class="cap">
+							<a href="http://primerize.stanford.edu/" target="_blank">Primerize&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>  is a Web Server for primer designs of DNA sequence PCR assembly. Primerize is optimized to reduce primer boundaries mispriming, is designed for fixed sequences of RNA problems, and passed wide and stringent tests. This efficient algorithm is suitable for extended use such as Gibson assembly designs and massively parallel mutagenesis library.
+						</p>
+						<p>
+							Primerize has been stringently tested in synthesis of nearly 1000 RNA sequences from Das lab and from citizen scientists in the <a href="http://eterna.cmu.edu/" target="_blank">EteRNA&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> videogame/synthetic biology project. The webserver is integrative and user-friendly, and should be broadly used by the RNA community. 
+						</p>
+						<br/>
+						<p>
+							To visit Primerize webserver, go to
+							<a href="http://primerize.stanford.edu/" target="_blank" class="btn btn-primary pull-right">&nbsp;&nbsp;Link&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>&nbsp;&nbsp;</a>
+						</p>
+						<br/>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-warning" id="primerize">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<p>
+							<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;&nbsp;
+							MAPseeker: <u><i>M</i></u>ultiplexed <u><i>A</i></u>ccessibility <u><i>P</i></u>robing read out through   
+						</p>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						next generation <u><i>Seq</i></u>uencing
+					</h2>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12">
+						<p class="cap">
+							MAPseeker leverages multiple chemical modification strategies to give information-rich structural data on pools of RNAs. It address several potential sources of bias, by eliminating PCR steps, improving ligation efficiencies of ssDNA adapters, and avoiding problematic heuristics in prior algorithms. This greatly facilitates RNA mapping labs to transition from using electrophoretic to next-generation sequencing methods.
+						</p>
+						<p>
+							The toolset GitHub repository: <a href="https://github.com/DasLab/map_seeker" target="_blank"><code>DasLab/map_seeker</code>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> is private. MAPseeker source code is available for non-commercial use: <a href="/repository/analyze/tools/mapseeker/license" class="btn btn-success pull-right">&nbsp;&nbsp;Download&nbsp;&nbsp;</a>
+						</p>
+						<br/>
+						<p>
+							For commercial use, please <a href="/repository/help/about#contact" class="btn btn-info pull-right">&nbsp;Contact us&nbsp;&nbsp;</a>
+						</p>
+						<br/>
+						<p>
+							For tutorial and documentation of the MAPseeker, see
+							<a href="/repository/analyze/docs/mapseeker" class="btn btn-warning pull-right">&nbsp;&nbsp;Tutorial&nbsp;&nbsp;</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="panel panel-danger" id="hitrace">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<p>
+							<span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>&nbsp;&nbsp;
+							HiTRACE: <u><i>Hi</i></u>gh-<u><i>T</i></u>hroughput <u><i>R</i></u>obust <u><i>A</i></u>nalysis for <u><i>C</i></u>apillary
+						</p>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<u><i>E</i></u>lectrophoresis
+					</h2>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12">
+						<p class="cap">
+							HiTRACE is a complete set of MATLAB<sup>&reg;</sup> scripts that automates the key tasks in large-scale nucleic acid CE analysis, including the profile alignment that has heretofore been a rate-limiting step in the highest throughput experiments. By applying a series of robust dynamic programming algorithms, HiTRACE outperforms other tools in terms of alignment and fitting quality, as assessed by measures including the correlation between quantified band intensities between replicate datasets. 
+						</p>
+						<p>
+							It has been intensively used for quantitating data for RNA and DNA based on the mutate-and-map methodology, chromatin footprinting, and other high-throughput structure mapping techniques. Therefore, HiTRACE resolves a critical barrier to the efficient and accurate analysis of nucleic acid structure in experiments involving tens of thousands of electrophoretic bands.
+						</p>
+						<p>
+							The toolset is available as a GitHub repository: <a href="https://github.com/hitrace/hitrace" target="_blank"><code>hitrace/hitrace</code>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>. You can download the source code directly with:
+						</p>
+						<p>
+							<pre>git clone https://github.com/hitrace/hitrace.git</pre>
+						</p>
+						<br/>
+						<p>
+							For tutorial and documentation of the HiTRACE, see
+							<a href="/repository/analyze/docs/hitrace" class="btn btn-warning pull-right">&nbsp;&nbsp;Tutorial&nbsp;&nbsp;</a>
+						</p>
+						<br/>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-success" id="hitraceweb">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<span class="glyphicon glyphicon-globe" aria-hidden="true"></span>&nbsp;&nbsp;HiTRACE.org
+					</h2>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12">
+			            <img src="/site_media/images/logo_hitrace_web.png" class="logo"/>
+						<p class="cap">
+							<a href="http://hitrace.org/" target="_blank">HiTRACE.org&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> is an online version of HiTRACE that presents both standard features previously available, as well as additional features such as automated band annotation and flexible adjustment of annotations, all via an integrative, user-friendly, and interactive environment.
+						</p>
+						<p>
+							It overcomes the nontrivial efforts to learn, use and extend HiTRACE due to its command-line MATLAB<sup>&reg;</sup> requirement. By making use of parallelization, the webserver is also faster than MATLAB<sup>&reg;</sup> implementations available to most users on their local computers.
+						</p>
+						<br/>
+						<p>
+							To visit HiTRACE.org webserver, go to
+							<a href="http://hitrace.org/" target="_blank" class="btn btn-primary pull-right">&nbsp;&nbsp;Link&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>&nbsp;&nbsp;</a>
+						</p>
+						<p>
+						</p>
+						<br/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_analyze").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+		});
+	</script>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "html/_framework.html" %}
+{% block content %}
+<div class="container">
+
+	<div class="col-md-12" class="row">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h2 class="panel-title">
+					<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;&nbsp;
+					Future Development
+				</h2>
+			</div>
+			<div class="panel-body">
+				<div class="col-md-12">
+					<p class="lead">RMDB version 2.0 BETA, phase II</p>
+					<p>The following new features is currently under active development, and will be released for preview soon:</p>
+					<ul>
+						<li>
+							<p>Interactive data browser: for general RMDB entries. A new interface powered by JavaScript enabling faster and more responsive data browsing of each RMDB dataset, including plots and channeling to Structure Server.</p>
+						</li>
+						<li>
+							<p>Interactive data browser: for EteRNA entries. A new interface powered by JavaScript, with faster search and locate to particular entry, scrolling of entire EteRNA round RDAT, extracting particular entry into separate RDAT file download, integrating sequence viewer and secondary structure coloring.</p>
+						</li>
+						<li>
+							<p>Advanced search: finer and more detailed search tool for all RMDB data, retrieving construct entries instead of whole RDAT.</p>
+						</li>
+						<li>
+							<p>Structure Server: new result page without VARNA applet, enabling boostrapping and result download.</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h2 class="panel-title">
+					<span class="glyphicon glyphicon-scale" aria-hidden="true"></span>&nbsp;&nbsp;
+					Change Log History
+				</h2>
+			</div>
+			<div class="panel-body">
+				<div class="col-md-12">
+					{% autoescape off %}
+					{% for log in hist %}
+						{{ log }}
+					{% endfor %}
+					{% endautoescape %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+  
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_about").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+	    	$(".clickable").on("click", function () {
+	    		var click_id = $(this).attr("id")
+	    		if ( click_id == "nav_contact" | click_id == "nav_cite") {
+	    			$("#wait").hide();
+	    		}
+	    		
+	    	});
+		});
+	</script>
+
+{% endblock %}

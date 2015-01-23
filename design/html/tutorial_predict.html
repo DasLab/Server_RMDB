@@ -1,0 +1,47 @@
+{% extends "html/_framework.html" %}
+
+{% block content %}
+<div class="container">
+<div class="container">
+	<div class="col-md-9">
+		<img src="/site_media/images/fg_under_construction.gif" style="width:800px;">
+	</div>
+	<div class="col-md-3">
+		<h2>Page not ready~</h2>
+		<p>Please check back soon!</p>
+		<a href="/repository/" class="btn btn-primary text-center">Home</a>
+	</div>
+</div>
+
+<div id="helpdialog" class="hidden" title="Structure server help">
+The purpose of the RMDB structure server is to help researchers formulate structural hypotheses based on chemical and enzymatic mapping of an RNA sequence of interest. The server uses the RNAstructure program by the Mathews lab to perform standard secondary structure prediction by free energy minimization. The algorithm is guided by the nearest neighbor rules along wiht bonuses/penalties imposed by the experimental data.
+<h3>How to use this server</h3>
+<p>Generating a secondary structure hypothesis in the RMDB structure server is a two step process: loading or typing the sequence and experimental data and choosing the type of bonuses to apply. Additional options including temperature and data normalization can be set before submitting to the server.</p>
+<p>Inputting sequences and data can be done either by manually typing them (in FASTA and RNAstructure formats respectively) or by loading an RDAT file. RMDB entries can also be loaded into the server and can serve as guidelines on how the data input should look like when done manually. When an RDAT file or RMDB entry is loaded into the server, its sequences and data automatically populate the input forms. The sequences and data can then be reviewed or modified as desired before submitting.</p>
+<p>Note that since the server uses RNAstructure as the backend, several particularties associated with the software apply to the input given and the resulting predictions (e.g. all nucleotides given in lowercase are forced to be single stranded).</p>
+<h3>Description of parameters and options</h3>
+<ul>
+<li><i>1D bonuses</i>: Mapping experiments usually encode how much a particular nucleotide in the sequence is "single stranded" (either by exposure or enzyme recognition). This information can be used to apply bonuses/penalties in the energy function minimization process of secondary structure algorithms through a predefined pseudoenergy function: Ps[i] = -ln(slope*(data[i] + intercept)), where i is the nucleotide position. The slope and intercept can be tweaked to increase or diminish the pseudoenergy intensity. Current default values have been observed to work well with two benchmark sets of RNA molecules, documented in and , but users should keep in mind the that these values may not work optimally with other RNA sequences.</li>
+<li><i>2D bonuses</i>: Mutate-and-map experiments can also be used to guide secondary structure prediction. Changes observed in residue exposure while mutating a sequence nucleotide by nucleotide can be applied as direct bonsues/penalties to the energy function. In this case, the pseudoenergy function becomes: Ps[i, j] = slope*data[i,j] + intercept, where i and j are nucleotide positions. Since the bonuses are given to each pair of positions in the sequence, the bonus matrix that is input should be a square matrix and its dimensions should coincide with the number of nucleotides in the sequence. Input bonsuses can be further refined by normalizing them as per row Z-scores, eliminating data variation per mutant probed.</li>
+<li><i>Bootstrapping</i>: Generates N data mockups by sampling the mapping values with replacement M times, where N is the number of bootstraps specified and M is the length of the RNA sequence. N secondary structure hypotheses are then opbained by running RNAstructure with each of the mockups. Each helix appearing in the secondary structure predicted with the full data is then counted in the mockup predictions and its frequency is reported. This procedure gives a confidence value to each helix.</li>
+<li><i>Benormalizing</i>: When the Renormalize box is checked, a box plot normalization is performed (eliminating outliers outside 1.5 times of the interquartile range) to the data before converting them to pseudoenergies.</li>
+</ul>
+<h3>Viewing Results</h3>
+<p>When submitting to the structure server, the resulting secondary structure hypotheses of each sequence submitted is drawn as a Java applet using the VARNA program. If a reference structure was specified, base pairs that were missed or incorrectly predicted with respect to this structure are shown. The reference structure can be further changed to test several other hypotheses.</p>
+</div>
+
+
+</div>
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_analyze").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+		});
+	</script>
+
+{% endblock %}

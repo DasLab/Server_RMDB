@@ -1,0 +1,466 @@
+{% extends "html/_framework.html" %}
+{% load repository_extras %}
+
+{% block content %}
+<div class="container">
+
+  <div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      &nbsp;&nbsp;<b>RMDB</b> has upgraded to <a href="/repository/help/history"><u>version 2.0</u></a> <b>BETA</b> for online preview. More changes and updates are in progress.
+    </p>
+    <p>
+      <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+      &nbsp;&nbsp;Please report bugs and make suggestions. We really appreciate your feedback.
+    </p>
+  </div>
+
+  <div class="row nav-panel" role="tabpanel">
+    <div class="col-md-3">
+      <ul class="nav nav-stacked nav-tab" role="tablist">
+        <br/>
+        <li role="presentation" class="active">
+          <a href="#tab-home" aria-controls="home" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Welcome</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-browse" aria-controls="profile" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Browse</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-deposit" aria-controls="messages" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Deposit</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-download" aria-controls="settings" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Download</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-analyze" aria-controls="settings" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Analyze</h4>
+          </a>
+        </li>
+        <li role="presentation">
+          <a href="#tab-about" aria-controls="settings" role="tab" data-toggle="tab">
+            <h4>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Help</h4>
+          </a>
+        </li>
+        <br/>
+      </ul>
+    </div>
+
+    <div class="col-md-9 tab-content">
+      <div role="tabpanel" class="fade in tab-pane active" id="tab-home">
+        <br/>
+        <div class="col-md-12">
+          <div class="row">
+            <h2>&nbsp;&nbsp;A Repository of RNA Structure Probing</h2>
+          </div>
+          <br/>
+          <div class="row bgimg" style="background-size: 80% !important; background-position: right 20px bottom;">
+            <div class="col-md-8">
+            <p>
+              The <u>R</u>NA <u>M</u>apping <u>D</u>ata<u>b</u>ase is an archive that contains results of diverse structural mapping experiments performed on ribonucleic acids. Results submitted to the repository are manually curated and annotated, ensuring reliability and quality of reported data. With a total of <u>{{ N_datapoints }}</u> datapoints , RMDB currently houses <u>{{ N_all }}</u> entries, describing more than <u>{{ N_RNA }}</u> experiemnts of <u>{{ N_constructs }}</u> RNA constructs in several solution conditions and has been growing rapidly .
+            </p>
+            <p>
+               In addition, RMDB contributes greatly to the <a href="http://eterna.stanford.edu" target="_blank"><b>EteRNA</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> videogame/synthetic biology project, and the <a href="http://ahsoka.u-strasbg.fr/rnapuzzles/" target="_blank"><b>RNA Puzzles</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> blind RNA structure prediction challenges. It will continue to benefit data sharing for RNA structue mapping community. 
+             </p>
+             <p>
+              The ultimate goal of the RMDB is to provide a centralized, curated, data-sharing platform with visualization and structure prediction tools for rapid analysis and meta-analysis of these data.
+            </p>
+            </div>
+            <div class="col-md-4">
+              <img src="/site_media/images/fg_L21.png" height="240px">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div role="tabpanel" class="fade tab-pane" id="tab-browse">
+        <br/>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-4">
+              <ul class="nav nav-pills nav-stacked clickable">
+                <li class="nav-general list-group-item text-center">
+                  <a href="/repository/browse#categoryGeneral" id="navGeneral">
+                    <span class="lead">General</span>
+                  </a>
+                </li>
+              </ul>
+              <div class="col-md-12">
+                <br/>
+                <p>
+                  Chemical mapping data entries from Das lab in-house and published experiments. 
+                </p>
+                <p>
+                  Availability of such data enables critical review and discussion on previous interpretations, as well as demand for improved experimental and computational techniques. 
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <ul class="nav nav-pills nav-stacked clickable">
+                <li class="nav-puzzle list-group-item text-center">
+                  <a href="/repository/browse#categoryGeneral">
+                    <span class="lead">RNA Puzzles</span>
+                  </a>
+                </li>
+              </ul>
+              <div class="col-md-12">
+                <br/>
+                <p>
+                  <a href="http://ahsoka.u-strasbg.fr/rnapuzzles/" target="_blank"><b>RNA Puzzles</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> a collective experiment for blind RNA structure prediction, with a goal to assess the cutting edge of RNA structure prediction techniques.
+                </p>
+                <p>
+                  A dozen of challenge rounds has encouraged the RNA structure prediction community in their efforts to improve models, techiques and tools for automatic RNA three-dimensional structure prediction.
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <ul class="nav nav-pills nav-stacked clickable">
+                <li class="nav-eterna list-group-item text-center">
+                  <a href="/repository/browse#categoryGeneral">
+                    <span class="lead">EteRNA</span>
+                  </a>
+                </li>
+              </ul>
+              <div class="col-md-12">
+                <br/>
+                <p>
+                  <a href="http://eterna.stanford.edu" target="_blank"><b>EteRNA</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> is a game where players become citizen scientists, working together to better understand and predict the behavior of RNA. 
+                </p>
+                <p>
+                  Wet laboratory data of dozens of cycles of designs by enthusiasts are deposited, mined, and distilled into new rules that significantly outperform prior algorithms in experimental accuracy of RNA structure designs.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div role="tabpanel" class="fade tab-pane" id="tab-deposit">
+        <br/>
+        <div class="col-md-12">
+          <div class="row">
+            <h2>
+              &nbsp;&nbsp;<span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+              &nbsp;&nbsp;Data Deposition
+            </h2>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-md-8">
+            <p>
+              RMDB accepts experimental data in either the SNRNASM <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank"><mark>ISATAB</mark>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> format or <a href="/repository/deposit/specs"><mark>RDAT</mark></a> format.
+            </p>
+            <p>
+              <u>R</u>NA <u>Dat</u>a (RDAT) text file format is an annotation-based specification for RNA structure mapping experiments that is both computer friendly and can be easily read by humans. The RMDB database schema closely follows the organization of RDAT files, making it easier to manage and expose each entry’s data. 
+             </p>
+             <p>
+              We have tools and guidance available for data preparation, format validation, and data submission. Data will be reviewed and approved by RMDB team before public release. 
+            </p>
+            </div>
+            <div class="col-md-4">
+              <div class="list-group">
+                <a href="/repository/deposit/specs" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                  &nbsp;&nbsp;RDAT Format Specifications
+                </a>
+                <a href="/repository/deposit/validate" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Validation Tools
+                </a>
+                <a href="/repository/deposit/submit" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Submit Entry
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div role="tabpanel" class="fade tab-pane" id="tab-download">
+        <br/>
+        <div class="col-md-12">
+          <div class="row">
+            <h2>
+              &nbsp;&nbsp;<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+              &nbsp;&nbsp;Data Download
+            </h2>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-md-8">
+            <p>
+              RMDB allows advanced search for particular structural or sequence motifs of interest. Fast and efficient filtering and retrieval of data facilitates in-depth data and feature mining.
+            </p>
+            <p>
+              Archive of entire database (all RMDB entries) are available for further processing locally.
+             </p>
+             <p>
+              RMDB Web API enables retrieval of entire or particular datasets in JSON format.
+            </p>
+            </div>
+            <div class="col-md-4">
+              <div class="list-group">
+                <a href="/repository/advanced_search" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Advanced Search
+                </a>
+                <a href="/site_media/rdat_files.tgz" target="_blank" class="list-group-item">
+                  <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Download Database
+                </a>
+                <a href="/repository/analyze/docs/api" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Web API
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div role="tabpanel" class="fade tab-pane" id="tab-analyze">
+        <br/>
+        <div class="col-md-12">
+          <div class="row">
+            <h2>
+              &nbsp;&nbsp;<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+              &nbsp;&nbsp;Data Analyses
+            </h2>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-md-4">
+              <h4>
+                <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
+                &nbsp;&nbsp;<i><a href="/repository/analyze/predict/" class="clickable">Secondary Structure 
+                <br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prediction</a></i>
+              </h4>
+              <br/>
+              <p>Structural Server provides facility for RNA secondary structure predictions using chemical mapping data.</p>
+              <p>RDAT format bonus and RMDB entries are supported as input. Non-parametric bootstrapping reports confidence estimate of helices.</p>
+            </div>
+
+            <div class="col-md-4">
+              <h4>
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                &nbsp;&nbsp;<i><a href="/repository/analyze/tools" class="clickable">Repository Packages</a></i>
+              </h4>
+              <br/>
+              <p>RMDB provides tools that can be used for the analysis of electropherograms in the context of RNA structure mapping.</p>
+              <p>RDATKit and HiTRACE are freely downloadable, as well as accessible Primerize server. MAPseeker is freely available for non-commercial use. For other tools, please contact us.</p>
+            </div>
+
+            <div class="col-md-4">
+              <h4>
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                &nbsp;&nbsp;<i>Tool Tutorials</i>
+              </h4>
+              <br/>
+              <div class="list-group">
+                <a href="/repository/analyze/docs/predict" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Structural Server
+                </a>
+                <a href="/repository/analyze/docs/api" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Website API
+                </a>
+                <a href="/repository/analyze/docs/rdatkit" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;RDATKit
+                </a>
+                <a href="/repository/analyze/docs/hitrace" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;HiTRACE
+                </a>
+                <a href="/repository/analyze/docs/mapseeker" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;MAPseeker
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div role="tabpanel" class="fade tab-pane" id="tab-about">
+        <br/>
+        <div class="col-md-12">
+          <div class="row">
+            <h2>
+              &nbsp;&nbsp;<span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+              &nbsp;&nbsp;More About RMDB
+            </h2>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-md-8">
+              <p>
+                RMDB has upgraded to version 2.0 BETA for online preview. More changes and updates are in progress. Please report bugs and make suggestions. We really appreciate your feedback.
+              </p>
+              <p>To learn more about RMDB usage and changes, use these links:</p>
+            </div>
+            <div class="col-md-4">
+              <div class="list-group">
+                <a href="/repository/help/about#contact" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Contact Us
+                </a>
+                <a href="/repository/help/about#citation" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
+                  &nbsp;&nbsp;Cite RMDB
+                </a>
+                <a href="/repository/help/license" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+                  &nbsp;&nbsp;License
+                </a>
+                <a href="/repository/help/history" class="list-group-item clickable">
+                  <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                 &nbsp;&nbsp; History
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div id="col-1" class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+            &nbsp;&nbsp;Latest Entries
+          </h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div id="carousel-entries" class="carousel slide" data-ride="carousel">
+              <div class="row">
+                <ol class="carousel-indicators">
+                  {% for e in entries %}
+                    <li data-target="#carousel-entries" data-slide-to="{{ forloop.counter0 }}"></li>
+                  {% endfor %}
+                </ol>
+              </div>
+
+              <div class="carousel-inner" role="listbox">
+                {% for e in entries %}
+                <div class="item" style="height:400px;">
+                  <div class="row">
+                    {% for c in e.constructs %}
+                    <img src="/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif" class="center-block"/>
+                    {% endfor %}
+                  </div>
+                  <div class="row">
+                  {% for c in e.constructs %}
+                    <p class="text-center">
+                      {% autoescape off %}
+                      <span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
+                      {% endautoescape %}
+                      <br/>
+                      {{ c.name }}
+                    </p>
+                  {% endfor %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+
+              <a class="left carousel-control" href="#carousel-entries" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="right carousel-control" href="#carousel-entries" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div id="col-2" class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+            &nbsp;&nbsp;News
+          </h3>
+        </div>
+        <div class="panel-body" style="overflow-y:scroll;max-height:300px;">
+          <table class="table table-striped">
+          {% for n in news %}
+            <tr>
+              {% if n.reference %}
+              <td><i>{{ n.date }}</i></td>
+              <td><a href="{{ n.reference }}">{{ n.title }}</a>
+              </td>
+              {% else %}
+              <td><i>{{ n.date }}</i></td>
+              <td>{% autoescape off %}{{ n.title }}{% endautoescape %}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+            <tr>
+              <th class="col-md-2"></th>
+              <th class="col-md-10"></th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+
+{% block script %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.dropdown-toggle').removeClass("active");
+      $("#nav_logo>span").css("text-decoration","underline");
+
+      $("#col-1, #col-2").css("height", "350px");
+      $(".carousel-inner>.item:first-child").addClass("active");
+      $(".carousel-indicators>li:first-child").addClass("active");
+      $('.carousel').carousel();
+    });
+  </script>
+
+{% endblock %}
+

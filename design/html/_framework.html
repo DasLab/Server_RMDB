@@ -1,0 +1,554 @@
+{% load repository_extras %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" href="/site_media/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/site_media/css/theme.css" />
+
+    <link rel="shortcut icon" href="/site_media/favicon.ico" />
+    <link rel="icon" type-"image/gif" href="/site_media/animated_favicon1.gif" />
+    <title>RMDB: RNA Mapping DataBase</title>
+
+    <script type="text/javascript" src="/site_media/js/jquery-1.11.2.min.js"> </script> 
+	
+    <script type="text/javascript" src="/site_media/js/protovis-3.2/protovis-d3.2.js"></script>
+    <script type="text/javascript" src="/site_media/js/bootstrap.min.js"> </script> 
+
+
+   <script type="text/javascript">
+	$(document).ready(function(){
+	browser = navigator.appName;
+	if(browser.indexOf("Explorer") != -1){
+	    $("#browser_warning").show();
+            $(".svg_disabled").show();
+            $(".svg_enabled").hide();
+        }
+	function preventDefault(e) {
+	  e = e || window.event;
+	  if (e.preventDefault)
+	      e.preventDefault();
+	  e.returnValue = false;  
+	}
+	function wheel(e) {
+	  preventDefault(e);
+	}
+	function disable_scroll() {
+	  if (window.addEventListener) {
+	      window.addEventListener("DOMMouseScroll", wheel, false);
+	  }
+	  window.onmousewheel = document.onmousewheel = wheel;
+	}
+
+	function enable_scroll() {
+	    if (window.removeEventListener) {
+		window.removeEventListener("DOMMouseScroll", wheel, false);
+	    }
+	    window.onmousewheel = document.onmousewheel = null;  
+	}
+        var wheelDistance = function(evt){
+		if (!evt) evt = event;
+		var w=evt.wheelDelta, d=evt.detail;
+		if (d){
+			if (w) return w/d/40*d>0?1:-1; // Opera
+			else return -d/3;              // Firefox;         TODO: do not /3 for OS X
+		} else return w/120;             // IE/Safari/Chrome TODO: /3 for Chrome OS X
+	};
+	var wheelDirection = function(evt){
+		if (!evt) evt = event;
+		return (evt.detail<0) ? 1 : (evt.wheelDelta>0) ? 1 : -1;
+	};
+	$(".appletdiv").bind("mousewheel", function(evt, delta){
+		var distance  = wheelDistance(evt);
+		var direction = wheelDirection(evt);
+		console.log("event.wheelDelta: "+evt.wheelDelta+"<br>event.detail: "+evt.detail+"<br>Normalized Wheel Distance: "+distance+"<br>Wheel Direction: "+direction);
+	});
+	$(".appletdiv").mouseover(function() {
+            disable_scroll();
+	});
+	$(".appletdiv").mouseout(function() {
+            enable_scroll();
+	});
+	$("#submitform").click(function() {
+		    $("#advanced_search_form").submit();
+		    return false;
+	});
+	$("#help").click(function(){ $("#helpdialog").removeClass("hidden"); $("#helpdialog").dialog({width:800, height:500});});
+	$("#submitform").button();
+
+	});
+    </script>
+
+    {% block head %}{% endblock %}
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(["_setAccount", "UA-36037648-1"]);
+      _gaq.push(["_trackPageview"]);
+
+      (function() {
+	var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+	ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+	var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+</head>
+
+<body>
+	<div id="wait" class="modal"></div>
+	<script type="text/javascript">
+		$("#wait").ready(function () {
+			$("#wait").show().fadeOut(500);
+		});
+	</script>
+
+	<div class="navbar navbar-fixed-top" id="nav_load">
+		<div class="container">
+			<div class="navbar-header clickable">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/repository/" id="nav_logo">&nbsp;&nbsp;<span>RMDB</span>&nbsp;&nbsp;</a>
+			</div>
+
+			<div class="navbar-collapse collapse" >
+				<ul class="nav navbar-nav">
+					<li class="dropdown clickable" id="nav_browse">
+						<a href="/repository/browse"  class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+							Browse
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu nav nav-pills nav-stacked clickable" role="menu">
+							<li class="nav-general"><a href="/repository/browse#categoryGeneral" id="navGeneral">
+								<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;&nbsp;
+								General</a>
+							</li>
+							<li class="divider"></li>
+							<li class="nav-puzzle"><a href="/repository/browse#categoryPuzzle" id="navPuzzle">
+								<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>&nbsp;&nbsp;
+								RNA Puzzles</a>
+							</li>
+							<li class="divider"></li>
+							<li class="nav-eterna" ><a href="/repository/browse#categoryEteRNA" id="navEteRNA">
+								<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>&nbsp;&nbsp;
+								EteRNA</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a id="nav_deposit" href="/repository/deposit/submit" class="dropdown-toggle clickable disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+							Deposit
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<li class="clickable"><a href="/repository/deposit/specs">
+								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								RDAT Format Specifications</a>
+							</li>
+							<li class="clickable"><a href="/repository/deposit/validate">
+								<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								Validation Tools</a>
+							</li>
+							<li class="divider"></li>
+							<li class="clickable" id="nav_submit"><a href="/repository/deposit/submit">
+								<span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span>&nbsp;&nbsp;
+								Submit Entry</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown" id="nav_analyze">
+						<a href="/repository/analyze/predict/" class="dropdown-toggle disabled clickable" data-toggle="dropdown" role="button" aria-expanded="false">
+							Analyze
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<li><a class="clickable" href="/repository/analyze/predict/">
+								<span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>&nbsp;&nbsp;
+								Secondary Structure Prediction</a>
+							</li>
+							<li class="divider"></li>
+							<li><a class="clickable" href="/repository/analyze/tools">
+								<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								Repository Packages</a>
+							</li>
+							<li class="divider"></li>
+							<li><a class="disabled">
+								<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+								Tool Tutorials</a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/predict">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>Structural Server</i></a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/api">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>Website API</i></a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/rdatkit">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>RDATKit</i></a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/hitrace">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>HiTRACE</i></a>
+							</li>
+							<li><a class="clickable" href="/repository/analyze/docs/mapseeker">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>MAPseeker</i></a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown" id="nav_about">
+						<a href="/repository/help/about" class="dropdown-toggle disabled clickable" data-toggle="dropdown" role="button" aria-expanded="false">
+							About
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<li id="nav_contact" class="clickable"><a href="/repository/help/about#contact">
+								<span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;&nbsp;
+								Contact Us</a>
+							</li>
+							<li id="nav_cite" class="clickable"><a href="/repository/help/about#citation">
+								<span class="glyphicon glyphicon-education" aria-hidden="true"></span>&nbsp;&nbsp;
+								Cite RMDB</a>
+							</li>
+							<li class="clickable"><a href="/repository/help/license">
+								<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>&nbsp;&nbsp;
+								License</a>
+							</li>
+							<li class="divider"></li>
+							<li class="clickable"><a href="/repository/help/history">
+								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;&nbsp;
+								History</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+				<div class="pull-right row">
+					<ul class="nav navbar-nav">
+						<li class="dropdown">
+							<button class="btn btn-info navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #ffffff;">
+								MyRMDB Login
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu" id="nav_user">
+								{% if user.is_authenticated %}
+									<li class="nav-list">
+										<br/>
+										<p><span style="text-decoration:underline; color:gray;">Signed In As:</span></p>
+									</li>
+									<li id="nav_username" style="width:250px;" class="nav-list">
+										<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
+										<b>{{ user.first_name }} {{ user.last_name }}</b>
+										<kbd>{{ user.username }}</kbd>
+									</li>
+									<li id="nav_email" class="nav-list">
+										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;
+										<i>{{ user.email }}</i>
+									</li>
+									<li id="nav_email" class="nav-list">
+										<span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;
+										{{ user|get_affiliation }}
+									</li>
+									
+									<li class="nav-list">
+										<br/>
+										<span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span>&nbsp;&nbsp;
+										Joined Since: {{ user.date_joined|date:"SHORT_DATE_FORMAT" }}
+										<br/>
+										<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;&nbsp;
+										Last Login: {{ user.last_login|date:"SHORT_DATE_FORMAT" }}
+										<br/>
+										<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;
+										Status:
+										{% if user.is_active %}
+										<span class="label label-success">
+											<span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>&nbsp;&nbsp;
+											Active
+										</span>
+										{% else %}
+										<span class="label label-danger">
+											<span class="glyphicon glyphicon-volume-off" aria-hidden="true"></span>&nbsp;&nbsp;
+											Inactive
+										</span>
+										{% endif %}
+										{% if user.is_staff %}, 
+										<span class="label label-warning">
+											<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>&nbsp;&nbsp;
+											Staff
+										</span>
+										{% endif %}
+										{% if user.is_superuser %}, 
+										<span class="label label-primary">
+											<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>&nbsp;&nbsp;
+											Admin
+										</span>
+										{% endif %}
+									</li>
+									<br/>
+									<li>
+										<div class="well" class="nav-list">
+											<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;
+											<b><i>Statistics</i>:</b>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											# Entries: <code>{{ user|get_user_stats_entry }}</code>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											# Constructs: <code>{{ user|get_user_stats_const }}</code>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											# Data Points: <code>{{ user|get_user_stats_dtpt }}</code>
+											<br/>
+											<br/>
+											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;&nbsp;
+											Most Recent Submission: 
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp;
+											<a href="/repository/detail/{{ user|get_user_stats_last_entry}}">
+												<span class="label label-default">
+													{% autoescape off %}
+													{{ user|get_user_stats_last_entry|color_rmdb_id }}
+													{% endautoescape %}
+												</span>
+											</a>
+											<br/>
+											&nbsp;&nbsp;&nbsp;&nbsp; 
+											On {{ user|get_user_stats_last_date|date:"SHORT_DATE_FORMAT" }}
+										</div>
+									</li>
+									<li class="divider"></li>
+									<li><a class="clickable" href="/repository/logout">
+										<span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;&nbsp;
+										Sign Out</a>
+									</li>
+								{% else %}
+									<li><a id="nav_login" data-toggle="modal" data-target=".login">
+										<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
+										Sign In</a>
+									</li>
+									<li class="divider"></li>
+									<li><a class="clickable" href="/repository/register">
+										<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;&nbsp;
+										Sign Up</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+
+					</ul>
+					<ul class="pull-right">
+						<li>
+							<a href="http://eterna.cmu.edu/" target="_blank"><img src="/site_media/images/logo_eterna.png" height="42"/></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="jumbotron row bgimg">
+			<div class="col-md-4">
+				<a href="/repository/">
+					<img src="/site_media/images/logo_rmdb_2.png"/>
+				</a>
+			</div>
+			<div class="col-md-2">
+				<span>
+					<b>Information Portal to Chemical Mapping Data of </b> <u>{{ user|get_rmdb_constructs }}</u> <b>RNA Sequences</b>
+				</span>
+			</div>
+			<div class="col-md-6">
+				<form class="pull-right" action="/repository/search" method="get">
+					<div class="input-group">
+						<input type="text" class="form-control input-lg" name="searchtext" placeholder="Search by keyword"/>
+						<div class="input-group-btn">
+							<button type="submit" class="btn btn-lg btn-success clickable">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;&nbsp;Search&nbsp;&nbsp;
+							</button> 
+						</div>
+					</div>
+				</form>
+				<br/><br/><br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/repository/advanced_search" class="clickable">
+					<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>&nbsp;
+					Advanced Search
+				</a>
+			</div>
+		</div>
+	</div>
+    <hr/>
+
+	{% block content %}{% endblock %}
+	
+	<hr/>
+
+	<div id="browser_warning" style="display:none" class="error_message">
+		<p>Your browser is not currently supported by the RMDB. Please use <a href="http://www.mozilla.com">Mozilla Firefox</a> or <a href="http://www.google.com/chrome">Google Chrome</a> for full support. Alternatively, if you want to use Internet Explorer, you need to download the <a href=http://code.google.com/chrome/chromeframe/"">Google Chrome Frame</a> (compatible with IE 8, but not IE 9), or similar SVG-enabling, plugins.</p>
+	</div>
+	
+	<div id="login" class="modal fade login" tabindex="-1" role="dialog" aria-labelledby="modalLogin" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content panel-primary">
+				<div class="modal-header panel-heading">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">
+						<span class="glyphicon glyphicon-sound-stereo" aria-hidden="true"></span>
+						&nbsp;&nbsp;MyRMDB Login
+					</h4>
+				</div>
+				<form action="/repository/login/" method="post">
+					<div class="modal-body panel-body">
+			  			<h3>Please sign in to your account</h3>
+                        <div class="col-md-12 form-group">
+                        	<br><br>
+                            <div class="row form-inline">
+                                <div class="col-md-5">
+                                    <label for="id_username" class="pull-right">
+                                    	<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    	&nbsp;&nbsp;Username:
+                                    </label>
+                                </div>
+                                <div class="col-md-7">
+                                   {{ login_form.username }}
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row form-inline">
+                                <div class="col-md-5">
+                                    <label for="id_password" class="pull-right">
+                                    	<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                                    	&nbsp;&nbsp;Password:
+                                    </label>
+                                </div>
+                                <div class="col-md-7">
+                                    {{ login_form.password }}
+                                </div>
+                            </div>
+
+							{% if messages %}
+							<hr/>
+							<br/>
+                            <div class="alert alert-danger" role="alert">
+                                <p>
+                                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                                    <b>ERROR</b>: The following messages were produced:
+                                </p>
+                                <br/>
+                                <ul>
+							    {% for message in messages %}
+							    	<li>{{ message }}</li>
+							    {% endfor %}
+                                </ul>
+                            </div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="modal-footer panel-footer">
+						<div class="row">
+							<span class="pull-left">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#login_help" aria-expanded="false" aria-controls="login_help">&nbsp;&nbsp;Help&nbsp;&nbsp;</button>
+							</span>
+							<span class="pull-right">
+								<input type="submit" value="&nbsp;&nbsp;Sign In&nbsp;&nbsp;" class="btn btn-info clickable"/>
+								&nbsp;&nbsp;
+								<button type="button" class="btn btn-default" data-dismiss="modal" >&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						</div>
+						<div class="row col-md-12">
+							<div class="collapse" id="login_help">
+								<br/>
+								<span class="pull-left" style="text-align:left;">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									For assistance related with account login issues (e.g. forgot password), 
+									<br/>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									please contact <a href="/repository/help/about#conact">site admin</a>.
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="container starter-template" id="footer"></div>
+    <a href="#" id="up"><img style="position:fixed;display:block;right:5%;bottom:5%;opacity:0.85;" src="/site_media/images/fg_top.png" height="60"/></a>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#footer").load("/site_media/html/_footer.html", function () {
+				var today = new Date();
+				$("#cp_year").text(today.getFullYear());
+			});
+
+			$(".dropdown-toggle").dropdown();
+			$(".dropdown").hover(
+	            function(){ $(this).addClass("open") },
+    	        function(){ $(this).removeClass("open") }
+        	);
+            $("[data-toggle='popover']").popover({trigger: "hover"});
+			$("[data-toggle='tooltip']").tooltip();
+
+			$("#up").on("click", function () {
+				$("html, body").stop().animate({scrollTop: 0}, 500);
+			});
+
+			$(".clickable").on("click", function () {
+				if ($("#buttonAll").length && $(this).attr("id") == "nav_browse") {
+					$("#wait").hide();
+				} else {
+					$("#wait").fadeIn(500);
+				}
+			});
+
+            $("#id_username").addClass("form-control");
+            $("#id_password").addClass("form-control");
+			$("#nav_login").on("click", function () {
+				if ($("#id_repeatpassword").length) {
+					$(location).attr("href", "/repository/?login=1");
+				} else {
+					$("#login").show();
+				}
+			});
+            $("#nav_deposit, #nav_submit").on("click", function(e) {
+            	{% if not user.is_authenticated %}
+            	    e.preventDefault();
+            	    if ($("#id_repeatpassword").length) {
+						$(location).attr("href","/repository/?login=1");
+					} else {
+						if ($(location).attr("href").indexOf("?login=0") == -1) {
+							$(location).attr("href",$(location).attr("href") + "?login=0");
+						} else {
+							$(location).attr("href",$(location).attr("href"));
+						}
+					}
+        	    {% endif %}
+            });
+
+            if (($(location).attr("href").indexOf("?login=1") != -1) || ($(location).attr("href").indexOf("?login=0") != -1) || ($(location).attr("href").indexOf("?login=-1") != -1)) {
+				$("#login").modal("show");
+            }
+		});
+
+		{% if messages %}
+			$(window).load(function () {
+				$("#login").modal("show");
+			});
+		{% endif %}
+
+		$(window).on("beforeunload", function () {
+			$("#wait").fadeIn(500);
+		});
+	</script>
+
+	{% block script %}{% endblock %}
+
+</body>
+</html>

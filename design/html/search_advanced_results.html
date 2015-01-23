@@ -1,0 +1,282 @@
+{% extends "html/_framework.html" %}
+
+{% block content %}
+{% if render %}
+<h3>Advanced Search Results</h3>
+<ul class="error_message">
+{% for m in messages %}
+<li> {{ m }} </li>
+{% endfor %}
+</ul>
+<p><i>Click on a row to go to its respective entry</i></p>
+        <p><b>Color Scale:</b></p>
+        {{ values_max_heatmap }} <img src="/site_media/img/graycolormap.gif"/> {{ values_min_heatmap }}
+	<p><b>Orange squares indicate that data is not available at that position</b></p>
+        <br>
+        <div id="advanced_search_heatmap">
+	<script type="text/javascript">
+	var peaks = {% autoescape off %} {{ all_values }} {% endautoescape %};
+	var cell_labels = {% autoescape off %} {{ cell_labels }} {% endautoescape %};
+	var rmdb_ids = {% autoescape off %} {{ rmdb_ids }} {% endautoescape %}; 
+	/* Convert from tabular format to array of objects. */
+        var all_data = [],
+	    rows = []
+            peakst = []
+            tmp = [];
+        for(i=0;i<peaks.length;i++){
+            for(j=0;j<peaks[i].length;j++){
+		if(j == 0){
+		    rows.push(peaks[i][j]);
+                }
+		else{
+                    if(i == 0){
+                        peakst.push([peaks[i][j]]);
+                    }
+                    else{
+                        peakst[j-1].push(peaks[i][j]);
+			if(!isNaN(peaks[i][j]))
+			    all_data.push(peaks[i][j]);
+                    }
+                }
+	    }
+        }
+	var cols = peaks.shift();
+	peakst = peakst.map(function(d){ return pv.dict(rows, function(){ return d[this.index];});});
+	peaks = peaks.map(function(d){ return pv.dict(cols, function(){ return d[this.index];});});
+	cols.shift();
+	rows.shift()
+        var ns = 1;
+	/* The color scale ranges ns standard deviations in each direction. */
+	var x = {},
+	    s = {};
+	var cell_label_dict = {};
+	for(i=0;i<peaks.length;i++){
+	    tmp = [];
+	    labels = [];
+	    for(j=0;j<peakst.length;j++){
+		if(!isNaN(peaks[i][j]))
+		  tmp.push(peaks[i][j]);
+	        labels.push(cell_labels[i][j]);
+	    }
+	    cell_label_dict[peaks[i].Position] = labels;
+	    x[peaks[i].Position] = pv.mean(tmp);
+	    s[peaks[i].Position] = pv.deviation(tmp);
+	}
+	var fill = pv.dict(rows, function(f){ return pv.Scale.linear()
+		//.by(function(d){ return d > x[f] + 2*s[f] ? x[f] + 2*s[f] : d; })
+                .domain(x[f] - ns*s[f], x[f] + ns*s[f])
+		.range("white", "black");});
+
+	/* The cell dimensions. */
+	var w = 15, h = 12,
+	    totwidth = Math.max(0, cols.length * w),
+	    totheight = Math.max(150, peaks.length * h),
+            spacing = Math.max(60, totheight - peaks.length * h);
+	    
+        var vis = new pv.Panel()
+	    .width(totwidth)
+	    .height(totheight)
+	    .top(spacing / 2)
+	    .left(150);
+
+	vis.add(pv.Panel)
+	    .data(rows)
+	    .top(function(){ return this.index * 12;})
+          .add(pv.Panel)
+            .def("active", false)
+	    .height(12)
+	    .strokeStyle(function(){ if(this.active()){ return "blue";} else{ return "black";}})
+	    .lineWidth(function(){ if(this.active()){ return 2;} else{ return 1;}})
+	  .add(pv.Panel)
+	    .data(peakst)
+	    .left(function(){ return this.index * 15;})
+	    .width(15)
+            .event("mouseover", function(){ this.parent.active(true); return this.parent;})
+            .event("mouseout", function(){ this.parent.active(false); return this.parent;})
+	    .event("click", function(){ 
+		window.location.href = '/repository/detail/' + rmdb_ids[this.parent.parent.index];
+             })
+	    .fillStyle(function(d, f){ 
+		if(isNaN(d[f]))
+		   return "rgba(255, 102, 51, 1)";
+                if(d[f] > x[f] + ns*s[f])
+                    val = x[f] + ns*s[f];
+                else if(d[f] < x[f] -ns*s[f])
+                    val = x[f] - ns*s[f];
+                else
+                    val = d[f];
+                return fill[f](val);})
+	    .title(function(d, f){ return d.Position + "," + f + ": " + d[f];})
+	    .strokeStyle(function(){ if(this.parent.active()){ return "blue";} else{ return "black";}})
+	    .antialias(false)
+	    .add(pv.Label)
+	        .top(h)
+	        .text(function(d, f, row){ console.log(d.Position); console.log(row);return cell_label_dict[row][d.Position - 1];})
+		.textStyle('red');
+
+	vis.add(pv.Label)
+	    .data(cols)
+	    .left(function(){ return this.index * w + w / 2;})
+	    .textAngle(-Math.PI / 2)
+	    .textBaseline("middle");
+
+	vis.add(pv.Label)
+	    .data(peaks)
+	    .top(function(){ return this.index * h + h / 2;})
+	    .textAlign("right")
+	    .textBaseline("middle")
+	    .text(function(d){ return d.Position;});
+	vis.render();
+	</script>
+        </div>
+
+{% if render_unpaired_histogram %}
+<h4> Histogram for unpaired reactivities </h4>
+<div width="520px" height="340px">
+    <script type="text/javascript">
+
+var w = 420,
+    h = 300,
+    vmin = {{ values_min }},
+    vmax = {{ values_max }},
+    x = pv.Scale.linear(vmin,vmax).range(0, w),
+    binwidthmap = pv.Scale.linear(0, (vmax - vmin)).range(0, w),
+    bins = {{ unpaired_bins }},
+    bin_anchors = {{ unpaired_bin_anchors }},
+    y = pv.Scale.linear(0, pv.max(bins, function(b){ return b; })).range(0, h);
+
+var vis = new pv.Panel()
+    .width(w)
+    .height(h)
+    .margin(60);
+
+vis.add(pv.Bar)
+    .data(bins)
+    .bottom(0)
+    .left(function(b){ return x(bin_anchors[this.index]); })
+    .width(function(b){ return  binwidthmap((vmax - vmin)/bins.length); })
+    .height(function(b){ return  y(b); })
+    .fillStyle("#aaa")
+    .strokeStyle("rgba(255, 255, 255, .2)")
+    .lineWidth(1)
+    .antialias(false);
+
+vis.add(pv.Rule)
+    .data(y.ticks(5))
+    .bottom(y)
+    .strokeStyle("#fff")
+  .anchor("left").add(pv.Label)
+    .text(y.tickFormat);
+
+vis.add(pv.Rule)
+    .data(x.ticks())
+    .left(x)
+    .bottom(-5)
+    .height(5)
+  .anchor("bottom").add(pv.Label)
+    .text(x.tickFormat);
+
+vis.add(pv.Rule)
+    .bottom(0);
+
+vis.render();
+
+    </script>
+  </div>
+{% else %}
+<h4> No unpaired reactivities found </h4>
+{% endif %}
+{% if render_paired_histogram %}
+<h4> Histogram for paired reactivities </h4>
+<div width="520px" height="340px">
+    <script type="text/javascript">
+
+var w = 420,
+    h = 300,
+    vmin = {{ values_min }},
+    vmax = {{ values_max }},
+    x = pv.Scale.linear(vmin,vmax).range(0, w),
+    binwidthmap = pv.Scale.linear(0, (vmax - vmin)).range(0, w),
+    bins = {{ paired_bins }},
+    bin_anchors = {{ paired_bin_anchors }},
+    y = pv.Scale.linear(0, pv.max(bins, function(b){ return b; })).range(0, h);
+
+var vis = new pv.Panel()
+    .width(w)
+    .height(h)
+    .margin(60);
+
+vis.add(pv.Bar)
+    .data(bins)
+    .bottom(0)
+    .left(function(b){ return x(bin_anchors[this.index]); })
+    .width(function(b){ return  binwidthmap((vmax - vmin)/bins.length); })
+    .height(function(b){ return  y(b); })
+    .fillStyle("#aaa")
+    .strokeStyle("rgba(255, 255, 255, .2)")
+    .lineWidth(1)
+    .antialias(false);
+
+vis.add(pv.Rule)
+    .data(y.ticks(5))
+    .bottom(y)
+    .strokeStyle("#fff")
+  .anchor("left").add(pv.Label)
+    .text(y.tickFormat);
+
+vis.add(pv.Rule)
+    .data(x.ticks())
+    .left(x)
+    .bottom(-5)
+    .height(5)
+  .anchor("bottom").add(pv.Label)
+    .text(x.tickFormat);
+
+vis.add(pv.Rule)
+    .bottom(0);
+
+vis.render();
+
+    </script>
+  </div>
+{% else %}
+<h4> No paired reactivities found </h4>
+{% endif %}
+<form id="advanced_search_form" action="/repository/advanced_search/" method="post">
+<table class="hidden">
+    <tr>
+        <td>{{ form.sequence }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.structure }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.secstructelems }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.entry_type }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.modifiers }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.include_eterna }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.background_processed }}</td>
+    </tr>
+    <tr>
+        <td><input id="id_numresults" type="text" name="numresults" value="{{ numresults }}" size="10" /></td>
+    </tr>
+
+
+</table>
+{%if not all_results_rendered %}
+<button id="submitform" type="submit">Show all results ({{ numresults }})</button>
+{% endif %}
+</form>
+<p><b>Download results in a single RDAT file <a href="/site_media/rdat_files{{ rdat_path }}">here</a>.</b></p>
+{% else %}
+<p> No results were found :(</p>  
+{% endif %}
+{% endblock %}

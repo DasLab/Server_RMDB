@@ -1,0 +1,68 @@
+#RMDB 2.0 BETA, phase I
+!T47
+
+Complete redesign of RMDB front-end interface graphics, reorganization of site map, bug fixes for user login system, improvement for RDAT submission system.
+
+-Home page
+-\Redesign of index.html, using Bootstrap style elements. Added alert notice for BETA preview.
+-\Reorganize navigation bar, group into Browse, Deposit, Analyze, and About categories. Added EteRNA permanent link.
+-\Moved “Search” function down and made new header section.
+-\Added front page tab navigation, for all sections of RMDB; included links to RNA Puzzles and EteRNA platforms.
+-\Added carousel for latest entry slide show; added table view for RMDB news.
+-\Designed new footer, with RMDB logo and Das Lab affiliation, and license information.
+-\Added move to top button, active nav bar tracking.
+-\Used Glyphicons; added loading animation across pages.
+
+-Browse
+-\Added floating navigation for categories for easier browsing across sections.
+-\Divided all RMDB entries into 3 categories: General, RNA Puzzles, and EteRNA.
+-\Reorganized each construct into expandable panels, saving page space. First panel of each section is automatically on.
+-\Grouped entries for each construct by experiment types: Standard State, Mutate and Map, MOHCA, and Titration.
+-\Rotated EteRNA entry thumbnails for better view.
+-\Used color labeling for experiment types and RMDB ID names.
+-\Animated scrolling effect using jQuery; enabled section switching.
+
+-Deposit
+-\Reorganized 3 chapters: RDAT Specs, Validate, and Submit.
+-\Marked-up of original RDAT forma specification page: added floating nav bar, expandable example RDAT file, included modifier and SNRNASM links, color labelled RDAT header keywords and specification tables.
+-\New interface for format validation tool, color coded response message: ERROR, WARNING, SUCCESS.
+-\Bug fix for file upload and url retrieval backend.
+-\New interface for entry submission, reordering of form fields, set optional fields, color coded response message: ERROR, WARNING, SUCCESS, as well as highlighting problematic fields.
+-\Bug fix for RMDB entry validation, eliminating risk of overwriting non-owner previous entries.
+-\Added email notification to admin and confirmation to submitter.
+
+-Analyze
+-\New interface for structural server, color coded response message: ERROR, WARNING.
+-\Grouped input options: Manual input, Upload RDAT, retrieve RMDB.
+-\Designed new Tools page, added HiTRACE.org, Primerize, MAPseeker links.
+-\Updated repository information, using Git address instead of svn; added links to tool tutorials.
+-\Added MAPseeker download control system: display of license, record of user downloads; added user login requirement for MAPseeker request.
+-\Migrated RDATKit tutorial from RMDB wiki; added float nav bar.
+-\Added placeholder for future tool tutorials: HiTRACE, MAPseeker, web API.
+
+-About
+-\Redesigned information layout, with more descriptive RMDB intro; moved citation info here.
+-\Added contact information of RMDB team.
+-\Added license, usage policy information; using PD for data and CC-BY-SA-4.0 for site.
+-\Listed all tools used and acknowledgement.
+-\Announced privacy statements for users and server log.
+-\Added development to-do list and change log.
+
+-Login
+-\Moved user login page to modal window, available for all pages across server.
+-\New sign-up page, color coded response with highlighting problematic fields.
+-\Bug fix for user registration system, avoiding overwriting of previous user record with same login name.
+-\Auto redirect after login success.
+-\Added user info summary for myRMDB login panel, showing name, email, affiliation, join time, last login time, status, most recent submission.
+
+-Misc
+-\Reorganized python code into multiple helper file classes for easier code view.
+-\Ignored .pyc from GitHub repo.
+-\Declared constant path for easier file organization.
+-\Dropped dependence of jQuery UI.
+-\Migrated structure server into repository branch.
+-\Cleaned-up file directories, removing deprecated files, restructuring of file organization.
+-\Designed new RMDB site logo.
+
+
+
