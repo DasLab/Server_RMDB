@@ -169,7 +169,7 @@ def predict(request):
 				return render_to_response(HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':[], 'msg_r':[]})
 
 			other_options = ' -t %s ' % (float(request.POST['temperature']) + 273.15)
-			refstruct = secondary_structure.SecondaryStructure(dbn=request.POST['refstruct'])
+			refstruct = SecondaryStructure(dbn=request.POST['refstruct'])
 
 			lines = request.POST['sequences'].split('\n')
 			for l in lines:
