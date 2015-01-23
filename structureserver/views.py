@@ -70,14 +70,7 @@ def index(request):
 	if request.method == 'POST':
 		try:
 			imgname = ''
-			sequences = []
-			titles = []
-			structures =[]
-			modifiers = []
-			mapping_data = []
-			base_annotations = []
-			messages = []
-			valerrors = []
+			sequences, titles, structures, modifiers, mapping_data, base_annotations, messages, valerrors = ([],)*8
 			if ('rmdbid' in request.POST and request.POST['rmdbid']) or 'rdatfile' in request.FILES:
 				temperature = 37
 				offset_seqpos = []
