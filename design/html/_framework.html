@@ -513,11 +513,7 @@
             $("#id_password").addClass("form-control");
 			$("#nav_login").on("click", function () {
 				if ($("#id_repeatpassword").length) {
-					if ($(location).attr("href").indexOf("?login=1") == -1) {
-						$(location).attr("href",$(location).attr("href") + "?login=1");
-					} else {
-						$(location).attr("href",$(location).attr("href"));
-					}
+					$(location).attr("href", "/repository/?login=1");
 				} else {
 					$("#login").show();
 				}
