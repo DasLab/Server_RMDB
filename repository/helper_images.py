@@ -155,7 +155,7 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 				bar(range(values_dims[1]), values_array[j,:], yerr=errors_array[j,:])
 				bartitle = '  '.join( [','.join(x) if type(x) == list else str(x) for x in construct_section.data[j].annotations.values()] )
 				suptitle( bartitle )
-				apply_xlabels( construct_section )
+				#apply_xlabels( construct_section )
 				xlim( [0, shape( values_array )[1] ] )
 				savefig(dir+'/barplot%s.png'%j)
 
