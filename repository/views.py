@@ -127,29 +127,56 @@ def detail(request, rmdb_id):
 	try:
 		entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
 		comments = entry.comments.split('\n')
-		entry.annotations = EntryAnnotation.objects.filter(section=entry)
+		f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r')
+		rdat_ver = f.readline().strip().split('\t')[-1]
+		f.close()
+
 		if entry.pdb_entries != None and len(entry.pdb_entries.strip()) > 0:
 			entry.pdb_ids = [x.strip() for x in entry.pdb_entries.split(',')]
 		else:
 			entry.pdb_ids = []
+		entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
+
 		constructs = ConstructSection.objects.filter(entry=entry)
 		for c in constructs:
 			c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures  = get_plot_data(c.id, entry.type, maxlen)
 			c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
-			#c.annotations = ConstructAnnotation.objects.filter(section=c)
 			c.show_slideshow = entry.has_traces or entry.type in ['TT', 'SS']
 			c.data_count = range(len(c.datas))
 			if len(c.datas) > maxlen:
 				c.datas = c.datas[:maxlen]
 				maxlen_flag = True
 			for d in c.datas:
-				d.annotations = DataAnnotation.objects.filter(section=d).order_by('name')
+				d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
 				if d.annotations:
 					data_annotations_exist = True
+
+			c.sequence_len = len(c.sequence)
+			c.structure_len = len(c.structure)
+			c.data_nrow = len(c.datas)
+			c.data_ncol = len(c.datas[0].values.split(','))
+			c.err_ncol = c.datas[0].errors.split(',')
+			if len(c.err_ncol) == 1 and (not len(c.err_ncol[0])): 
+				c.err_ncol = 0
+			else:
+				c.err_ncol = len(c.err_ncol)
+			
+
+			seqpos_str = c.seqpos.split(',')
+			if (int(seqpos_str[-1]) - int(seqpos_str[0]) + 1 != len(seqpos_str)):
+				c.seqpos = '</code>,</span> <span style=\"display:inline-block; width:75px;\"><code>'.join(seqpos_str)
+				c.seqpos = '<span style=\"display:inline-block; width:75px;\"><code>' + c.seqpos + '</code></span>'
+			else:
+				c.seqpos = '<code>' + seqpos_str[0] + '</code><b>:</b><code>' + seqpos_str[-1] + '</code>'
+			c.seqpos_len = len(seqpos_str)
+			xsel_str = c.xsel.split(',')
+			if len(xsel_str):
+				c.xsel_len = len(c.xsel)
+
 	except RMDBEntry.DoesNotExist:
 		raise Http404
 	
-	return render_to_response(HTML_PATH['detail'], {'codebase':get_codebase(request), 'entry':entry, 'constructs':constructs, 'publication':entry.publication, 'comments':comments, 'data_annotations_exist':data_annotations_exist, 'maxlen_flag':maxlen_flag}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['detail'], {'rdat_ver':rdat_ver, 'codebase':get_codebase(request), 'entry':entry, 'constructs':constructs, 'publication':entry.publication, 'comments':comments, 'data_annotations_exist':data_annotations_exist, 'maxlen_flag':maxlen_flag}, context_instance=RequestContext(request))
 
 
 def predict(request):

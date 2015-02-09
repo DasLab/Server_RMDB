@@ -1,0 +1,667 @@
+{% extends "html/_framework.html" %}
+{% load repository_extras %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block content %}
+
+{% if entry.revision_status == "PUB" %}
+<div id="left_panel" class="side_panel well">
+	<div role="tabpanel" class="tabbable tabs-right">
+		<ul class="nav nav_tabs side_tab" role="tablist" id="left-buttons">
+			<li class="left_close">
+				<a class="text-center"><span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span></a>
+			</li>
+			<br/>
+			<li role="presentation" class="left_tab left_group active">
+				<a href="#tab_left_1" aria-controls="tab_left_1" role="tab" data-toggle="tab">General</a>
+			</li>
+			<br/>
+			<li role="presentation" class="left_tab left_group">
+				<a href="#tab_left_2" aria-controls="tab_left_2" role="tab" data-toggle="tab">Construct</a>
+			</li>
+			<br/>
+			<li role="presentation" class="left_tab left_group">
+				<a href="#tab_left_3" aria-controls="tab_left_3" role="tab" data-toggle="tab">Annotation</a>
+			</li>
+			<br/>
+			<li role="presentation" class="left_tab left_group">
+				<a href="#tab_left_4" aria-controls="tab_left_4" role="tab" data-toggle="tab">Predict</a>
+			</li>
+			<br/>
+			<li class="left_close">
+				<a class="text-center"><span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span></a>
+			</li>
+		</ul>
+		<br/>
+
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active fade in side_block" id="tab_left_1">
+				<table class="table table-hover">
+					<tr>
+						<td class="lead text-right"><span class="label label-default" style="background:#000;">RMDB_ID</span></td>
+						<td class="lead">
+							{% autoescape off %}
+			                <span class="label label-default">{{ entry.rmdb_id|color_rmdb_id }}</span>
+			                {% endautoescape %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
+						<td class="lead">
+						{% for c in constructs %}
+							{{ c.name }}
+						{% endfor %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-info">Author</span></td>
+						<td>{{ entry.authors }}</td>
+			        </tr>
+
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-info">Publication</span></td>
+						<td>
+							<p><i>{{ publication.authors }}</i>. <b>{{ publication.title }}</b>. <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ publication.pubmed_id }}" target="_blank">PMID: {{ publication.pubmed_id }} <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></p>
+						</td>
+			        </tr>
+
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-info">Description</span></td>
+						<td>{{ entry.description }}</td>
+			        </tr>
+
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-primary">COMMENT</span></td>
+						<td>
+							{% for c in comments %}
+							<p>{% autoescape off %} {{ c }} {% endautoescape %}.</p>
+							{% endfor %}
+						</td>
+			        </tr>
+
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-default">PDB_ID</span></td>
+						<td>
+							{% for pdb_id in entry.pdb_ids %}
+							<li><a href="http://www.pdb.org/pdb/explore/explore.do?structureId={{ pdb_id }}">{{ pdb_id }}</a></li>
+							{% endfor %}
+						</td>
+			        </tr>
+
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-default">RDAT_VERSION</span></td>
+						<td><code>{{ rdat_ver }}</code></td>
+			        </tr>
+
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-info">Stats</span></td>
+						<td>
+							<p>
+								<i>Version:</i> <mark>{{ entry.version }}</mark>
+								<br/>
+								<i># of Construct:</i> <code>{{ entry.constructcount }}</code>
+								<br/>
+								<i># of Data point:</i> <code>{{ entry.datacount }}</code>
+							</p>
+						</td>
+			        </tr>
+
+					<tr>
+						<th class="col-md-3"></th>
+						<th class="col-md-9"></th>
+					</tr>
+				</table>
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade side_block" id="tab_left_2">
+				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
+						<td class="lead">
+						{% for c in constructs %}
+							{{ c.name }}
+						{% endfor %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
+						<td>
+						{% for c in constructs %}
+							<p><b><samp>{{ c.sequence }}</samp></b></p>
+							<code>1-by-{{ c.sequence_len }}</code> <i>vector</i>
+						{% endfor %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
+						<td>
+						{% for c in constructs %}
+							<p><b><samp>{{ c.structure }}</samp></b></p>
+							<code>1-by-{{ c.structure_len }}</code> <i>vector</i>
+						{% endfor %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right"><span class="label label-primary">SEQPOS</span></td>
+						<td >
+						{% for c in constructs %}
+							{% if c.seqpos %}
+								{% autoescape off %}
+								<p>{{ c.seqpos }}</p>
+								<code>1-by-{{ c.seqpos_len }}</code> <i>vector</i>
+								{% endautoescape %}
+							{% endif %}
+						{% endfor %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right"><span class="label label-primary">OFFSET</span></td>
+						<td>
+						{% for c in constructs %}
+							<code>{{ c.offset }}</code>
+						{% endfor %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right"><span class="label label-success">REACTIVITY</span></td>
+						<td >
+						{% for c in constructs %}
+							{% if c.datas %}
+								{% autoescape off %}
+								<code>{{ c.data_nrow }}-by-{{ c.data_ncol }}</code> <i>matrix</i>
+								{% endautoescape %}
+							{% endif %}
+						{% endfor %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right"><span class="label label-success">REACTIVITY_ERROR</span></td>
+						<td >
+						{% for c in constructs %}
+							{% if c.datas %}
+								{% autoescape off %}
+								{% if c.err_ncol %}
+								<code>{{ c.data_nrow }}-by-{{ c.err_ncol }}</code> <i>matrix</i>
+								{% else %}
+								<code>N/A</code> (not available)
+								{% endif %}
+								{% endautoescape %}
+							{% endif %}
+						{% endfor %}
+			            </td>
+			        </tr>
+			        <tr>
+						<td class="lead text-right"><span class="label label-success">XSEL</span></td>
+						<td >
+						{% for c in constructs %}
+							{% if c.xsel_len %}
+								{% autoescape off %}
+								<code>1-by-{{ c.xsel_len }}</code> <i>vector</i>
+								{% endautoescape %}
+							{% else %}
+								<code>N/A</code> (not available)
+							{% endif %}
+						{% endfor %}
+			            </td>
+			        </tr>
+
+					<tr>
+						<th class="col-md-3"></th>
+						<th class="col-md-9"></th>
+					</tr>
+				</table>
+			</div>
+
+			<div role="tabpanel" class="tab-pane fade side_block" id="tab_left_3">
+				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-primary">ANNOTATION</span></td>
+						<td class="lead text-right align-center"><span class="label label-danger">experimentType</span></td>
+						<td class="lead">
+							<span class="label label-success">
+							{% if entry.type == "MM" %}
+								Mutate and Map
+							{% endif %}
+							{% if entry.type == "SS" %}
+								Standard State
+							{% endif %}
+							{% if entry.type == "MA" %}
+								MOHCA
+							{% endif %}
+							{% if entry.type == "TT" %}
+								Titration
+							{% endif %}
+							</span>
+						</td>
+			        </tr>
+
+			        {% for a in entry.annotations %}
+					<tr>
+						<td></td>
+						<td class="lead text-right align-center"><span class="label label-danger">{{ a }}</span></td>
+						<td class="lead">
+							{% autoescape off %}
+							{{entry.annotations|get_annotation_item:a}}
+							{% endautoescape %}
+						</td>
+			        </tr>
+			        {% endfor %}
+
+					<tr>
+						<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
+						<td></td>
+						<td></td>
+			        </tr>
+
+					{% if data_annotations_exist %}
+					{% for c in constructs %}
+					{% for d in c.datas %}
+					{% for a in d.annotations %}
+					<tr>
+						<td class="text-right">
+							{% if forloop.counter == 1 %}
+							<b><i><u>{{ forloop.parentloop.counter }}</u></i></b>
+							{% endif %}
+						</td>
+						<td class="lead text-right align-center"><span class="label label-danger">{{ a }}</span></td>
+						<td class="lead">
+							{% autoescape off %}
+							{{d.annotations|get_annotation_item:a}}
+							{% endautoescape %}
+						</td>
+			        </tr>
+			        {% endfor %}
+			        {% endfor %}
+			        {% endfor %}
+					{% endif %}
+
+					<tr>
+						<th class="col-md-3"></th>
+						<th class="col-md-3"></th>
+						<th class="col-md-6"></th>
+					</tr>
+				</table>
+
+			</div>
+			<div role="tabpanel" class="tab-pane active fade in side_block" id="tab_left_4">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="set_panel" class="view_panel">
+
+</div>
+
+<div id="img_panel" class="side_panel well">
+	<div role="tabpanel" class="tabbable tabs-right">
+		<ul class="nav nav_tabs side_tab" role="tablist" id="img-buttons">
+			<br/>
+			<li role="presentation" class="left_tab left_alone active">
+				<a role="tab" data-toggle="tab">Bar Plot</a>
+			</li>
+			<br/>
+		</ul>
+		<br/>
+
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active fade in side_block">
+				aaa
+				bbb
+				ccc
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% for c in constructs %}
+
+{% if maxlen_flag %}
+	<ul class="error_message">
+		<li> This entry has more than 256 data row, only showing the first 256 </li>
+	</ul>
+{% endif %}
+
+<div class="container">
+	<h2>
+		{% autoescape off %}
+	    <span class="label label-default">{{ entry.rmdb_id|color_rmdb_id }}</span>
+	    {% endautoescape %}
+	    {{ c.name }}
+	</h2>
+</div>
+
+
+{% if c.show_slideshow and c.hist_data|length <= 50%}
+<p class="help_text">Click the arrows to switch between plot types</p>
+<p class="arrows"><button id="prev2">Previous</button> <button id="next2">Next</button></p>
+{% endif %}
+<div class="jqslideshow">
+    <div>
+	<h3>Assigned reactivities</h3>
+	<div class="svg_enabled">
+        <p class="help_text">Click on a sample (one per data row) to view the data superimposed on the native secondary structure</p>
+        <p><b>Color Scale:</b></p>
+        {{ c.area_peaks_max }} <img src="/site_media/img/graycolormap.gif"/> {{ c.area_peaks_min }}
+        <br>
+	<script type="text/javascript">
+	var peaks = {% autoescape off %} {{ c.area_peaks }} {% endautoescape %};
+	var data_array = peaks;
+	/* Convert from tabular format to array of objects. */
+        var structures = {% autoescape off %}{{ c.precalc_structures }} {% endautoescape %};
+        var all_data = [],
+	    rows = [],
+            peakst = [],
+            tmp = [];
+        for(i=0;i<peaks.length;i++){
+            for(j=0;j<peaks[i].length;j++){
+		if(j == 0){
+		    rows.push(peaks[i][j]);
+                }
+		else{
+                    if(i == 0){
+                        peakst.push([peaks[i][j]]);
+                    }
+                    else{
+                        peakst[j-1].push(peaks[i][j]);
+		        all_data.push(peaks[i][j]);
+                    }
+                }
+	    }
+        }
+	var cols = peaks.shift();
+	peakst = peakst.map(function(d){ return pv.dict(rows, function(){ return d[this.index];});});
+	peaks = peaks.map(function(d){ return pv.dict(cols, function(){ return d[this.index];});});
+	cols.shift();
+	rows.shift()
+        var ns = 0.7;
+	/* The color scale ranges ns standard deviations in each direction. */
+	var x = pv.mean(all_data),
+	    s = pv.deviation(all_data),
+	 fill = pv.dict(rows, function(f){ return pv.Scale.linear()
+		//.by(function(d){ return d > x[f] + 2*s[f] ? x[f] + 2*s[f] : d; })
+                .domain({{ c.area_peaks_min }}, x + ns*s)
+		.range("white", "black");});
+
+	/* The cell dimensions. */
+	var w = 10, h = 10,
+	    totwidth = Math.max(0, cols.length * w),
+	    totheight = Math.max(150, peaks.length * h),
+            spacing = Math.max(60, totheight - peaks.length * h);
+	    
+        var vis = new pv.Panel()
+	    .width(totwidth)
+	    .height(totheight)
+	    .top(spacing / 2)
+	    .left(150);
+
+	vis.add(pv.Panel)
+	    .data(rows)
+	    .top(function(){ return this.index * 10;})
+          .add(pv.Panel)
+            .def("active", false)
+	    .height(10)
+	    .strokeStyle(function(){ if(this.active()){ return "blue";} else{ return "black";}})
+	    .lineWidth(function(){ if(this.active()){ return 2;} else{ return 1;}})
+	  .add(pv.Panel)
+	    .data(peakst)
+	    .left(function(){ return this.index * 10;})
+	    .width(10)
+            .event("mouseover", function(){ this.parent.active(true); return this.parent;})
+            .event("mouseout", function(){ this.parent.active(false); return this.parent;})
+	    .event("click", function(d, f){ 
+		//The following lines are for viewing the secondary structure using another browser window
+		$("[name=structure]").val("{{ c.structure }}");
+		$("[name=sequence]").val("{{ c.sequence }}");
+		$("[name=seqpos]").val("{{ c.seqpos }}");
+		$("[name=offset]").val("{{ c.offset }}");
+		$("[name=title]").val(f);
+		$("[name=colormap]").val(data_array[this.parent.parent.index].slice(1));
+		$("#structureviewform").submit()
+		//The following lines are for viewing the secondary structure using an inset dialog window
+/*		var struct = structures[this.parent.parent.index],
+                    applet = $("#rnaapplet");
+                $("#dialog").dialog({width:400, height:400}); 
+                if(struct == "NA"){
+		    $("#structure_info").text("Structure not available");
+		    applet.attr("width", 1);
+		    applet.attr("height", 1);
+                    applet[0].setRNA("", "");
+                }
+                else {
+		    $("#structure_info").text("");
+                    applet.attr("width", 350);
+                    applet.attr("height", 350);
+                    applet[0].setRNA("{{ c.sequence }}", struct);
+                }*/
+             })
+	    .fillStyle(function(d, f){ 
+                if(d[f] > x[f] + ns*s[f])
+                    val = x[f] + ns*s[f];
+                else if(d[f] < x[f] -ns*s[f])
+                    val = x[f] - ns*s[f];
+                else
+                    val = d[f];
+                return fill[f](val);})
+	    .title(function(d, f){ return d.Annotation + "," + f + ": " + d[f];})
+	    .strokeStyle(function(){ if(this.parent.active()){ return "blue";} else{ return "black";}})
+	    .lineWidth(1)
+	    .antialias(false);
+
+	vis.add(pv.Label)
+	    .data(cols)
+	    .left(function(){ return this.index * w + w / 2;})
+	    .textAngle(-Math.PI / 2)
+	    .textBaseline("middle");
+
+	vis.add(pv.Label)
+	    .data(peaks)
+	    .top(function(){ return this.index * h + h / 2;})
+	    .textAlign("right")
+	    .textBaseline("middle")
+	    .text(function(d){ return d.Annotation;});
+	vis.render();
+	</script>
+        </div>
+	<div class="svg_disabled">
+	<img class="detailsimg" src="/site_media/construct_img/{{ c.id }}/values.png"/>
+	</div>
+    </div>
+<!--
+{% if entry.has_traces %}
+    <div>
+	<h3>Raw traces</h3>
+	<img class="detailsimg" src="/site_media/construct_img/{{ c.id }}/trace.png"/>
+    </div>
+{% endif %}
+-->
+{% if entry.type == "SS" and c.hist_data|length <= 50 %}
+    {% for hdata, xmin, xmax, ymin, ymax, title in c.hist_data %}
+    <div class="detailsitem">
+	<div class="svg_enabled">
+	<h3>Mean values and error estimates for row {{ forloop.counter }} - {{ title|wordbreak:80}}</h3>
+        <script type="text/javascript+protovis">
+        var hdata = {% autoescape off %}{{ hdata }}{% endautoescape %};
+        var spacing = Math.max(60, totheight - peaks.length * h); 
+	var w = 860,
+	h = 150,
+	k = 3,
+	x = pv.Scale.linear({{ xmin }}, {{ xmax }}).range(0, w),
+	y = pv.Scale.linear({{ ymin }}, {{ ymax }}).range(0, h),
+	barwidth = w / hdata.length;
+
+	var vis = new pv.Panel()
+	  .width(w)
+	  .height(h)
+	  .top(30)
+	  .margin(20);
+
+	var plot = vis.add(pv.Panel)
+                      .bottom(30);
+ 
+	/* Add the x-axis rules */ 
+	plot.add(pv.Rule)
+	    .data(x.ticks(40))
+	    .left(x)
+	    .strokeStyle("#eee")
+	    .anchor("bottom")
+
+        vis.add(pv.Label)
+            .data(hdata)
+            .left(function(d) x(d.position) + 5)
+            .bottom(0)
+	    .visible(function(d) !(d & 1))
+	    .text(function(d) d.label)
+	    .textAngle(-Math.PI / 2)
+	    .textAlign("left")
+    	    .textBaseline("middle");
+
+	/* Add the y-axis rules */
+	plot.add(pv.Rule)
+	    .data(y.ticks())
+	    .bottom(y)
+	    .strokeStyle("#eee")
+	    .anchor("left")
+            .add(pv.Label)
+	    .text(y.tickFormat);
+/*
+	var bars = plot.add(pv.Panel)
+		  .data(hdata)
+		  .left(function(d) x(d.position))
+		  .bottom(function(d) y(0))
+
+	/* Add bar areas */ 
+	var bars = plot.add(pv.Panel)
+                  .data(hdata)
+		  .left(function(d) x(d.position) - barwidth / 2 + 5)
+                  .add(pv.Panel)
+                  .def("active", false)
+                  .add(pv.Bar)
+		  .bottom(function(d) y(0))
+                  .width(barwidth)
+		  .height(function(d) y(d.value))
+	          .strokeStyle(function() this.parent.active() ?  "red":"black")
+	//	  .event("mouseover", function() this.parent.active(true))
+	//	  .event("mouseout", function() this.parent.active(false))
+                  .fillStyle(function(d) pv.Scale.linear().domain(0,({{ ymax }} - 0.5)/2, {{ ymax }} - 0.5).range("white", "orange","red")(d.value))
+
+	/* Add y-error indicators */
+	plot.add(pv.Rule)
+	    .data(hdata)
+	    .left(function(d) x(d.position) + 5)
+	    .bottom(function(d) y(d.value - d.error))
+	    .height(function(d) y(2 * d.error));
+           
+	vis.render();	
+	</script>
+	</div>
+</div>
+    {% endfor %}
+{% endif %}
+</div>
+
+{% endfor %}
+
+<h2>Details for entry {{ entry.rmdb_id }}</h2>
+<p>You can download this entry in the following formats [ <a href="/site_media/rdat_files/{{ entry.rmdb_id }}/{{ entry.rmdb_id }}.rdat">rdat</a>
+ {% if not maxlen_flag %} | <a href="/site_media/isatab_files/{{ entry.rmdb_id }}/{{ entry.rmdb_id }}_{{ entry.version}}.xls">isatab</a> {% endif %} ]</p>
+</p>
+
+{% else %}
+{% if entry.revision_status == "REC" %}
+<h1>Entry {{ entry.rmdb_id }} has been received and is currently under review.</h1>
+{% else %}
+<h1>Entry {{ entry.rmdb_id }} has been received and will undergo review shortly.</h1>
+{% endif %}
+<p>Please contact <a href="mailto:rhiju@stanford.edu">rhiju@stanford.edu</a> for further information. </p>
+{% endif %}
+<form class="hidden" id="structureviewform" target="popup"
+    onsubmit="popup = window.open("Secondary structure with bonuses","popup","width=450,height=450");" action="/repository/render_structure" method="post">
+<input name="structure" type="text"/>
+<input name="sequence" type="text"/>
+<input name="title" type="text"/>
+<input name="colormap" type="text"/>
+<input name="seqpos" type="text"/>
+<input name="offset" type="text"/>
+<input type="submit" value="sumbit"/>
+</form>
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".dropdown-toggle").removeClass("active");
+			$("#nav_browse").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+
+			$(".left_group").on("click", function() {		
+				if (!$("#left_panel").hasClass("visible")) {
+					$("#left_panel").addClass("visible").animate({"margin-left":"0px"});
+					$(".left_close").addClass("visible").show();
+					$("#left-buttons").css("margin-top", parseInt($("#left-buttons").css("margin-top"))-parseInt($(".left_close").css("height")));
+					$("#left_panel").css("z-index", "100");
+					$("#img_panel").css("z-index", "1");
+				}	
+			});
+			$(".left_close").on("click", function() {
+				$("#left_panel").removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")});
+				$(".left_close").removeClass("visible").hide();
+				$("#left-buttons").css("margin-top", parseInt($("#left-buttons").css("margin-top"))+parseInt($(".left_close").css("height")));
+			});
+			$(".left_alone").on("click", function() {		
+				if (!$("#img_panel").hasClass("visible")) {
+					$("#img_panel").addClass("visible").animate({"margin-left":"0px"});
+					$("#img_panel").css("z-index", "100");
+					$("#left_panel").css("z-index", "1");
+				} else {
+					$("#img_panel").removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")});
+				}	
+			});
+			$(".right_group").on("click", function() {		
+				if (!$("#set_panel").hasClass("visible")) {
+					$("#set_panel").addClass("visible").animate({"margin-right":"0px"});
+					$("#set_panel").css("z-index", "100");
+					$("#left_panel").css("z-index", "1");
+				} else {
+					$("#set_panel").removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")});
+				}	
+			});
+			$(".right_close").on("click", function() {
+				$("#set_panel").removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")});
+				$(".right_close").removeClass("visible").hide();
+				$("#set-buttons").css("margin-top", parseInt($("#set-buttons").css("margin-top"))+parseInt($(".right_close").css("height")));
+			});
+
+			$("#left_panel").css("width", $(window).width()/2);
+			$("#left_panel").css("top", parseInt($(".navbar-fixed-top").css("height")));
+			$("#left_panel").css("height", $(window).height() - parseInt($(".navbar-fixed-top").css("height")));
+			$(".side_block").css("max-height", parseInt($("#left_panel").css("height")) - 20);
+			$("#left-buttons").css("margin-top", parseInt($("#left_panel").css("height"))*0.8-parseInt($("#left-buttons").css("height")));
+			$("#img_panel").css("width", $(window).width()*0.8);
+			$("#img_panel").css("height", "300px");
+			$("#img_panel").css("top", $(window).height() - parseInt($("#img_panel").css("height")));
+			$("#img-buttons").css("margin-top", 
+				parseInt($("#left-buttons").css("height"))+parseInt($("#left-buttons").css("margin-top"))
+				-parseInt($("#img_panel").css("top"))+parseInt($(".navbar-fixed-top").css("height"))
+				-parseInt($(".left_close").css("height"))*2-1);
+
+			$("#set_panel").css("max-width", "400px");
+			$("#set_panel").css("width", $(window).width()*0.33);
+			$("#set_panel").css("top", parseInt($(".navbar-fixed-top").css("height")));
+			$("#set_panel").css("height", $(window).height() - parseInt($(".navbar-fixed-top").css("height")));
+		});
+
+		$(window).load(function() {
+			$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
+			$(".left_close").removeClass("visible").hide();
+			$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
+			$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
+		});
+	</script>
+{% endblock %}

@@ -11,10 +11,9 @@
     <link rel="icon" type-"image/gif" href="/site_media/animated_favicon1.gif" />
     <title>RMDB: RNA Mapping DataBase</title>
 
-    <script type="text/javascript" src="/site_media/js/jquery-1.11.2.min.js"> </script> 
-	
+    <script type="text/javascript" src="/site_media/js/jquery-1.11.2.min.js"></script> 
     <script type="text/javascript" src="/site_media/js/protovis-3.2/protovis-d3.2.js"></script>
-    <script type="text/javascript" src="/site_media/js/bootstrap.min.js"> </script> 
+    <script type="text/javascript" src="/site_media/js/bootstrap.min.js"></script> 
 
 
    <script type="text/javascript">
@@ -350,14 +349,19 @@
 
 	<div class="container">
 		<div class="jumbotron row bgimg">
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<a href="/repository/">
-					<img src="/site_media/images/logo_rmdb_2.png"/>
+					<img src="/site_media/images/logo_rmdb_2.png" style="max-width:100%;"/>
 				</a>
 			</div>
-			<div class="col-md-2">
-				<span>
-					<b>Information Portal to Chemical Mapping Data of </b> <u>{{ user|get_rmdb_constructs }}</u> <b>RNA Sequences</b>
+			<div class="col-md-3">
+				<span style="vertical-align:middle;">
+					<b>Information Portal to 
+						<br/>
+						Chemical Mapping Data of 
+					</b>
+					<br/>
+					<u>{{ user|get_rmdb_constructs }}</u> <b>RNA Sequences</b>
 				</span>
 			</div>
 			<div class="col-md-6">
@@ -499,6 +503,7 @@
 			$("#up").on("click", function () {
 				$("html, body").stop().animate({scrollTop: 0}, 500);
 			});
+			$("#up").hide();
 
 			$(".clickable").on("click", function () {
 				if ($("#buttonAll").length && $(this).attr("id") == "nav_browse") {
@@ -545,6 +550,13 @@
 
 		$(window).on("beforeunload", function () {
 			$("#wait").fadeIn(500);
+		});
+		$(window).on("scroll", function () {
+			if ($(this).scrollTop() > $(window).height()/2) {
+				$('#up').fadeIn();
+			} else {
+				$('#up').fadeOut();
+			}
 		});
 	</script>
 

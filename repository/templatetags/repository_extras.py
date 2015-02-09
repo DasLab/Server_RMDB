@@ -131,3 +131,19 @@ def get_affiliation(user):
 	return ("%s - %s\n" %(request_usr.values('institution')[0]['institution'], request_usr.values('department')[0]['department']))
 register.filter('get_affiliation', get_affiliation)
 
+
+def get_annotation_item(a_all, key):
+	val = a_all[key]
+	string = ''
+	for i,v in enumerate(val):
+		if i != len(val)-1:
+			string += '<p style=\"padding-bottom:5px;\"><span class=\"label label-warning\">' + v + '</span></p>'
+		else:
+			string += '<span class=\"label label-warning\">' + v + '</span>'
+
+	return string
+register.filter('get_annotation_item', get_annotation_item)
+
+
+
+

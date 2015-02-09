@@ -351,4 +351,15 @@ def apply_xlabels( construct_section ):
 	xticks(range(len(labels)), labels, rotation=90,fontsize=font_size)
 
 
+def trim_combine_annotation(annotations):
+	a_trimmed = {}
+	for a in annotations:
+		if (a.name not in a_trimmed): 
+			a_trimmed[a.name] = [a.value]
+		else:
+			a_trimmed[a.name].append(a.value)
+	if a_trimmed.has_key("experimentType"):
+		a_trimmed.pop("experimentType")
+	return a_trimmed
+
 

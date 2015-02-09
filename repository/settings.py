@@ -14,7 +14,7 @@ TMPDIR = REPO_DIR + 'structureserver/tmp/'
 HTML_PATH = {
 	'index': 'html/index.html',
 	'browse': 'html/browse.html',
-	'detail': 'detail.html',
+	'detail': 'html/detail.html',
 
 	'about': 'html/about.html',
 	'license': 'html/license.html',

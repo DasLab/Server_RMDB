@@ -374,3 +374,105 @@ img.logo {
 .carousel-indicators {
   top:0px;
 }
+
+
+.view_panel {
+  position: fixed;
+  float: right;
+  width: 600px;
+  right: 0px;
+  margin-right: -1200px;
+  background-color: #111;
+  opactiy: 0.9;
+  border: 1px solid #fbad24;
+}
+
+.side_panel {
+  position: fixed;
+  float: left;
+  width: 600px;
+  left: 0px;
+  margin-left: -1200px;
+  background-color: #fff;
+  border: 1px solid #7cafd3;
+}
+.side_tab {
+  float: right;
+  margin-right: -70px;
+  background-color: #fff;
+  border: 1px solid #7cafd3;
+  border-radius: 0 5px 5px 0;
+}
+.side_block {
+  word-wrap: break-word;
+  overflow: auto;
+}
+.side-table{
+  table-layout: fixed;
+}
+.side-td {
+  word-wrap: break-word;
+}
+.left_tab {
+  transform: rotate(90deg) translate(-12%, 1%);
+  padding: 12px 0px;
+  margin: 8px -10px 8px -20px;
+  width: 80px;
+}
+.left_tab > a {
+  width: 100px;
+  text-align: center;
+}
+.left_close { 
+  border-left: 1px solid #ddd;
+}
+.left_close > a {
+  background-color: #fff !important;
+}
+li.left_alone > a {
+  background-color: #fbad24 !important;
+}
+.left_setting {
+  margin: 0px -10px 16px -20px;
+  height: 90px;
+}
+.left_setting > a {
+  background-color: #3c763d !important;
+  width: 120px;
+}
+
+.tab-content > .tab-pane, .pill-content > .pill-pane {
+  display: none;
+}
+.tab-content > .active, .pill-content > .active {
+  display: block;
+}
+
+.tabs-right > .nav_tabs {
+  float: right;
+  border-left: 1px solid #ddd;
+}
+
+.tabs-right > .nav_tabs > li > a {
+  margin-left: -1px;
+  -webkit-border-radius: 4px 4px 0 0;
+     -moz-border-radius: 4px 4px 0 0;
+          border-radius: 4px 4px 0 0;
+  background-color: #d7e7f1;
+}
+
+.tabs-right > .nav_tabs > li > a:hover,
+.tabs-right > .nav_tabs > li > a:focus {
+  border-color: #eee #eee #eee #ddd;
+  background-color: #7cafd3;
+  color: #011e46;
+}
+
+.tabs-right > .nav_tabs > li.active > a,
+.tabs-right > .nav_tabs > li.active > a:hover,
+.tabs-right > .nav_tabs > li.active > a:focus {
+  border-color: #ddd #ddd #ddd #fff;
+  background-color: #112d52;
+  color: #fff;
+  font-weight: bold;
+}
