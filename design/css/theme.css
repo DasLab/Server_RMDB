@@ -476,3 +476,17 @@ li.left_alone > a {
   color: #fff;
   font-weight: bold;
 }
+
+.test {
+  border: #0f0 solid 2px;
+}
+
+.axis text {
+  font: 12px Arial;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

@@ -107,8 +107,9 @@ def get_plot_data(construct_id, entry_type, maxlen):
 				else:
 					values += '"%s",' % ','.join(annotations.values())
 			else:
-				values += '"%s;%s",' % (i+1, ','.join(annotations.values()))
+				values += '"%s",' % (','.join(annotations.values()))
 			values += ','.join(data.values.split(',')) + '], \n'
+			
 			parsed_peaks = [float(x) for x in data.values.split(',')]
 			if max(parsed_peaks) > peak_max:
 				peak_max = max(parsed_peaks)

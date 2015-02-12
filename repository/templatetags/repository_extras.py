@@ -145,5 +145,16 @@ def get_annotation_item(a_all, key):
 register.filter('get_annotation_item', get_annotation_item)
 
 
+def get_rev_stat(string):
+	if string == 'REC':
+		return '<span class=\"label label-info\">Received</span>'
+	if string == "REV":
+		return '<span class=\"label label-warning\">In Review</span>'
+	if string == "HOL":
+		return '<span class=\"label label-danger\">On Hold</span>'
+	if string == "PUB":
+		return '<span class=\"label label-success\">Published</span>'
+register.filter('get_rev_stat', get_rev_stat)
+
 
 
