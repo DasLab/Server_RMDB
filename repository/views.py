@@ -141,10 +141,9 @@ def detail(request, rmdb_id):
 		for c in constructs:
 			c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures  = get_plot_data(c.id, entry.type, maxlen)
 			c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
-			c.show_slideshow = entry.has_traces or entry.type in ['TT', 'SS']
 			c.data_count = range(len(c.datas))
 			if len(c.datas) > maxlen:
-				c.datas = c.datas[:maxlen]
+				# c.datas = c.datas[:maxlen]
 				maxlen_flag = True
 			for d in c.datas:
 				d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
@@ -160,7 +159,6 @@ def detail(request, rmdb_id):
 				c.err_ncol = 0
 			else:
 				c.err_ncol = len(c.err_ncol)
-			
 
 			seqpos_str = c.seqpos.split(',')
 			if (int(seqpos_str[-1]) - int(seqpos_str[0]) + 1 != len(seqpos_str)):

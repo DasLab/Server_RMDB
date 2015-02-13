@@ -99,9 +99,7 @@
 <body>
 	<div id="wait" class="modal"></div>
 	<script type="text/javascript">
-		$("#wait").ready(function () {
-			$("#wait").show().fadeOut(500);
-		});
+		$("#wait").fadeIn(500);
 	</script>
 
 	<div class="navbar navbar-fixed-top" id="nav_load">
@@ -488,6 +486,7 @@
 
 	<script type="text/javascript">
 		$(document).ready(function () {
+			$("#wait").fadeOut(500);
 			$("#footer").load("/site_media/html/_footer.html", function () {
 				var today = new Date();
 				$("#cp_year").text(today.getFullYear());

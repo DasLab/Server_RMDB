@@ -360,12 +360,6 @@
 
 {% for c in constructs %}
 
-{% if maxlen_flag %}
-	<ul class="error_message">
-		<li> This entry has more than 256 data row, only showing the first 256 </li>
-	</ul>
-{% endif %}
-
 <div class="container">
 	<div class="row">
 		<div class="col-md-10">
@@ -407,7 +401,9 @@
 	        	<br/>
 	        	<img src="/site_media/img/graycolormap.gif"/>
 	        	<br/>
-	        	{{c.area_peaks_max|floatformat:2}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{c.area_peaks_min|floatformat:0}}
+	        	{{c.area_peaks_max|floatformat:2}} 
+	        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	        	{{c.area_peaks_min|floatformat:0}}
 	        </p>
 		</div>
 	</div>
@@ -416,6 +412,7 @@
 
 <div class="row">
 	<script type="text/javascript">
+
 		var peaks = {% autoescape off %} {{c.area_peaks}} {% endautoescape %};
 		var data_array = peaks;
 		/* Convert from tabular format to array of objects. */
@@ -626,13 +623,13 @@
 			}
 		}
 
-		function make_barplot(f) {
+		function make_barplot(idx) {
 
 			{% for c in constructs %}
 				{% for hdata, xmin, xmax, ymin, ymax, title in c.hist_data %}
 					if ( {{forloop.counter0}} == idx) {
 
-						var margin = {top: 20, right: 125, bottom: 75, left: 75};
+						var margin = {top: 20, right: 140, bottom: 75, left: 75};
 						var hdata = {% autoescape off %} {{hdata}} {% endautoescape %};
 						var barWidth = 10,
 							w = barWidth * hdata.length, h = 175, 
@@ -771,6 +768,8 @@
 							.text("Barplot for row_#{{forloop.counter}}: {{title|wordbreak:80}}")
 							.attr("transform", "translate("+ (w/2-10) +","+ (margin.top-5) +")")
 							.attr("font-size", 18).attr("font-weight", "bold").attr("font-family", "Arial");
+						chart.attr("num", "{{forloop.counter}}");
+						chart.attr("ttl", "{{title}}");
 					}
 				{% endfor %}
 			{% endfor %}
@@ -859,8 +858,11 @@
 					var svg_html = svg_dom.innerHTML;
 					svg_file = "data:image/svg+xml;base64," + btoa(svg_html);
 				}).done(function() {
+					var svg_name = "barplot_row" + $(".chart").attr("num") + "_" 
+									+ $(".chart").attr("ttl").replace(",","-").replace("/","-").replace("\\","-").replace(";","-").replace(":","-") 
+									+ ".svg"
 					var tmp = document.createElement("a");
-					tmp.setAttribute("download", "barplot.svg");
+					tmp.setAttribute("download", svg_name);
 					tmp.setAttribute("href", svg_file);
 					tmp.setAttribute("target", "_blank");
 					tmp.click();

@@ -75,7 +75,7 @@ def render_structure(request):
 def get_plot_data(construct_id, entry_type, maxlen):
 	peaks = ''
 	precalc_structures = '['
-	accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos']
+	accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos', 'MAPseq', 'EteRNA']
 	try:
 		construct = ConstructSection.objects.get(pk=construct_id)
 		datas = DataSection.objects.filter(construct_section=construct).order_by('id')
@@ -85,7 +85,7 @@ def get_plot_data(construct_id, entry_type, maxlen):
 		peaks = '[["Annotation", '+','.join(seqlabel) + '], '
 		peak_max = 0.
 		peak_min = 0.
-		for i, data in enumerate(datas[:maxlen]):
+		for i, data in enumerate(datas):
 			annotations = dict([(d.name, d.value) for d in DataAnnotation.objects.filter(section=data) if d.name in accepted_tags])
 			if 'structure' in annotations:
 				precalc_structures += '"%s",' % annotations['structure']
@@ -108,6 +108,8 @@ def get_plot_data(construct_id, entry_type, maxlen):
 					values += '"%s",' % ','.join(annotations.values())
 			elif entry_type == "MA":
 				values += '"lig_pos:%s",' % annotations["lig_pos"]
+			elif entry_type == "SS" and "EteRNA" in annotations:
+				values += '"%s",' % annotations["MAPseq"]
 			else:
 				values += '"%s",' % (','.join(annotations.values()))
 			values += ','.join(data.values.split(',')) + '], \n'

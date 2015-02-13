@@ -157,4 +157,10 @@ def get_rev_stat(string):
 register.filter('get_rev_stat', get_rev_stat)
 
 
+def get_plot_idx(hist_data, idx):
+	print idx
+	return ''
+register.filter('get_plot_idx', get_plot_idx)
+
+
 
