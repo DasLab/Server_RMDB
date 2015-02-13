@@ -75,7 +75,7 @@ def render_structure(request):
 def get_plot_data(construct_id, entry_type, maxlen):
 	peaks = ''
 	precalc_structures = '['
-	accepted_tags = ['modifier', 'chemical', 'mutation', 'structure']
+	accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos']
 	try:
 		construct = ConstructSection.objects.get(pk=construct_id)
 		datas = DataSection.objects.filter(construct_section=construct).order_by('id')
@@ -106,6 +106,8 @@ def get_plot_data(construct_id, entry_type, maxlen):
 					values += '"%s",' % annotations[field]
 				else:
 					values += '"%s",' % ','.join(annotations.values())
+			elif entry_type == "MA":
+				values += '"lig_pos:%s",' % annotations["lig_pos"]
 			else:
 				values += '"%s",' % (','.join(annotations.values()))
 			values += ','.join(data.values.split(',')) + '], \n'
@@ -115,23 +117,23 @@ def get_plot_data(construct_id, entry_type, maxlen):
 				peak_max = max(parsed_peaks)
 			if min(parsed_peaks) > peak_min:
 				peak_min = min(parsed_peaks)
-			if entry_type == 'SS':
-				hist_peaks = parsed_peaks
-				ymin = 0
-				ymax = max(hist_peaks) + 0.5
-				hist_pos = [int(x) for x in seqpos]
-				xmin = min(hist_pos)
-				xmax = max(hist_pos)
-				title = ','.join(annotations.values())
-				hist_labels = [ x.replace('"', '') for x in seqlabel]
-				if data.errors.strip():
-					hist_errors = [float(x) for x in data.errors.split(',')]
-				else:
-					hist_errors = [0.]*len(seqpos)
-				hist_dicts = []
-				for i in range(len(hist_peaks)):
-					hist_dicts.append({'position':hist_pos[i], 'value':hist_peaks[i], 'label':hist_labels[i], 'error':hist_errors[i]})
-				hist_data.append((simplejson.dumps(hist_dicts), xmin, xmax, ymin, ymax, title))
+
+			hist_peaks = parsed_peaks
+			ymin = 0
+			ymax = max(hist_peaks) + 0.5
+			hist_pos = [int(x) for x in seqpos]
+			xmin = min(hist_pos)
+			xmax = max(hist_pos)
+			title = ','.join(annotations.values())
+			hist_labels = [ x.replace('"', '') for x in seqlabel]
+			if data.errors.strip():
+				hist_errors = [float(x) for x in data.errors.split(',')]
+			else:
+				hist_errors = [0.]*len(seqpos)
+			hist_dicts = []
+			for i in range(len(hist_peaks)):
+				hist_dicts.append({'position':hist_pos[i], 'value':hist_peaks[i], 'label':hist_labels[i], 'error':hist_errors[i]})
+			hist_data.append((simplejson.dumps(hist_dicts), xmin, xmax, ymin, ymax, title))
 
 			peaks += values
 		peaks = peaks[:-2].strip(',') + ']'

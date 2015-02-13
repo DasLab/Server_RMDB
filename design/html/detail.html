@@ -317,19 +317,19 @@
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active fade in side_block" id="panel_svg">
 				<div class="row">
-					<div class="col-md-1" style="width:70px;">
-						<p class="btn-group-vertical" role="group" aria-label="...">
-							<button id="svg_top" class="btn btn-default right-block">
+					<div class="col-md-1" style="width:90px;">
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
+							<button id="svg_top" class="btn btn-default">
 								<span class="glyphicon glyphicon-fast-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
 							</button>
-							<button id="svg_up" class="btn btn-default right-block">
+							<button id="svg_up" class="btn btn-default">
 								<span class="glyphicon glyphicon-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
 							</button>
 						</p>
 						<p>
-							<input type="text" class="form-control" id="page_num" />
+							<input type="text" class="form-control" id="page_num" style="text-align: center;"/>
 						</p>
-						<p class="btn-group-vertical" role="group" aria-label="...">
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
 							<button id="svg_down" class="btn btn-default right-block">
 								<span class="glyphicon glyphicon-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
 							</button>
@@ -337,7 +337,7 @@
 								<span class="glyphicon glyphicon-fast-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
 							</button>
 						</p>
-						<p class="btn-group-vertical" role="group" aria-label="...">
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
 							<a id="svg_save" class="btn btn-default right-block">
 								<span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
 							</a>
@@ -349,7 +349,7 @@
 							</button>
 						</p>
 					</div>
-					<div class="col-md-11"><svg class="chart"></svg></div>
+					<div class="col-md-11" id="svg_parent"><svg class="chart"></svg></div>
 				</div>
 			</div>
 		</div> 
@@ -407,7 +407,7 @@
 	        	<br/>
 	        	<img src="/site_media/img/graycolormap.gif"/>
 	        	<br/>
-	        	{{c.area_peaks_max}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{c.area_peaks_min}}
+	        	{{c.area_peaks_max|floatformat:2}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{c.area_peaks_min|floatformat:0}}
 	        </p>
 		</div>
 	</div>
@@ -477,7 +477,8 @@
 			.event("mouseover", function(){ this.parent.active(true); return this.parent;})
 			.event("mouseout", function(){ this.parent.active(false); return this.parent;})
 			.event("click", function(d, f){ 
-				make_barplot(f);
+				idx = rows.indexOf(f);
+				make_barplot(idx);
 				$("#page_num").val((idx+1).toString());
 				$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
 
@@ -590,6 +591,7 @@
 			$("#img-buttons").css("margin-top", 
 				parseInt($("#left-buttons").css("height"))+parseInt($("#left-buttons").css("margin-top"))
 				-parseInt($("#img_panel").css("top"))+parseInt($(".navbar-fixed-top").css("height"))-1);
+			$("#svg_parent").css("width", parseInt($("#panel_svg").css("height"))-90);
 
 			$("#set_panel").css("max-width", "400px");
 			$("#set_panel").css("width", $(window).width()*0.33);
@@ -625,11 +627,11 @@
 		}
 
 		function make_barplot(f) {
-			idx = rows.indexOf(f);
 
 			{% for c in constructs %}
 				{% for hdata, xmin, xmax, ymin, ymax, title in c.hist_data %}
 					if ( {{forloop.counter0}} == idx) {
+
 						var margin = {top: 20, right: 125, bottom: 75, left: 75};
 						var hdata = {% autoescape off %} {{hdata}} {% endautoescape %};
 						var barWidth = 10,
@@ -642,9 +644,18 @@
 									.attr("width", w + margin.left + margin.right)
 									.attr("height", h + margin.top + margin.bottom);
 
-						var x_ticks = d3.range( {{xmin}} + (5-{{xmin}}%5), {{xmax}}, 5),
-							y_ticks = d3.range( {{ymin}}, {{ymax}}, 0.5),
-							colors = d3.scale.linear().domain([0,( {{ymax}} - 0.5)/2, {{ymax}} - 0.5]).range(["white", "orange","red"]);
+						var x_ticks = d3.range( {{xmin}} + (5-{{xmin}}%5), {{xmax}}, 5), y_ticks;
+						if ({{ymax}} < 5) {
+							y_ticks = d3.range( {{ymin}}, {{ymax}}, 0.5);
+						} else {
+							if ({{ymax}} < 100) {
+								var y_intvl = Math.round({{ymax}} / 10);
+							} else {
+								var y_intvl = Math.round({{ymax}} / 100)*10;
+							}
+							y_ticks = d3.range( {{ymin}}, {{ymax}}, y_intvl);
+						}
+						var colors = d3.scale.linear().domain([0,( {{ymax}} - 0.5)/2, {{ymax}} - 0.5]).range(["white", "orange","red"]);
 
 						for (i = 0; i < y_ticks.length; i++) {
 							chart.append("line")
@@ -663,15 +674,21 @@
 						bar.append("rect")
 							.attr("x", function(d) { return x(d.position) - barWidth / 2 + 5 + margin.left; })
 							.attr("y", function(d) { return y(d.value)+margin.top; })
-							.attr("height", function(d) { return h-y(d.value); })
+							.attr("height", function(d) { 
+								var rect_h = h-y(d.value);
+								return Math.max(0, rect_h); })
 							.attr("width", barWidth)
 							.attr("stroke", "black").attr("stroke-width", "2px")
 							.attr("fill", function(d) { return colors(d.value); });
 						bar.append("line")
 							.attr("x1", function(d) { return x(d.position) + 5 + margin.left; })
 							.attr("x2", function(d) { return x(d.position) + 5 + margin.left; })
-							.attr("y1", function(d) { return y(d.value-d.error)+margin.top; })
-							.attr("y2", function(d) { return y(d.value+d.error)+margin.top; })
+							.attr("y1", function(d) { 
+								if (isNaN(d.error)) { err = 0 } else { err = d.error }
+								return y(d.value-err)+margin.top; })
+							.attr("y2", function(d) { 
+								if (isNaN(d.error)) { err = 0 } else { err = d.error }
+								return y(d.value-err)+margin.top; })
 							.attr("stroke", "black");
 
 						bar.append("line")
@@ -736,10 +753,10 @@
 							.attr("font-weight", "bold");
 						chart.append("text")
 							.attr("x", x( {{xmax}} )+margin.left+barWidth*8).attr("y", margin.top + h*0.45)
-							.text({{ymax|floatformat}}-0.5);
+							.text({{ymax|floatformat:2}}-0.5);
 						chart.append("text")
 							.attr("x", x( {{xmax}} )+margin.left+barWidth*8).attr("y", margin.top + h*0.9)
-							.text({{ymin}});
+							.text({{ymin|floatformat:0}});
 
 						chart.append("text")
 							.text("Normalized Reactivity")
@@ -803,25 +820,25 @@
 
 			$("#svg_top").on("click", function() {
 				idx = 0;
-				make_barplot(rows[idx]);
+				make_barplot(idx);
 				$("#page_num").val((idx+1).toString());
 			});
 			$("#svg_bottom").on("click", function() {
 				idx = rows.length-1;
-				make_barplot(rows[idx]);
+				make_barplot(idx);
 				$("#page_num").val((idx+1).toString());
 			});
 			$("#svg_up").on("click", function() {
 				if (idx > 0) {
 					idx -= 1;
-					make_barplot(rows[idx]);
+					make_barplot(idx);
 				}
 				$("#page_num").val((idx+1).toString());
 			});
 			$("#svg_down").on("click", function() {
 				if (idx < rows.length-1) {
 					idx += 1;
-					make_barplot(rows[idx]);
+					make_barplot(idx);
 				}
 				$("#page_num").val((idx+1).toString());
 			});
@@ -860,6 +877,19 @@
 			$("#svg_clear").on("click", function () {
 				d3.select(".chart").selectAll("g, text, line").remove();
 				$("#page_num").val("");
+			});
+			$("#page_num").on("focusout", function () {
+				var idx_tmp = parseInt($(this).val());
+				if (!isNaN(idx_tmp)){
+					if (idx_tmp < 0) {idx_tmp = 0;}
+					if (idx_tmp > rows.length-1) {idx_tmp = rows.length-1;}
+					idx = idx_tmp-1;
+					make_barplot(idx);
+					$("#page_num").val((idx+1).toString());
+				}
+			});
+			$("#page_num").on("keyup", function (e) {
+				if(e.keyCode == 13) {$(this).trigger("focusout");}
 			});
 
 			$("#dl_rdat, #dl_isatab").on("click", function() {$(window).unbind();});
