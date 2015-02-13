@@ -2,6 +2,7 @@
 {% load repository_extras %}
 
 {% block head %}
+<link rel="stylesheet" href="/site_media/css/svg.css" />
 {% endblock %}
 
 
@@ -315,8 +316,42 @@
 
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active fade in side_block" id="panel_svg">
-				<div class="row"><svg class="chart"></svg></div>
-			 </div>
+				<div class="row">
+					<div class="col-md-1" style="width:70px;">
+						<p class="btn-group-vertical" role="group" aria-label="...">
+							<button id="svg_top" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-fast-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+							<button id="svg_up" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+						</p>
+						<p>
+							<input type="text" class="form-control" id="page_num" />
+						</p>
+						<p class="btn-group-vertical" role="group" aria-label="...">
+							<button id="svg_down" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+							<button id="svg_bottom" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-fast-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+						</p>
+						<p class="btn-group-vertical" role="group" aria-label="...">
+							<a id="svg_save" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+							</a>
+							<button id="svg_setting" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							</button>
+							<button id="svg_clear" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+							</button>
+						</p>
+					</div>
+					<div class="col-md-11"><svg class="chart"></svg></div>
+				</div>
+			</div>
 		</div> 
 	</div>
 </div>
@@ -334,29 +369,39 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-10">
-			<h2>
-				{% autoescape off %}
-			    <span class="label label-default">{{entry.rmdb_id|color_rmdb_id}}</span>
-			    {% endautoescape %}
-			    {{c.name}}
-			</h2>
+			<h2>{{c.name}}</h2>
+			<div class="row">
+				<div class="col-md-6">
+					<h2 style="margin-top:0px;">
+						{% autoescape off %}
+					    <span class="label label-default">{{entry.rmdb_id|color_rmdb_id}}</span>
+					    {% endautoescape %}
+					</h2>
+				</div>
+				<div class="col-md-6">
+					<div class="btn-group pull-right" role="group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+							&nbsp;&nbsp;Download&nbsp;&nbsp;
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<li><a href="/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.rdat" id="dl_rdat" download>
+								<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
+								&nbsp;&nbsp;RDAT
+							</a></li>
+							{% if not maxlen_flag %} 
+							<li><a href="/site_media/isatab_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}_{{entry.version}}.xls" id="dl_isatab" download>
+								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+								&nbsp;&nbsp;ISATAB
+							</a></li>
+							{% endif %} 
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="col-md-2">
-			<!-- <div class="input-group"> -->
-				<div class="input-group-btn">
-					<button class="btn btn-default disabled">
-						<span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;
-					</button> 
-					<button class="btn btn-default" href="/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.rdat" target="_blank">
-						RDAT
-					</button> 
-					{% if not maxlen_flag %} 
-					<button class="btn btn-default" href="/site_media/isatab_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}_{{entry.version}}.xls" target="_blank">
-						ISATAB
-					</button> 
-					{% endif %} 
-				</div>
-				<br/>
 	        <p class="center-block well" style="text-align:center;">
 	        	<b>Color Scale:</b>
 	        	<br/>
@@ -364,10 +409,10 @@
 	        	<br/>
 	        	{{c.area_peaks_max}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{c.area_peaks_min}}
 	        </p>
-			<!-- </div> -->
 		</div>
 	</div>
 </div>
+<br/>
 
 <div class="row">
 	<script type="text/javascript">
@@ -432,113 +477,8 @@
 			.event("mouseover", function(){ this.parent.active(true); return this.parent;})
 			.event("mouseout", function(){ this.parent.active(false); return this.parent;})
 			.event("click", function(d, f){ 
-				var idx = rows.indexOf(f);
-
-				{% for c in constructs %}
-					{% for hdata, xmin, xmax, ymin, ymax, title in c.hist_data %}
-						if ( {{forloop.counter0}} == idx) {
-							var margin = {top: 20, right: 50, bottom: 75, left: 75};
-							var hdata = {% autoescape off %} {{hdata}} {% endautoescape %};
-							var barWidth = 10,
-								w = barWidth * hdata.length, h = 175, 
-								x = d3.scale.linear().domain([ {{xmin}},{{xmax}} ]).range([0,w]),
-								y = d3.scale.linear().domain([ {{ymin}},{{ymax}} ]).range([h,0]);
-
-							d3.select(".chart").selectAll("g").remove();
-							d3.select(".chart").selectAll("text").remove();
-							d3.select(".chart").selectAll("line").remove();
-							var chart = d3.select(".chart")
-										.attr("width", w + margin.left + margin.right)
-										.attr("height", h + margin.top + margin.bottom);
-							var bar = chart.selectAll("g").data(hdata).enter().append("g");
-
-							var x_ticks = d3.range( {{xmin}}, {{xmax}}, 10),
-								y_ticks = d3.range( {{ymin}}, {{ymax}}, 0.5),
-								colors = d3.scale.linear().domain([0,( {{ymax}} - 0.5)/2, {{ymax}} - 0.5]).range(["white", "orange","red"]);
-
-							for (i = 0; i < y_ticks.length; i++) {
-								chart.append("line")
-									.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
-									.attr("y1", y(y_ticks[i])+margin.top).attr("y2", y(y_ticks[i])+margin.top)
-									.attr("stroke", "#ccc").attr("stroke-width", "1px");
-							}
-							for (i = 0; i < x_ticks.length; i++) {
-								chart.append("line")
-									.attr("x1", x(x_ticks[i])+margin.left).attr("x2", x(x_ticks[i])+margin.left)
-									.attr("y1", h+margin.top).attr("y2", margin.top)
-									.attr("stroke", "#ccc").attr("stroke-width", "1px");
-							}
-
-							bar.append("rect")
-								.attr("x", function(d) { return x(d.position) - barWidth / 2 + 5 + margin.left; })
-								.attr("y", function(d) { return y(d.value)+margin.top; })
-								.attr("height", function(d) { return h-y(d.value); })
-								.attr("width", barWidth)
-								.attr("stroke", "black").attr("stroke-width", "2px")
-								.attr("fill", function(d) { return colors(d.value); });
-							bar.append("line")
-								.attr("x1", function(d) { return x(d.position) + 5 + margin.left; })
-								.attr("x2", function(d) { return x(d.position) + 5 + margin.left; })
-								.attr("y1", function(d) { return y(d.value-d.error)+margin.top; })
-								.attr("y2", function(d) { return y(d.value+d.error)+margin.top; })
-								.attr("stroke", "black");
-
-							bar.append("line")
-								.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
-								.attr("y1", h+margin.top).attr("y2", h+margin.top)
-								.attr("stroke", "black").attr("stroke-width", "1px");
-							bar.append("text")
-								.text(function(d) { return d.label; })
-								.attr("text-anchor", "end")
-								.attr("transform", function(d) { return "rotate(-90)translate(" + (-h-margin.top-8) + "," + (x(d.position) + 9 + margin.left) + ")"; })
-								.attr("font-size", 12).attr("font-family", "Arial");
-
-							bar.append("line")
-								.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmin}} )+margin.left)
-								.attr("y1", h+margin.top).attr("y2", margin.top)
-								.attr("stroke", "black").attr("stroke-width", "1px");
-							bar.append("line")
-								.attr("x1", x( {{xmax}} )+margin.left+barWidth/2+5).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
-								.attr("y1", h+margin.top).attr("y2", margin.top)
-								.attr("stroke", "black").attr("stroke-width", "1px");
-
-							var	yAxis_left = d3.svg.axis().orient("left").scale(y)
-											.tickValues(y_ticks),
-								yAxis_right = d3.svg.axis().orient("right").scale(y)
-											.tickValues(y_ticks);
-							chart.append("g")
-								.attr("class", "axis")
-								.attr("transform", "translate(" + (margin.left+x( {{xmin}} )) + "," + margin.top + ")")
-								.call(yAxis_left);
-							chart.append("g")
-								.attr("class", "axis")
-								.attr("transform", "translate(" + (margin.left+x( {{xmax}} )+barWidth/2+5) + "," + margin.top + ")")
-								.call(yAxis_right);
-							bar.append("rect")
-								.attr("x", x( {{xmax}} )+margin.left+barWidth/2+7).attr("y", margin.top)
-								.attr("height", h).attr("width", 30)
-								.attr("fill", colors(2));
-
-							chart.append("text")
-								.text("Normalized Reactivity")
-								.attr("text-anchor", "end")
-								.attr("transform", "rotate(-90)translate(-30,35)")
-								.attr("font-size", 15).attr("font-weight", "bold").attr("font-family", "Arial");
-							chart.append("text")
-								.text("Sequence Position")
-								.attr("transform", "translate("+ (w/2+25) +","+ (margin.top+h+60) +")")
-								.attr("font-size", 15).attr("font-weight", "bold").attr("font-family", "Arial");
-							chart.append("text")
-								.text("Barplot for row_#{{forloop.counter}}: {{title|wordbreak:80}}")
-								.attr("transform", "translate("+ (w/2-10) +","+ (margin.top-5) +")")
-								.attr("font-size", 18).attr("font-weight", "bold").attr("font-family", "Arial");
-
-							// plot.add(pv.Rule).data(y.ticks()).bottom(y).strokeStyle("#eee").anchor("left").add(pv.Label)
-							// .text(y.tickFormat);
-						}
-					{% endfor %}
-				{% endfor %}
-
+				make_barplot(f);
+				$("#page_num").val((idx+1).toString());
 				$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
 
 				//The following lines are for viewing the secondary structure using another browser window
@@ -633,11 +573,198 @@
 
 {% block script %}
 	<script type="text/javascript">
+		var idx = 0;
+
+		function init_panel_size() {
+			$(".left_close").removeClass("visible").hide();
+			$("#left_panel").css("width", $(window).width()/2);
+			$("#left_panel").css("top", parseInt($(".navbar-fixed-top").css("height")));
+			$("#left_panel").css("height", $(window).height() - parseInt($(".navbar-fixed-top").css("height")));
+			$(".side_block").css("max-height", parseInt($("#left_panel").css("height")) - 20);
+			$("#left-buttons").css("margin-top", parseInt($("#left_panel").css("height"))*0.8
+				-parseInt($("#left-buttons").css("height"))-parseInt($(".left_close").css("height"))*2);
+
+			$("#img_panel").css("width", $(window).width() - 75);
+			$("#img_panel").css("height", "325px");
+			$("#img_panel").css("top", $(window).height() - parseInt($("#img_panel").css("height")));
+			$("#img-buttons").css("margin-top", 
+				parseInt($("#left-buttons").css("height"))+parseInt($("#left-buttons").css("margin-top"))
+				-parseInt($("#img_panel").css("top"))+parseInt($(".navbar-fixed-top").css("height"))-1);
+
+			$("#set_panel").css("max-width", "400px");
+			$("#set_panel").css("width", $(window).width()*0.33);
+			$("#set_panel").css("top", parseInt($(".navbar-fixed-top").css("height")));
+			$("#set_panel").css("height", $(window).height() - parseInt($(".navbar-fixed-top").css("height")));
+
+			$("#left_panel").css({"margin-left":"-"+$("#left_panel").css("width")}).removeClass("visible");
+			$("#img_panel").css({"margin-left":"-"+$("#img_panel").css("width")}).removeClass("visible");
+			$("#set_panel").css({"margin-right":"-"+$("#set_panel").css("width")}).removeClass("visible");
+		}
+
+		function get_nt_color(nt) {
+			switch (nt) {
+				case "A":
+				case "a":
+					return "red"
+				case "T":
+				case "t":
+				case "U":
+				case "u":
+					return "green"
+				case "C":
+				case "c":
+					return "blue"
+				case "G":
+				case "g":
+					return "magenta"
+				case "X":
+				case "x":
+				default:
+					return "black"
+			}
+		}
+
+		function make_barplot(f) {
+			idx = rows.indexOf(f);
+
+			{% for c in constructs %}
+				{% for hdata, xmin, xmax, ymin, ymax, title in c.hist_data %}
+					if ( {{forloop.counter0}} == idx) {
+						var margin = {top: 20, right: 125, bottom: 75, left: 75};
+						var hdata = {% autoescape off %} {{hdata}} {% endautoescape %};
+						var barWidth = 10,
+							w = barWidth * hdata.length, h = 175, 
+							x = d3.scale.linear().domain([ {{xmin}},{{xmax}} ]).range([0,w]),
+							y = d3.scale.linear().domain([ {{ymin}},{{ymax}} ]).range([h,0]);
+
+						d3.select(".chart").selectAll("g, text, line").remove();
+						var chart = d3.select(".chart")
+									.attr("width", w + margin.left + margin.right)
+									.attr("height", h + margin.top + margin.bottom);
+
+						var x_ticks = d3.range( {{xmin}} + (5-{{xmin}}%5), {{xmax}}, 5),
+							y_ticks = d3.range( {{ymin}}, {{ymax}}, 0.5),
+							colors = d3.scale.linear().domain([0,( {{ymax}} - 0.5)/2, {{ymax}} - 0.5]).range(["white", "orange","red"]);
+
+						for (i = 0; i < y_ticks.length; i++) {
+							chart.append("line")
+								.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
+								.attr("y1", y(y_ticks[i])+margin.top).attr("y2", y(y_ticks[i])+margin.top)
+								.attr("stroke", "#ccc").attr("stroke-width", "1px");
+						}
+						for (i = 0; i < x_ticks.length; i++) {
+							chart.append("line")
+								.attr("x1", x(x_ticks[i])+margin.left+5+barWidth / 2).attr("x2", x(x_ticks[i])+margin.left+5+barWidth / 2)
+								.attr("y1", h+margin.top).attr("y2", margin.top)
+								.attr("stroke", "#ccc").attr("stroke-width", "1px");
+						}
+
+						var bar = chart.selectAll("g").data(hdata).enter().append("g");
+						bar.append("rect")
+							.attr("x", function(d) { return x(d.position) - barWidth / 2 + 5 + margin.left; })
+							.attr("y", function(d) { return y(d.value)+margin.top; })
+							.attr("height", function(d) { return h-y(d.value); })
+							.attr("width", barWidth)
+							.attr("stroke", "black").attr("stroke-width", "2px")
+							.attr("fill", function(d) { return colors(d.value); });
+						bar.append("line")
+							.attr("x1", function(d) { return x(d.position) + 5 + margin.left; })
+							.attr("x2", function(d) { return x(d.position) + 5 + margin.left; })
+							.attr("y1", function(d) { return y(d.value-d.error)+margin.top; })
+							.attr("y2", function(d) { return y(d.value+d.error)+margin.top; })
+							.attr("stroke", "black");
+
+						bar.append("line")
+							.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
+							.attr("y1", h+margin.top).attr("y2", h+margin.top)
+							.attr("stroke", "black").attr("stroke-width", "1px");
+						bar.append("text")
+							.text(function(d) { return d.label.substring(d.label.length-1); })
+							.attr("text-anchor", "end")
+							.attr("transform", function(d) { return "rotate(-90)translate(" + (-h-margin.top-8) + "," + (x(d.position) + 9 + margin.left) + ")"; })
+							.attr("font-size", 12).attr("font-family", "Arial").attr("font-weight", "bold")
+							.attr("fill", function(d) { return get_nt_color(d.label.substring(d.label.length-1))});
+						bar.append("text")
+							.text(function(d) { return d.label.substring(0, d.label.length-1); })
+							.attr("text-anchor", "end")
+							.attr("transform", function(d) { return "rotate(-90)translate(" + (-h-margin.top-18) + "," + (x(d.position) + 9 + margin.left) + ")"; })
+							.attr("font-size", 12).attr("font-family", "Arial");
+
+						bar.append("line")
+							.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmin}} )+margin.left)
+							.attr("y1", h+margin.top).attr("y2", margin.top)
+							.attr("stroke", "black").attr("stroke-width", "1px");
+						bar.append("line")
+							.attr("x1", x( {{xmax}} )+margin.left+barWidth/2+5).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
+							.attr("y1", h+margin.top).attr("y2", margin.top)
+							.attr("stroke", "black").attr("stroke-width", "1px");
+
+						var	yAxis_left = d3.svg.axis().orient("left").scale(y)
+										.tickValues(y_ticks),
+							yAxis_right = d3.svg.axis().orient("right").scale(y)
+										.tickValues(y_ticks);
+						chart.append("g")
+							.attr("class", "axis")
+							.attr("transform", "translate(" + (margin.left+x( {{xmin}} )) + "," + margin.top + ")")
+							.call(yAxis_left);
+						chart.append("g")
+							.attr("class", "axis")
+							.attr("transform", "translate(" + (margin.left+x( {{xmax}} )+barWidth/2+5) + "," + margin.top + ")")
+							.call(yAxis_right);
+
+						chart.append("linearGradient")
+							.attr("id", "color_grad")
+							.attr("x1", "0%").attr("y1", "100%")
+							.attr("x2", "0%").attr("y2", "0%")
+							.selectAll("stop")
+							.data([
+								{offset: "0%", color: "white"},
+								{offset: "50%", color: "orange"},
+								{offset: "100%", color: "red"}
+							])
+							.enter().append("stop")
+							.attr("offset", function(d) { return d.offset; })
+							.attr("stop-color", function(d) { return d.color; });
+						bar.append("rect")
+							.attr("x", x( {{xmax}} )+margin.left+barWidth*5).attr("y", margin.top + h*0.4)
+							.attr("height", h*0.5).attr("width", barWidth*2)
+							.attr("fill", "url(#color_grad)")
+							.attr("stroke", "black").attr("stroke-width", "1px");
+						chart.append("text")
+							.attr("x", x( {{xmax}} )+margin.left+barWidth*5).attr("y", margin.top + h*0.3)
+							.text("Legend")
+							.attr("font-weight", "bold");
+						chart.append("text")
+							.attr("x", x( {{xmax}} )+margin.left+barWidth*8).attr("y", margin.top + h*0.45)
+							.text({{ymax|floatformat}}-0.5);
+						chart.append("text")
+							.attr("x", x( {{xmax}} )+margin.left+barWidth*8).attr("y", margin.top + h*0.9)
+							.text({{ymin}});
+
+						chart.append("text")
+							.text("Normalized Reactivity")
+							.attr("text-anchor", "end")
+							.attr("transform", "rotate(-90)translate(-30,35)")
+							.attr("font-size", 15).attr("font-weight", "bold").attr("font-family", "Arial");
+						chart.append("text")
+							.text("Sequence Position")
+							.attr("transform", "translate("+ (w/2+25) +","+ (margin.top+h+60) +")")
+							.attr("font-size", 15).attr("font-weight", "bold").attr("font-family", "Arial");
+						chart.append("text")
+							.text("Barplot for row_#{{forloop.counter}}: {{title|wordbreak:80}}")
+							.attr("transform", "translate("+ (w/2-10) +","+ (margin.top-5) +")")
+							.attr("font-size", 18).attr("font-weight", "bold").attr("font-family", "Arial");
+					}
+				{% endfor %}
+			{% endfor %}
+		}
+
 		$(document).ready(function() {
 			$(".dropdown-toggle").removeClass("active");
 			$("#nav_browse").addClass("active");
 	    	$("#nav_logo").css("text-decoration","none");
 
+	    	init_panel_size();
 			$(".left_group").on("click", function() {		
 				if (!$("#left_panel").hasClass("visible")) {
 					$("#left_panel").addClass("visible").animate({"margin-left":"0px"});
@@ -654,8 +781,7 @@
 			});
 			$(".left_alone").on("click", function() {		
 				if (!$("#img_panel").hasClass("visible")) {
-					$("#img_panel").addClass("visible").animate({"margin-left":"0px"});
-					$("#img_panel").css("z-index", "100");
+					$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
 					$("#left_panel").css("z-index", "1");
 				} else {
 					$("#img_panel").removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")});
@@ -663,9 +789,8 @@
 			});
 			$(".right_group").on("click", function() {		
 				if (!$("#set_panel").hasClass("visible")) {
-					$("#set_panel").addClass("visible").animate({"margin-right":"0px"});
-					$("#set_panel").css("z-index", "100");
-					$("#left_panel").css("z-index", "1");
+					$("#set_panel").addClass("visible").animate({"margin-right":"0px"}).css("z-index", "100");
+					$("#img_panel").css("z-index", "1");
 				} else {
 					$("#set_panel").removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")});
 				}	
@@ -676,31 +801,81 @@
 				$("#set-buttons").css("margin-top", parseInt($("#set-buttons").css("margin-top"))+parseInt($(".right_close").css("height")));
 			});
 
-			$("#left_panel").css("width", $(window).width()/2);
-			$("#left_panel").css("top", parseInt($(".navbar-fixed-top").css("height")));
-			$("#left_panel").css("height", $(window).height() - parseInt($(".navbar-fixed-top").css("height")));
-			$(".side_block").css("max-height", parseInt($("#left_panel").css("height")) - 20);
-			$("#left-buttons").css("margin-top", parseInt($("#left_panel").css("height"))*0.8-parseInt($("#left-buttons").css("height")));
-			$("#img_panel").css("width", $(window).width() - 75);
-			$("#img_panel").css("height", "325px");
-			$("#img_panel").css("top", $(window).height() - parseInt($("#img_panel").css("height")));
-			$("#img-buttons").css("margin-top", 
-				parseInt($("#left-buttons").css("height"))+parseInt($("#left-buttons").css("margin-top"))
-				-parseInt($("#img_panel").css("top"))+parseInt($(".navbar-fixed-top").css("height"))
-				-parseInt($(".left_close").css("height"))*2-1);
+			$("#svg_top").on("click", function() {
+				idx = 0;
+				make_barplot(rows[idx]);
+				$("#page_num").val((idx+1).toString());
+			});
+			$("#svg_bottom").on("click", function() {
+				idx = rows.length-1;
+				make_barplot(rows[idx]);
+				$("#page_num").val((idx+1).toString());
+			});
+			$("#svg_up").on("click", function() {
+				if (idx > 0) {
+					idx -= 1;
+					make_barplot(rows[idx]);
+				}
+				$("#page_num").val((idx+1).toString());
+			});
+			$("#svg_down").on("click", function() {
+				if (idx < rows.length-1) {
+					idx += 1;
+					make_barplot(rows[idx]);
+				}
+				$("#page_num").val((idx+1).toString());
+			});
+			$("#svg_save").on("click", function () {
+				var svg_dom = d3.select(".chart")
+							.attr("version", 1.1)
+							.attr("xmlns", "http://www.w3.org/2000/svg")
+							.node().parentNode;
 
-			$("#set_panel").css("max-width", "400px");
-			$("#set_panel").css("width", $(window).width()*0.33);
-			$("#set_panel").css("top", parseInt($(".navbar-fixed-top").css("height")));
-			$("#set_panel").css("height", $(window).height() - parseInt($(".navbar-fixed-top").css("height")));
-			
+				var s = document.createElement("style");
+				s.setAttribute('type', 'text/css');
+				var svg_file = ""
+				$.get("/site_media/css/svg.css", function(txt) { 
+					s.innerHTML = "<![CDATA[\n" + txt + "\n]]>"
+					var defs = document.createElement('defs');
+					defs.appendChild(s);
+					svg_dom.firstChild.insertBefore(defs, svg_dom.firstChild.firstChild);
+					var svg_html = svg_dom.innerHTML;
+					svg_file = "data:image/svg+xml;base64," + btoa(svg_html);
+				}).done(function() {
+					var tmp = document.createElement("a");
+					tmp.setAttribute("download", "barplot.svg");
+					tmp.setAttribute("href", svg_file);
+					tmp.setAttribute("target", "_blank");
+					tmp.click();
+				});
+				return false;
+			});
+			$("#svg_setting").on("click", function () {
+				if ($("#set_panel").hasClass("visible")) {
+					$("#set_panel").animate({"margin-right":"-"+$("#set_panel").css("width")}).removeClass("visible").css("z-index", "1");
+				} else {
+					$("#set_panel").animate({"margin-right":"0px"}).addClass("visible").css("z-index", "200");
+				}
+			});
+			$("#svg_clear").on("click", function () {
+				d3.select(".chart").selectAll("g, text, line").remove();
+				$("#page_num").val("");
+			});
+
+			$("#dl_rdat, #dl_isatab").on("click", function() {$(window).unbind();});
 		});
 
-		$(window).load(function() {
+		$(window).on("resize", function() {
+			clearTimeout($.data(this, 'resizeTimer'));
+			$.data(this, 'resizeTimer', setTimeout(function() {init_panel_size();}, 200));
+		});
+		$(window).on("load", function() {
+			init_panel_size();
 			$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
 			$(".left_close").removeClass("visible").hide();
 			$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
 			$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
 		});
+
 	</script>
 {% endblock %}
