@@ -38,14 +38,14 @@ label {
   border-color: #112d52;
 }
 .navbar .navbar-brand {
-  color: #fbad24;
+  color: #fef159;
   font-weight: bold;
   background-image: url("/site_media/images/bg_rna.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
 .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
-  color: #ff0;
+  color: #fec78a;
   text-decoration: blink;
 }
 .navbar .navbar-text {
@@ -177,14 +177,6 @@ li.nav-general > a, li.nav-puzzle > a, li.nav-eterna> a  {
   opacity:0.5;
 }
 
-p.cap:first-letter {
-  font-size: 36px;
-  font-family: Georgia, serif;
-  line-height: 100%;
-  float: left;
-  padding: 2px 5px 2px 2px;
-  color: #903;
-}
 
 a:link, a:visited {
   color: #011e46;
