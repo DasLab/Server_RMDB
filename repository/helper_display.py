@@ -73,18 +73,21 @@ def render_structure(request):
 
 
 def get_plot_data(construct_id, entry_type, maxlen):
-	peaks = ''
+
 	precalc_structures = '['
 	accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos', 'MAPseq', 'EteRNA']
 	try:
 		construct = ConstructSection.objects.get(pk=construct_id)
 		datas = DataSection.objects.filter(construct_section=construct).order_by('id')
-		seqpos = construct.seqpos.strip('][').split(',')
-		hist_data = []
-		seqlabel = ['"%s%s"' % (s, construct.sequence[int(s)-1-construct.offset]) for s in seqpos]
-		peaks = '[["Annotation", '+','.join(seqlabel) + '], '
-		peak_max = 0.
-		peak_min = 0.
+		seqpos = [int(x) for x in construct.seqpos.strip('][').split(',')]
+
+		x_labels = ['%s%s' % (x, construct.sequence[x-1-construct.offset]) for x in seqpos]
+		y_labels = []
+		row_limits = []
+		data_matrix = []
+		data_max = 0.
+		data_min = 0.
+
 		for i, data in enumerate(datas):
 			annotations = dict([(d.name, d.value) for d in DataAnnotation.objects.filter(section=data) if d.name in accepted_tags])
 			if 'structure' in annotations:
@@ -92,7 +95,6 @@ def get_plot_data(construct_id, entry_type, maxlen):
 				del(annotations['structure'])
 			else:
 				precalc_structures += '"%s",' % data.structure
-			values = '[' 
 			if entry_type == 'MM':
 				if 'mutation' in annotations:
 					field = 'mutation'
@@ -103,46 +105,41 @@ def get_plot_data(construct_id, entry_type, maxlen):
 				else:
 					field = ''
 				if field:
-					values += '"%s",' % annotations[field]
+					y_label_tmp = '%s' % annotations[field]
 				else:
-					values += '"%s",' % ','.join(annotations.values())
+					y_label_tmp = '%s' % ','.join(annotations.values())
 			elif entry_type == "MA":
-				values += '"lig_pos:%s",' % annotations["lig_pos"]
+				y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"]
 			elif entry_type == "SS" and "EteRNA" in annotations:
-				values += '"%s",' % annotations["MAPseq"]
+				y_label_tmp = '%s' % annotations["MAPseq"]
 			else:
-				values += '"%s",' % (','.join(annotations.values()))
-			values += ','.join(data.values.split(',')) + '], \n'
+				y_label_tmp = '%s' % (','.join(annotations.values()))
+			y_labels.append(y_label_tmp)
 			
-			parsed_peaks = [float(x) for x in data.values.split(',')]
-			if max(parsed_peaks) > peak_max:
-				peak_max = max(parsed_peaks)
-			if min(parsed_peaks) > peak_min:
-				peak_min = min(parsed_peaks)
+			peaks_row = [float(x) for x in data.values.split(',')]
+			data_max = max(max(peaks_row), data_max)
+			data_min = min(min(peaks_row), data_min)
 
-			hist_peaks = parsed_peaks
-			ymin = 0
-			ymax = max(hist_peaks) + 0.5
-			hist_pos = [int(x) for x in seqpos]
-			xmin = min(hist_pos)
-			xmax = max(hist_pos)
-			title = ','.join(annotations.values())
-			hist_labels = [ x.replace('"', '') for x in seqlabel]
+			y_min = 0
+			y_max = max(peaks_row) + 0.5
+			x_min = min(seqpos)
+			x_max = max(seqpos)
+			row_limits.append({'y_min':y_min, 'y_max':y_max, 'x_min':x_min, 'x_max':x_max})
+
 			if data.errors.strip():
-				hist_errors = [float(x) for x in data.errors.split(',')]
+				errors_row = [float(x) for x in data.errors.split(',')]
 			else:
-				hist_errors = [0.]*len(seqpos)
-			hist_dicts = []
-			for i in range(len(hist_peaks)):
-				hist_dicts.append({'position':hist_pos[i], 'value':hist_peaks[i], 'label':hist_labels[i], 'error':hist_errors[i]})
-			hist_data.append((simplejson.dumps(hist_dicts), xmin, xmax, ymin, ymax, title))
+				errors_row = [0.]*len(seqpos)
 
-			peaks += values
-		peaks = peaks[:-2].strip(',') + ']'
+			for j in range(len(peaks_row)):
+				data_matrix.append({'x':i, 'y':j, 'value':peaks_row[j], 'error':errors_row[j]})
+
 		precalc_structures = precalc_structures.strip(',') + ']'
+
 	except ConstructSection.DoesNotExist:
-		None, None, None, None, None
-	return peak_min, peak_max, peaks, hist_data, precalc_structures
+		return {'data':None, 'peak_max':None, 'peak_min':None, 'row_lim':None, 'x_labels':None, 'y_labels':None, 'precalc_structures':None}
+	return {'data':data_matrix, 'peak_max':data_max, 'peak_min':data_min, 'row_lim':row_limits, 'x_labels':x_labels, 'y_labels':y_labels, 'precalc_structures':precalc_structures}
+
 
 def get_restricted_RDATFile_and_plot_data(constructs, numresults, qdata, searchid, ssdict, check_structure_balance):
 	rdat = RDATFile()

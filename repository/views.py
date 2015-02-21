@@ -21,6 +21,7 @@ from helper_register import *
 from helper_stats import *
 
 from itertools import chain
+import simplejson
 import time
 # from sys import stderr
 
@@ -139,7 +140,6 @@ def detail(request, rmdb_id):
 
 		constructs = ConstructSection.objects.filter(entry=entry)
 		for c in constructs:
-			c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures  = get_plot_data(c.id, entry.type, maxlen)
 			c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
 			c.data_count = range(len(c.datas))
 			if len(c.datas) > maxlen:
@@ -171,9 +171,17 @@ def detail(request, rmdb_id):
 			if len(xsel_str):
 				c.xsel_len = len(c.xsel)
 
+			# c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures = get_plot_data(c.id, entry.type, maxlen)
+
+			f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.json', 'w')
+			json_tmp = get_plot_data(c.id, entry.type, maxlen)
+			# print json_tmp["peaks"]
+			simplejson.dump(json_tmp, f)
+			f.close()
+
 	except RMDBEntry.DoesNotExist:
 		raise Http404
-	
+
 	return render_to_response(HTML_PATH['detail'], {'rdat_ver':rdat_ver, 'codebase':get_codebase(request), 'entry':entry, 'constructs':constructs, 'publication':entry.publication, 'comments':comments, 'data_annotations_exist':data_annotations_exist, 'maxlen_flag':maxlen_flag}, context_instance=RequestContext(request))
 
 
