@@ -7,6 +7,14 @@ p.cap:first-letter {
   color: #d86f5c;
 }
 
+.tab-top > li > a {
+	border-top: 5px solid #fec78a !important;
+}
+.tab-top > li.active > a {
+	border-top: 5px solid #ff912e !important;
+	background-color: #ffdec0 !important;
+}
+
 .btn-success {
 	background-color: #29be92;
 	border-color: #209874;
@@ -137,9 +145,9 @@ p.cap:first-letter {
 	border-left: 5px solid #ff912e;
 }
 
-.label-default {
+/*.label-default {
 	background-color: #a19193;
-}
+}*/
 .label-primary {
 	background-color: #5496d7;
 }

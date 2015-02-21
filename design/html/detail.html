@@ -17,19 +17,11 @@
 			</li>
 			<br/>
 			<li role="presentation" class="left_tab left_group active">
-				<a href="#tab_left_1" aria-controls="tab_left_1" role="tab" data-toggle="tab">General</a>
+				<a href="#tab_left_1" aria-controls="tab_left_1" role="tab" data-toggle="tab">Annotation</a>
 			</li>
 			<br/>
 			<li role="presentation" class="left_tab left_group">
-				<a href="#tab_left_2" aria-controls="tab_left_2" role="tab" data-toggle="tab">Construct</a>
-			</li>
-			<br/>
-			<li role="presentation" class="left_tab left_group">
-				<a href="#tab_left_3" aria-controls="tab_left_3" role="tab" data-toggle="tab">Annotation</a>
-			</li>
-			<br/>
-			<li role="presentation" class="left_tab left_group">
-				<a href="#tab_left_4" aria-controls="tab_left_4" role="tab" data-toggle="tab">Predict</a>
+				<a href="#tab_left_4" aria-controls="tab_left_4" role="tab" data-toggle="tab">Prediction</a>
 			</li>
 			<br/>
 			<li class="left_close">
@@ -38,260 +30,222 @@
 		</ul>
 		<br/>
 
-		<div class="tab-content">
+		<div class="tab-content" style="margin-top:-20px;">
 			<div role="tabpanel" class="tab-pane active fade in side_block" id="tab_left_1">
-				<table class="table table-hover">
-					<tr>
-						<td class="lead text-right"><span class="label label-default" style="background:#000;">RMDB_ID</span></td>
-						<td class="lead">
-							{% autoescape off %}
-			                <span class="label label-default">{{entry.rmdb_id|color_rmdb_id}}</span>
-			                {% endautoescape %}
-			            </td>
-			        </tr>
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
-						<td class="lead">
-						{% for c in constructs %}
-							{{c.name}}
-						{% endfor %}
-			            </td>
-			        </tr>
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-info">Author</span></td>
-						<td>{{entry.authors}}</td>
-			        </tr>
+				<ul class="nav nav-tabs tab-top" role="tablist">
+					<li role="presentation" class="active"><a href="#gen" aria-controls="gen" role="tab" data-toggle="tab">General</a></li>
+					<li role="presentation"><a href="#ann" aria-controls="ann" role="tab" data-toggle="tab">Annotations</a></li>
+				</ul>
 
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-info">Publication</span></td>
-						<td>
-							<p><i>{{publication.authors}}</i>. <b>{{publication.title}}</b>. <a href="http://www.ncbi.nlm.nih.gov/pubmed/{{publication.pubmed_id}}" target="_blank">PMID: {{publication.pubmed_id}} <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></p>
-						</td>
-			        </tr>
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active tab-inner" id="gen">
 
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-info">Description</span></td>
-						<td>{{entry.description}}</td>
-			        </tr>
+						<table class="table table-hover">
+							<tr>
+								<td class="lead text-right"><span class="label label-default" style="background:#000;">RMDB_ID</span></td>
+								<td class="lead">
+									{% autoescape off %}
+					                <span class="label label-default">{{entry.rmdb_id|color_rmdb_id}}</span>
+					                {% endautoescape %}
+					            </td>
+					        </tr>
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
+								<td class="lead">
+								{% for c in constructs %}
+									{{c.name}}
+								{% endfor %}
+					            </td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">COMMENT</span></td>
+								<td>{{entry.comments}}</td>
+					        </tr>
 
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-primary">COMMENT</span></td>
-						<td>
-							{% for c in comments %}
-							<p>{% autoescape off %} {{c}} {% endautoescape %}.</p>
-							{% endfor %}
-						</td>
-			        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
+								<td>
+								{% for c in constructs %}
+									<code>1-by-{{c.sequence_len}}</code> <i>vector</i>
+								{% endfor %}
+					            </td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
+								<td>
+								{% for c in constructs %}
+									<code>1-by-{{c.structure_len}}</code> <i>vector</i>
+								{% endfor %}
+					            </td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">SEQPOS</span></td>
+								<td >
+								{% for c in constructs %}
+									{% if c.seqpos %}
+										{% autoescape off %}
+										<p>{{c.seqpos}}</p>
+										<code>1-by-{{c.seqpos_len}}</code> <i>vector</i>
+										{% endautoescape %}
+									{% endif %}
+								{% endfor %}
+					            </td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">OFFSET</span></td>
+								<td>
+								{% for c in constructs %}
+									<code>{{c.offset}}</code>
+								{% endfor %}
+					            </td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-success">REACTIVITY</span></td>
+								<td >
+								{% for c in constructs %}
+									{% if c.datas %}
+										{% autoescape off %}
+										<code>{{c.data_nrow}}-by-{{c.data_ncol}}</code> <i>matrix</i>
+										{% endautoescape %}
+									{% endif %}
+								{% endfor %}
+					            </td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-success">REACTIVITY_ERROR</span></td>
+								<td >
+								{% for c in constructs %}
+									{% if c.datas %}
+										{% autoescape off %}
+										{% if c.err_ncol %}
+										<code>{{c.data_nrow}}-by-{{c.err_ncol}}</code> <i>matrix</i>
+										{% else %}
+										<code>N/A</code> (not available)
+										{% endif %}
+										{% endautoescape %}
+									{% endif %}
+								{% endfor %}
+					            </td>
+					        </tr>
+					        <tr>
+								<td class="lead text-right"><span class="label label-success">XSEL</span></td>
+								<td >
+								{% for c in constructs %}
+									{% if c.xsel_len %}
+										{% autoescape off %}
+										<code>1-by-{{c.xsel_len}}</code> <i>vector</i>
+										{% endautoescape %}
+									{% else %}
+										<code>N/A</code> (not available)
+									{% endif %}
+								{% endfor %}
+					            </td>
+					        </tr>
 
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-default">PDB_ID</span></td>
-						<td>
-							{% for pdb_id in entry.pdb_ids %}
-							<li><a href="http://www.pdb.org/pdb/explore/explore.do?structureId={{pdb_id}}">{{pdb_id}}</a></li>
-							{% endfor %}
-						</td>
-			        </tr>
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-default">RDAT_VERSION</span></td>
+								<td><code>{{rdat_ver}}</code></td>
+					        </tr>
+					        
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-violet">Stats</span></td>
+								<td>
+									<p>
+										<i>Version:</i> <mark>{{entry.version}}</mark>
+										<br/>
+										<i># of Construct:</i> <code>{{entry.constructcount}}</code>
+										<br/>
+										<i># of Data Point:</i> <code>{{entry.datacount}}</code>
+										<br/>
+										<i>Creation Date:</i> <mark>{{entry.creation_date|date:"SHORT_DATE_FORMAT"}}</mark>
+										<br/>
+										<i>Revision Status:</i>
+										{% autoescape off %} {{entry.revision_status|get_rev_stat}} {% endautoescape %}
+									</p>
+								</td>
+					        </tr>
+										
+							<tr>
+								<th class="col-md-3"></th>
+								<th class="col-md-9"></th>
+							</tr>
+						</table>
+					</div>
 
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-default">RDAT_VERSION</span></td>
-						<td><code>{{rdat_ver}}</code></td>
-			        </tr>
+					<div role="tabpanel" class="tab-pane tab-inner" id="ann">
+						<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-primary">ANNOTATION</span></td>
+								<td class="lead text-right align-center"><span class="label label-danger">experimentType</span></td>
+								<td class="lead">
+									<span class="label label-success">
+									{% if entry.type == "MM" %}
+										Mutate and Map
+									{% endif %}
+									{% if entry.type == "SS" %}
+										Standard State
+									{% endif %}
+									{% if entry.type == "MA" %}
+										MOHCA
+									{% endif %}
+									{% if entry.type == "TT" %}
+										Titration
+									{% endif %}
+									</span>
+								</td>
+					        </tr>
 
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-info">Stats</span></td>
-						<td>
-							<p>
-								<i>Version:</i> <mark>{{entry.version}}</mark>
-								<br/>
-								<i># of Construct:</i> <code>{{entry.constructcount}}</code>
-								<br/>
-								<i># of Data Point:</i> <code>{{entry.datacount}}</code>
-								<br/>
-								<i>Creation Date:</i> <mark>{{entry.creation_date|date:"SHORT_DATE_FORMAT"}}</mark>
-								<br/>
-								<i>Revision Status:</i>
-								{% autoescape off %} {{entry.revision_status|get_rev_stat}} {% endautoescape %}
-							</p>
-						</td>
-			        </tr>
-								
-					<tr>
-						<th class="col-md-3"></th>
-						<th class="col-md-9"></th>
-					</tr>
-				</table>
+					        {% for a in entry.annotations %}
+							<tr>
+								<td></td>
+								<td class="lead text-right align-center"><span class="label label-danger">{{a}}</span></td>
+								<td class="lead">
+									{% autoescape off %}
+									{{entry.annotations|get_annotation_item:a}}
+									{% endautoescape %}
+								</td>
+					        </tr>
+					        {% endfor %}
+
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
+								<td></td>
+								<td></td>
+					        </tr>
+
+							{% if data_annotations_exist %}
+							{% for c in constructs %}
+							{% for d in c.datas %}
+							{% for a in d.annotations %}
+							<tr>
+								<td class="text-right">
+									{% if forloop.counter == 1 %}
+									<b><i><u>{{forloop.parentloop.counter}}</u></i></b>
+									{% endif %}
+								</td>
+								<td class="lead text-right align-center"><span class="label label-danger">{{a}}</span></td>
+								<td class="lead">
+									{% autoescape off %}
+									{{d.annotations|get_annotation_item:a}}
+									{% endautoescape %}
+								</td>
+					        </tr>
+					        {% endfor %}
+					        {% endfor %}
+					        {% endfor %}
+							{% endif %}
+
+							<tr>
+								<th class="col-md-3"></th>
+								<th class="col-md-3"></th>
+								<th class="col-md-6"></th>
+							</tr>
+						</table>						
+					</div>
+				</div>
 			</div>
 
-			<div role="tabpanel" class="tab-pane fade side_block" id="tab_left_2">
-				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
-						<td class="lead">
-						{% for c in constructs %}
-							{{c.name}}
-						{% endfor %}
-			            </td>
-			        </tr>
-					<tr>
-						<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
-						<td>
-						{% for c in constructs %}
-							<p><b><samp>{{c.sequence}}</samp></b></p>
-							<code>1-by-{{c.sequence_len}}</code> <i>vector</i>
-						{% endfor %}
-			            </td>
-			        </tr>
-					<tr>
-						<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
-						<td>
-						{% for c in constructs %}
-							<p><b><samp>{{c.structure}}</samp></b></p>
-							<code>1-by-{{c.structure_len}}</code> <i>vector</i>
-						{% endfor %}
-			            </td>
-			        </tr>
-					<tr>
-						<td class="lead text-right"><span class="label label-primary">SEQPOS</span></td>
-						<td >
-						{% for c in constructs %}
-							{% if c.seqpos %}
-								{% autoescape off %}
-								<p>{{c.seqpos}}</p>
-								<code>1-by-{{c.seqpos_len}}</code> <i>vector</i>
-								{% endautoescape %}
-							{% endif %}
-						{% endfor %}
-			            </td>
-			        </tr>
-					<tr>
-						<td class="lead text-right"><span class="label label-primary">OFFSET</span></td>
-						<td>
-						{% for c in constructs %}
-							<code>{{c.offset}}</code>
-						{% endfor %}
-			            </td>
-			        </tr>
-					<tr>
-						<td class="lead text-right"><span class="label label-success">REACTIVITY</span></td>
-						<td >
-						{% for c in constructs %}
-							{% if c.datas %}
-								{% autoescape off %}
-								<code>{{c.data_nrow}}-by-{{c.data_ncol}}</code> <i>matrix</i>
-								{% endautoescape %}
-							{% endif %}
-						{% endfor %}
-			            </td>
-			        </tr>
-					<tr>
-						<td class="lead text-right"><span class="label label-success">REACTIVITY_ERROR</span></td>
-						<td >
-						{% for c in constructs %}
-							{% if c.datas %}
-								{% autoescape off %}
-								{% if c.err_ncol %}
-								<code>{{c.data_nrow}}-by-{{c.err_ncol}}</code> <i>matrix</i>
-								{% else %}
-								<code>N/A</code> (not available)
-								{% endif %}
-								{% endautoescape %}
-							{% endif %}
-						{% endfor %}
-			            </td>
-			        </tr>
-			        <tr>
-						<td class="lead text-right"><span class="label label-success">XSEL</span></td>
-						<td >
-						{% for c in constructs %}
-							{% if c.xsel_len %}
-								{% autoescape off %}
-								<code>1-by-{{c.xsel_len}}</code> <i>vector</i>
-								{% endautoescape %}
-							{% else %}
-								<code>N/A</code> (not available)
-							{% endif %}
-						{% endfor %}
-			            </td>
-			        </tr>
-
-					<tr>
-						<th class="col-md-3"></th>
-						<th class="col-md-9"></th>
-					</tr>
-				</table>
-			</div>
-
-			<div role="tabpanel" class="tab-pane fade side_block" id="tab_left_3">
-				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-primary">ANNOTATION</span></td>
-						<td class="lead text-right align-center"><span class="label label-danger">experimentType</span></td>
-						<td class="lead">
-							<span class="label label-success">
-							{% if entry.type == "MM" %}
-								Mutate and Map
-							{% endif %}
-							{% if entry.type == "SS" %}
-								Standard State
-							{% endif %}
-							{% if entry.type == "MA" %}
-								MOHCA
-							{% endif %}
-							{% if entry.type == "TT" %}
-								Titration
-							{% endif %}
-							</span>
-						</td>
-			        </tr>
-
-			        {% for a in entry.annotations %}
-					<tr>
-						<td></td>
-						<td class="lead text-right align-center"><span class="label label-danger">{{a}}</span></td>
-						<td class="lead">
-							{% autoescape off %}
-							{{entry.annotations|get_annotation_item:a}}
-							{% endautoescape %}
-						</td>
-			        </tr>
-			        {% endfor %}
-
-					<tr>
-						<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
-						<td></td>
-						<td></td>
-			        </tr>
-
-					{% if data_annotations_exist %}
-					{% for c in constructs %}
-					{% for d in c.datas %}
-					{% for a in d.annotations %}
-					<tr>
-						<td class="text-right">
-							{% if forloop.counter == 1 %}
-							<b><i><u>{{forloop.parentloop.counter}}</u></i></b>
-							{% endif %}
-						</td>
-						<td class="lead text-right align-center"><span class="label label-danger">{{a}}</span></td>
-						<td class="lead">
-							{% autoescape off %}
-							{{d.annotations|get_annotation_item:a}}
-							{% endautoescape %}
-						</td>
-			        </tr>
-			        {% endfor %}
-			        {% endfor %}
-			        {% endfor %}
-					{% endif %}
-
-					<tr>
-						<th class="col-md-3"></th>
-						<th class="col-md-3"></th>
-						<th class="col-md-6"></th>
-					</tr>
-				</table>
-
-			</div>
 			<div role="tabpanel" class="tab-pane active fade in side_block" id="tab_left_4">
 
 			</div>
@@ -408,95 +362,77 @@
 		</div>
 	</div>
 </div>
-<br/>
+
+<div class="container">
+	<div class="col-md-8">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title"><b>Construct</b></h3>
+			</div>
+			<div class="panel-body" id="panel_con">
+				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;margin-bottom:0px;">
+					<tr>
+						<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
+						<td>
+						{% for c in constructs %}
+							<p><b><samp>{{c.sequence}}</samp></b></p>
+						{% endfor %}
+			            </td>
+			        </tr>
+					<tr>
+						<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
+						<td>
+						{% for c in constructs %}
+							<p><b><samp>{{c.structure}}</samp></b></p>
+						{% endfor %}
+			            </td>
+			        </tr>
+								
+					<tr>
+						<th class="col-md-2"></th>
+						<th class="col-md-10"></th>
+					</tr>
+				</table>
+			</div>
+		</div>	
+	</div>
+
+	<div class="col-md-4">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h3 class="panel-title"><b>Citation</b></h3>
+			</div>
+			<div class="panel-body" id="panel_cit">
+				<p><span class="lead"><span class="label label-brown">Publication</span></span></p>
+				<p>
+					<i>{{publication.authors}}</i>. 
+					<br/>
+					<b>{{publication.title}}</b>. 
+					<br/>
+					<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{publication.pubmed_id}}" target="_blank">PMID: {{publication.pubmed_id}} <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
+				</p>
+
+				{% if entry.description %}
+				<p><span class="lead"><span class="label label-brown">Description</span></span></p>
+				<p>{{entry.description}}</p>
+				{% endif %}
+				<p>
+					<span class="lead"><span class="label label-default">PDB_ID</span></span>:
+					{% if entry.pdb_ids %}
+						{% for pdb_id in entry.pdb_ids %}
+						<a href="http://www.pdb.org/pdb/explore/explore.do?structureId={{pdb_id}}">{{pdb_id}} <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
+						{% endfor %}
+					{% else %}
+						N/A
+					{% endif %}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="row test" id="main" style="margin-left: 70px;">
 	<script type="text/javascript">
-		d3.json("/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json", function(json) {
-			var peaks = json.data;
-
-			var row_names = json.y_labels, 
-				col_names = json.x_labels,
-				structures = json.precalc_structures;
-
-			var w = 10, h = 10,
-				total_w = Math.max(0, col_names.length * w),
-				total_h = Math.max(150, row_names.length * h)
-				main_margin = {"left": 0, "top": 0, "right": 0, "bottom": 0};
-
-			var colorScale = d3.scale.linear()
-				.domain([json.peak_min, json.peak_max])
-				.range(['white', 'black']);
-			$("#peak_max").text(json.peak_max.toFixed(2));
-			$("#peak_min").text(json.peak_min.toFixed(2));	
-
-			var svg = d3.select("#main").append("svg")
-						.attr("width", total_w)
-						.attr("height", total_h)
-						.append("g")
-
-			var temp_lbl = d3.max(row_names, function(d) { return d.length; });
-			svg.append("text").text(Array(temp_lbl).join('W'))
-				.each(function() { main_margin.right = this.getBBox().width +15; })
-				.remove();
-			var temp_lbl = d3.max(col_names, function(d) { return d.length; });
-			svg.append("text").text(Array(temp_lbl).join('W'))
-				.each(function() { main_margin.top = this.getBBox().width +15; })
-				.remove();
-			svg.append("text").text(Array(row_names.length.toString().length).join('W'))
-				.each(function() { main_margin.bottom = this.getBBox().width +15; })
-				.remove();
-			svg.append("text").text(Array(col_names.length.toString().length).join('W'))
-				.each(function() { main_margin.left = this.getBBox().width +15; })
-				.remove();
-			d3.select("#main").selectAll("svg").remove();
-
-			var svg = d3.select("#main").append("svg")	
-						.attr("width", total_w + main_margin.left + main_margin.right)
-						.attr("height", total_h + main_margin.top + main_margin.bottom)
-						.append("g");
-
-			var y_label = svg.selectAll("g")
-							.data(row_names)
-							.enter().append("text")
-							.text(function(d) { return d; })
-							.attr("text-anchor", "start")
-							.attr("y", function(d, i) { return (i+.8) * h + main_margin.top;})
-							.attr("x", main_margin.left +total_w +5)
-							.attr("font-size", 12).attr("font-family", "Arial");
-			var x_label = svg.selectAll("g")
-							.data(col_names)
-							.enter().append("text")
-							.text(function(d) { return d; })
-							.attr("text-anchor", "start")
-							.attr("transform", function(d, i) { return "rotate(-90)translate("+ (-main_margin.top +5) + "," + ((i+.8) * h + main_margin.left) + ")"; })
-							.attr("font-size", 12).attr("font-family", "Arial");
-			var y_num = svg.selectAll("g")
-							.data(d3.range(row_names.length))
-							.enter().append("text")
-							.text(function(d) { return d; })
-							.attr("text-anchor", "end")
-							.attr("y", function(d, i) { return (i+.8) * h + main_margin.top;})
-							.attr("x", main_margin.left -5)
-							.attr("font-size", 12).attr("font-family", "Arial");
-			var x_num = svg.selectAll("g")
-							.data(d3.range(col_names.length))
-							.enter().append("text")
-							.text(function(d) { return d; })
-							.attr("text-anchor", "end")
-							.attr("transform", function(d, i) { return "rotate(-90)translate("+ (-main_margin.top -total_h -5) + "," + ((i+.8) * h + main_margin.left) + ")"; })
-							.attr("font-size", 12).attr("font-family", "Arial");
-
-			var heatMap = svg.selectAll("g")
-							.data(peaks, function(d) { return d.y + ':' + d.x; })
-							.enter().append("svg:rect")
-							.attr("class", "tile")
-							.attr("y", function(d) { return d.x * h + main_margin.top; })
-							.attr("x", function(d) { return d.y * w + main_margin.left; })
-							.attr("width", w)
-							.attr("height", h)
-							.style("fill", function(d) { return colorScale(d.value*5); })
-							.style({"stroke":"black", "stroke-width": 1});
 
 
 // 	.fillStyle(function(d, f){ 
@@ -582,11 +518,6 @@
 			// 	.textAlign("right")
 			// 	.textBaseline("middle")
 			// 	.text(function(d){ return d;});
-
-
-		});
-
-
 	</script>
 </div>
 <!--
@@ -625,35 +556,18 @@
 
 
 {% block script %}
+	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
+	<script type="text/javascript" src="/site_media/js/main_heatmap.js"></script>
+	<script type="text/javascript" src="/site_media/js/main_barplot.js"></script>
 	<script type="text/javascript">
 		var idx = 0;
 
-		function init_panel_size() {
-			$(".left_close").removeClass("visible").hide();
-			$("#left_panel").css("width", $(window).width()/2);
-			$("#left_panel").css("top", parseInt($(".navbar-fixed-top").css("height")));
-			$("#left_panel").css("height", $(window).height() - parseInt($(".navbar-fixed-top").css("height")));
-			$(".side_block").css("max-height", parseInt($("#left_panel").css("height")) - 20);
-			$("#left-buttons").css("margin-top", parseInt($("#left_panel").css("height"))*0.8
-				-parseInt($("#left-buttons").css("height"))-parseInt($(".left_close").css("height"))*2);
+		$(document).ready(function () {
+			$.getJSON("/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json", function(json) {
+				draw_heatmap(json);
+			});
 
-			$("#img_panel").css("width", $(window).width() - 75);
-			$("#img_panel").css("height", "325px");
-			$("#img_panel").css("top", $(window).height() - parseInt($("#img_panel").css("height")));
-			$("#img-buttons").css("margin-top", 
-				parseInt($("#left-buttons").css("height"))+parseInt($("#left-buttons").css("margin-top"))
-				-parseInt($("#img_panel").css("top"))+parseInt($(".navbar-fixed-top").css("height"))-1);
-			$("#svg_parent").css("width", parseInt($("#panel_svg").css("height"))-90);
-
-			$("#set_panel").css("max-width", "400px");
-			$("#set_panel").css("width", $(window).width()*0.33);
-			$("#set_panel").css("top", parseInt($(".navbar-fixed-top").css("height")));
-			$("#set_panel").css("height", $(window).height() - parseInt($(".navbar-fixed-top").css("height")));
-
-			$("#left_panel").css({"margin-left":"-"+$("#left_panel").css("width")}).removeClass("visible");
-			$("#img_panel").css({"margin-left":"-"+$("#img_panel").css("width")}).removeClass("visible");
-			$("#set_panel").css({"margin-right":"-"+$("#set_panel").css("width")}).removeClass("visible");
-		}
+		});
 
 		function get_nt_color(nt) {
 			switch (nt) {
@@ -829,140 +743,5 @@
 				{% endfor %}
 			{% endfor %}
 		}
-
-		$(document).ready(function() {
-			$(".dropdown-toggle").removeClass("active");
-			$("#nav_browse").addClass("active");
-	    	$("#nav_logo").css("text-decoration","none");
-
-	    	init_panel_size();
-			$(".left_group").on("click", function() {		
-				if (!$("#left_panel").hasClass("visible")) {
-					$("#left_panel").addClass("visible").animate({"margin-left":"0px"});
-					$(".left_close").addClass("visible").show();
-					$("#left-buttons").css("margin-top", parseInt($("#left-buttons").css("margin-top"))-parseInt($(".left_close").css("height")));
-					$("#left_panel").css("z-index", "100");
-					$("#img_panel").css("z-index", "1");
-				}	
-			});
-			$(".left_close").on("click", function() {
-				$("#left_panel").removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")});
-				$(".left_close").removeClass("visible").hide();
-				$("#left-buttons").css("margin-top", parseInt($("#left-buttons").css("margin-top"))+parseInt($(".left_close").css("height")));
-			});
-			$(".left_alone").on("click", function() {		
-				if (!$("#img_panel").hasClass("visible")) {
-					$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
-					$("#left_panel").css("z-index", "1");
-				} else {
-					$("#img_panel").removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")});
-				}	
-			});
-			$(".right_group").on("click", function() {		
-				if (!$("#set_panel").hasClass("visible")) {
-					$("#set_panel").addClass("visible").animate({"margin-right":"0px"}).css("z-index", "100");
-					$("#img_panel").css("z-index", "1");
-				} else {
-					$("#set_panel").removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")});
-				}	
-			});
-			$(".right_close").on("click", function() {
-				$("#set_panel").removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")});
-				$(".right_close").removeClass("visible").hide();
-				$("#set-buttons").css("margin-top", parseInt($("#set-buttons").css("margin-top"))+parseInt($(".right_close").css("height")));
-			});
-
-			$("#svg_top").on("click", function() {
-				idx = 0;
-				make_barplot(idx);
-				$("#page_num").val((idx+1).toString());
-			});
-			$("#svg_bottom").on("click", function() {
-				idx = rows.length-1;
-				make_barplot(idx);
-				$("#page_num").val((idx+1).toString());
-			});
-			$("#svg_up").on("click", function() {
-				if (idx > 0) {
-					idx -= 1;
-					make_barplot(idx);
-				}
-				$("#page_num").val((idx+1).toString());
-			});
-			$("#svg_down").on("click", function() {
-				if (idx < rows.length-1) {
-					idx += 1;
-					make_barplot(idx);
-				}
-				$("#page_num").val((idx+1).toString());
-			});
-			$("#svg_save").on("click", function () {
-				var svg_dom = d3.select(".chart")
-							.attr("version", 1.1)
-							.attr("xmlns", "http://www.w3.org/2000/svg")
-							.node().parentNode;
-
-				var s = document.createElement("style");
-				s.setAttribute('type', 'text/css');
-				var svg_file = ""
-				$.get("/site_media/css/svg.css", function(txt) { 
-					s.innerHTML = "<![CDATA[\n" + txt + "\n]]>"
-					var defs = document.createElement('defs');
-					defs.appendChild(s);
-					svg_dom.firstChild.insertBefore(defs, svg_dom.firstChild.firstChild);
-					var svg_html = svg_dom.innerHTML;
-					svg_file = "data:image/svg+xml;base64," + btoa(svg_html);
-				}).done(function() {
-					var svg_name = "barplot_row" + $(".chart").attr("num") + "_" 
-									+ $(".chart").attr("ttl").replace(",","-").replace("/","-").replace("\\","-").replace(";","-").replace(":","-") 
-									+ ".svg"
-					var tmp = document.createElement("a");
-					tmp.setAttribute("download", svg_name);
-					tmp.setAttribute("href", svg_file);
-					tmp.setAttribute("target", "_blank");
-					tmp.click();
-				});
-				return false;
-			});
-			$("#svg_setting").on("click", function () {
-				if ($("#set_panel").hasClass("visible")) {
-					$("#set_panel").animate({"margin-right":"-"+$("#set_panel").css("width")}).removeClass("visible").css("z-index", "1");
-				} else {
-					$("#set_panel").animate({"margin-right":"0px"}).addClass("visible").css("z-index", "200");
-				}
-			});
-			$("#svg_clear").on("click", function () {
-				d3.select(".chart").selectAll("g, text, line").remove();
-				$("#page_num").val("");
-			});
-			$("#page_num").on("focusout", function () {
-				var idx_tmp = parseInt($(this).val());
-				if (!isNaN(idx_tmp)){
-					if (idx_tmp < 0) {idx_tmp = 0;}
-					if (idx_tmp > rows.length-1) {idx_tmp = rows.length-1;}
-					idx = idx_tmp-1;
-					make_barplot(idx);
-					$("#page_num").val((idx+1).toString());
-				}
-			});
-			$("#page_num").on("keyup", function (e) {
-				if(e.keyCode == 13) {$(this).trigger("focusout");}
-			});
-
-			$("#dl_rdat, #dl_isatab").on("click", function() {$(window).unbind();});
-		});
-
-		$(window).on("resize", function() {
-			clearTimeout($.data(this, 'resizeTimer'));
-			$.data(this, 'resizeTimer', setTimeout(function() {init_panel_size();}, 200));
-		});
-		$(window).on("load", function() {
-			init_panel_size();
-			$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
-			$(".left_close").removeClass("visible").hide();
-			$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
-			$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
-		});
-
 	</script>
 {% endblock %}
