@@ -6,6 +6,7 @@
 <head>
     <link rel="stylesheet" href="/site_media/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/site_media/css/theme.css" />
+    <link rel="stylesheet" href="/site_media/css/palette.css" />
 
     <link rel="shortcut icon" href="/site_media/favicon.ico" />
     <link rel="icon" type-"image/gif" href="/site_media/animated_favicon1.gif" />
@@ -226,7 +227,7 @@
 				<div class="pull-right row">
 					<ul class="nav navbar-nav">
 						<li class="dropdown">
-							<button class="btn btn-info navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #ffffff;">
+							<button class="btn btn-info navbar-btn dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #ffffff;background-color: #5496d7; border-color: #7495c9;">
 								MyRMDB Login
 								<span class="caret"></span>
 							</button>
@@ -261,7 +262,7 @@
 										<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;
 										Status:
 										{% if user.is_active %}
-										<span class="label label-success">
+										<span class="label label-info">
 											<span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>&nbsp;&nbsp;
 											Active
 										</span>
@@ -272,7 +273,7 @@
 										</span>
 										{% endif %}
 										{% if user.is_staff %}, 
-										<span class="label label-warning">
+										<span class="label label-violet">
 											<span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>&nbsp;&nbsp;
 											Staff
 										</span>

@@ -401,137 +401,192 @@
 	        	<br/>
 	        	<img src="/site_media/img/graycolormap.gif"/>
 	        	<br/>
-	        	{{c.area_peaks_max|floatformat:2}} 
-	        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	        	{{c.area_peaks_min|floatformat:0}}
+	        	<span class="pull-left" id="peak_max"></span>
+	        	<span class="pull-right" id="peak_min"></span>
+	        	<br/>
 	        </p>
 		</div>
 	</div>
 </div>
 <br/>
 
-<div class="row">
+<div class="row test" id="main" style="margin-left: 70px;">
 	<script type="text/javascript">
+		d3.json("/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json", function(json) {
+			var peaks = json.data;
 
-		var peaks = {% autoescape off %} {{c.area_peaks}} {% endautoescape %};
-		var data_array = peaks;
-		/* Convert from tabular format to array of objects. */
-		var structures = {% autoescape off %}{{c.precalc_structures}} {% endautoescape %};
-		var all_data = [], rows = [], peakst = [], tmp = [];
-		for (i = 0; i < peaks.length; i++) {
-			for (j = 0; j < peaks[i].length; j++) {
-				if (j == 0) {
-					rows.push(peaks[i][j]);
-				} else {
-					if (i == 0) {
-						peakst.push([peaks[i][j]]);
-					} else {
-						peakst[j-1].push(peaks[i][j]);
-						all_data.push(peaks[i][j]);
-					}
-				}
-			}
-		}
+			var row_names = json.y_labels, 
+				col_names = json.x_labels,
+				structures = json.precalc_structures;
 
-		var cols = peaks.shift();
-		peakst = peakst.map(function(d){ return pv.dict(rows, function(){ return d[this.index];});});
-		peaks = peaks.map(function(d){ return pv.dict(cols, function(){ return d[this.index];});});
-		cols.shift();
-		rows.shift();
-		var ns = 0.7;
-		/* The color scale ranges ns standard deviations in each direction. */
-		var x = pv.mean(all_data),
-			s = pv.deviation(all_data),
-			fill = pv.dict(rows, function(f){ return pv.Scale.linear()
-					//.by(function(d){ return d > x[f] + 2*s[f] ? x[f] + 2*s[f] : d; })
-					.domain({{c.area_peaks_min}}, x + ns*s)
-					.range("white", "black");});
+			var w = 10, h = 10,
+				total_w = Math.max(0, col_names.length * w),
+				total_h = Math.max(150, row_names.length * h)
+				main_margin = {"left": 0, "top": 0, "right": 0, "bottom": 0};
 
-		/* The cell dimensions. */
-		var w = 10, h = 10,
-			totwidth = Math.max(0, cols.length * w),
-			totheight = Math.max(150, peaks.length * h),
-			spacing = Math.max(60, totheight - peaks.length * h);
+			var colorScale = d3.scale.linear()
+				.domain([json.peak_min, json.peak_max])
+				.range(['white', 'black']);
+			$("#peak_max").text(json.peak_max.toFixed(2));
+			$("#peak_min").text(json.peak_min.toFixed(2));	
 
-		var vis = new pv.Panel()
-			.width(totwidth)
-			.height(totheight)
-			.top(spacing / 2)
-			.left(150);
+			var svg = d3.select("#main").append("svg")
+						.attr("width", total_w)
+						.attr("height", total_h)
+						.append("g")
 
-		vis.add(pv.Panel)
-			.data(rows)
-			.top(function(){ return this.index * 10;})
-			.add(pv.Panel)
-			.def("active", false)
-			.height(10)
-			.strokeStyle(function(){ if(this.active()){ return "blue";} else{ return "black";}})
-			.lineWidth(function(){ if(this.active()){ return 2;} else{ return 1;}})
-			.add(pv.Panel)
-			.data(peakst)
-			.left(function(){ return this.index * 10;})
-			.width(10)
-			.event("mouseover", function(){ this.parent.active(true); return this.parent;})
-			.event("mouseout", function(){ this.parent.active(false); return this.parent;})
-			.event("click", function(d, f){ 
-				idx = rows.indexOf(f);
-				make_barplot(idx);
-				$("#page_num").val((idx+1).toString());
-				$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
+			var temp_lbl = d3.max(row_names, function(d) { return d.length; });
+			svg.append("text").text(Array(temp_lbl).join('W'))
+				.each(function() { main_margin.right = this.getBBox().width +15; })
+				.remove();
+			var temp_lbl = d3.max(col_names, function(d) { return d.length; });
+			svg.append("text").text(Array(temp_lbl).join('W'))
+				.each(function() { main_margin.top = this.getBBox().width +15; })
+				.remove();
+			svg.append("text").text(Array(row_names.length.toString().length).join('W'))
+				.each(function() { main_margin.bottom = this.getBBox().width +15; })
+				.remove();
+			svg.append("text").text(Array(col_names.length.toString().length).join('W'))
+				.each(function() { main_margin.left = this.getBBox().width +15; })
+				.remove();
+			d3.select("#main").selectAll("svg").remove();
 
-				//The following lines are for viewing the secondary structure using another browser window
-				$("[name=structure]").val("{{c.structure}}");
-				$("[name=sequence]").val("{{c.sequence}}");
-				$("[name=seqpos]").val("{{c.seqpos}}");
-				$("[name=offset]").val("{{c.offset}}");
-				$("[name=title]").val(f);
-				$("[name=colormap]").val(data_array[this.parent.parent.index].slice(1));
-				// $("#structureviewform").submit();
-				//The following lines are for viewing the secondary structure using an inset dialog window
-				/*		var struct = structures[this.parent.parent.index],
-				applet = $("#rnaapplet");
-				$("#dialog").dialog({width:400, height:400}); 
-				if(struct == "NA"){
-				$("#structure_info").text("Structure not available");
-				applet.attr("width", 1);
-				applet.attr("height", 1);
-				applet[0].setRNA("", "");
-				}
-				else {
-				$("#structure_info").text("");
-				applet.attr("width", 350);
-				applet.attr("height", 350);
-				applet[0].setRNA("{{c.sequence}}", struct);
-				}*/
-			})
+			var svg = d3.select("#main").append("svg")	
+						.attr("width", total_w + main_margin.left + main_margin.right)
+						.attr("height", total_h + main_margin.top + main_margin.bottom)
+						.append("g");
 
-			.fillStyle(function(d, f){ 
-				if (d[f] > x[f] + ns*s[f])
-					val = x[f] + ns*s[f];
-				else if (d[f] < x[f] -ns*s[f])
-					val = x[f] - ns*s[f];
-				else
-					val = d[f];
-				return fill[f](val);})
-			.title(function(d, f){ return d.Annotation + "," + f + ": " + d[f];})
-			.strokeStyle(function(){ if(this.parent.active()){ return "blue";} else{ return "black";}})
-			.lineWidth(1)
-			.antialias(false);
+			var y_label = svg.selectAll("g")
+							.data(row_names)
+							.enter().append("text")
+							.text(function(d) { return d; })
+							.attr("text-anchor", "start")
+							.attr("y", function(d, i) { return (i+.8) * h + main_margin.top;})
+							.attr("x", main_margin.left +total_w +5)
+							.attr("font-size", 12).attr("font-family", "Arial");
+			var x_label = svg.selectAll("g")
+							.data(col_names)
+							.enter().append("text")
+							.text(function(d) { return d; })
+							.attr("text-anchor", "start")
+							.attr("transform", function(d, i) { return "rotate(-90)translate("+ (-main_margin.top +5) + "," + ((i+.8) * h + main_margin.left) + ")"; })
+							.attr("font-size", 12).attr("font-family", "Arial");
+			var y_num = svg.selectAll("g")
+							.data(d3.range(row_names.length))
+							.enter().append("text")
+							.text(function(d) { return d; })
+							.attr("text-anchor", "end")
+							.attr("y", function(d, i) { return (i+.8) * h + main_margin.top;})
+							.attr("x", main_margin.left -5)
+							.attr("font-size", 12).attr("font-family", "Arial");
+			var x_num = svg.selectAll("g")
+							.data(d3.range(col_names.length))
+							.enter().append("text")
+							.text(function(d) { return d; })
+							.attr("text-anchor", "end")
+							.attr("transform", function(d, i) { return "rotate(-90)translate("+ (-main_margin.top -total_h -5) + "," + ((i+.8) * h + main_margin.left) + ")"; })
+							.attr("font-size", 12).attr("font-family", "Arial");
 
-		vis.add(pv.Label)
-			.data(cols)
-			.left(function(){ return this.index * w + w / 2;})
-			.textAngle(-Math.PI / 2)
-			.textBaseline("middle");
+			var heatMap = svg.selectAll("g")
+							.data(peaks, function(d) { return d.y + ':' + d.x; })
+							.enter().append("svg:rect")
+							.attr("class", "tile")
+							.attr("y", function(d) { return d.x * h + main_margin.top; })
+							.attr("x", function(d) { return d.y * w + main_margin.left; })
+							.attr("width", w)
+							.attr("height", h)
+							.style("fill", function(d) { return colorScale(d.value*5); })
+							.style({"stroke":"black", "stroke-width": 1});
 
-		vis.add(pv.Label)
-			.data(peaks)
-			.top(function(){ return this.index * h + h / 2;})
-			.textAlign("right")
-			.textBaseline("middle")
-			.text(function(d){ return d.Annotation;});
 
-		vis.render();
+// 	.fillStyle(function(d, f){ 
+			// 		if (d[f] > x[f] + ns*s[f])
+			// 			val = x[f] + ns*s[f];
+			// 		else if (d[f] < x[f] -ns*s[f])
+			// 			val = x[f] - ns*s[f];
+			// 		else
+			// 			val = d[f];
+			// 		return fill[f](val);})
+
+
+
+			// var ns = 0.7;
+			// /* The color scale ranges ns standard deviations in each direction. */
+			// var x = pv.mean(all_data),
+			// 	s = pv.deviation(all_data),
+			// 	fill = pv.dict(row_names, function(f){ return pv.Scale.linear()
+			// 			//.by(function(d){ return d > x[f] + 2*s[f] ? x[f] + 2*s[f] : d; })
+			// 			.domain(data.peak_min, x + ns*s)
+			// 			.range("white", "black");});
+
+
+			// vis.add(pv.Panel)
+			// 	.strokeStyle(function(){ if(this.active()){ return "blue";} else{ return "black";}})
+			// 	.lineWidth(function(){ if(this.active()){ return 2;} else{ return 1;}})
+			// 	.event("mouseover", function(){ this.parent.active(true); return this.parent;})
+			// 	.event("mouseout", function(){ this.parent.active(false); return this.parent;})
+			// 	.event("click", function(d, f){ 
+			// 		idx = row_names.indexOf(f);
+			// 		make_barplot(idx);
+			// 		$("#page_num").val((idx+1).toString());
+			// 		$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
+
+			// 		//The following lines are for viewing the secondary structure using another browser window
+			// 		$("[name=structure]").val("{{c.structure}}");
+			// 		$("[name=sequence]").val("{{c.sequence}}");
+			// 		$("[name=seqpos]").val("{{c.seqpos}}");
+			// 		$("[name=offset]").val("{{c.offset}}");
+			// 		$("[name=title]").val(f);
+			// 		$("[name=colormap]").val(data_array[this.parent.parent.index].slice(1));
+			// 		// $("#structureviewform").submit();
+			// 		//The following lines are for viewing the secondary structure using an inset dialog window
+			// 		/*		var struct = structures[this.parent.parent.index],
+			// 		applet = $("#rnaapplet");
+			// 		$("#dialog").dialog({width:400, height:400}); 
+			// 		if(struct == "NA"){
+			// 		$("#structure_info").text("Structure not available");
+			// 		applet.attr("width", 1);
+			// 		applet.attr("height", 1);
+			// 		applet[0].setRNA("", "");
+			// 		}
+			// 		else {
+			// 		$("#structure_info").text("");
+			// 		applet.attr("width", 350);
+			// 		applet.attr("height", 350);
+			// 		applet[0].setRNA("{{c.sequence}}", struct);
+			// 		}*/
+			// 	})
+
+			// 	.fillStyle(function(d, f){ 
+			// 		if (d[f] > x[f] + ns*s[f])
+			// 			val = x[f] + ns*s[f];
+			// 		else if (d[f] < x[f] -ns*s[f])
+			// 			val = x[f] - ns*s[f];
+			// 		else
+			// 			val = d[f];
+			// 		return fill[f](val);})
+			// 	.title(function(d, f){ return d.Annotation + "," + f + ": " + d[f];})
+			// 	.strokeStyle(function(){ if(this.parent.active()){ return "blue";} else{ return "black";}})
+			// 	.lineWidth(1)
+			// 	.antialias(false);
+
+			// vis.add(pv.Label)
+			// 	.data(col_names)
+			// 	.left(function(){ return this.index * w + w / 2;})
+			// 	.textAngle(-Math.PI / 2)
+			// 	.textBaseline("middle");
+
+			// vis.add(pv.Label)
+			// 	.data(row_names)
+			// 	.top(function(){ return this.index * h + h / 2;})
+			// 	.textAlign("right")
+			// 	.textBaseline("middle")
+			// 	.text(function(d){ return d;});
+
+
+		});
+
+
 	</script>
 </div>
 <!--
@@ -542,8 +597,8 @@
     </div>
 {% endif %}
 -->
-
 {% endfor %}
+
 
 
 {% else %}
@@ -685,7 +740,7 @@
 								return y(d.value-err)+margin.top; })
 							.attr("y2", function(d) { 
 								if (isNaN(d.error)) { err = 0 } else { err = d.error }
-								return y(d.value-err)+margin.top; })
+								return y(d.value+err)+margin.top; })
 							.attr("stroke", "black");
 
 						bar.append("line")

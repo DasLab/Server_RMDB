@@ -4,48 +4,45 @@
 <div class="panel-group" id="categories">
 	<div class="row">
 		<div class="col-md-3">
-			<div class="panel panel-success" id="sidebar" data-spy="affix">
+			<div class="panel panel-warning" id="sidebar" data-spy="affix">
 				<div class="panel-heading">
 		            <h3 class="panel-title">Sections</h3>
 				</div>
-				<div class="panel-body">
-					<ul class="list-group">
-						<a id="sec-ovvw" href="#overview">
-							<li class="list-group-item btn-inverse">Overview</li>
-						</a>
-						<a id="sec-exmp" href="#example_RDAT">
-							<li class="list-group-item btn-default">
-								<ul><li>Example RDAT File</li></ul>
-							</li>
-						</a>
-						<a id="sec-term" href="#term">
-							<li class="list-group-item list-group-item-danger btn-danger">Terminalogy</li>
-						</a>
-						<a id="sec-sec" href="#sections">
-							<li class="list-group-item active btn-primary">Sections</li>
-						</a>
-						<a id="sec-gen" href="#general">
-							<li class="list-group-item list-group-item-info btn-info">
-								<ul><li>General</li></ul>
-							</li>
-						</a>
-						<a id="sec-con" href="#construct">
-							<li class="list-group-item list-group-item-info btn-info">
-								<ul><li>Construct</li></ul>
-							</li>
-						<a id="sec-dat" href="#data">
-							<li class="list-group-item list-group-item-info btn-info">						
-								<ul><li>Data</li></ul>
-							</li>
-						</a>
-						<a id="sec-ann" href="#annotation">
-							<li class="list-group-item list-group-item-success btn-success">						
-								<ul><li>Annotation</li></ul>
-							</li>
-						</a>
-						<a id="sec-bstp" href="#best_practice">
-							<li class="list-group-item list-group-item-warning btn-warning">Best Practices</li>
-						</a>
+				<div class="panel-body scroll_nav">
+					<ul class="nav" role="tablist" id="scroll_nav">
+						<li class="li-success">
+							<a id="sec-ovvw" href="#overview"><b>Overview</b></a>
+						</li>
+						<li class="li-green">
+							<ul><li>
+								<a id="sec-exmp" href="#example_RDAT">Example RDAT File</a>
+							</li></ul>
+						</li>
+						<li class="li-orange">
+							<a id="sec-term" href="#term"><b>Terminalogy</b></a>
+						</li>
+						<li class="li-primary">
+							<a id="sec-sec" href="#sections"><b>Sections</b></a>
+						</li>
+						<li class="li-violet">
+							<ul>
+								<li>
+									<a id="sec-gen" href="#general">General</a>
+								</li>
+								<li>
+									<a id="sec-con" href="#construct">Construct</a>
+								</li>
+								<li>
+									<a id="sec-dat" href="#data">Data</a>
+								</li>
+								<li>
+									<a id="sec-ann" href="#annotation">Annotation</a>
+								</li>
+							</ul>
+						</li>
+						<li class="li-danger">
+							<a id="sec-bstp" href="#best_practice"><b>Best Practices</b></a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -66,7 +63,12 @@
 			<br/>
 
 			<div class="well well-lg" style="background-color:#fff;">
-	            <p class="lead" id="overview"><b>Overview</b></p>
+	            <div class="panel panel-success" id="overview">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>Overview</b></span>
+	            	</div>
+	            </div>
+	            <br/>
 	            <div class="row">
 	            	<div class="col-md-12">
 						<p class="cap">
@@ -83,10 +85,13 @@
 		            <br/>
 		        </div>
 
-	            <hr/ id="example_RDAT">
-	            <p class="lead">
-					<ul><li class="lead">Example RDAT File</li></ul>
-	            </p>
+	            <hr/>
+	            <div class="panel panel-green" id="example_RDAT">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>Example RDAT File</b></span>
+	            	</div>
+	            </div>
+	            <br/>
 	            <div class="row">
 	            	<div class="col-md-12">
 						<p>The following is an example of a small RDAT file for single replicate experiments with the data for the <a href="/repository/detail/MDLOOP_STD_0000" target="_blank"><samp>MedLoop</samp>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> construct:</p>
@@ -161,20 +166,25 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 				</div>
 
 	            <hr/>
-	            <p class="lead" id="term"><b>Terminology</b></p>
+	            <div class="panel panel-orange" id="term">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>Terminology</b></span>
+	            	</div>
+	            </div>
+	            <br/>
 	            <div class="row">
 	            	<div class="col-md-12">
 	            		<ul>
-	            			<li><kbd>trace</kbd>:
+	            			<li><span class="lead"><span class="label label-brown">trace</span></span>:
 	            				<p>An electropherogram trace obtained from electrophoresis experiments.</p>
 	            			</li>
-	            			<li><kbd>data lane</kbd> (or <kbd>data row</kbd>):
+	            			<li><span class="lead"><span class="label label-brown">data lane</span></span> (or <span class="lead"><span class="label label-brown">data row</span></span>):
 	            				<p>The set of reactivities obtained from quantifying a single trace or set of reads of a structure mapping experiment for a particular RNA. An experiment usually has multiple data lanes for probing an RNA with different probes or under different conditions.</p>
 	            			</li>
-	            			<li><kbd>annotation</kbd>:
+	            			<li><span class="lead"><span class="label label-brown">annotation</span></span>:
 	            				<p>In the RDAT file format, annotations are tags of the form <code>annotationName:annotationValue</code> that can be used to describe an experiment, construct, or data lane.</p>
 	            			</li>
-	            			<li><kbd>standard state</kbd>:
+	            			<li><span class="lead"><span class="label label-brown">standard state</span></span>:
 	            				<p>A standard structural mapping experiment for an RNA molecule that can be used as a reference. A standard state experiment usually involves probing the RNA with and without a modifying agent under standard buffer conditions (i.e. without additional chemicals or biological agents).</p>
 	            			</li>
 					    </ul>
@@ -182,10 +192,18 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 				</div>
 
 	            <hr/>
-	            <p class="lead" id="sections"><b>Sections</b></p>
-	            <p class="lead" id="general">
-					<ul><li class="lead">General</li></ul>
-	            </p>
+	            <div class="panel panel-primary" id="sections">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>Sections</b></span>
+	            	</div>
+	            </div>
+	            <br/>
+	            <div class="panel panel-violet" id="general">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>General</b></span>
+	            	</div>
+	            </div>
+	            <br/>
 	            <div class="row">
 	            	<div class="col-md-12">
 						<p>The general section contains information about the RDAT specification version (<span class="label label-default">RDAT_VERSION</span>) used and serves as the root of the document. </p>
@@ -209,9 +227,12 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 				</div>
 
 	            <hr/>
-	            <p class="lead" id="construct">
-					<ul><li class="lead">Construct</li></ul>
-	            </p>
+	            <div class="panel panel-violet" id="construct">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>Construct</b></span>
+	            	</div>
+	            </div>
+	            <br/>
 	            <div class="row">
 	            	<div class="col-md-12">
 						<p>
@@ -311,9 +332,12 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 				</div>
 
 	            <hr/>
-	            <p class="lead" id="data">
-					<ul><li class="lead">Data</li></ul>
-	            </p>
+	            <div class="panel panel-violet" id="data">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>Data</b></span>
+	            	</div>
+	            </div>
+	            <br/>
 	            <div class="row">
 	            	<div class="col-md-12">
 						<p>
@@ -376,9 +400,12 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 				</div>
 
 				<hr/>
-	            <p class="lead" id="annotation">
-					<ul><li class="lead">Annotation</li></ul>
-	            </p>
+	            <div class="panel panel-violet" id="annotation">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>Annotation</b></span>
+	            	</div>
+	            </div>
+	            <br/>
 	            <div class="row">
 	            	<div class="col-md-12">
 						<p> 
@@ -512,7 +539,12 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 				</div>
 				<hr>
 
-				<p class="lead" id="best_practice"><b>Best Practices</b></p>
+	            <div class="panel panel-danger" id="best_practice">
+	            	<div class="panel-heading">
+	            		<span class="lead"><b>Best Practices</b></span>
+	            	</div>
+	            </div>
+	            <br/>
 	            <div class="row">
 	            	<div class="col-md-12">
 						<p> Here we describe the recommended practices for representing RNA mapping data in RDAT format. Although they are not required, these practices make an RDAT file more readable, informative, and easier to parse. </p>
