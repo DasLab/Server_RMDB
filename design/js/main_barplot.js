@@ -2,18 +2,18 @@ function get_nt_color(nt) {
 	switch (nt) {
 		case "A":
 		case "a":
-			return "#ff912e"
+			return "#ff9c42"
 		case "T":
 		case "t":
 		case "U":
 		case "u":
-			return "#3ed4e7"
+			return "#5496d7"
 		case "C":
 		case "c":
-			return "#65ff3f"
+			return "#50cc32"
 		case "G":
 		case "g":
-			return "#ff69bc"
+			return "#f73900"
 		case "X":
 		case "x":
 		default:
@@ -35,7 +35,8 @@ function make_barplot(idx) {
 		x = d3.scale.linear().domain([ x_min, x_max ]).range([0,w]),
 		y = d3.scale.linear().domain([ y_min, y_max ]).range([h,0]);
 
-	d3.select(".chart").selectAll("g, text, line").remove();
+	d3.select(".chart").selectAll("text, line, g").remove();
+
 	var chart = d3.select(".chart")
 				.attr("width", w + margin.left + margin.right)
 				.attr("height", h + margin.top + margin.bottom);
@@ -66,14 +67,37 @@ function make_barplot(idx) {
 			.attr("stroke", "#ccc").attr("stroke-width", "1px");
 	}
 
+	var div = d3.select("body").append("div")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
 	var bar = chart.selectAll("g").data(hdata).enter().append("g");
 	bar.append("rect")
+		.attr("class", "bar")
 		.attr("x", function(d) { return x(d.y) -barWidth/2 +5 +margin.left; })
-		.attr("y", function(d) { return y(d.value) +margin.top; })
-		.attr("height", function(d) { return Math.max(0, h -y(d.value)); })
+		.attr("y", h-margin.top)
 		.attr("width", barWidth)
 		.attr("stroke", "black").attr("stroke-width", "2px")
+		.attr("height", 0)
+		.on("mouseover", function(d) {
+			div.transition().duration(200)
+				.style("opacity", .9);
+			div.html("<table><tr><td><p><span class=\"label label-primary pull-right\">SEQUENCE</span></p></td><td><p>&nbsp;&nbsp;" + d.seq + "</p></td></tr><tr><td><p><span class=\"label label-success pull-right\">REACTIVITY</span></p></td><td><p>&nbsp;&nbsp;" + d.value + "</p></td></tr><tr><td><p><span class=\"label label-dark-red pull-right\">ERROR</span></p></td><td><p>&nbsp;&nbsp;" + d.error + "</p></td></tr></table>")  
+				.style("left", (d3.event.pageX) + "px")
+				.style("top", (d3.event.pageY - 28) + "px"); 
+			d3.select(this).classed("active", true);
+		})
+		.on("mouseout", function(d) {
+			div.style("left", "0px").style("top", "0px")
+				.transition().duration(200)
+				.style("opacity", 0);
+			d3.select(this).classed("active", false);
+		})
+		.transition().duration(250)
+		.attr("y", function(d) { return y(d.value) +margin.top; })
+		.attr("height", function(d) { return Math.max(0, h -y(d.value)); })
 		.attr("fill", function(d) { return colors(d.value); });
+
 	bar.append("line")
 		.attr("x1", function(d) { return x(d.y) + 5 + margin.left; })
 		.attr("x2", function(d) { return x(d.y) + 5 + margin.left; })
@@ -94,6 +118,7 @@ function make_barplot(idx) {
 	bar.append("text")
 		.text(function(d,i) { return x_labels[i].substring(0,1); })
 		.attr("text-anchor", "end")
+		.attr("class", "color")
 		.attr("transform", function(d) { return "rotate(-90)translate(" + -(h +margin.top +8) + "," + (x(d.y) +9 +margin.left) + ")"; })
 		.attr("font-size", 12).attr("font-family", "Arial").attr("font-weight", "bold")
 		.attr("fill", function(d,i) { return get_nt_color(x_labels[i].substring(0,1)); });

@@ -4,19 +4,24 @@ rect.tile.active {
 	z-index: 1000 !important;
 }
 rect.tile.side {
-	stroke: #8ee4cf !important;
+	stroke: #c28fdd !important;
 	stroke-width: 1px !important;
 	z-index: 1000 !important;
 }
+
+text.num {
+	fill: #8ee4cf;
+	font-style: italic;
+}
 text.active {
-	fill: #a254cb !important;
+	fill: #ff5cab !important;
 	font-weight: bold;
 }
 text.side {
 	font-weight: bold;
 }
 text.highlight {
-	stroke: #fef58a;
+	stroke: #ff0;
 	stroke-width: 5px;
 }
 

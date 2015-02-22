@@ -7,3 +7,8 @@
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+rect.bar.active {
+	stroke: #7d9fc9 !important;
+	stroke-width: 5px !important;
+}

@@ -91,8 +91,8 @@ p.cap:first-letter {
 	background-color: #beebde !important;
 }
 .panel-green > .panel-heading {
-	border-bottom: 5px solid #65ff3f !important;
-	background-color: #d0ffc5 !important;
+	border-bottom: 5px solid #50cc32 !important;
+	background-color: #caefc1 !important;
 }
 .panel-light-blue > .panel-heading {
 	border-bottom: 5px solid #8ee4cf !important;
@@ -130,7 +130,7 @@ p.cap:first-letter {
 	border-left: 5px solid #29be92;
 }
 .li-green {
-	border-left: 5px solid #65ff3f;
+	border-left: 5px solid #50cc32;
 }
 .li-light-blue {
 	border-left: 5px solid #8ee4cf;
@@ -165,7 +165,7 @@ p.cap:first-letter {
 	background-color: #29be92;
 }
 .label-green {
-	background-color: #65ff3f;
+	background-color: #50cc32;
 }
 .label-light-blue {
 	background-color: #8ee4cf;

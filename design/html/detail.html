@@ -255,7 +255,36 @@
 </div>
 
 <div id="set_panel" class="view_panel">
-	<a class="text-center" id="close-set"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></a>
+	<div class="col-md-12">
+		<a class="text-center" id="close-set" style="color:#fff;"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></a>
+		<br/>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" id="show_seq">
+				Show sequences overlay
+			</label>
+		</div>
+		<br/>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" id="show_area_pred">
+				Show reactivity prediction
+			</label>
+		</div>
+		<br/>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" id="show_color_seq">
+				Show nucleotides in color:
+				<span id="seqA">A</span>,
+				<span id="seqU">U</span>,
+				<span id="seqG">G</span>,
+				<span id="seqC">C</span>.
+			</label>
+		</div>
+	</div>
+
+
 </div>
 
 <div id="img_panel" class="side_panel well">
@@ -436,36 +465,8 @@
 	</div>
 </div>
 
-<div class="row test" id="main" style="margin-left: 70px;"></div>
-	<script type="text/javascript">
-// 	.fillStyle(function(d, f){ 
-			// 		if (d[f] > x[f] + ns*s[f])
-			// 			val = x[f] + ns*s[f];
-			// 		else if (d[f] < x[f] -ns*s[f])
-			// 			val = x[f] - ns*s[f];
-			// 		else
-			// 			val = d[f];
-			// 		return fill[f](val);})
+<div class="row" id="main" style="margin-left: 70px;"></div>
 
-			// var ns = 0.7;
-			// /* The color scale ranges ns standard deviations in each direction. */
-			// var x = pv.mean(all_data),
-			// 	s = pv.deviation(all_data),
-			// 	fill = pv.dict(row_names, function(f){ return pv.Scale.linear()
-			// 			//.by(function(d){ return d > x[f] + 2*s[f] ? x[f] + 2*s[f] : d; })
-			// 			.domain(data.peak_min, x + ns*s)
-			// 			.range("white", "black");});
-
-
-			// 	.fillStyle(function(d, f){ 
-			// 		if (d[f] > x[f] + ns*s[f])
-			// 			val = x[f] + ns*s[f];
-			// 		else if (d[f] < x[f] -ns*s[f])
-			// 			val = x[f] - ns*s[f];
-			// 		else
-			// 			val = d[f];
-			// 		return fill[f](val);})
-	</script>
 <!--
 {% if entry.has_traces %}
     <div>
@@ -503,7 +504,7 @@
 
 {% block script %}
 	<script type="text/javascript">
-		var json, idx = 0, n_rows;
+		var json, idx = 0, n_rows, color_scale = 1;
 	</script>
 	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_heatmap.js"></script>

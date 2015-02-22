@@ -160,6 +160,12 @@ def detail(request, rmdb_id):
 			else:
 				c.err_ncol = len(c.err_ncol)
 
+			# c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures = get_plot_data(c.id, entry.type, maxlen)
+			f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.json', 'w')
+			json_tmp = get_plot_data(c, entry.type, maxlen)
+			simplejson.dump(json_tmp, f)
+			f.close()
+
 			seqpos_str = c.seqpos.split(',')
 			if (int(seqpos_str[-1]) - int(seqpos_str[0]) + 1 != len(seqpos_str)):
 				c.seqpos = '</code>,</span> <span style=\"display:inline-block; width:75px;\"><code>'.join(seqpos_str)
@@ -170,14 +176,6 @@ def detail(request, rmdb_id):
 			xsel_str = c.xsel.split(',')
 			if len(xsel_str):
 				c.xsel_len = len(c.xsel)
-
-			# c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures = get_plot_data(c.id, entry.type, maxlen)
-
-			f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.json', 'w')
-			json_tmp = get_plot_data(c.id, entry.type, maxlen)
-			# print json_tmp["peaks"]
-			simplejson.dump(json_tmp, f)
-			f.close()
 
 	except RMDBEntry.DoesNotExist:
 		raise Http404

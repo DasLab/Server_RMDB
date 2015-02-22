@@ -72,16 +72,17 @@ def render_structure(request):
 	return render_to_response('render_structure.html', {'panel':v.render(), 'title':request.POST['title']})
 
 
-def get_plot_data(construct_id, entry_type, maxlen):
+def get_plot_data(construct, entry_type, maxlen):
 
 	precalc_structures = '['
 	accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos', 'MAPseq', 'EteRNA']
 	try:
-		construct = ConstructSection.objects.get(pk=construct_id)
-		datas = DataSection.objects.filter(construct_section=construct).order_by('id')
+		datas = construct.datas
 		seqpos = [int(x) for x in construct.seqpos.strip('][').split(',')]
+		offset = construct.offset
+		sequence = construct.sequence
 
-		x_labels = ['%s%s' % (construct.sequence[x-1-construct.offset], x) for x in seqpos]
+		x_labels = ['%s%s' % (sequence[x-1-offset], x) for x in seqpos]
 		y_labels = []
 		row_limits = []
 		data_matrix = []
@@ -91,7 +92,7 @@ def get_plot_data(construct_id, entry_type, maxlen):
 		data_sd = 0.
 
 		for i, data in enumerate(datas):
-			annotations = dict([(d.name, d.value) for d in DataAnnotation.objects.filter(section=data) if d.name in accepted_tags])
+			annotations = data.annotations
 			if 'structure' in annotations:
 				precalc_structures += '"%s",' % annotations['structure']
 				del(annotations['structure'])
@@ -107,7 +108,7 @@ def get_plot_data(construct_id, entry_type, maxlen):
 				else:
 					field = ''
 				if field:
-					y_label_tmp = '%s' % annotations[field]
+					y_label_tmp = annotations[field][0]
 				else:
 					y_label_tmp = '%s' % ','.join(annotations.values())
 			elif entry_type == "MA":
@@ -115,7 +116,8 @@ def get_plot_data(construct_id, entry_type, maxlen):
 			elif entry_type == "SS" and "EteRNA" in annotations:
 				y_label_tmp = '%s' % annotations["MAPseq"]
 			else:
-				y_label_tmp = '%s' % (','.join(annotations.values()))
+				annotations_flatten = [y for x in annotations.values() for y in x]
+				y_label_tmp = '%s' % (','.join(annotations_flatten))
 			y_labels.append(y_label_tmp)
 			
 			peaks_row = [float(x) for x in data.values.split(',')]
@@ -134,13 +136,21 @@ def get_plot_data(construct_id, entry_type, maxlen):
 				errors_row = [0.]*len(seqpos)
 
 			for j in range(len(peaks_row)):
-				data_matrix.append({'x':i, 'y':j, 'value':peaks_row[j], 'error':errors_row[j]})
+				seq = sequence[j]
+				if 'mutation' in annotations:
+					mutpos = annotations['mutation']
+					for mut in mutpos:
+						if seq == mut[0] and int(mut[1:-1]) == (j + offset + 1):
+							seq = mut[-1]
+
+				data_matrix.append({'x':i, 'y':j, 'value':peaks_row[j], 'error':errors_row[j], 'seq':seq})
 				data_mean.append(peaks_row[j])
 
 		precalc_structures = precalc_structures.strip(',') + ']'
 		data_mean = array(data_mean)
 		data_sd = std(data_mean)
 		data_mean = mean(data_mean)
+		print y_labels
 
 	except ConstructSection.DoesNotExist:
 		return None

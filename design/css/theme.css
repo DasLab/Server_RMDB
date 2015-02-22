@@ -377,6 +377,7 @@ img.logo {
   background-color: #111;
   opactiy: 0.9;
   border: 1px solid #fbad24;
+  color: #fff;
 }
 
 .side_panel {
@@ -466,8 +467,8 @@ li.left_alone > a {
 .tabs-right > .nav_tabs > li.left_tab.active > a,
 .tabs-right > .nav_tabs > li.left_tab.active > a:hover,
 .tabs-right > .nav_tabs > li.left_tab.active > a:focus {
-  border-top: 5px solid #5496d7;
-  background-color: #cbdff3;
+  border-top: 5px solid #3ed4e7;
+  background-color: #c5f2f7;
   font-weight: bold;
 }
 

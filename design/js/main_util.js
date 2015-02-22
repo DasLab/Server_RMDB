@@ -73,6 +73,28 @@ $(document).ready(function() {
     var col_h = Math.max($("#panel_con").height(), $("#panel_cit").height()) + 15;
     $("#panel_con").css("height", col_h);
     $("#panel_cit").css("height", col_h);
+
+    $("#show_seq").on("click", function() {
+		if ($(this).is(':checked')) {
+			seq_overlay(json);
+		} else {
+			d3.selectAll("text.overlay").transition().duration(250).style("opacity", 0).remove();
+		}
+	});
+	$("#show_color_seq").attr("checked", true);
+    $("#show_color_seq").on("click", function() {
+		if ($(this).is(':checked')) {
+			d3.selectAll("text.color").transition().duration(250).attr("fill", function(d) { 
+				if (d.seq) {
+					return get_nt_color(d.seq);
+				} else {
+					return get_nt_color(d.substring(0,1));
+				}
+			});
+		} else {
+			d3.selectAll("text.color").transition().duration(250).attr("fill", "black");
+		}
+	});
 });
 
 
