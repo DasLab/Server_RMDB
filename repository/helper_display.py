@@ -121,7 +121,8 @@ def get_plot_data(construct, entry_type, maxlen):
 				y_label_tmp = '%s' % (','.join(annotations_flatten))
 			y_labels.append(y_label_tmp)
 			
-			peaks_row = [float(x) for x in data.values.split(',')]
+			peaks_row = array([float(x) for x in data.values.split(',')])
+			peaks_row[isnan(peaks_row)] = 0
 			data_max = max(max(peaks_row), data_max)
 			data_min = max(min(peaks_row), data_min)
 
@@ -132,7 +133,8 @@ def get_plot_data(construct, entry_type, maxlen):
 			row_limits.append({'y_min':y_min, 'y_max':y_max, 'x_min':x_min, 'x_max':x_max})
 
 			if data.errors.strip():
-				errors_row = [float(x) for x in data.errors.split(',')]
+				errors_row = array([float(x) for x in data.errors.split(',')])
+				errors_row[isnan(errors_row)] = 0
 			else:
 				errors_row = [0.]*len(seqpos)
 
@@ -141,13 +143,20 @@ def get_plot_data(construct, entry_type, maxlen):
 				if 'mutation' in annotations:
 					mutpos = annotations['mutation']
 					for mut in mutpos:
+						mut = mut.strip()
 						if ':' in mut:
-							mut_start = int(mut[mut.find('(')+1 : mut.find(':')])
-							mut_end = int(mut[mut.find(':')+1 : mut.find(')')])
-							if (j+offset+1)>=mut_start and (j+offset+1)<=mut_end:
-								idx = j+offset+1-mut_start
-								muts = mut[mut.find(')')+1:]
-								seq= muts[idx]
+							if "(" in mut and ")" in mut:
+								mut_start = int(mut[mut.find('(')+1 : mut.find(':')])
+								mut_end = int(mut[mut.find(':')+1 : mut.find(')')])
+								if (j+offset+1)>=mut_start and (j+offset+1)<=mut_end:
+									idx = j+offset+1-mut_start
+									muts = mut[mut.find(')')+1:]
+									seq= muts[idx]
+							else:
+								muts = mut.split(":")
+								for mut_split in muts:
+									if seq == mut_split[0] and int(mut_split[1:-1]) == (j + offset + 1):
+										seq = mut_split[-1]
 						else:
 							if seq == mut[0] and int(mut[1:-1]) == (j + offset + 1):
 								seq = mut[-1]

@@ -388,6 +388,7 @@ img.logo {
   margin-left: -1200px;
   background-color: #fff;
   border: 1px solid #7cafd3;
+  z-index: 10 !important;
 }
 .side_tab {
   float: right;
@@ -395,6 +396,7 @@ img.logo {
   background-color: #fff;
   border: 1px solid #7cafd3;
   border-radius: 0 5px 5px 0;
+  z-index: 10 !important;
 }
 .side_block {
   word-wrap: break-word;
