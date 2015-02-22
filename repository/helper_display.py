@@ -110,7 +110,8 @@ def get_plot_data(construct, entry_type, maxlen):
 				if field:
 					y_label_tmp = annotations[field][0]
 				else:
-					y_label_tmp = '%s' % ','.join(annotations.values())
+					annotations_flatten = [y for x in annotations.values() for y in x]
+					y_label_tmp = '%s' % (','.join(annotations_flatten))
 			elif entry_type == "MA":
 				y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"]
 			elif entry_type == "SS" and "EteRNA" in annotations:
@@ -122,7 +123,7 @@ def get_plot_data(construct, entry_type, maxlen):
 			
 			peaks_row = [float(x) for x in data.values.split(',')]
 			data_max = max(max(peaks_row), data_max)
-			data_min = min(min(peaks_row), data_min)
+			data_min = max(min(peaks_row), data_min)
 
 			y_min = 0
 			y_max = max(peaks_row) + 0.5
@@ -140,8 +141,16 @@ def get_plot_data(construct, entry_type, maxlen):
 				if 'mutation' in annotations:
 					mutpos = annotations['mutation']
 					for mut in mutpos:
-						if seq == mut[0] and int(mut[1:-1]) == (j + offset + 1):
-							seq = mut[-1]
+						if ':' in mut:
+							mut_start = int(mut[mut.find('(')+1 : mut.find(':')])
+							mut_end = int(mut[mut.find(':')+1 : mut.find(')')])
+							if (j+offset+1)>=mut_start and (j+offset+1)<=mut_end:
+								idx = j+offset+1-mut_start
+								muts = mut[mut.find(')')+1:]
+								seq= muts[idx]
+						else:
+							if seq == mut[0] and int(mut[1:-1]) == (j + offset + 1):
+								seq = mut[-1]
 
 				data_matrix.append({'x':i, 'y':j, 'value':peaks_row[j], 'error':errors_row[j], 'seq':seq})
 				data_mean.append(peaks_row[j])
@@ -150,7 +159,6 @@ def get_plot_data(construct, entry_type, maxlen):
 		data_mean = array(data_mean)
 		data_sd = std(data_mean)
 		data_mean = mean(data_mean)
-		print y_labels
 
 	except ConstructSection.DoesNotExist:
 		return None

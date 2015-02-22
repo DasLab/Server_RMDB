@@ -264,14 +264,12 @@
 				Show sequences overlay
 			</label>
 		</div>
-		<br/>
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" id="show_area_pred">
 				Show reactivity prediction
 			</label>
 		</div>
-		<br/>
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" id="show_color_seq">
@@ -281,6 +279,15 @@
 				<span id="seqG">G</span>,
 				<span id="seqC">C</span>.
 			</label>
+		</div>
+		<label>Adjust heatmap contrast:</label>
+		<div class="row">
+			<div class="col-md-8">
+				<input type="range" id="color_slide">
+			</div>
+			<div class="col-md-4">
+				<input type="number" class="form-control" id="color_text">
+			</div>
 		</div>
 	</div>
 
@@ -509,6 +516,7 @@
 	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_heatmap.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_barplot.js"></script>
+	<script type="text/javascript" src="/site_media/js/main_setting.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$.getJSON("/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json", function(data) {

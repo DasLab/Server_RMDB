@@ -88,9 +88,11 @@ function make_barplot(idx) {
 			d3.select(this).classed("active", true);
 		})
 		.on("mouseout", function(d) {
-			div.style("left", "0px").style("top", "0px")
-				.transition().duration(200)
-				.style("opacity", 0);
+			div.transition().duration(200)
+				.style("opacity", 0)
+				.each("end", function() {
+					div.style("left", "0px").style("top", "0px");
+				});
 			d3.select(this).classed("active", false);
 		})
 		.transition().duration(250)

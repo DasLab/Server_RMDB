@@ -204,9 +204,11 @@ function draw_heatmap(json) {
 						x_label2_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", false);
 
 						tile.classed("active", false);
-						div.style("left", "0px").style("top", "0px")
-							.transition().duration(200)      
-							.style("opacity", 0);
+						div.transition().duration(200)
+							.style("opacity", 0)
+							.each("end", function() {
+								div.style("left", "0px").style("top", "0px");
+							});
 					})
 					.on("click", function(d) {
 						var tile = d3.select(this), x_cord = tile.attr("x"), y_cord = tile.attr("y");
