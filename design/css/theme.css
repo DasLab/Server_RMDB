@@ -466,8 +466,8 @@ li.left_alone > a {
 .tabs-right > .nav_tabs > li.left_tab.active > a,
 .tabs-right > .nav_tabs > li.left_tab.active > a:hover,
 .tabs-right > .nav_tabs > li.left_tab.active > a:focus {
-  border-top: 5px solid #c28fdd;
-  background-color: #ecddf4;
+  border-top: 5px solid #5496d7;
+  background-color: #cbdff3;
   font-weight: bold;
 }
 

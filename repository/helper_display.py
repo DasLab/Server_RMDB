@@ -81,12 +81,14 @@ def get_plot_data(construct_id, entry_type, maxlen):
 		datas = DataSection.objects.filter(construct_section=construct).order_by('id')
 		seqpos = [int(x) for x in construct.seqpos.strip('][').split(',')]
 
-		x_labels = ['%s%s' % (x, construct.sequence[x-1-construct.offset]) for x in seqpos]
+		x_labels = ['%s%s' % (construct.sequence[x-1-construct.offset], x) for x in seqpos]
 		y_labels = []
 		row_limits = []
 		data_matrix = []
 		data_max = 0.
 		data_min = 0.
+		data_mean = []
+		data_sd = 0.
 
 		for i, data in enumerate(datas):
 			annotations = dict([(d.name, d.value) for d in DataAnnotation.objects.filter(section=data) if d.name in accepted_tags])
@@ -133,12 +135,16 @@ def get_plot_data(construct_id, entry_type, maxlen):
 
 			for j in range(len(peaks_row)):
 				data_matrix.append({'x':i, 'y':j, 'value':peaks_row[j], 'error':errors_row[j]})
+				data_mean.append(peaks_row[j])
 
 		precalc_structures = precalc_structures.strip(',') + ']'
+		data_mean = array(data_mean)
+		data_sd = std(data_mean)
+		data_mean = mean(data_mean)
 
 	except ConstructSection.DoesNotExist:
-		return {'data':None, 'peak_max':None, 'peak_min':None, 'row_lim':None, 'x_labels':None, 'y_labels':None, 'precalc_structures':None}
-	return {'data':data_matrix, 'peak_max':data_max, 'peak_min':data_min, 'row_lim':row_limits, 'x_labels':x_labels, 'y_labels':y_labels, 'precalc_structures':precalc_structures}
+		return None
+	return {'data':data_matrix, 'peak_max':data_max, 'peak_min':data_min, 'peak_mean':data_mean, 'peak_sd':data_sd, 'row_lim':row_limits, 'x_labels':x_labels, 'y_labels':y_labels, 'precalc_structures':precalc_structures}
 
 
 def get_restricted_RDATFile_and_plot_data(constructs, numresults, qdata, searchid, ssdict, check_structure_balance):

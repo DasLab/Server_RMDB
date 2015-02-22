@@ -2,7 +2,8 @@
 {% load repository_extras %}
 
 {% block head %}
-<link rel="stylesheet" href="/site_media/css/svg.css" />
+<link rel="stylesheet" href="/site_media/css/svg_barplot.css" />
+<link rel="stylesheet" href="/site_media/css/svg_heatmap.css" />
 {% endblock %}
 
 
@@ -254,7 +255,7 @@
 </div>
 
 <div id="set_panel" class="view_panel">
-
+	<a class="text-center" id="close-set"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></a>
 </div>
 
 <div id="img_panel" class="side_panel well">
@@ -328,6 +329,10 @@
 				</div>
 				<div class="col-md-6">
 					<div class="btn-group pull-right" role="group">
+						<button type="button" class="btn btn-default" aria-expanded="false" id="btn-set">
+							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							&nbsp;&nbsp;Settings&nbsp;&nbsp;
+						</button>
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 							<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
 							&nbsp;&nbsp;Download&nbsp;&nbsp;
@@ -365,7 +370,7 @@
 
 <div class="container">
 	<div class="col-md-8">
-		<div class="panel panel-primary">
+		<div class="panel panel-violet">
 			<div class="panel-heading">
 				<h3 class="panel-title"><b>Construct</b></h3>
 			</div>
@@ -416,7 +421,7 @@
 				<p><span class="lead"><span class="label label-brown">Description</span></span></p>
 				<p>{{entry.description}}</p>
 				{% endif %}
-				<p>
+				<p style="padding-top:5px;">
 					<span class="lead"><span class="label label-default">PDB_ID</span></span>:
 					{% if entry.pdb_ids %}
 						{% for pdb_id in entry.pdb_ids %}
@@ -431,10 +436,8 @@
 	</div>
 </div>
 
-<div class="row test" id="main" style="margin-left: 70px;">
+<div class="row test" id="main" style="margin-left: 70px;"></div>
 	<script type="text/javascript">
-
-
 // 	.fillStyle(function(d, f){ 
 			// 		if (d[f] > x[f] + ns*s[f])
 			// 			val = x[f] + ns*s[f];
@@ -443,8 +446,6 @@
 			// 		else
 			// 			val = d[f];
 			// 		return fill[f](val);})
-
-
 
 			// var ns = 0.7;
 			// /* The color scale ranges ns standard deviations in each direction. */
@@ -456,43 +457,6 @@
 			// 			.range("white", "black");});
 
 
-			// vis.add(pv.Panel)
-			// 	.strokeStyle(function(){ if(this.active()){ return "blue";} else{ return "black";}})
-			// 	.lineWidth(function(){ if(this.active()){ return 2;} else{ return 1;}})
-			// 	.event("mouseover", function(){ this.parent.active(true); return this.parent;})
-			// 	.event("mouseout", function(){ this.parent.active(false); return this.parent;})
-			// 	.event("click", function(d, f){ 
-			// 		idx = row_names.indexOf(f);
-			// 		make_barplot(idx);
-			// 		$("#page_num").val((idx+1).toString());
-			// 		$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
-
-			// 		//The following lines are for viewing the secondary structure using another browser window
-			// 		$("[name=structure]").val("{{c.structure}}");
-			// 		$("[name=sequence]").val("{{c.sequence}}");
-			// 		$("[name=seqpos]").val("{{c.seqpos}}");
-			// 		$("[name=offset]").val("{{c.offset}}");
-			// 		$("[name=title]").val(f);
-			// 		$("[name=colormap]").val(data_array[this.parent.parent.index].slice(1));
-			// 		// $("#structureviewform").submit();
-			// 		//The following lines are for viewing the secondary structure using an inset dialog window
-			// 		/*		var struct = structures[this.parent.parent.index],
-			// 		applet = $("#rnaapplet");
-			// 		$("#dialog").dialog({width:400, height:400}); 
-			// 		if(struct == "NA"){
-			// 		$("#structure_info").text("Structure not available");
-			// 		applet.attr("width", 1);
-			// 		applet.attr("height", 1);
-			// 		applet[0].setRNA("", "");
-			// 		}
-			// 		else {
-			// 		$("#structure_info").text("");
-			// 		applet.attr("width", 350);
-			// 		applet.attr("height", 350);
-			// 		applet[0].setRNA("{{c.sequence}}", struct);
-			// 		}*/
-			// 	})
-
 			// 	.fillStyle(function(d, f){ 
 			// 		if (d[f] > x[f] + ns*s[f])
 			// 			val = x[f] + ns*s[f];
@@ -501,25 +465,7 @@
 			// 		else
 			// 			val = d[f];
 			// 		return fill[f](val);})
-			// 	.title(function(d, f){ return d.Annotation + "," + f + ": " + d[f];})
-			// 	.strokeStyle(function(){ if(this.parent.active()){ return "blue";} else{ return "black";}})
-			// 	.lineWidth(1)
-			// 	.antialias(false);
-
-			// vis.add(pv.Label)
-			// 	.data(col_names)
-			// 	.left(function(){ return this.index * w + w / 2;})
-			// 	.textAngle(-Math.PI / 2)
-			// 	.textBaseline("middle");
-
-			// vis.add(pv.Label)
-			// 	.data(row_names)
-			// 	.top(function(){ return this.index * h + h / 2;})
-			// 	.textAlign("right")
-			// 	.textBaseline("middle")
-			// 	.text(function(d){ return d;});
 	</script>
-</div>
 <!--
 {% if entry.has_traces %}
     <div>
@@ -541,7 +487,7 @@
 	<p>Please contact <a href="mailto:rhiju@stanford.edu">rhiju@stanford.edu</a> for further information. </p>
 {% endif %}
 
-<form class="hidden" id="structureviewform" target="popup"
+<!-- <form class="hidden" id="structureviewform" target="popup"
 	onsubmit='popup = window.open("Secondary structure with bonuses","popup","width=450,height=450");' 
 	action="/repository/render_structure" method="post">
 	<input name="structure" type="text"/>
@@ -551,197 +497,25 @@
 	<input name="seqpos" type="text"/>
 	<input name="offset" type="text"/>
 	<input type="submit" value="sumbit"/>
-</form>
+</form>-->
 {% endblock %}
 
 
 {% block script %}
+	<script type="text/javascript">
+		var json, idx = 0, n_rows;
+	</script>
 	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_heatmap.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_barplot.js"></script>
 	<script type="text/javascript">
-		var idx = 0;
-
 		$(document).ready(function () {
-			$.getJSON("/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json", function(json) {
+			$.getJSON("/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json", function(data) {
+				json = data; 
+				n_rows = json.y_labels.length;
 				draw_heatmap(json);
 			});
 
 		});
-
-		function get_nt_color(nt) {
-			switch (nt) {
-				case "A":
-				case "a":
-					return "red"
-				case "T":
-				case "t":
-				case "U":
-				case "u":
-					return "green"
-				case "C":
-				case "c":
-					return "blue"
-				case "G":
-				case "g":
-					return "magenta"
-				case "X":
-				case "x":
-				default:
-					return "black"
-			}
-		}
-
-		function make_barplot(idx) {
-
-			{% for c in constructs %}
-				{% for hdata, xmin, xmax, ymin, ymax, title in c.hist_data %}
-					if ( {{forloop.counter0}} == idx) {
-
-						var margin = {top: 20, right: 140, bottom: 75, left: 75};
-						var hdata = {% autoescape off %} {{hdata}} {% endautoescape %};
-						var barWidth = 10,
-							w = barWidth * hdata.length, h = 175, 
-							x = d3.scale.linear().domain([ {{xmin}},{{xmax}} ]).range([0,w]),
-							y = d3.scale.linear().domain([ {{ymin}},{{ymax}} ]).range([h,0]);
-
-						d3.select(".chart").selectAll("g, text, line").remove();
-						var chart = d3.select(".chart")
-									.attr("width", w + margin.left + margin.right)
-									.attr("height", h + margin.top + margin.bottom);
-
-						var x_ticks = d3.range( {{xmin}} + (5-{{xmin}}%5), {{xmax}}, 5), y_ticks;
-						if ({{ymax}} < 5) {
-							y_ticks = d3.range( {{ymin}}, {{ymax}}, 0.5);
-						} else {
-							if ({{ymax}} < 100) {
-								var y_intvl = Math.round({{ymax}} / 10);
-							} else {
-								var y_intvl = Math.round({{ymax}} / 100)*10;
-							}
-							y_ticks = d3.range( {{ymin}}, {{ymax}}, y_intvl);
-						}
-						var colors = d3.scale.linear().domain([0,( {{ymax}} - 0.5)/2, {{ymax}} - 0.5]).range(["white", "orange","red"]);
-
-						for (i = 0; i < y_ticks.length; i++) {
-							chart.append("line")
-								.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
-								.attr("y1", y(y_ticks[i])+margin.top).attr("y2", y(y_ticks[i])+margin.top)
-								.attr("stroke", "#ccc").attr("stroke-width", "1px");
-						}
-						for (i = 0; i < x_ticks.length; i++) {
-							chart.append("line")
-								.attr("x1", x(x_ticks[i])+margin.left+5+barWidth / 2).attr("x2", x(x_ticks[i])+margin.left+5+barWidth / 2)
-								.attr("y1", h+margin.top).attr("y2", margin.top)
-								.attr("stroke", "#ccc").attr("stroke-width", "1px");
-						}
-
-						var bar = chart.selectAll("g").data(hdata).enter().append("g");
-						bar.append("rect")
-							.attr("x", function(d) { return x(d.position) - barWidth / 2 + 5 + margin.left; })
-							.attr("y", function(d) { return y(d.value)+margin.top; })
-							.attr("height", function(d) { 
-								var rect_h = h-y(d.value);
-								return Math.max(0, rect_h); })
-							.attr("width", barWidth)
-							.attr("stroke", "black").attr("stroke-width", "2px")
-							.attr("fill", function(d) { return colors(d.value); });
-						bar.append("line")
-							.attr("x1", function(d) { return x(d.position) + 5 + margin.left; })
-							.attr("x2", function(d) { return x(d.position) + 5 + margin.left; })
-							.attr("y1", function(d) { 
-								if (isNaN(d.error)) { err = 0 } else { err = d.error }
-								return y(d.value-err)+margin.top; })
-							.attr("y2", function(d) { 
-								if (isNaN(d.error)) { err = 0 } else { err = d.error }
-								return y(d.value+err)+margin.top; })
-							.attr("stroke", "black");
-
-						bar.append("line")
-							.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
-							.attr("y1", h+margin.top).attr("y2", h+margin.top)
-							.attr("stroke", "black").attr("stroke-width", "1px");
-						bar.append("text")
-							.text(function(d) { return d.label.substring(d.label.length-1); })
-							.attr("text-anchor", "end")
-							.attr("transform", function(d) { return "rotate(-90)translate(" + (-h-margin.top-8) + "," + (x(d.position) + 9 + margin.left) + ")"; })
-							.attr("font-size", 12).attr("font-family", "Arial").attr("font-weight", "bold")
-							.attr("fill", function(d) { return get_nt_color(d.label.substring(d.label.length-1))});
-						bar.append("text")
-							.text(function(d) { return d.label.substring(0, d.label.length-1); })
-							.attr("text-anchor", "end")
-							.attr("transform", function(d) { return "rotate(-90)translate(" + (-h-margin.top-18) + "," + (x(d.position) + 9 + margin.left) + ")"; })
-							.attr("font-size", 12).attr("font-family", "Arial");
-
-						bar.append("line")
-							.attr("x1", x( {{xmin}} )+margin.left).attr("x2", x( {{xmin}} )+margin.left)
-							.attr("y1", h+margin.top).attr("y2", margin.top)
-							.attr("stroke", "black").attr("stroke-width", "1px");
-						bar.append("line")
-							.attr("x1", x( {{xmax}} )+margin.left+barWidth/2+5).attr("x2", x( {{xmax}} )+margin.left+barWidth/2+5)
-							.attr("y1", h+margin.top).attr("y2", margin.top)
-							.attr("stroke", "black").attr("stroke-width", "1px");
-
-						var	yAxis_left = d3.svg.axis().orient("left").scale(y)
-										.tickValues(y_ticks),
-							yAxis_right = d3.svg.axis().orient("right").scale(y)
-										.tickValues(y_ticks);
-						chart.append("g")
-							.attr("class", "axis")
-							.attr("transform", "translate(" + (margin.left+x( {{xmin}} )) + "," + margin.top + ")")
-							.call(yAxis_left);
-						chart.append("g")
-							.attr("class", "axis")
-							.attr("transform", "translate(" + (margin.left+x( {{xmax}} )+barWidth/2+5) + "," + margin.top + ")")
-							.call(yAxis_right);
-
-						chart.append("linearGradient")
-							.attr("id", "color_grad")
-							.attr("x1", "0%").attr("y1", "100%")
-							.attr("x2", "0%").attr("y2", "0%")
-							.selectAll("stop")
-							.data([
-								{offset: "0%", color: "white"},
-								{offset: "50%", color: "orange"},
-								{offset: "100%", color: "red"}
-							])
-							.enter().append("stop")
-							.attr("offset", function(d) { return d.offset; })
-							.attr("stop-color", function(d) { return d.color; });
-						bar.append("rect")
-							.attr("x", x( {{xmax}} )+margin.left+barWidth*5).attr("y", margin.top + h*0.4)
-							.attr("height", h*0.5).attr("width", barWidth*2)
-							.attr("fill", "url(#color_grad)")
-							.attr("stroke", "black").attr("stroke-width", "1px");
-						chart.append("text")
-							.attr("x", x( {{xmax}} )+margin.left+barWidth*5).attr("y", margin.top + h*0.3)
-							.text("Legend")
-							.attr("font-weight", "bold");
-						chart.append("text")
-							.attr("x", x( {{xmax}} )+margin.left+barWidth*8).attr("y", margin.top + h*0.45)
-							.text({{ymax|floatformat:2}}-0.5);
-						chart.append("text")
-							.attr("x", x( {{xmax}} )+margin.left+barWidth*8).attr("y", margin.top + h*0.9)
-							.text({{ymin|floatformat:0}});
-
-						chart.append("text")
-							.text("Normalized Reactivity")
-							.attr("text-anchor", "end")
-							.attr("transform", "rotate(-90)translate(-30,35)")
-							.attr("font-size", 15).attr("font-weight", "bold").attr("font-family", "Arial");
-						chart.append("text")
-							.text("Sequence Position")
-							.attr("transform", "translate("+ (w/2+25) +","+ (margin.top+h+60) +")")
-							.attr("font-size", 15).attr("font-weight", "bold").attr("font-family", "Arial");
-						chart.append("text")
-							.text("Barplot for row_#{{forloop.counter}}: {{title|wordbreak:80}}")
-							.attr("transform", "translate("+ (w/2-10) +","+ (margin.top-5) +")")
-							.attr("font-size", 18).attr("font-weight", "bold").attr("font-family", "Arial");
-						chart.attr("num", "{{forloop.counter}}");
-						chart.attr("ttl", "{{title}}");
-					}
-				{% endfor %}
-			{% endfor %}
-		}
 	</script>
 {% endblock %}
