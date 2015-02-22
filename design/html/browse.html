@@ -80,7 +80,7 @@
 					<div class="panel panel-default subpanel">
 						<div id="heading{{ c.name|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryGeneral" href="#{{ c.name|slugify }}" aria-expanded="true" aria-controls="{{ c.name|slugify }}">
 							<h3 class="panel-title" >
-								<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+								<span class="icon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
               					&nbsp;&nbsp;<span>{{ c.name }}</span>
 							</h3>
 						</div>
@@ -150,7 +150,7 @@
 					<div class="panel panel-default subpanel">
 						<div id="heading{{ c.name|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryPuzzle" href="#{{ c.name|slugify }}" aria-expanded="true" aria-controls="{{ c.name|slugify }}">
 							<h3 class="panel-title" >
-								<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+								<span class="icon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
               					&nbsp;&nbsp;<span>{{ c.name }}</span>
 							</h3>
 						</div>
@@ -220,7 +220,7 @@
 					<div class="panel panel-default subpanel eterna-panel">
 						<div id="heading{{ e.rmdb_id|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryEteRNA" href="#{{ e.rmdb_id|slugify }}" aria-expanded="true" aria-controls="{{ e.rmdb_id|slugify }}">
 							<div class="panel-title" >
-								<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+								<span class="icon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
               					&nbsp;&nbsp;
 								<span class="label label-default" style="font-size:16px;">
 									{% autoescape off %}
@@ -264,6 +264,19 @@
 			
 			$(".category").each(function () {
 				$(this).find(".panel-body>.subpanel:first>.panel-collapse").collapse("show");
+				$(this).find(".panel-body>.subpanel:first>.panel-collapse").siblings().find(".panel-title>.icon")
+					.removeClass("glyphicon-chevron-right")
+					.addClass("glyphicon-chevron-down");;
+			});
+			$('.panel-collapse').on('show.bs.collapse', function () {
+				$(this).siblings().find(".panel-title>.icon")
+					.removeClass("glyphicon-chevron-right")
+					.addClass("glyphicon-chevron-down");
+			});
+			$('.panel-collapse').on('hidden.bs.collapse', function () {
+				$(this).siblings().find(".panel-title>.icon")
+					.removeClass("glyphicon-chevron-down")
+					.addClass("glyphicon-chevron-right");
 			});
 
 			$("#buttonAll, #buttonGeneral, #buttonPuzzle, #buttonEteRNA").on("click", function () {
