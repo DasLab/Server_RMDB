@@ -1,9 +1,9 @@
 $(document).ready(function() {
     $("#show_seq").on("click", function() {
         if ($(this).is(':checked')) {
-            seq_overlay(json);
+            d3.select("#seq_overlay").classed("shown", true);
         } else {
-            d3.selectAll("text.overlay").transition().duration(250).style("opacity", 0).remove();
+            d3.select("#seq_overlay").classed("shown", false);
         }
     });
     $("#show_color_seq").attr("checked", true);
@@ -33,7 +33,7 @@ $(document).ready(function() {
         var colorScale = d3.scale.linear()
                         .domain([json.peak_min, json.peak_mean + color_scale*json.peak_sd])
                         .range(['white', 'black']);
-        d3.selectAll("rect.tile").style("fill", function(d) { return colorScale(d.value); });
+        d3.select("#heat_map").selectAll("rect.tile").style("fill", function(d) { return colorScale(d.value); });
     });
 
 

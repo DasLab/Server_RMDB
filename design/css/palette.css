@@ -8,7 +8,10 @@ p.cap:first-letter {
 }
 
 .tab-top > li > a {
-	border-top: 5px solid #fec78a !important;
+	border-top: 5px solid #a19193 !important;
+	border-bottom: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
 }
 .tab-top > li.active > a {
 	border-top: 5px solid #ff912e !important;

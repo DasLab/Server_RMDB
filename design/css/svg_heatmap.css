@@ -35,3 +35,10 @@ div.tooltip {
 	border-radius: 5px;
 	color: #ffffff;
 }
+
+g.overlay {
+	display: none;
+}
+g.overlay.shown {
+	display: inline;
+}

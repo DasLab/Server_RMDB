@@ -1,20 +1,3 @@
-function seq_overlay(json) {
-	var peaks = json.data;
-
-    var overlayText = d3.select("#main").select("svg").append("g").selectAll("g")
-						.data(peaks, function(d) { return d.y + ':' + d.x; }).enter()
-						.append("text")
-						.text(function(d) { return d.seq; })
-						.attr("class", "overlay")
-						.attr("y", function(d) { return (d.x+1) * (h+0.5) + main_margin.top -1; })
-						.attr("x", function(d) { return d.y * (w+0.5) + main_margin.left +1; })
-						.attr("fill", function(d) { return get_nt_color(d.seq); })
-						.attr("font-size", 12).attr("font-family", "Arial")
-						.style("opacity", 0);
-
-	overlayText.transition().duration(250).style("opacity", 1);
-
-}
 
 
 function draw_heatmap(json) {
@@ -151,9 +134,11 @@ function draw_heatmap(json) {
 				.attr("class", "tooltip")
 				.style("opacity", 0);
 
-    var heatMap = svg.selectAll("g")
+    var heatMap = d3.select("#main").select("svg").append("g")
+    				.attr("id", "heat_map")
+    				.selectAll("rect")
 					.data(peaks, function(d) { return d.y + ':' + d.x; }).enter()
-					.append("svg:rect")
+					.append("rect")
 					.attr("class", "tile")
 					.attr("y", function(d) { return d.x * (h+0.5) + main_margin.top; })
 					.attr("x", function(d) { return d.y * (w+0.5) + main_margin.left; })
@@ -231,4 +216,14 @@ function draw_heatmap(json) {
 						$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
 					});
 
+    var overlayText = d3.select("#main").select("svg").append("g")
+						.attr("class","overlay").classed("shown", false).attr("id", "seq_overlay")
+    					.selectAll("text")
+						.data(peaks, function(d) { return d.y + ':' + d.x; }).enter()
+						.append("text")
+						.text(function(d) { return d.seq; })
+						.attr("y", function(d) { return (d.x+1) * (h+0.5) + main_margin.top -1; })
+						.attr("x", function(d) { return d.y * (w+0.5) + main_margin.left +1; })
+						.attr("fill", function(d) { return get_nt_color(d.seq); })
+						.attr("font-size", 12).attr("font-family", "Arial");
 }
