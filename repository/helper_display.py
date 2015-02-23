@@ -113,7 +113,7 @@ def get_plot_data(construct, entry_type, maxlen):
 					annotations_flatten = [y for x in annotations.values() for y in x]
 					y_label_tmp = '%s' % (','.join(annotations_flatten))
 			elif entry_type == "MA":
-				y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"]
+				y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"][0]
 			elif entry_type == "SS" and "EteRNA" in annotations:
 				y_label_tmp = '%s' % annotations["MAPseq"]
 			else:

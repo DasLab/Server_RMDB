@@ -256,8 +256,17 @@
 
 <div id="set_panel" class="view_panel">
 	<div class="col-md-12">
-		<a class="text-center" id="close-set" style="color:#fff;"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></a>
+		<p>
+			<a class="text-center" id="close-set" style="color:#fff;">
+				<span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+			</a>
+		</p>
 		<br/>
+		<div class="panel panel-info" >
+			<div class="panel-heading">
+				<h3 class="panel-title"><b>Settings</b></h4>
+			</div>
+		</div>
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" id="show_seq">
@@ -266,7 +275,7 @@
 		</div>
 		<div class="checkbox">
 			<label>
-				<input type="checkbox" id="show_area_pred">
+				<input type="checkbox" id="show_area_pred" disabled>
 				Show reactivity prediction
 			</label>
 		</div>
@@ -289,6 +298,19 @@
 				<input type="number" class="form-control" id="color_text">
 			</div>
 		</div>
+		<br/>
+		<div class="panel panel-orange" >
+			<div class="panel-heading">
+				<h3 class="panel-title"><b>Help</b></h4>
+			</div>
+		</div>
+		<ul>
+			<li>Left Click: Data point information.</li>
+			<li>Right Click: Data row barplot.</li>
+			<br/>
+			<li>Left Panel: Stats, Annotations, and Structural Predictions.</li>
+			<li>Right Panel: Settings and Help.</li>
+		</ul>
 	</div>
 
 
