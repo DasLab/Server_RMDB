@@ -377,7 +377,7 @@ img.logo {
   background-color: #111;
   opactiy: 0.9;
   border: 1px solid #fbad24;
-  color: #fff;
+  color: #fff !important;
 }
 
 .side_panel {
