@@ -125,10 +125,29 @@ function make_barplot(idx) {
 		.attr("font-size", 12).attr("font-family", "Arial").attr("font-weight", "bold")
 		.attr("fill", function(d,i) { return get_nt_color(x_labels[i].substring(0,1)); });
 	bar.append("text")
+		.text(function(d,i) { 
+			if (d.mut) {
+				return x_labels[i].substring(1);
+			} else {
+				return "";
+			}
+		})
+		.attr("text-anchor", "end")
+		.attr("transform", function(d) { return "rotate(-90)translate(" + -(h +margin.top +18) + "," + (x(d.y) +9 +margin.left) + ")"; })
+		.attr("font-size", 12).attr("font-family", "Arial")
+		.attr("stroke", "#ff0").attr("stroke-width", "5px");
+	bar.append("text")
 		.text(function(d,i) { return x_labels[i].substring(1); })
 		.attr("text-anchor", "end")
 		.attr("transform", function(d) { return "rotate(-90)translate(" + -(h +margin.top +18) + "," + (x(d.y) +9 +margin.left) + ")"; })
-		.attr("font-size", 12).attr("font-family", "Arial");
+		.attr("font-size", 12).attr("font-family", "Arial")
+		.attr("fill", function(d) {
+			if (d.mut) {
+				return "#c28fdd"
+			} else {
+				return "#000"
+			}
+		});
 
 	bar.append("line")
 		.attr("x1", x( x_min )+margin.left).attr("x2", x( x_min )+margin.left)

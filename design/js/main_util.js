@@ -31,7 +31,7 @@ $(document).ready(function() {
 	$("#nav_browse").addClass("active");
 	$("#nav_logo").css("text-decoration","none");
 
-	init_panel_size();
+	// init_panel_size();
 	$(".left_group").on("click", function() {		
 		if (!$("#left_panel").hasClass("visible")) {
 			$("#left_panel").addClass("visible").animate({"margin-left":"0px"});
@@ -83,10 +83,3 @@ $(window).on("resize", function() {
 });
 
 
-$(window).on("load", function() {
-	init_panel_size();
-	$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
-	$(".left_close").removeClass("visible").hide();
-	$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
-	$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
-});

@@ -72,7 +72,7 @@ def render_structure(request):
 	return render_to_response('render_structure.html', {'panel':v.render(), 'title':request.POST['title']})
 
 
-def get_plot_data(construct, entry_type, maxlen):
+def dump_json_heatmap(construct, entry_type, maxlen):
 
 	precalc_structures = '['
 	accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos', 'MAPseq', 'EteRNA']
@@ -140,6 +140,8 @@ def get_plot_data(construct, entry_type, maxlen):
 
 			for j in range(len(peaks_row)):
 				seq = sequence[j]
+				mut_flag = 0
+
 				if 'mutation' in annotations:
 					mutpos = annotations['mutation']
 					for mut in mutpos:
@@ -152,16 +154,19 @@ def get_plot_data(construct, entry_type, maxlen):
 									idx = j+offset+1-mut_start
 									muts = mut[mut.find(')')+1:]
 									seq= muts[idx]
+									mut_flag = 1
 							else:
 								muts = mut.split(":")
 								for mut_split in muts:
 									if seq == mut_split[0] and int(mut_split[1:-1]) == (j + offset + 1):
 										seq = mut_split[-1]
+										mut_flag = 1
 						else:
 							if seq == mut[0] and int(mut[1:-1]) == (j + offset + 1):
 								seq = mut[-1]
+								mut_flag = 1
 
-				data_matrix.append({'x':i, 'y':j, 'value':peaks_row[j], 'error':errors_row[j], 'seq':seq})
+				data_matrix.append({'x':i, 'y':j, 'value':peaks_row[j], 'error':errors_row[j], 'seq':seq, 'mut':mut_flag})
 				data_mean.append(peaks_row[j])
 
 		precalc_structures = precalc_structures.strip(',') + ']'
@@ -172,6 +177,53 @@ def get_plot_data(construct, entry_type, maxlen):
 	except ConstructSection.DoesNotExist:
 		return None
 	return {'data':data_matrix, 'peak_max':data_max, 'peak_min':data_min, 'peak_mean':data_mean, 'peak_sd':data_sd, 'row_lim':row_limits, 'x_labels':x_labels, 'y_labels':y_labels, 'precalc_structures':precalc_structures}
+
+
+def prepare_json_data(entry):
+	data_annotations_exist = False
+	maxlen = 256
+	maxlen_flag = False
+
+	constructs = ConstructSection.objects.filter(entry=entry)
+	for c in constructs:
+		c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
+		c.data_count = range(len(c.datas))
+		if len(c.datas) > maxlen:
+			# c.datas = c.datas[:maxlen]
+			maxlen_flag = True
+		for d in c.datas:
+			d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
+			if d.annotations:
+				data_annotations_exist = True
+
+		c.sequence_len = len(c.sequence)
+		c.structure_len = len(c.structure)
+		c.data_nrow = len(c.datas)
+		c.data_ncol = len(c.datas[0].values.split(','))
+		c.err_ncol = c.datas[0].errors.split(',')
+		if len(c.err_ncol) == 1 and (not len(c.err_ncol[0])): 
+			c.err_ncol = 0
+		else:
+			c.err_ncol = len(c.err_ncol)
+
+		# c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures = get_plot_data(c.id, entry.type, maxlen)
+		f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.json', 'w')
+		json_tmp = dump_json_heatmap(c, entry.type, maxlen)
+		simplejson.dump(json_tmp, f)
+		f.close()
+
+		seqpos_str = c.seqpos.split(',')
+		if (int(seqpos_str[-1]) - int(seqpos_str[0]) + 1 != len(seqpos_str)):
+			c.seqpos = '</code>,</span> <span style=\"display:inline-block; width:75px;\"><code>'.join(seqpos_str)
+			c.seqpos = '<span style=\"display:inline-block; width:75px;\"><code>' + c.seqpos + '</code></span>'
+		else:
+			c.seqpos = '<code>' + seqpos_str[0] + '</code><b>:</b><code>' + seqpos_str[-1] + '</code>'
+		c.seqpos_len = len(seqpos_str)
+		xsel_str = c.xsel.split(',')
+		if len(xsel_str):
+			c.xsel_len = len(c.xsel)	
+
+	return (constructs, data_annotations_exist, maxlen_flag)
 
 
 def get_restricted_RDATFile_and_plot_data(constructs, numresults, qdata, searchid, ssdict, check_structure_balance):

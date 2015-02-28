@@ -540,11 +540,32 @@
 	<script type="text/javascript" src="/site_media/js/main_barplot.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_setting.js"></script>
 	<script type="text/javascript">
+		$("#wait").ajaxStart(function() {$(this).fadeIn();})
+			.ajaxStop(function() {$(this).fadeOut();});
+
 		$(document).ready(function () {
-			$.getJSON("/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json", function(data) {
-				json = data; 
-				n_rows = json.y_labels.length;
-				draw_heatmap(json);
+			$.ajax({
+				url: '/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json',
+				dataType: 'json',
+				async: true,
+				beforeSend: function(xhr) { 
+					init_panel_size();
+					$("#wait").fadeIn(); 
+				},
+				complete: function(xhr) { 
+					setTimeout(function() {
+						$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
+						$(".left_close").removeClass("visible").hide();
+						$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
+						$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
+					}, 100);
+					$("#wait").fadeOut(); 
+				},
+				success: function(data) {
+					json = data; 
+					n_rows = json.y_labels.length;
+					draw_heatmap(json);
+				}
 			});
 
 		});

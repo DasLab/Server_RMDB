@@ -410,6 +410,8 @@ img.logo {
 }
 .left_tab {
   transform: rotate(90deg) translate(-12%, 1%);
+  -ms-transform: rotate(90deg) translate(-12%, 1%);
+  -webkit-transform: rotate(90deg) translate(-12%, 1%);
   padding: 12px 0px;
   margin: 8px -10px 8px -20px;
   width: 80px;
