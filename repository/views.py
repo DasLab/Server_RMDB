@@ -133,12 +133,13 @@ def detail(request, rmdb_id):
 		else:
 			entry.pdb_ids = []
 		entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
-		(constructs, data_annotations_exist, maxlen_flag) = prepare_json_data(entry)
+		(constructs, maxlen_flag) = prepare_json_data(entry)
+		dump_json_tags(entry)
 
 	except RMDBEntry.DoesNotExist:
 		raise Http404
 
-	return render_to_response(HTML_PATH['detail'], {'rdat_ver':rdat_ver, 'codebase':get_codebase(request), 'entry':entry, 'constructs':constructs, 'publication':entry.publication, 'data_annotations_exist':data_annotations_exist, 'maxlen_flag':maxlen_flag}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':maxlen_flag}, context_instance=RequestContext(request))
 
 
 def predict(request):

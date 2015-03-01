@@ -9,7 +9,7 @@
 
 {% block content %}
 
-{% if entry.revision_status == "PUB" %}
+{% if revision_status == "PUB" %}
 <div id="left_panel" class="side_panel well">
 	<div role="tabpanel" class="tabbable tabs-right">
 		<ul class="nav nav_tabs side_tab" role="tablist" id="left-buttons">
@@ -47,122 +47,67 @@
 								<td class="lead text-right"><span class="label label-default" style="background:#000;">RMDB_ID</span></td>
 								<td class="lead">
 									{% autoescape off %}
-					                <span class="label label-default">{{entry.rmdb_id|color_rmdb_id}}</span>
+					                <span class="label label-default">{{rmdb_id|color_rmdb_id}}</span>
 					                {% endautoescape %}
 					            </td>
 					        </tr>
 							<tr>
 								<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
-								<td class="lead">
-								{% for c in constructs %}
-									{{c.name}}
-								{% endfor %}
-					            </td>
+								<td class="lead" id="tag_name_panel"></td>
 					        </tr>
 							<tr>
 								<td class="lead text-right"><span class="label label-primary">COMMENT</span></td>
-								<td>{{entry.comments}}</td>
+								<td id="tag_comments"></td>
 					        </tr>
 
 							<tr>
 								<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
-								<td>
-								{% for c in constructs %}
-									<code>1-by-{{c.sequence_len}}</code> <i>vector</i>
-								{% endfor %}
-					            </td>
+								<td id="tag_sequence_len"></td>
 					        </tr>
 							<tr>
 								<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
-								<td>
-								{% for c in constructs %}
-									<code>1-by-{{c.structure_len}}</code> <i>vector</i>
-								{% endfor %}
-					            </td>
+								<td id="tag_structure_len"></td>
 					        </tr>
 							<tr>
 								<td class="lead text-right"><span class="label label-primary">SEQPOS</span></td>
-								<td >
-								{% for c in constructs %}
-									{% if c.seqpos %}
-										{% autoescape off %}
-										<p>{{c.seqpos}}</p>
-										<code>1-by-{{c.seqpos_len}}</code> <i>vector</i>
-										{% endautoescape %}
-									{% endif %}
-								{% endfor %}
-					            </td>
+								<td id="tag_seqpos"></td>
 					        </tr>
 							<tr>
 								<td class="lead text-right"><span class="label label-primary">OFFSET</span></td>
-								<td>
-								{% for c in constructs %}
-									<code>{{c.offset}}</code>
-								{% endfor %}
-					            </td>
+								<td id="tag_offset"></td>
 					        </tr>
 							<tr>
 								<td class="lead text-right"><span class="label label-success">REACTIVITY</span></td>
-								<td >
-								{% for c in constructs %}
-									{% if c.datas %}
-										{% autoescape off %}
-										<code>{{c.data_nrow}}-by-{{c.data_ncol}}</code> <i>matrix</i>
-										{% endautoescape %}
-									{% endif %}
-								{% endfor %}
-					            </td>
+								<td id="tag_data"></td>
 					        </tr>
 							<tr>
 								<td class="lead text-right"><span class="label label-success">REACTIVITY_ERROR</span></td>
-								<td >
-								{% for c in constructs %}
-									{% if c.datas %}
-										{% autoescape off %}
-										{% if c.err_ncol %}
-										<code>{{c.data_nrow}}-by-{{c.err_ncol}}</code> <i>matrix</i>
-										{% else %}
-										<code>N/A</code> (not available)
-										{% endif %}
-										{% endautoescape %}
-									{% endif %}
-								{% endfor %}
-					            </td>
+								<td id="tag_data_err"></td>
 					        </tr>
 					        <tr>
 								<td class="lead text-right"><span class="label label-success">XSEL</span></td>
-								<td >
-								{% for c in constructs %}
-									{% if c.xsel_len %}
-										{% autoescape off %}
-										<code>1-by-{{c.xsel_len}}</code> <i>vector</i>
-										{% endautoescape %}
-									{% else %}
-										<code>N/A</code> (not available)
-									{% endif %}
-								{% endfor %}
-					            </td>
+								<td id="tag_xsel"></td>
 					        </tr>
 
 							<tr>
 								<td class="lead text-right align-center"><span class="label label-default">RDAT_VERSION</span></td>
-								<td><code>{{rdat_ver}}</code></td>
+								<td id="tag_rdat_ver"></td>
 					        </tr>
 					        
 							<tr>
 								<td class="lead text-right align-center"><span class="label label-violet">Stats</span></td>
 								<td>
 									<p>
-										<i>Version:</i> <mark>{{entry.version}}</mark>
+										<i>Version:</i> <mark id="tag_version"></mark>
 										<br/>
-										<i># of Construct:</i> <code>{{entry.constructcount}}</code>
+										<i># of Construct:</i> <code id="tag_n_construct"></code>
 										<br/>
-										<i># of Data Point:</i> <code>{{entry.datacount}}</code>
+										<i># of Data Point:</i> <code id="tag_n_data"></code>
 										<br/>
-										<i>Creation Date:</i> <mark>{{entry.creation_date|date:"SHORT_DATE_FORMAT"}}</mark>
+										<i>Creation Date:</i> <mark id="tag_creation_date"></mark>
 										<br/>
 										<i>Revision Status:</i>
-										{% autoescape off %} {{entry.revision_status|get_rev_stat}} {% endautoescape %}
+										<span id="tag_rev_stat"></span>
 									</p>
 								</td>
 					        </tr>
@@ -176,66 +121,18 @@
 
 					<div role="tabpanel" class="tab-pane tab-inner" id="ann">
 						<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
-							<tr>
+							<tr id="tag_annotation">
 								<td class="lead text-right align-center"><span class="label label-primary">ANNOTATION</span></td>
 								<td class="lead text-right align-center"><span class="label label-danger">experimentType</span></td>
 								<td class="lead">
-									<span class="label label-success">
-									{% if entry.type == "MM" %}
-										Mutate and Map
-									{% endif %}
-									{% if entry.type == "SS" %}
-										Standard State
-									{% endif %}
-									{% if entry.type == "MA" %}
-										MOHCA
-									{% endif %}
-									{% if entry.type == "TT" %}
-										Titration
-									{% endif %}
-									</span>
+									<span class="label label-success" id="tag_type"></span>
 								</td>
 					        </tr>
-
-					        {% for a in entry.annotations %}
-							<tr>
-								<td></td>
-								<td class="lead text-right align-center"><span class="label label-danger">{{a}}</span></td>
-								<td class="lead">
-									{% autoescape off %}
-									{{entry.annotations|get_annotation_item:a}}
-									{% endautoescape %}
-								</td>
-					        </tr>
-					        {% endfor %}
-
-							<tr>
+							<tr id="tag_data_annotation">
 								<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
 								<td></td>
 								<td></td>
 					        </tr>
-
-							{% if data_annotations_exist %}
-							{% for c in constructs %}
-							{% for d in c.datas %}
-							{% for a in d.annotations %}
-							<tr>
-								<td class="text-right">
-									{% if forloop.counter == 1 %}
-									<b><i><u>{{forloop.parentloop.counter}}</u></i></b>
-									{% endif %}
-								</td>
-								<td class="lead text-right align-center"><span class="label label-danger">{{a}}</span></td>
-								<td class="lead">
-									{% autoescape off %}
-									{{d.annotations|get_annotation_item:a}}
-									{% endautoescape %}
-								</td>
-					        </tr>
-					        {% endfor %}
-					        {% endfor %}
-					        {% endfor %}
-							{% endif %}
 
 							<tr>
 								<th class="col-md-3"></th>
@@ -371,17 +268,15 @@
 
 
 
-{% for c in constructs %}
-
 <div class="container">
 	<div class="row">
 		<div class="col-md-10">
-			<h2>{{c.name}}</h2>
+			<h2 id="tag_name_main"></h2>
 			<div class="row">
 				<div class="col-md-6">
 					<h2 style="margin-top:0px;">
 						{% autoescape off %}
-					    <span class="label label-default">{{entry.rmdb_id|color_rmdb_id}}</span>
+					    <span class="label label-default">{{rmdb_id|color_rmdb_id}}</span>
 					    {% endautoescape %}
 					</h2>
 				</div>
@@ -401,7 +296,7 @@
 								<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
 								&nbsp;&nbsp;RDAT
 							</a></li>
-							{% if not maxlen_flag %} 
+							{% if not is_istab %} 
 							<li><a href="/site_media/isatab_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}_{{entry.version}}.xls" id="dl_isatab" download>
 								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 								&nbsp;&nbsp;ISATAB
@@ -436,19 +331,11 @@
 				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;margin-bottom:0px;">
 					<tr>
 						<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
-						<td>
-						{% for c in constructs %}
-							<p><b><samp>{{c.sequence}}</samp></b></p>
-						{% endfor %}
-			            </td>
+						<td><p><b><samp id="tag_sequence"></samp></b></p></td>
 			        </tr>
 					<tr>
 						<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
-						<td>
-						{% for c in constructs %}
-							<p><b><samp>{{c.structure}}</samp></b></p>
-						{% endfor %}
-			            </td>
+						<td><p><b><samp id="tag_structure"></samp></b></p></td>
 			        </tr>
 								
 					<tr>
@@ -468,26 +355,21 @@
 			<div class="panel-body" id="panel_cit">
 				<p><span class="lead"><span class="label label-brown">Publication</span></span></p>
 				<p>
-					<i>{{publication.authors}}</i>. 
+					<i id="tag_author"></i>. 
 					<br/>
-					<b>{{publication.title}}</b>. 
+					<b id="tag_title"></b>. 
 					<br/>
-					<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{publication.pubmed_id}}" target="_blank">PMID: {{publication.pubmed_id}} <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
+					<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{publication.pubmed_id}}" target="_blank">
+						PMID: <span id="tag_pubmed"></span> 
+						<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+					</a>
 				</p>
 
-				{% if entry.description %}
 				<p><span class="lead"><span class="label label-brown">Description</span></span></p>
-				<p>{{entry.description}}</p>
-				{% endif %}
+				<p id="tag_description"></p>
 				<p style="padding-top:5px;">
 					<span class="lead"><span class="label label-default">PDB_ID</span></span>:
-					{% if entry.pdb_ids %}
-						{% for pdb_id in entry.pdb_ids %}
-						<a href="http://www.pdb.org/pdb/explore/explore.do?structureId={{pdb_id}}">{{pdb_id}} <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
-						{% endfor %}
-					{% else %}
-						N/A
-					{% endif %}
+					<span id="tag_pdb"></span>
 				</p>
 			</div>
 		</div>
@@ -504,15 +386,14 @@
     </div>
 {% endif %}
 -->
-{% endfor %}
 
 
 
 {% else %}
-	{% if entry.revision_status == "REC" %}
-	<h1>Entry {{entry.rmdb_id}} has been received and is currently under review.</h1>
+	{% if revision_status == "REC" %}
+		<h1>Entry {{rmdb_id}} has been received and is currently under review.</h1>
 	{% else %}
-	<h1>Entry {{entry.rmdb_id}} has been received and will undergo review shortly.</h1>
+		<h1>Entry {{rmdb_id}} has been received and will undergo review shortly.</h1>
 	{% endif %}
 	<p>Please contact <a href="mailto:rhiju@stanford.edu">rhiju@stanford.edu</a> for further information. </p>
 {% endif %}
@@ -533,9 +414,10 @@
 
 {% block script %}
 	<script type="text/javascript">
-		var json, idx = 0, n_rows, color_scale = 1;
+		var json, tags, idx = 0, n_rows, color_scale = 1;
 	</script>
 	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
+	<script type="text/javascript" src="/site_media/js/main_tags.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_heatmap.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_barplot.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_setting.js"></script>
@@ -545,7 +427,7 @@
 
 		$(document).ready(function () {
 			$.ajax({
-				url: '/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.json',
+				url: '/site_media/rdat_files/{{rmdb_id}}/data_heatmap.json',
 				dataType: 'json',
 				async: true,
 				beforeSend: function(xhr) { 
@@ -558,13 +440,24 @@
 						$(".left_close").removeClass("visible").hide();
 						$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
 						$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
-					}, 100);
+					}, 10);
 					$("#wait").fadeOut(); 
 				},
 				success: function(data) {
 					json = data; 
 					n_rows = json.y_labels.length;
-					draw_heatmap(json);
+
+					$.ajax({
+						url: '/site_media/rdat_files/{{rmdb_id}}/data_tags.json',
+						dataType: 'json',
+						async: true,
+						success: function(data) {
+							tags = data;
+							fill_tags(tags);
+						}
+					});
+
+					setTimeout(function() { draw_heatmap(json); }, 10);
 				}
 			});
 

@@ -70,10 +70,6 @@ $(document).ready(function() {
 
 	$("#dl_rdat, #dl_isatab").on("click", function() {$(window).unbind();});
 
-    var col_h = Math.max($("#panel_con").height(), $("#panel_cit").height()) + 15;
-    $("#panel_con").css("height", col_h);
-    $("#panel_cit").css("height", col_h);
-
 });
 
 

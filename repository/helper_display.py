@@ -73,7 +73,6 @@ def render_structure(request):
 
 
 def dump_json_heatmap(construct, entry_type, maxlen):
-
 	precalc_structures = '['
 	accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos', 'MAPseq', 'EteRNA']
 	try:
@@ -179,8 +178,68 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 	return {'data':data_matrix, 'peak_max':data_max, 'peak_min':data_min, 'peak_mean':data_mean, 'peak_sd':data_sd, 'row_lim':row_limits, 'x_labels':x_labels, 'y_labels':y_labels, 'precalc_structures':precalc_structures}
 
 
+def dump_json_tags(entry):
+	f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r')
+	rdat_ver = f.readline().strip().split('\t')[-1].replace('RDAT_VERSION', '').strip()
+	f.close()
+
+	if entry.type=="MM":
+		str_type = "Mutate And Map"
+	elif entry.type=="SS":
+		str_type = "Standard State"
+	elif entry.type == "MA":
+		str_type = "MOHCA"
+	elif entry.type == "TT":
+		str_type = "Titration"
+
+	if entry.revision_status == 'REC':
+		rev_stat = '<span class=\"label label-info\">Received</span>'
+	elif entry.revision_status == "REV":
+		rev_stat = '<span class=\"label label-warning\">In Review</span>'
+	elif entry.revision_status == "HOL":
+		rev_stat = '<span class=\"label label-danger\">On Hold</span>'
+	elif entry.revision_status == "PUB":
+		rev_stat = '<span class=\"label label-success\">Published</span>'
+
+	tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'construct_count':entry.constructcount, 'data_count':entry.datacount,  'revision_status':entry.revision_status, 'revision_status_label':rev_stat, 'type':str_type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x')}
+	tags_annotation = {'annotation':entry.annotations}
+
+	constructs = ConstructSection.objects.filter(entry=entry)
+	for c in constructs:
+		c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
+		tags_data_annotation = {}
+		for i,d in enumerate(c.datas):
+			d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
+			tags_data_annotation[i] = d.annotations
+		tags_annotation['data_annotation'] = tags_data_annotation
+
+		c.err_ncol = c.datas[0].errors.split(',')
+		if len(c.err_ncol) == 1 and (not len(c.err_ncol[0])): 
+			c.err_ncol = 0
+		else:
+			c.err_ncol = len(c.err_ncol)
+		xsel_str = c.xsel.split(',')
+		if len(xsel_str):
+			c.xsel_len = len(c.xsel)
+		else:
+			c.xsel_len = 0
+		seqpos_str = c.seqpos.split(',')
+		if (int(seqpos_str[-1]) - int(seqpos_str[0]) + 1 != len(seqpos_str)):
+			c.seqpos = '</code>,</span> <span style=\"display:inline-block; width:75px;\"><code>'.join(seqpos_str)
+			c.seqpos = '<span style=\"display:inline-block; width:75px;\"><code>' + c.seqpos + '</code></span>'
+		else:
+			c.seqpos = '<code>' + seqpos_str[0] + '</code><b>:</b><code>' + seqpos_str[-1] + '</code>'
+		c.seqpos_len = len(seqpos_str)
+
+		tags_construct = {'sequence':c.sequence, 'structure':c.structure, 'offset':c.offset, 'sequence_len':len(c.sequence), 'structure_len':len(c.structure), 'data_nrow':len(c.datas), 'data_ncol':len(c.datas[0].values.split(',')), 'err_ncol':c.err_ncol, 'xsel_len':c.xsel_len, 'seqpos_len':c.seqpos_len, 'seqpos':c.seqpos, 'name':c.name}
+
+	f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/data_tags.json', 'w')
+	tags_all = dict(tags_basic.items() + tags_construct.items() + tags_annotation.items())
+	simplejson.dump(tags_all, f)
+	f.close()
+
+
 def prepare_json_data(entry):
-	data_annotations_exist = False
 	maxlen = 256
 	maxlen_flag = False
 
@@ -193,37 +252,14 @@ def prepare_json_data(entry):
 			maxlen_flag = True
 		for d in c.datas:
 			d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
-			if d.annotations:
-				data_annotations_exist = True
-
-		c.sequence_len = len(c.sequence)
-		c.structure_len = len(c.structure)
-		c.data_nrow = len(c.datas)
-		c.data_ncol = len(c.datas[0].values.split(','))
-		c.err_ncol = c.datas[0].errors.split(',')
-		if len(c.err_ncol) == 1 and (not len(c.err_ncol[0])): 
-			c.err_ncol = 0
-		else:
-			c.err_ncol = len(c.err_ncol)
 
 		# c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures = get_plot_data(c.id, entry.type, maxlen)
-		f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.json', 'w')
+		f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/data_heatmap.json', 'w')
 		json_tmp = dump_json_heatmap(c, entry.type, maxlen)
 		simplejson.dump(json_tmp, f)
 		f.close()
 
-		seqpos_str = c.seqpos.split(',')
-		if (int(seqpos_str[-1]) - int(seqpos_str[0]) + 1 != len(seqpos_str)):
-			c.seqpos = '</code>,</span> <span style=\"display:inline-block; width:75px;\"><code>'.join(seqpos_str)
-			c.seqpos = '<span style=\"display:inline-block; width:75px;\"><code>' + c.seqpos + '</code></span>'
-		else:
-			c.seqpos = '<code>' + seqpos_str[0] + '</code><b>:</b><code>' + seqpos_str[-1] + '</code>'
-		c.seqpos_len = len(seqpos_str)
-		xsel_str = c.xsel.split(',')
-		if len(xsel_str):
-			c.xsel_len = len(c.xsel)	
-
-	return (constructs, data_annotations_exist, maxlen_flag)
+	return (constructs, maxlen_flag)
 
 
 def get_restricted_RDATFile_and_plot_data(constructs, numresults, qdata, searchid, ssdict, check_structure_balance):
