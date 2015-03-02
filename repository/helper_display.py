@@ -255,12 +255,10 @@ def prepare_json_data(entry):
 		c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
 		c.data_count = range(len(c.datas))
 		if len(c.datas) > maxlen:
-			# c.datas = c.datas[:maxlen]
 			maxlen_flag = True
 		for d in c.datas:
 			d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
 
-		# c.area_peaks_min, c.area_peaks_max, c.area_peaks, c.hist_data, c.precalc_structures = get_plot_data(c.id, entry.type, maxlen)
 		f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/data_heatmap.json', 'w')
 		json_tmp = dump_json_heatmap(c, entry.type, maxlen)
 		simplejson.dump(json_tmp, f)

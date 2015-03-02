@@ -439,6 +439,7 @@
 					$("#wait").fadeIn(); 
 				},
 				complete: function(xhr) { 
+					$("#svg_top").trigger("click");
 					setTimeout(function() {
 						$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
 						$(".left_close").removeClass("visible").hide();
