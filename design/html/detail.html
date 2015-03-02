@@ -111,6 +111,10 @@
 									</p>
 								</td>
 					        </tr>
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-violet">Owner</span></td>
+								<td id="tag_owner"></td>
+					        </tr>
 										
 							<tr>
 								<th class="col-md-3"></th>
@@ -131,7 +135,7 @@
 							<tr id="tag_data_annotation">
 								<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
 								<td></td>
-								<td></td>
+								<td id="tag_data_switch"></td>
 					        </tr>
 
 							<tr>
@@ -414,7 +418,7 @@
 
 {% block script %}
 	<script type="text/javascript">
-		var json, tags, idx = 0, n_rows, color_scale = 1;
+		var json, tags, idx = 0, tag_idx = 0, n_rows, color_scale = 1;
 	</script>
 	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_tags.js"></script>
@@ -450,13 +454,12 @@
 					$.ajax({
 						url: '/site_media/rdat_files/{{rmdb_id}}/data_tags.json',
 						dataType: 'json',
-						async: true,
+						async: false,
 						success: function(data) {
 							tags = data;
-							fill_tags(tags);
+							fill_tags();
 						}
 					});
-
 					setTimeout(function() { draw_heatmap(json); }, 10);
 				}
 			});

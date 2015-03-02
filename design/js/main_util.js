@@ -69,7 +69,6 @@ $(document).ready(function() {
 	});
 
 	$("#dl_rdat, #dl_isatab").on("click", function() {$(window).unbind();});
-
 });
 
 

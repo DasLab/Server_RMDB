@@ -28,6 +28,10 @@ function make_barplot(idx) {
 		x_min = 0, x_max = row_lim.x_max -row_lim.x_min +1, 
 		y_min = row_lim.y_min, y_max = row_lim.y_max;
 	var title = json.y_labels[idx], x_labels = json.x_labels;
+	if (tags.name.indexOf('EteRNA') != -1) {
+		x_labels = tags.data_annotation[idx]["sequence"][0];
+	}
+
 	var hdata = json.data.filter(function(d) { return d.x == idx; });
 
 	var barWidth = 10,
@@ -227,7 +231,6 @@ $(document).ready(function() {
 	});
 	$("#svg_bottom").on("click", function() {
 		idx = n_rows-1;
-		console.log(idx);
 		make_barplot(idx);
 		$("#page_num").val((idx+1).toString());
 	});

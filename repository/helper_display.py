@@ -114,7 +114,11 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 			elif entry_type == "MA":
 				y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"][0]
 			elif entry_type == "SS" and "EteRNA" in annotations:
-				y_label_tmp = '%s' % annotations["MAPseq"]
+				y_label_tmp = annotations["MAPseq"]
+				for j in range(len(y_label_tmp)):
+					if y_label_tmp[j].find("ID:") == 0:
+						y_label_tmp = y_label_tmp[j]
+						break
 			else:
 				annotations_flatten = [y for x in annotations.values() for y in x]
 				y_label_tmp = '%s' % (','.join(annotations_flatten))
@@ -138,7 +142,10 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 				errors_row = [0.]*len(seqpos)
 
 			for j in range(len(peaks_row)):
-				seq = sequence[j]
+				if entry_type == "SS" and "EteRNA" in annotations:
+					seq = annotations["sequence"][0][j]
+				else:
+					seq = sequence[j]
 				mut_flag = 0
 
 				if 'mutation' in annotations:
@@ -201,7 +208,7 @@ def dump_json_tags(entry):
 	elif entry.revision_status == "PUB":
 		rev_stat = '<span class=\"label label-success\">Published</span>'
 
-	tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'construct_count':entry.constructcount, 'data_count':entry.datacount,  'revision_status':entry.revision_status, 'revision_status_label':rev_stat, 'type':str_type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x')}
+	tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'construct_count':entry.constructcount, 'data_count':entry.datacount,  'revision_status':entry.revision_status, 'revision_status_label':rev_stat, 'type':str_type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x'), 'owner_name':entry.owner.first_name+' '+entry.owner.last_name,'owner':entry.owner.username}
 	tags_annotation = {'annotation':entry.annotations}
 
 	constructs = ConstructSection.objects.filter(entry=entry)
