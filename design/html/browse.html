@@ -1,4 +1,4 @@
-{% extends "html/_framework.html" %}
+{% extends "design/html/_framework.html" %}
 {% load repository_extras %}
 
 {% block content %}
@@ -116,7 +116,7 @@
 														<span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
 														{% endautoescape %}
 														<br/>
-														<img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
+														<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
 														<br/>
 													</p>
 												</a>
@@ -186,7 +186,7 @@
 														<span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
 														{% endautoescape %}
 														<br/>
-														<img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
+														<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
 														<br/>
 													</p>
 												</a>
@@ -232,7 +232,7 @@
 						<div id="{{ e.rmdb_id|slugify }}" class="panel-collapse collapse eterna-subpanel" role="tabpanel" aria-labelledby="heading{{ e.rmdb_id|slugify }}">
 							<div class="panel-body">
 								<a href="/repository/detail/{{ e.rmdb_id }}" class="row browse-rotate thumbnail pull-left" style="left:-200px;">
-									<img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
+									<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
 								</a>
 							</div>
 						</div>

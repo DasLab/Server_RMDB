@@ -1,44 +1,39 @@
-from rmdb.settings import T47_DEV
+from rmdb.settings import MEDIA_ROOT
 
-if T47_DEV:
-	REPO_DIR = '/MATLAB_code/rmdb/'
-else:
-	REPO_DIR = '/home/daslab/rdat/rmdb/'
-
-CONSTRUCT_IMG_DIR = REPO_DIR + 'data/construct_img/'
-CONSTRUCT_THMB_DIR = REPO_DIR + 'data/thumbs/'
-RDAT_FILE_DIR = REPO_DIR + 'data/files/'
-ISATAB_FILE_DIR = REPO_DIR + 'data/files/'
-TMPDIR = REPO_DIR + 'structureserver/tmp/'
+CONSTRUCT_IMG_DIR = MEDIA_ROOT + '/data/construct_img/'
+CONSTRUCT_THMB_DIR = MEDIA_ROOT + '/data/thumbs/'
+RDAT_FILE_DIR = MEDIA_ROOT + '/data/files/'
+ISATAB_FILE_DIR = MEDIA_ROOT + '/data/files/'
+TMPDIR = MEDIA_ROOT + '/structureserver/tmp/'
 
 HTML_PATH = {
-	'index': 'html/index.html',
-	'browse': 'html/browse.html',
-	'detail': 'html/detail.html',
+	'index': 'design/html/index.html',
+	'browse': 'design/html/browse.html',
+	'detail': 'design/html/detail.html',
 
-	'about': 'html/about.html',
-	'license': 'html/license.html',
-	'history': 'html/history.html',
+	'about': 'design/html/about.html',
+	'license': 'design/html/license.html',
+	'history': 'design/html/history.html',
 
-	'specs': 'html/specs.html',
-	'validate': 'html/validate.html',
-	'upload': 'html/submit.html',
+	'specs': 'design/html/specs.html',
+	'validate': 'design/html/validate.html',
+	'upload': 'design/html/submit.html',
 
-	'predict': 'html/predict.html',
-	'predict_res': 'html/predict_results.html',
-	'repos': 'html/tools.html',
-	'license_mapseeker': 'html/tools_mapseeker_license.html',
-	'link_mapseeker': 'html/tools_mapseeker_download.html',
-	'tt_predict': 'html/tutorial_predict.html',
-	'tt_api': 'html/tutorial_api.html',
-	'tt_rdatkit': 'html/tutorial_rdatkit.html',
-	'tt_hitrace': 'html/tutorial_hitrace.html',
-	'tt_mapseeker': 'html/tutorial_mapseeker.html',
+	'predict': 'design/html/predict.html',
+	'predict_res': 'design/html/predict_results.html',
+	'repos': 'design/html/tools.html',
+	'license_mapseeker': 'design/html/tools_mapseeker_license.html',
+	'link_mapseeker': 'design/html/tools_mapseeker_download.html',
+	'tt_predict': 'design/html/tutorial_predict.html',
+	'tt_api': 'design/html/tutorial_api.html',
+	'tt_rdatkit': 'design/html/tutorial_rdatkit.html',
+	'tt_hitrace': 'design/html/tutorial_hitrace.html',
+	'tt_mapseeker': 'design/html/tutorial_mapseeker.html',
 
-	'search_res': 'html/search_results.html',
-	'adv_search': 'html/search_advanced.html',
-	'adv_search_res': 'html/search_advanced_results.html',
+	'search_res': 'design/html/search_results.html',
+	'adv_search': 'design/html/search_advanced.html',
+	'adv_search_res': 'design/html/search_advanced_results.html',
 
-	'register': 'html/register.html',
+	'register': 'design/html/register.html',
 
 }

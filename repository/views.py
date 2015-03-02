@@ -60,7 +60,7 @@ def license_mapseeker(request):
 
 @login_required
 def download_mapseeker(request):
-	f = open(MEDIA_ROOT + "/code/mapseeker_user.csv", "a")
+	f = open(MEDIA_ROOT + "/design/code/mapseeker_user.csv", "a")
 	f.write("%s," % time.strftime("%c"))
 	request_usr = request.user
 	f.write("%s,%s,%s %s," % (request_usr.username, request_usr.email, request_usr.first_name, request_usr.last_name))
@@ -134,7 +134,7 @@ def detail(request, rmdb_id):
 	except (RMDBEntry.DoesNotExist, IndexError):
 		raise Http404
 
-	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':maxlen_flag}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':maxlen_flag}, context_instance=RequestContext(request))
 
 
 def predict(request):
@@ -394,8 +394,9 @@ def upload(request):
 				if 'file' in form.errors: error_msg.append('Input file field is required.')
 				if 'authors' in form.errors: error_msg.append('Authors field is required.')
 
-		except IndexError:
+		except IndexError, e:
 			flag = 1
+			print e
 			error_msg.append('Input file invalid; please check and resubmit.')
 	else:
 		form = UploadForm()

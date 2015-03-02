@@ -1,4 +1,4 @@
-{% extends "html/_framework.html" %}
+{% extends "design/html/_framework.html" %}
 {% load repository_extras %}
 
 {% block content %}
@@ -125,7 +125,7 @@
 								<td>
 									{% for c in e.constructs %}
 									<a href="/repository/detail/{{ e.rmdb_id }}" class="row thumbnail pull-left">
-										<img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
+										<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
 									</a>
 									{% endfor %}
 								</td>
@@ -187,7 +187,7 @@
 									{% for c in e.constructs %}
 									<div style="height:200px;overflow:hidden;">
 										<a href="/repository/detail/{{ e.rmdb_id }}" class="row browse-rotate thumbnail pull-left" style="left:-300px;">
-											<img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
+											<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
 										</a>
 									</div>
 									{% endfor %}

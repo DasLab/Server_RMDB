@@ -10,8 +10,8 @@ urlpatterns = patterns('',
     (r'^$', 'rmdb.views.home'),
     (r'^repository/', include('repository.urls')),
     # (r'^structureserver/', include('structureserver.urls')),
-    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',\
-      {'document_root': MEDIA_ROOT}),
+    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/design'}),
+    (r'^site_data/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/data'}),
     # Example:
     # (r'^rmdb/', include('rmdb.foo.urls')),
 

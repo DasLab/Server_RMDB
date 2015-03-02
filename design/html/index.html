@@ -1,4 +1,4 @@
-{% extends "html/_framework.html" %}
+{% extends "design/html/_framework.html" %}
 {% load repository_extras %}
 
 {% block content %}
@@ -397,7 +397,7 @@
                   <div class="row">
                     {% for c in e.constructs %}
                     <a href="/repository/detail/{{ e.rmdb_id }}" target="_blank">
-                      <img src="/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif" class="center-block"/>
+                      <img src="/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif" class="center-block"/>
                     </a>
                     {% endfor %}
                   </div>

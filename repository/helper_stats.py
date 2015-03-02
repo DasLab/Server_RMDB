@@ -68,7 +68,7 @@ def get_rmdb_category(flag):
 
 
 def get_history():
-	file_list = glob.glob(MEDIA_ROOT + "/code/log_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].txt")
+	file_list = glob.glob(MEDIA_ROOT + "/design/code/log_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9].txt")
 	log_content = []
 
 	for log_file in file_list:

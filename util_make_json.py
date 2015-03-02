@@ -10,6 +10,11 @@ from rmdb.repository.models import *
 from rmdb.repository.helper_display import *
 
 
+if len(sys.argv) > 2:
+	print('Usage:')
+	print('    %s <rmdb_id>' % sys.argv[0])
+	exit()
+
 dept_rdats = 1
 while (dept_rdats):
 	rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
@@ -20,9 +25,14 @@ while (dept_rdats):
 	for rmdb_id in dept_rdats:
 		shutil.rmtree(os.path.join(RDAT_FILE_DIR, rmdb_id))
 
-# all_rdats = ['RNAPZ8_TST_0001']
-err_rdats = []
+if len(sys.argv) == 2:
+	all_rdats = [sys.argv[1]]
+	if not os.path.exists(os.path.join(RDAT_FILE_DIR, all_rdats[0])):
+		print "\033[41mError\033[0m: rmdb_id invalid, no data files folder found. Abort."
+		exit()
 
+
+err_rdats = []
 for i, rmdb_id in enumerate(all_rdats):
 	try: 
 		make_json_for_rdat(rmdb_id)

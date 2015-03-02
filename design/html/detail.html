@@ -1,4 +1,4 @@
-{% extends "html/_framework.html" %}
+{% extends "design/html/_framework.html" %}
 {% load repository_extras %}
 
 {% block head %}
@@ -296,12 +296,12 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/site_media/rdat_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}.rdat" id="dl_rdat" download>
+							<li><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}.rdat" id="dl_rdat" download>
 								<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
 								&nbsp;&nbsp;RDAT
 							</a></li>
 							{% if not is_istab %} 
-							<li><a href="/site_media/isatab_files/{{entry.rmdb_id}}/{{entry.rmdb_id}}_{{entry.version}}.xls" id="dl_isatab" download>
+							<li><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}_{{version}}.xls" id="dl_isatab" download>
 								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 								&nbsp;&nbsp;ISATAB
 							</a></li>
@@ -363,7 +363,7 @@
 					<br/>
 					<b id="tag_title"></b>. 
 					<br/>
-					<a href="http://www.ncbi.nlm.nih.gov/pubmed/{{publication.pubmed_id}}" target="_blank">
+					<a target="_blank" id="link_pubmed">
 						PMID: <span id="tag_pubmed"></span> 
 						<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
 					</a>
@@ -431,7 +431,7 @@
 
 		$(document).ready(function () {
 			$.ajax({
-				url: '/site_media/rdat_files/{{rmdb_id}}/data_heatmap.json',
+				url: '/site_data/files/{{rmdb_id}}/data_heatmap.json',
 				dataType: 'json',
 				async: true,
 				beforeSend: function(xhr) { 
@@ -453,7 +453,7 @@
 					n_rows = json.y_labels.length;
 
 					$.ajax({
-						url: '/site_media/rdat_files/{{rmdb_id}}/data_tags.json',
+						url: '/site_data/files/{{rmdb_id}}/data_tags.json',
 						dataType: 'json',
 						async: false,
 						success: function(data) {

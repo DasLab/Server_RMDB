@@ -146,7 +146,10 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 
 			for j in range(len(peaks_row)):
 				if entry_type == "SS" and "EteRNA" in annotations:
-					seq = annotations["sequence"][0][j]
+					if len(annotations["sequence"][0]) <= j:
+						seq = 'X'
+					else:
+						seq = annotations["sequence"][0][j]
 				else:
 					seq = sequence[j]
 				mut_flag = 0

@@ -1,4 +1,4 @@
-{% extends "html/_framework.html" %}
+{% extends "design/html/_framework.html" %}
 {% load repository_extras %}
 
 {% block content %}
@@ -206,7 +206,7 @@
             });
             $("#id_description").attr("rows",5);
             $("#id_use_name").on("click", function () {
-                $("#id_rmdb_id").val($("#id_disp").val());
+                $("#id_rmdb_id").val($("#id_disp").val().replace(".rdat", ""));
                 $(this).attr("checked", false);
             });
 
