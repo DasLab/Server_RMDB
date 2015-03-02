@@ -186,10 +186,10 @@
 								<td id="{{ e.rmdb_id }}" class="eterna-subpanel">
 									{% for c in e.constructs %}
 									<div style="height:200px;overflow:hidden;">
-									<a href="/repository/detail/{{ e.rmdb_id }}" class="row browse-rotate thumbnail pull-left" style="left:-300px;">
-										<img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
-									</a>
-								</div>
+										<a href="/repository/detail/{{ e.rmdb_id }}" class="row browse-rotate thumbnail pull-left" style="left:-300px;">
+											<img src='/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
+										</a>
+									</div>
 									{% endfor %}
 								</td>
 							</tr>

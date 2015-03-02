@@ -17,6 +17,11 @@ function draw_heatmap(json) {
 		.range(['white', 'black']);
 	$("#peak_max").text(json.peak_max.toFixed(2));
 	$("#peak_min").text(json.peak_min.toFixed(2));	
+
+    var col_h = Math.max($("#panel_tit").height(), $("#panel_leg").height());
+    $("#panel_tit").css("height", col_h);
+    $("#panel_leg").css("height", col_h);
+
 	$("#seqA").css("color", get_nt_color("A"));
 	$("#seqU").css("color", get_nt_color("U"));
 	$("#seqC").css("color", get_nt_color("C"));
@@ -129,6 +134,7 @@ function draw_heatmap(json) {
 					.attr("text-anchor", "end")
 					.attr("transform", function(d, i) { return "rotate(-90)translate("+ (-main_margin.top -total_h -5) + "," + ((i+.8) * (h+0.5) + main_margin.left) + ")"; })
 					.attr("font-size", 12).attr("font-family", "Arial");
+
 
 	var div = d3.select("body").append("div")
 				.attr("class", "tooltip")

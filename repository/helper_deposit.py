@@ -8,6 +8,7 @@ import smtplib
 from rmdb.repository.models import *
 from rmdb.repository.settings import *
 from rmdb.settings import *
+from helper_display import *
 from helper_images import *
 
 from Tkinter import TclError
@@ -203,6 +204,8 @@ def write_rmdb_file(entry, uploadfile, rdatfile, isatabfile, error_msg):
 	
 		generate_varna_thumbnails(entry)
 		#precalculate_structures(entry)
+
+	make_json_for_rdat(entry.rmdb_id)
 	return error_msg
 
 

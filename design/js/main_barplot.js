@@ -27,9 +27,12 @@ function make_barplot(idx) {
 	var row_lim = json.row_lim[idx], 
 		x_min = 0, x_max = row_lim.x_max -row_lim.x_min +1, 
 		y_min = row_lim.y_min, y_max = row_lim.y_max;
-	var title = json.y_labels[idx], x_labels = json.x_labels;
+	var title = json.y_labels[idx], x_labels = $.extend(true, {}, json.x_labels);
 	if (tags.name.indexOf('EteRNA') != -1) {
-		x_labels = tags.data_annotation[idx]["sequence"][0];
+		var x_labels_tmp = tags.data_annotation[idx]["sequence"][0];
+		for (i in x_labels) {
+			x_labels[i] = x_labels_tmp[i] + x_labels[i].substring(1)
+		}
 	}
 
 	var hdata = json.data.filter(function(d) { return d.x == idx; });

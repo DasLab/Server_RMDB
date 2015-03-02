@@ -10,7 +10,7 @@
     </button>
     <p>
       <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      &nbsp;&nbsp;<b>RMDB</b> has upgraded to <a href="/repository/help/history"><u>version 2.0</u></a> <b>BETA</b> for online preview. More changes and updates are in progress.
+      &nbsp;&nbsp;<b>RMDB</b> has upgraded to <a href="/repository/help/history"><u>version 2.1</u></a> <b>BETA</b> for online preview. More changes and updates are in progress.
     </p>
     <p>
       <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
@@ -325,7 +325,7 @@
           <div class="row">
             <div class="col-md-8">
               <p>
-                RMDB has upgraded to version 2.0 BETA for online preview. More changes and updates are in progress. Please report bugs and make suggestions. We really appreciate your feedback.
+                RMDB has upgraded to version 2.1 BETA for online preview. More changes and updates are in progress. Please report bugs and make suggestions. We really appreciate your feedback.
               </p>
               <p>To learn more about RMDB usage and changes, use these links:</p>
             </div>
@@ -365,7 +365,7 @@
             &nbsp;&nbsp;Latest Entries
           </h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" id="panel_slide">
           <div class="row">
             <div id="carousel-entries" class="carousel slide" data-ride="carousel">
               <div class="row">
@@ -378,22 +378,28 @@
 
               <div class="carousel-inner" role="listbox">
                 {% for e in entries %}
-                <div class="item" style="height:400px;">
-                  <div class="row">
-                    {% for c in e.constructs %}
-                    <img src="/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif" class="center-block"/>
-                    {% endfor %}
-                  </div>
+                <div class="item" style="height:300px;">
+                  <br/><br/>
                   <div class="row">
                   {% for c in e.constructs %}
                     <p class="text-center">
-                      {% autoescape off %}
-                      <span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
-                      {% endautoescape %}
-                      <br/>
-                      {{ c.name }}
+                      <a href="/repository/detail/{{ e.rmdb_id }}" target="_blank">
+                          {% autoescape off %}
+                          <span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
+                          {% endautoescape %}
+                        <br/>
+                        {{ c.name }}
+                      </a>
                     </p>
                   {% endfor %}
+                  </div>
+
+                  <div class="row">
+                    {% for c in e.constructs %}
+                    <a href="/repository/detail/{{ e.rmdb_id }}" target="_blank">
+                      <img src="/site_media/construct_img/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif" class="center-block"/>
+                    </a>
+                    {% endfor %}
                   </div>
                 </div>
                 {% endfor %}
@@ -421,7 +427,7 @@
             &nbsp;&nbsp;News
           </h3>
         </div>
-        <div class="panel-body" style="overflow-y:scroll;max-height:300px;">
+        <div class="panel-body" style="overflow-y:scroll;max-height: 400px;"  id="panel_news">
           <table class="table table-striped">
           {% for n in news %}
             <tr>
@@ -455,10 +461,15 @@
       $('.dropdown-toggle').removeClass("active");
       $("#nav_logo>span").css("text-decoration","underline");
 
-      $("#col-1, #col-2").css("height", "350px");
       $(".carousel-inner>.item:first-child").addClass("active");
       $(".carousel-indicators>li:first-child").addClass("active");
       $('.carousel').carousel();
+      
+      var col_h = Math.max($("#panel_news").height(), $("#panel_slide").height());
+      $("#panel_news").css("height", col_h);
+      $("#panel_slide").css("height", col_h);
+
+
     });
   </script>
 

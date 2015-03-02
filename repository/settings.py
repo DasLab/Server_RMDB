@@ -5,10 +5,10 @@ if T47_DEV:
 else:
 	REPO_DIR = '/home/daslab/rdat/rmdb/'
 
-CONSTRUCT_IMG_DIR = REPO_DIR + 'design/construct_img/'
-CONSTRUCT_THMB_DIR = REPO_DIR + 'design/construct_img/thumbs/'
-RDAT_FILE_DIR = REPO_DIR + 'design/rdat_files/'
-ISATAB_FILE_DIR = REPO_DIR + 'design/isatab_files/'
+CONSTRUCT_IMG_DIR = REPO_DIR + 'data/construct_img/'
+CONSTRUCT_THMB_DIR = REPO_DIR + 'data/thumbs/'
+RDAT_FILE_DIR = REPO_DIR + 'data/files/'
+ISATAB_FILE_DIR = REPO_DIR + 'data/files/'
 TMPDIR = REPO_DIR + 'structureserver/tmp/'
 
 HTML_PATH = {

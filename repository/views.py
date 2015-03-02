@@ -124,19 +124,14 @@ def validate(request):
 def detail(request, rmdb_id):
 	try:
 		entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
-		f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r')
-		rdat_ver = f.readline().strip().split('\t')[-1]
-		f.close()
-
-		if entry.pdb_entries != None and len(entry.pdb_entries.strip()) > 0:
-			entry.pdb_ids = [x.strip() for x in entry.pdb_entries.split(',')]
-		else:
-			entry.pdb_ids = []
-		entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
-		(constructs, maxlen_flag) = prepare_json_data(entry)
-		dump_json_tags(entry)
-
-	except RMDBEntry.DoesNotExist:
+		maxlen = 256
+		maxlen_flag = False
+		constructs = ConstructSection.objects.filter(entry=entry)
+		for c in constructs:
+			c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
+			if len(c.datas) > maxlen:
+				maxlen_flag = True
+	except (RMDBEntry.DoesNotExist, IndexError):
 		raise Http404
 
 	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':maxlen_flag}, context_instance=RequestContext(request))

@@ -112,7 +112,10 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 					annotations_flatten = [y for x in annotations.values() for y in x]
 					y_label_tmp = '%s' % (','.join(annotations_flatten))
 			elif entry_type == "MA":
-				y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"][0]
+				if annotations.has_key("lig_pos"):
+					y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"][0]
+				if annotations.has_key("ligpos"):
+					y_label_tmp = 'lig_pos:%s' % annotations["ligpos"][0]
 			elif entry_type == "SS" and "EteRNA" in annotations:
 				y_label_tmp = annotations["MAPseq"]
 				for j in range(len(y_label_tmp)):
@@ -265,6 +268,22 @@ def prepare_json_data(entry):
 		f.close()
 
 	return (constructs, maxlen_flag)
+
+
+def make_json_for_rdat(rmdb_id):
+	entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
+	f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r')
+	rdat_ver = f.readline().strip().split('\t')[-1]
+	f.close()
+
+	if entry.pdb_entries != None and len(entry.pdb_entries.strip()) > 0:
+		entry.pdb_ids = [x.strip() for x in entry.pdb_entries.split(',')]
+	else:
+		entry.pdb_ids = []
+	entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
+
+	prepare_json_data(entry)
+	dump_json_tags(entry)
 
 
 def get_restricted_RDATFile_and_plot_data(constructs, numresults, qdata, searchid, ssdict, check_structure_balance):
