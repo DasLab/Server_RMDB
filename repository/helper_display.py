@@ -129,6 +129,7 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 			
 			peaks_row = array([float(x) for x in data.values.split(',')])
 			peaks_row[isnan(peaks_row)] = 0
+			peaks_row[isinf(peaks_row)] = 0
 			data_max = max(max(peaks_row), data_max)
 			data_min = max(min(peaks_row), data_min)
 
@@ -141,6 +142,7 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 			if data.errors.strip():
 				errors_row = array([float(x) for x in data.errors.split(',')])
 				errors_row[isnan(errors_row)] = 0
+				errors_row[isinf(errors_row)] = 0
 			else:
 				errors_row = [0.]*len(seqpos)
 
