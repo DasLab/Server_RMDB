@@ -10,12 +10,13 @@ from rmdb.repository.models import *
 from rmdb.repository.helper_display import *
 
 
-if len(sys.argv) > 2:
+if len(sys.argv) > 3:
 	print('Usage:')
-	print('    %s <rmdb_id>' % sys.argv[0])
+	print('    %s <rmdb_id> <DEBUG>' % sys.argv[0])
 	exit()
 
 dept_rdats = 1
+DEBUG = False
 while (dept_rdats):
 	rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
 	all_rdats =  os.listdir(RDAT_FILE_DIR)
@@ -25,7 +26,9 @@ while (dept_rdats):
 	for rmdb_id in dept_rdats:
 		shutil.rmtree(os.path.join(RDAT_FILE_DIR, rmdb_id))
 
-if len(sys.argv) == 2:
+if len(sys.argv) >= 2:
+	if len(sys.argv) > 2 and sys.argv[2] == 'DEBUG':
+		DEBUG = True
 	all_rdats = [sys.argv[1]]
 	if not os.path.exists(os.path.join(RDAT_FILE_DIR, all_rdats[0])):
 		print "\033[41mError\033[0m: rmdb_id invalid, no data files folder found. Abort."
@@ -34,12 +37,16 @@ if len(sys.argv) == 2:
 
 err_rdats = []
 for i, rmdb_id in enumerate(all_rdats):
-	try: 
+	if DEBUG:
 		make_json_for_rdat(rmdb_id)
 		print "\033[92mSUCCESS\033[0m: ", (i+1), "/", len(all_rdats), " : \033[94m", rmdb_id, "\033[0m"
-	except:
-		err_rdats.append(rmdb_id)
-		print "\033[41mFAILURE\033[0m: ", (i+1), "/", len(all_rdats), " : \033[94m", rmdb_id, "\033[0m"
+	else:
+		try: 
+			make_json_for_rdat(rmdb_id)
+			print "\033[92mSUCCESS\033[0m: ", (i+1), "/", len(all_rdats), " : \033[94m", rmdb_id, "\033[0m"
+		except:
+			err_rdats.append(rmdb_id)
+			print "\033[41mFAILURE\033[0m: ", (i+1), "/", len(all_rdats), " : \033[94m", rmdb_id, "\033[0m"
 
 print "All done!"
 print "\033[41mError(s)\033[0m encountered:"
