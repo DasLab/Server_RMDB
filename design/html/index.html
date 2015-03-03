@@ -381,25 +381,20 @@
                 <div class="item" style="height:300px;">
                   <br/><br/>
                   <div class="row">
-                  {% for c in e.constructs %}
                     <p class="text-center">
                       <a href="/repository/detail/{{ e.rmdb_id }}" target="_blank">
                           {% autoescape off %}
                           <span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
                           {% endautoescape %}
                         <br/>
-                        {{ c.name }}
+                        {{ e.name }}
                       </a>
                     </p>
-                  {% endfor %}
                   </div>
-
                   <div class="row">
-                    {% for c in e.constructs %}
                     <a href="/repository/detail/{{ e.rmdb_id }}" target="_blank">
-                      <img src="/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif" class="center-block"/>
+                      <img src="/site_data/thumbs/{{ e.cid }}/{{ e.name|slugify }}.gif" class="center-block"/>
                     </a>
-                    {% endfor %}
                   </div>
                 </div>
                 {% endfor %}

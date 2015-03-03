@@ -116,7 +116,7 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 					y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"][0]
 				if annotations.has_key("ligpos"):
 					y_label_tmp = 'lig_pos:%s' % annotations["ligpos"][0]
-			elif entry_type == "SS" and "EteRNA" in annotations:
+			elif entry_type == "SS" and "EteRNA" in construct.name:
 				y_label_tmp = annotations["MAPseq"]
 				for j in range(len(y_label_tmp)):
 					if y_label_tmp[j].find("ID:") == 0:
@@ -147,11 +147,15 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 				errors_row = [0.]*len(seqpos)
 
 			for j in range(len(peaks_row)):
-				if entry_type == "SS" and "EteRNA" in annotations:
-					if len(annotations["sequence"][0]) <= j:
-						seq = 'X'
+				if entry_type == "SS" and "EteRNA" in construct.name:
+					if annotations.has_key("sequence"):
+						if len(annotations["sequence"][0]) <= j:
+							seq = 'X'
+						else:
+							seq = annotations["sequence"][0][j]
 					else:
-						seq = annotations["sequence"][0][j]
+						print "ERROR parsing annotation row:", annotations
+						seq = 'X'	
 				else:
 					seq = sequence[j]
 				mut_flag = 0

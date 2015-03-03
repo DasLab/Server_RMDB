@@ -1,9 +1,13 @@
 $(document).ready(function() {
     $("#show_seq").on("click", function() {
         if ($(this).is(':checked')) {
+            $("#wait").fadeIn();
             d3.select("#seq_overlay").classed("shown", true);
+            $("#wait").fadeOut();
         } else {
+            $("#wait").fadeIn();
             d3.select("#seq_overlay").classed("shown", false);
+            $("#wait").fadeOut();
         }
     });
     $("#show_color_seq").attr("checked", true);
