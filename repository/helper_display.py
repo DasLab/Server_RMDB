@@ -97,6 +97,8 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 				del(annotations['structure'])
 			else:
 				precalc_structures += '"%s",' % data.structure
+
+			is_eterna = ("EteRNA" in construct.name) or ("EteRNA" in annotations)
 			if entry_type == 'MM':
 				if 'mutation' in annotations:
 					field = 'mutation'
@@ -116,12 +118,23 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 					y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"][0]
 				if annotations.has_key("ligpos"):
 					y_label_tmp = 'lig_pos:%s' % annotations["ligpos"][0]
-			elif entry_type == "SS" and "EteRNA" in construct.name:
-				y_label_tmp = annotations["MAPseq"]
-				for j in range(len(y_label_tmp)):
-					if y_label_tmp[j].find("ID:") == 0:
-						y_label_tmp = y_label_tmp[j]
-						break
+			elif entry_type == "SS" and is_eterna:
+				if annotations:
+					if annotations.has_key("MAPseq"):
+						y_label_tmp = annotations["MAPseq"]
+						for j in range(len(y_label_tmp)):
+							if y_label_tmp[j].find("ID:") == 0:
+								y_label_tmp = y_label_tmp[j]
+								break
+					else:
+						y_label_tmp = annotations["EteRNA"]
+						for j in range(len(y_label_tmp)):
+							if y_label_tmp[j].find("ID:") == 0:
+								y_label_tmp = y_label_tmp[j]
+								break
+
+				else:
+					y_label_tmp = "Error_in_row"
 			else:
 				annotations_flatten = [y for x in annotations.values() for y in x]
 				y_label_tmp = '%s' % (','.join(annotations_flatten))
@@ -147,14 +160,14 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 				errors_row = [0.]*len(seqpos)
 
 			for j in range(len(peaks_row)):
-				if entry_type == "SS" and "EteRNA" in construct.name:
+				if entry_type == "SS" and is_eterna:
 					if annotations.has_key("sequence"):
 						if len(annotations["sequence"][0]) <= j:
 							seq = 'X'
 						else:
 							seq = annotations["sequence"][0][j]
 					else:
-						print "ERROR parsing annotation row:", annotations
+						print "ERROR parsing annotation row:", i, ": ", annotations
 						seq = 'X'	
 				else:
 					seq = sequence[j]

@@ -63,7 +63,6 @@ def validate_file(file_path, link_path, input_type):
 		else:
 			is_continue = get_spreadsheet(link_path)
 
-		print is_continue
 		if not is_continue:
 			if input_type == 'rdat':
 				errors.append('Input RMDB ID: %s is invalid.' % link_path)
