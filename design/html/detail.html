@@ -296,12 +296,12 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}.rdat" id="dl_rdat" download>
+							<li><a id="dl_rdat" download>
 								<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
 								&nbsp;&nbsp;RDAT
 							</a></li>
 							{% if not is_istab %} 
-							<li><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}_{{version}}.xls" id="dl_isatab" download>
+							<li><a id="dl_isatab" download>
 								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 								&nbsp;&nbsp;ISATAB
 							</a></li>
@@ -446,6 +446,7 @@
 						$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
 						$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
 					}, 10);
+
 					$("#wait").fadeOut(); 
 				},
 				success: function(data) {

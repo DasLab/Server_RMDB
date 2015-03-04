@@ -69,6 +69,9 @@ function fill_tags() {
 	$("#link_pubmed").attr("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + tags.pubmed_id);
 	$("#tag_description").text(tags.description);
 
+	$("#dl_isatab").attr("href", "/site_data/files/" + tags.rmdb_id + "/" + tags.rmdb_id + "_" + tags.version + ".xls");
+	$("#dl_rdat").attr("href", "/site_data/files/" + tags.rmdb_id + "/" + tags.rmdb_id + ".rdat");
+
 	if (tags.pdb_ids) {
 		var pdb_html = '';
 		for (i in tags.pdb_ids) {

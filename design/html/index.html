@@ -85,7 +85,7 @@
           <div class="row bgimg" style="background-size: 80% !important; background-position: right 20px bottom;">
             <div class="col-md-8">
             <p>
-              The <u>R</u>NA <u>M</u>apping <u>D</u>ata<u>b</u>ase is an archive that contains results of diverse structural mapping experiments performed on ribonucleic acids. Results submitted to the repository are manually curated and annotated, ensuring reliability and quality of reported data. With a total of <u>{{ N_datapoints }}</u> datapoints , RMDB currently houses <u>{{ N_all }}</u> entries, describing more than <u>{{ N_RNA }}</u> experiemnts of <u>{{ N_constructs }}</u> RNA constructs in several solution conditions and has been growing rapidly .
+              The <u>R</u>NA <u>M</u>apping <u>D</u>ata<u>b</u>ase is an archive that contains results of diverse structural mapping experiments performed on ribonucleic acids. Results submitted to the repository are manually curated and annotated, ensuring reliability and quality of reported data. With a total of <u id="N_datapoints"></u> datapoints , RMDB currently houses <u id="N_all"></u> entries, describing more than <u id="N_RNA"></u> experiemnts of <u id="N_constructs"></u> RNA constructs in several solution conditions and has been growing rapidly .
             </p>
             <p>
                In addition, RMDB contributes greatly to the <a href="http://eterna.stanford.edu" target="_blank"><b>EteRNA</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> videogame/synthetic biology project, and the <a href="http://ahsoka.u-strasbg.fr/rnapuzzles/" target="_blank"><b>RNA Puzzles</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> blind RNA structure prediction challenges. It will continue to benefit data sharing for RNA structue mapping community. 
@@ -369,36 +369,10 @@
           <div class="row">
             <div id="carousel-entries" class="carousel slide" data-ride="carousel">
               <div class="row">
-                <ol class="carousel-indicators">
-                  {% for e in entries %}
-                    <li data-target="#carousel-entries" data-slide-to="{{ forloop.counter0 }}"></li>
-                  {% endfor %}
-                </ol>
+                <ol class="carousel-indicators" id="slide_index"></ol>
               </div>
 
-              <div class="carousel-inner" role="listbox">
-                {% for e in entries %}
-                <div class="item" style="height:300px;">
-                  <br/><br/>
-                  <div class="row">
-                    <p class="text-center">
-                      <a href="/repository/detail/{{ e.rmdb_id }}" target="_blank">
-                          {% autoescape off %}
-                          <span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
-                          {% endautoescape %}
-                        <br/>
-                        {{ e.name }}
-                      </a>
-                    </p>
-                  </div>
-                  <div class="row">
-                    <a href="/repository/detail/{{ e.rmdb_id }}" target="_blank">
-                      <img src="/site_data/thumbs/{{ e.cid }}/{{ e.name|slugify }}.gif" class="center-block"/>
-                    </a>
-                  </div>
-                </div>
-                {% endfor %}
-              </div>
+              <div class="carousel-inner" role="listbox" id="slide_body"></div>
 
               <a class="left carousel-control" href="#carousel-entries" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -424,19 +398,7 @@
         </div>
         <div class="panel-body" style="overflow-y:scroll;max-height: 400px;"  id="panel_news">
           <table class="table table-striped">
-          {% for n in news %}
-            <tr>
-              {% if n.reference %}
-              <td><i>{{ n.date }}</i></td>
-              <td><a href="{{ n.reference }}">{{ n.title }}</a>
-              </td>
-              {% else %}
-              <td><i>{{ n.date }}</i></td>
-              <td>{% autoescape off %}{{ n.title }}{% endautoescape %}</td>
-              {% endif %}
-            </tr>
-          {% endfor %}
-            <tr>
+            <tr id="news_table">
               <th class="col-md-2"></th>
               <th class="col-md-10"></th>
             </tr>
@@ -452,19 +414,77 @@
 
 {% block script %}
   <script type="text/javascript">
+    function convertToSlug(Text) {
+      return Text
+          .toLowerCase()
+          .replace(/[^\w ]+/g,'')
+          .replace(/ +/g,'-');
+    }
+
+    function colorRmdbId(string) {
+      string = string.split('_')
+      s1 = '<span style=\"color: yellow;\">'+string[1]+'</span>'
+      s2 = '<span style=\"color: skyblue;\">'+string[2]+'</span>' 
+      return string[0] + '<span style=\"color: lightpink;\">_</span>' + s1 + '<span style=\"color: lightpink;\">_</span>' + s2
+    }
+
     $(document).ready(function() {
       $('.dropdown-toggle').removeClass("active");
       $("#nav_logo>span").css("text-decoration","underline");
 
-      $(".carousel-inner>.item:first-child").addClass("active");
-      $(".carousel-indicators>li:first-child").addClass("active");
-      $('.carousel').carousel();
-      
-      var col_h = Math.max($("#panel_news").height(), $("#panel_slide").height());
-      $("#panel_news").css("height", col_h);
-      $("#panel_slide").css("height", col_h);
 
+      $.ajax({
+        url: '/repository/api/index/stats/',
+        dataType: 'json',
+        async: true,
+        success: function(data) {
+          $("#N_all").text(data.N_all);
+          $("#N_RNA").text(data.N_RNA);
+          $("#N_datapoints").text(data.N_datapoints);
+          $("#N_constructs").text(data.N_constructs);
+        },
+        complete: function(xhr) { 
+          $.ajax({
+            url: '/repository/api/index/latest/',
+            dataType: 'json',
+            async: true,
+            success: function(data) {
+              var ind_html = '', body_html = '';
+              for (d in data) {
+                ind_html += '<li data-target="#carousel-entries" data-slide-to="' + d.toString() + '"></li>'
+                body_html += '<div class="item" style="height:300px;"><br/><br/><div class="row"><p class="text-center"><a href="/repository/detail/' + data[d].rmdb_id + '" target="_blank"><span class="label label-default">' + colorRmdbId(data[d].rmdb_id) + '</span><br/>' + data[d].name + '</a></p></div><div class="row"><a href="/repository/detail/' + data[d].rmdb_id + '" target="_blank"><img src="/site_data/thumbs/' + data[d].cid + '/' + convertToSlug(data[d].name) + '.gif" class="center-block"/></a></div></div>'
+              }
+              $("#slide_index").html(ind_html);
+              $("#slide_body").html(body_html);
 
+              $(".carousel-inner>.item:first-child").addClass("active");
+              $(".carousel-indicators>li:first-child").addClass("active");
+              $('.carousel').carousel();
+            },
+            complete: function(xhr) {
+              $.ajax({
+                url: '/repository/api/index/news/',
+                dataType: 'json',
+                async: true,
+                success: function(data) {
+                  var news_html = '';
+                  for (d in data) {
+                    news_html += '<tr><td><i>' + data[d].date + '</i></td><td>' + data[d].title + '</td></tr>'
+                  }
+                  $(news_html).insertBefore("#news_table");
+                },
+                complete: function(xhr) {
+                  var col_h = Math.max($("#panel_news").height(), $("#panel_slide").height());
+                  $("#panel_news").css("height", col_h);
+                  $("#panel_slide").css("height", col_h);
+
+                  $("#wait").fadeOut(); 
+                }
+              });
+            }
+          });
+        }
+      });
     });
   </script>
 

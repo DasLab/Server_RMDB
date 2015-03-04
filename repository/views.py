@@ -27,39 +27,13 @@ import time
 
 
 def index(request):
-	news = NewsItem.objects.all().order_by('-date')[:10]
-	entries = RMDBEntry.objects.all().order_by('-creation_date')
-	entries_list = set()
-	for e in entries:
-		entries_list.add(e.rmdb_id)
-		if len(entries_list) == 10:
-			break
-	entries = []
-	for e in entries_list:
-		entries.append(RMDBEntry.objects.filter(rmdb_id=e).order_by('-creation_date')[0])
-
-	entries_list = []
-	for e in entries:
-		cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
-		rmdb_id = e.rmdb_id
-		for c in ConstructSection.objects.filter(entry=e).values('name').distinct():
-			name = c['name']
-		e_temp = {'cid':cid, 'name':name, 'rmdb_id':rmdb_id}
-		entries_list.append(e_temp)
-
-	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-
-	return render_to_response(HTML_PATH['index'], {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints, 'news':news, 'entries':entries_list}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['index'], {}, context_instance=RequestContext(request))
 
 def browse(request):
-	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-
 	constructs_general = get_rmdb_category('general')
 	constructs_puzzle = get_rmdb_category('puzzle')
 	constructs_eterna = get_rmdb_category('eterna')
-
-	return render_to_response(HTML_PATH['browse'], {'constructs_general':constructs_general, 'constructs_puzzle':constructs_puzzle, 'constructs_eterna':constructs_eterna, 'N_all':N_all, 'N_general':N_all-N_puzzle-N_eterna, 'N_puzzle':N_puzzle, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
-
+	return render_to_response(HTML_PATH['browse'], {'constructs_general':constructs_general, 'constructs_puzzle':constructs_puzzle, 'constructs_eterna':constructs_eterna}, context_instance=RequestContext(request))
 
 def specs(request, section):
 	if len(section) > 0:
@@ -100,8 +74,7 @@ def tutorial_mapseeker(request):
 	return render_to_response(HTML_PATH['tt_mapseeker'], {}, context_instance=RequestContext(request))
 
 def about(request):
-	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-	return render_to_response(HTML_PATH['about'], {'N_all':N_all, 'N_RNA':N_RNA, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['about'], {}, context_instance=RequestContext(request))
 
 def license(request):
 	return render_to_response(HTML_PATH['license'], {}, context_instance=RequestContext(request))
@@ -138,17 +111,14 @@ def validate(request):
 def detail(request, rmdb_id):
 	try:
 		entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
-		maxlen = 256
-		maxlen_flag = False
-		constructs = ConstructSection.objects.filter(entry=entry)
-		for c in constructs:
-			c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
-			if len(c.datas) > maxlen:
-				maxlen_flag = True
+		if os.path.exists('%s/files/%s/%s_%s.xls' % (ISATAB_FILE_DIR, entry.rmdb_id, entry.rmdb_id, entry.version)):
+			is_isatab = True
+		else:
+			is_isatab = False
 	except (RMDBEntry.DoesNotExist, IndexError):
 		raise Http404
 
-	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':maxlen_flag}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
 
 
 def predict(request):

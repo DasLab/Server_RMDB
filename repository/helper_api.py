@@ -1,8 +1,45 @@
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 
 from rmdb.repository.models import *
+from helper_stats import *
 
 import simplejson
+
+
+def api_stats(request):
+	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
+	json = {'N_all':N_all, 'N_RNA':N_RNA, 'N_puzzle':N_puzzle, 'N_eterna':N_eterna, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints}
+	return HttpResponse(simplejson.dumps(json), mimetype='application/json')
+
+
+def api_latest(request):
+	entries = RMDBEntry.objects.all().order_by('-creation_date')
+	entries_list = set()
+	for e in entries:
+		entries_list.add(e.rmdb_id)
+		if len(entries_list) == 10:
+			break
+	entries = []
+	for e in entries_list:
+		entries.append(RMDBEntry.objects.filter(rmdb_id=e).order_by('-creation_date')[0])
+
+	entries_list = []
+	for e in entries:
+		cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
+		rmdb_id = e.rmdb_id
+		for c in ConstructSection.objects.filter(entry=e).values('name').distinct():
+			name = c['name']
+		e_temp = {'cid':cid, 'name':name, 'rmdb_id':rmdb_id}
+		entries_list.append(e_temp)
+	return HttpResponse(simplejson.dumps(entries_list), mimetype='application/json')
+
+
+def api_news(request):
+	news = NewsItem.objects.all().order_by('-date')[:10]
+	json = {}
+	for i, n in enumerate(news):
+		json[i] = {'title':n.title, 'date':n.date.strftime('%b %d, %Y')}
+	return HttpResponse(simplejson.dumps(json), mimetype='application/json')
 
 
 def get_constructs_by_ids():

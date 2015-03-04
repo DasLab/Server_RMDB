@@ -21,7 +21,7 @@
               				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
-								<span class="badge">{{ N_all }}</span>
+								<span class="badge" id="N_all"></span>
 							</p>
 						</a>
 						<a class="list-group-item" id="buttonGeneral">
@@ -31,7 +31,7 @@
               				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
-								<span class="badge">{{ N_general }}</span>
+								<span class="badge" id="N_general"></span>
 							</p>
 						</a>
 						<a class="list-group-item" id="buttonPuzzle">
@@ -41,7 +41,7 @@
               				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
-								<span class="badge">{{ N_puzzle }}</span>
+								<span class="badge" id="N_puzzle"></span>
 							</p>
 						</a>
 						<a class="list-group-item" id="buttonEteRNA">
@@ -51,7 +51,7 @@
               				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
-								<span class="badge">{{ N_eterna }}</span>
+								<span class="badge" id="N_eterna"></span>
 							</p>
 						</a>
 					</div>
@@ -257,11 +257,23 @@
 
 			$("#sidebar").css("width", $("#sidebar").width());
 			$("#sidebar").affix({
-      			offset: {
-      		  	top: $("#main").position().top
-      			}
+      			offset: { top: $("#main").position().top }
 			});	
 			
+			$.ajax({
+				url: '/repository/api/index/stats/',
+				dataType: 'json',
+				async: true,
+				success: function(data) {
+					$("#N_all").text(data.N_all);
+					$("#N_general").text(data.N_all - data.N_puzzle - data.N_eterna);
+					$("#N_puzzle").text(data.N_puzzle);
+					$("#N_eterna").text(data.N_eterna);
+				}
+			});
+
+
+
 			$(".category").each(function () {
 				$(this).find(".panel-body>.subpanel:first>.panel-collapse").collapse("show");
 				$(this).find(".panel-body>.subpanel:first>.panel-collapse").siblings().find(".panel-title>.icon")
