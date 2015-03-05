@@ -277,36 +277,88 @@
 		<div class="col-md-10" id="panel_tit">
 			<h2 id="tag_name_main"></h2>
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-5">
 					<h2 style="margin-top:0px;">
 						{% autoescape off %}
 					    <span class="label label-default">{{rmdb_id|color_rmdb_id}}</span>
 					    {% endautoescape %}
 					</h2>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-7">
 					<div class="btn-group pull-right" role="group">
+						<div class="btn-group">
+						    {% if latest %}
+								<button type="button" class="btn btn-success" aria-expanded="false">
+									<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+						    		&nbsp;&nbsp;Latest
+								</button>
+						    {% else %}
+								<button type="button" class="btn btn-danger" aria-expanded="false">
+									<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						    		&nbsp;&nbsp;Superceded
+								</button>
+						    {% endif %}
+
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								&nbsp;&nbsp;History&nbsp;&nbsp;
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+								{% for e in supercede_list %}
+									{% if e.rmdb_id == rmdb_id %}
+										{% if forloop.first %}
+										<li class="li-green"><a>
+											<span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+											&nbsp;&nbsp;{{e.rmdb_id}}
+										</a></li>
+										{% else %}
+										<li class="li-danger"><a>
+											<span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
+											&nbsp;&nbsp;{{e.rmdb_id}}
+										</a></li>
+										{% endif %}
+									{% else %}
+										{% if forloop.first %}
+										<li class="li-green"><a href="/repository/detail/{{e.rmdb_id}}">
+											<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+											&nbsp;&nbsp;{{e.rmdb_id}}
+										</a></li>
+										{% else %}
+										<li class="li-warning"><a href="/repository/detail/{{e.rmdb_id}}">
+											<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+											&nbsp;&nbsp;{{e.rmdb_id}}
+										</a></li>
+										{% endif %}
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</div>
+
 						<button type="button" class="btn btn-default" aria-expanded="false" id="btn-set">
 							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 							&nbsp;&nbsp;Settings&nbsp;&nbsp;
 						</button>
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-							&nbsp;&nbsp;Download&nbsp;&nbsp;
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a id="dl_rdat" download>
-								<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
-								&nbsp;&nbsp;RDAT
-							</a></li>
-							{% if not is_istab %} 
-							<li><a id="dl_isatab" download>
-								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-								&nbsp;&nbsp;ISATAB
-							</a></li>
-							{% endif %} 
-						</ul>
+
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+								&nbsp;&nbsp;Download&nbsp;&nbsp;
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+								<li><a id="dl_rdat" download>
+									<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
+									&nbsp;&nbsp;RDAT
+								</a></li>
+								{% if not is_istab %} 
+								<li><a id="dl_isatab" download>
+									<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+									&nbsp;&nbsp;ISATAB
+								</a></li>
+								{% endif %} 
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
