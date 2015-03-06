@@ -108,27 +108,27 @@ label {
 }
 
 li.nav-general {
-  background-color: #903;
+  background-color: #ff5c2b; /*#903;*/
 }
 
 li.nav-general > a:hover {
-  background-color: #eaa;
+  background-color: #ff7c55; /*#eaa;*/
 }
 
 li.nav-puzzle {
-  background-color: #080;
+  background-color: #29be92; /*#080;*/
 }
 
 li.nav-puzzle > a:hover {
-  background-color: #aea;
+  background-color: #53cba7; /*#aea;*/
 }
 
 li.nav-eterna {
-  background-color: #112d52;
+  background-color: #5496d7; /*#112d52;*/
 }
 
 li.nav-eterna > a:hover {
-  background-color: #7cafd3;
+  background-color: #76abdf; /*#7cafd3;*/
 }
 
 li.nav-general > a, li.nav-puzzle > a, li.nav-eterna> a  {
