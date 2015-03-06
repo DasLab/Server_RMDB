@@ -30,10 +30,7 @@ def index(request):
 	return render_to_response(HTML_PATH['index'], {}, context_instance=RequestContext(request))
 
 def browse(request):
-	constructs_general = get_rmdb_category('general')
-	constructs_puzzle = get_rmdb_category('puzzle')
-	constructs_eterna = get_rmdb_category('eterna')
-	return render_to_response(HTML_PATH['browse'], {'constructs_general':constructs_general, 'constructs_puzzle':constructs_puzzle, 'constructs_eterna':constructs_eterna}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['browse'], {}, context_instance=RequestContext(request))
 
 def specs(request, section):
 	if len(section) > 0:

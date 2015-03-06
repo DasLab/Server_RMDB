@@ -74,66 +74,7 @@
               			&nbsp;&nbsp;General
               		</h3>
 				</div>
-				<div class="panel-body">
-				{% for c in constructs_general %}
-					{% if c.entries %}
-					<div class="panel panel-default subpanel">
-						<div id="heading{{ c.name|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryGeneral" href="#{{ c.name|slugify }}" aria-expanded="true" aria-controls="{{ c.name|slugify }}">
-							<h3 class="panel-title" >
-								<span class="icon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-              					&nbsp;&nbsp;<span>{{ c.name }}</span>
-							</h3>
-						</div>
-						<div id="{{ c.name|slugify }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ c.name|slugify }}">
-							<div class="panel-body">
-								<ul>
-								{% with 'Standard Titration Mutate MOHCA' as list %}
-								{% for i in list.split %}
-									{% if c|get_construct_dataset_type:i %}
-										<li>
-											<h3>
-												{% if i == "Standard" %}
-													<span class="label label-primary">Standard State</span>
-												{% endif %}
-												{% if i == "Titration" %}
-													<span class="label label-info">Titration</span>
-												{% endif %}
-												{% if i == "Mutate" %}
-													<span class="label label-success">Mutate and Map</span>
-												{% endif %}
-												{% if i == "MOHCA" %}
-													<span class="label label-danger">MOHCA</span>
-												{% endif %}
-											</h3>
-										</li>
-										<div class="row">
-										{% for e in c.entries %}
-										{% if i in e.get_type_display %} 
-											<div class="col-md-4 entry-list">
-												<a href="/repository/detail/{{ e.rmdb_id }}" class="thumbnail">
-													<p class="lead">
-														{% autoescape off %}
-														<span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
-														{% endautoescape %}
-														<br/>
-														<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
-														<br/>
-													</p>
-												</a>
-											</div>
-										{% endif %}
-										{% endfor %}
-										</div>
-									{% endif %}
-								{% endfor %}
-								{% endwith %}
-								</ul>
-							</div>
-						</div>
-					</div>
-					{% endif %}
-				{% endfor %}
-				</div>
+				<div class="panel-body" id="panel_general"></div>
 			</div>
 
 			<div class="panel panel-success category" id="categoryPuzzle" role="tablist" aria-multiselectable="true">
@@ -144,66 +85,7 @@
               			&nbsp;&nbsp;RNA Puzzles
               		</h3>
 				</div>
-				<div class="panel-body">
-				{% for c in constructs_puzzle %}
-					{% if c.entries %}
-					<div class="panel panel-default subpanel">
-						<div id="heading{{ c.name|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryPuzzle" href="#{{ c.name|slugify }}" aria-expanded="true" aria-controls="{{ c.name|slugify }}">
-							<h3 class="panel-title" >
-								<span class="icon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-              					&nbsp;&nbsp;<span>{{ c.name }}</span>
-							</h3>
-						</div>
-						<div id="{{ c.name|slugify }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ c.name|slugify }}">
-							<div class="panel-body">
-								<ul>
-								{% with 'Standard Titration Mutate MOHCA' as list %}
-								{% for i in list.split %}
-									{% if c|get_construct_dataset_type:i %}
-										<li>
-											<h3>
-												{% if i == "Standard" %}
-													<span class="label label-primary">Standard State</span>
-												{% endif %}
-												{% if i == "Titration" %}
-													<span class="label label-info">Titration</span>
-												{% endif %}
-												{% if i == "Mutate" %}
-													<span class="label label-success">Mutate and Map</span>
-												{% endif %}
-												{% if i == "MOHCA" %}
-													<span class="label label-danger">MOHCA</span>
-												{% endif %}
-											</h3>
-										</li>
-										<div class="row">
-										{% for e in c.entries %}
-										{% if i in e.get_type_display %} 
-											<div class="col-md-4 entry-list">
-												<a href="/repository/detail/{{ e.rmdb_id }}" class="thumbnail">
-													<p class="lead">
-														{% autoescape off %}
-														<span class="label label-default">{{ e.rmdb_id|color_rmdb_id }}</span>
-														{% endautoescape %}
-														<br/>
-														<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
-														<br/>
-													</p>
-												</a>
-											</div>
-										{% endif %}
-										{% endfor %}
-										</div>
-									{% endif %}
-								{% endfor %}
-								{% endwith %}
-								</ul>
-							</div>
-						</div>
-					</div>
-					{% endif %}
-				{% endfor %}
-				</div>
+				<div class="panel-body" id="panel_puzzle"></div>
 			</div>
 
 			<div class="panel panel-info category" id="categoryEteRNA" role="tablist" aria-multiselectable="true">
@@ -214,34 +96,8 @@
               			&nbsp;&nbsp;EteRNA
               		</h3>
 				</div>
-				<div class="panel-body" id="panel-eterna">
-				{% for c in constructs_eterna %}
-					{% for e in c.entries %}
-					<div class="panel panel-default subpanel eterna-panel">
-						<div id="heading{{ e.rmdb_id|slugify }}" class="panel-heading" role="tab" data-toggle="collapse" data-parent="#categoryEteRNA" href="#{{ e.rmdb_id|slugify }}" aria-expanded="true" aria-controls="{{ e.rmdb_id|slugify }}">
-							<div class="panel-title" >
-								<span class="icon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-              					&nbsp;&nbsp;
-								<span class="label label-default" style="font-size:16px;">
-									{% autoescape off %}
-									{{ e.rmdb_id|color_eterna_id }}
-									{% endautoescape %}
-								</span>
-							</div>
-						</div>
-						<div id="{{ e.rmdb_id|slugify }}" class="panel-collapse collapse eterna-subpanel" role="tabpanel" aria-labelledby="heading{{ e.rmdb_id|slugify }}">
-							<div class="panel-body">
-								<a href="/repository/detail/{{ e.rmdb_id }}" class="row browse-rotate thumbnail pull-left" style="left:-200px;">
-									<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
-								</a>
-							</div>
-						</div>
-					</div>
-					{% endfor %}
-				{% endfor %}
-				</div>
+				<div class="panel-body" id="panel_eterna"></div>
 			</div>
-
 		</div>
 	</div>
 </div>
@@ -249,78 +105,8 @@
 
 
 {% block script %}
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$(".dropdown-toggle").removeClass("active");
-			$("#nav_browse").addClass("active");
-	    	$("#nav_logo").css("text-decoration","none");
-
-			$("#sidebar").css("width", $("#sidebar").width());
-			$("#sidebar").affix({
-      			offset: { top: $("#main").position().top }
-			});	
-			
-			$.ajax({
-				url: '/repository/api/index/stats/',
-				dataType: 'json',
-				async: true,
-				success: function(data) {
-					$("#N_all").text(data.N_all);
-					$("#N_general").text(data.N_all - data.N_puzzle - data.N_eterna);
-					$("#N_puzzle").text(data.N_puzzle);
-					$("#N_eterna").text(data.N_eterna);
-				}
-			});
-
-
-
-			$(".category").each(function () {
-				$(this).find(".panel-body>.subpanel:first>.panel-collapse").collapse("show");
-				$(this).find(".panel-body>.subpanel:first>.panel-collapse").siblings().find(".panel-title>.icon")
-					.removeClass("glyphicon-chevron-right")
-					.addClass("glyphicon-chevron-down");;
-			});
-			$('.panel-collapse').on('show.bs.collapse', function () {
-				$(this).siblings().find(".panel-title>.icon")
-					.removeClass("glyphicon-chevron-right")
-					.addClass("glyphicon-chevron-down");
-			});
-			$('.panel-collapse').on('hidden.bs.collapse', function () {
-				$(this).siblings().find(".panel-title>.icon")
-					.removeClass("glyphicon-chevron-down")
-					.addClass("glyphicon-chevron-right");
-			});
-
-			$("#buttonAll, #buttonGeneral, #buttonPuzzle, #buttonEteRNA").on("click", function () {
-				$("#categoryGeneral, #categoryPuzzle, #categoryEteRNA").hide();
-				$("#buttonAll, #buttonGeneral, #buttonPuzzle, #buttonEteRNA").removeClass("active");
-			});
-
-			$("#buttonAll").on("click", function () {
-				$("#categoryGeneral, #categoryPuzzle, #categoryEteRNA").show();
-				$("#buttonAll").addClass("active");
-			    $('html, body').stop().animate({scrollTop: 0}, 500);
-			});
-
-			$("#buttonGeneral").on("click", function () {
-				$("#categoryGeneral").show();
-				$("#buttonGeneral").addClass("active");
-			    $('html, body').stop().animate({scrollTop: 0}, 500);
-			});
-
-			$("#buttonPuzzle").on("click", function () {
-				$("#categoryPuzzle").show();
-				$("#buttonPuzzle").addClass("active");
-			    $('html, body').stop().animate({scrollTop: 0}, 500);
-			});
-
-			$("#buttonEteRNA").on("click", function () {
-				$("#categoryEteRNA").show();
-				$("#buttonEteRNA").addClass("active");
-			    $('html, body').stop().animate({scrollTop: 0}, 500);
-			});
-
-		});
-	</script>
+  <script type="text/javascript" src="/site_media/js/index_util.js"></script> 
+  <script type="text/javascript" src="/site_media/js/index_browse.js"></script> 
 
 {% endblock %}
+

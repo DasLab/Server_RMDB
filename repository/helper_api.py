@@ -42,6 +42,13 @@ def api_news(request):
 	return HttpResponse(simplejson.dumps(json), mimetype='application/json')
 
 
+def api_browse(request, keyword):
+	constructs = get_rmdb_category(keyword)
+	return HttpResponse(simplejson.dumps(constructs), mimetype='application/json')
+
+
+
+
 def get_constructs_by_ids():
 	constructs = [cdict.values()[0] for cdict in ConstructSection.objects.values('name').distinct()]
 	return constructs

@@ -14,10 +14,8 @@ def get_rmdb_stats():
 	N_eterna = 0
 	N_constructs = 0
 	N_datapoints = 0
-	# visited_entries = []
 	for rmdb_id in rmdb_ids:
 		entries = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')
-		# print rmdb_id
 		if len(entries) >= 0:
 			N_all += 1
 			N_RNA += len(entries)
@@ -26,15 +24,9 @@ def get_rmdb_stats():
 				N_puzzle += 1
 			if 'ETERNA' in rmdb_id:
 				N_eterna += 1
-			# print [e for e in entries]
 			e = entries[0]
 		N_datapoints += e.datacount
-		N_constructs += e.constructcount
-		
-		# if e.rmdb_id[:5] not in visited_entries:
-		# N_datapoints += e.datacount
-		# N_constructs += e.constructcount
-		# visited_entries.append(e.rmdb_id[:5])
+		N_constructs += e.constructcount		
 	return (N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints)
 
 
@@ -51,19 +43,27 @@ def get_rmdb_category(flag):
 		names_d = ConstructSection.objects.exclude(name__icontains='EteRNA').exclude(name__icontains='Puzzle').values('name').distinct()
 
 	names_d = names_d.order_by( 'name' )    
-	constructs = [BrowseResults() for i in range(len(names_d))]
+	constructs = []
 
 	for i, c in enumerate(names_d):
-		constructs[i].name = c['name']
 		entries = RMDBEntry.objects.filter(constructsection__name=c['name']).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
-		constructs[i].entries = []
 		entry_ids = []
+		SS_entries, MA_entries, MM_entries, TT_entries = [], [], [], []
+
 		for e in entries:
 			if e.rmdb_id not in entry_ids:
 				entry_ids.append(e.rmdb_id)
 				e.cid = ConstructSection.objects.filter( entry = e ).values( 'id' )[ 0 ][ 'id' ]
-				constructs[i].entries.append(e)
+				if e.type == "SS":
+					SS_entries.append({'rmdb_id':e.rmdb_id, 'cid':e.cid})
+				elif e.type == "MM":
+					MM_entries.append({'rmdb_id':e.rmdb_id, 'cid':e.cid})
+				elif e.type == "MA":
+					MA_entries.append({'rmdb_id':e.rmdb_id, 'cid':e.cid})
+				elif e.type == "TT":
+					TT_entries.append({'rmdb_id':e.rmdb_id, 'cid':e.cid})
 
+		constructs.append({'name':c['name'], 'SS_entry':SS_entries, 'MM_entry':MM_entries, 'MA_entry':MA_entries, 'TT_entry':TT_entries})		
 	return constructs
 
 
