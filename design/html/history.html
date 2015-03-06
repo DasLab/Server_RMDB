@@ -41,13 +41,7 @@
 				</h2>
 			</div>
 			<div class="panel-body">
-				<div class="col-md-12">
-					{% autoescape off %}
-					{% for log in hist %}
-						{{ log }}
-					{% endfor %}
-					{% endautoescape %}
-				</div>
+				<div class="col-md-12" id="panel_log"></div>
 			</div>
 		</div>
 	</div>
@@ -62,12 +56,19 @@
 			$('.dropdown-toggle').removeClass("active");
 			$("#nav_about").addClass("active");
 	    	$("#nav_logo").css("text-decoration","none");
+
+	    	$.ajax({
+				url: '/repository/api/index/history/',
+				dataType: 'text',
+				async: true,
+				success: function(data) { $("#panel_log").html(data); }
+	    	});
+
 	    	$(".clickable").on("click", function () {
 	    		var click_id = $(this).attr("id")
 	    		if ( click_id == "nav_contact" | click_id == "nav_cite") {
 	    			$("#wait").hide();
 	    		}
-	    		
 	    	});
 		});
 	</script>

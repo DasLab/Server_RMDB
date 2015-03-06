@@ -2,6 +2,7 @@ from rmdb.repository.models import *
 from rmdb.settings import *
 
 import glob
+import textwrap
 import time
 
 
@@ -54,16 +55,21 @@ def get_rmdb_category(flag):
 			if e.rmdb_id not in entry_ids:
 				entry_ids.append(e.rmdb_id)
 				e.cid = ConstructSection.objects.filter( entry = e ).values( 'id' )[ 0 ][ 'id' ]
+				comment = e.comments.split()
+				for i, m in enumerate(comment):
+					if len(m) > 40:
+						comment[i] = ' '.join(textwrap.wrap(m, 40))
+				entry = {'rmdb_id':e.rmdb_id, 'cid':e.cid, 'version':e.version, 'construct_count':e.constructcount, 'data_count':e.datacount, 'authors':e.authors, 'comments':' '.join(comment), 'title':e.publication.title, 'latest':e.latest}
 				if e.type == "SS":
-					SS_entries.append({'rmdb_id':e.rmdb_id, 'cid':e.cid})
+					SS_entries.append(entry)
 				elif e.type == "MM":
-					MM_entries.append({'rmdb_id':e.rmdb_id, 'cid':e.cid})
+					MM_entries.append(entry)
 				elif e.type == "MA":
-					MA_entries.append({'rmdb_id':e.rmdb_id, 'cid':e.cid})
+					MA_entries.append(entry)
 				elif e.type == "TT":
-					TT_entries.append({'rmdb_id':e.rmdb_id, 'cid':e.cid})
+					TT_entries.append(entry)
 
-		constructs.append({'name':c['name'], 'SS_entry':SS_entries, 'MM_entry':MM_entries, 'MA_entry':MA_entries, 'TT_entry':TT_entries})		
+		constructs.append({'name':c['name'], 'SS_entry':SS_entries, 'MM_entry':MM_entries, 'MA_entry':MA_entries, 'TT_entry':TT_entries})	
 	return constructs
 
 
@@ -107,4 +113,4 @@ def get_history():
 		lines.insert(0, "<i>%s</i><br/>" % date_string)
 		log_content.insert(0, "".join(lines))
 
-	return log_content
+	return "".join(log_content)

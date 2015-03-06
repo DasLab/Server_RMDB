@@ -47,6 +47,10 @@ def api_browse(request, keyword):
 	return HttpResponse(simplejson.dumps(constructs), mimetype='application/json')
 
 
+def api_history(request):
+	return HttpResponse(get_history())
+
+
 
 
 def get_constructs_by_ids():

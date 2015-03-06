@@ -77,8 +77,7 @@ def license(request):
 	return render_to_response(HTML_PATH['license'], {}, context_instance=RequestContext(request))
 
 def history(request):
-	all_log = get_history()
-	return render_to_response(HTML_PATH['history'], {'hist': all_log}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['history'], {}, context_instance=RequestContext(request))
 
 
 def validate(request):
