@@ -59,7 +59,7 @@ Complete redesign of RMDB front-end interface graphics, reorganization of site m
 -\Reorganized python code into multiple helper file classes for easier code view.
 -\Ignored .pyc from GitHub repo.
 -\Declared constant path for easier file organization.
--\Dropped dependence of jQuery UI.
+-\Dropped dependency of jQuery UI.
 -\Migrated structure server into repository branch.
 -\Cleaned-up file directories, removing deprecated files, restructuring of file organization.
 -\Designed new RMDB site logo.

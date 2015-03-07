@@ -1,0 +1,31 @@
+#RMDB 2.1 BETA, phase I
+!t47
+
+Complete redesign of RMDB front-end interface graphics, reorganization of site map, bug fixes for user login system, improvement for RDAT submission system.
+
+-Home page
+-\Switched to <i>json</i> format for stats, latest entries, and news loading.
+
+-Browse
+-\Animated panel collapse icons.
+-\Switched to <i>json</i> format for browse list retrieval with faster rendering.
+-\Enabled switch of view between thumbnail and list.
+-\Unified interface layout for browse and search.
+
+-Detail
+-\Reorganized layout, moving annotations to side panels which are slidable. 
+-\Migrate SVG codes to d3.js, dropped dependency of protovis.js.
+-\Added barplot axes, legend, title, and axes labels; added page browsing for row barplots; enabled clearing and saving of svg files; fixed barplot value issues.
+-\Switched to and cached <i>json</i> format based data handling for webpage rendering. 
+-\Cancelled main heatmap display length limit; enabled cursor tracking for highlighting columns and rows in heatmap, added tooltip for datapoint annotation tooltip; enabled heatmap contrast adjustment by user.
+-\Added sequence overlay switch on heatmap; added sequence coloring switch; fixed mutation readout and highlighting, data value issues.
+-\Designed special data_annotation display for MOHCA and EteRNA entries, with row data_annotation appearing together with barplot.
+-\Enabled download for older version of RDAT files.
+-\Added 'supercede' tag for entries, pointing to latest entries of series.
+
+-Misc
+-\Combined and migrated site_data folder, thumbnails and construct_img.
+-\Scheduled database and RDAT files backup.
+-\Updated CSS style and color scheme for RMDB.
+-\Modified RMDB site logo.
+-\Designed new RMDB site icon.
