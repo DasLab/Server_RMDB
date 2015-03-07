@@ -1,5 +1,4 @@
 {% extends "design/html/_framework.html" %}
-{% load repository_extras %}
 
 {% block content %}
 <div class="panel-group" id="categories">
@@ -21,7 +20,7 @@
               				</h4>
 							<p class="list-group-item-text">
 								# Entries: 
-								<span class="badge">{{ N_all }}</span>
+								<span class="badge" id="N_all"></span>
 							</p>
 						</a>
 						<span class="list-group-item active">
@@ -29,22 +28,7 @@
 								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
               					&nbsp;&nbsp;Search Result
               				</h4>
-							<p class="list-group-item-text">
-								{% if entries_general %}
-									<a id="buttonGeneral" href="#categoryGeneral" style="color:inherit">
-										<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-	              						&nbsp;General # Entries
-	              					</a>: 
-									<span class="badge" >{{ N_general }}</span><br/>
-								{% endif %}
-								{% if entries_eterna %}
-									<a id="buttonEteRNA" href="#categoryEteRNA" style="color:inherit">
-										<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-	              						&nbsp;EteRNA # Entries
-	              					</a>: 
-									<span class="badge">{{ N_eterna }}</span>
-								{% endif %}
-							</p>
+							<p class="list-group-item-text" id="N_search"></p>
 						</span>
 					</div>
 				</div>
@@ -58,7 +42,6 @@
               </h2>
 			<br/>
 
-			{% if entries_general %}
 			<div class="panel panel-warning category" id="categoryGeneral" role="tablist" aria-multiselectable="true">
 				<div class="panel-heading">
 		            <h3 class="panel-title">
@@ -67,77 +50,10 @@
               		</h3>
 				</div>
 				<div class="panel-body">
-					<div class="col-md-12">
-						<table class="table table-hover table-striped">
-							<tr>
-								<th class="col-md-4"></th>
-								<th class="col-md-4"></th>
-								<th class="col-md-4"></th>
-							</tr>
-							{% for e in entries_general %}
-							<tr>
-								<td>
-									<br/>
-									<p>
-										<i>RMDB_ID:</i>
-										<span class="lead">
-											<a href="/repository/detail/{{ e.rmdb_id }}">
-												<span class="label label-default">
-													{% autoescape off %}
-													{{ e.rmdb_id|color_rmdb_id }}
-													{% endautoescape %}
-												</span>
-											</a>
-										</span>
-									</p>
-									<p>
-										<i>Experiment Type:</i>
-										<span class="lead">
-											{% if "Standard" in e.typename %}
-												<span class="label label-primary">Standard State</span>
-											{% endif %}
-											{% if "Titration" in e.typename %}
-												<span class="label label-info">Titration</span>
-											{% endif %}
-											{% if "Mutate" in e.typename %}
-												<span class="label label-success">Mutate and Map</span>
-											{% endif %}
-											{% if "MOHCA" in e.typename %}
-												<span class="label label-danger">MOHCA</span>
-											{% endif %}
-										</span>
-									</p>
-									<p>
-										<i>Version:</i> <mark>{{ e.version }}</mark>
-										<br/>
-										<i># of Construct:</i> <code>{{ e.constructcount }}</code>
-										<br/>
-										<i># of Data point:</i> <code>{{ e.datacount }}</code>
-									</p>
-								</td>
-								<td>
-									<p>
-										<h4>{% for c in e.constructs %} {{ c.name }} {% endfor %}</h4>
-									</p>
-									<p class="excerpt"><i>Authors:</i> {{ e.authors }}</p>
-									<p class="excerpt"><i>Comments:</i> {{ e.comments }}</p>
-								</td>
-								<td>
-									{% for c in e.constructs %}
-									<a href="/repository/detail/{{ e.rmdb_id }}" class="row thumbnail pull-left">
-										<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
-									</a>
-									{% endfor %}
-								</td>
-							</tr>
-							{% endfor %}
-						</table>
-					</div>
+					<div class="col-md-12" id="panel_general"></div>
 				</div>
 			</div>
-			{% endif %}
 
-			{% if entries_eterna %}
 			<div class="panel panel-info category" id="categoryEteRNA" role="tablist" aria-multiselectable="true">
 
 				<div class="panel-heading">
@@ -146,65 +62,17 @@
               			&nbsp;&nbsp;EteRNA
               		</h3>
 				</div>
-				<div class="panel-body" id="panel-eterna">
-					<div class="col-md-12">
-						<table class="table table-hover table-striped">
-							<tr>
-								<th class="col-md-4"></th>
-								<th class="col-md-8"></th>
-							</tr>
-							{% for e in entries_eterna %}
-							<tr>
-								<td>
-									<br/>
-									<p>
-										<i>RMDB_ID:</i>
-										<span class="lead">
-											<a href="/repository/detail/{{ e.rmdb_id }}">
-												<span class="label label-default">
-													{% autoescape off %}
-													{{ e.rmdb_id|color_eterna_id }}
-													{% endautoescape %}
-												</span>
-											</a>
-										</span>
-									</p>
-									<p>
-										<i>Experiment Type:</i>
-										<span class="lead">
-											<span class="label label-primary">Standard State</span>
-										</span>
-									</p>
-									<p>
-										<i>Version:</i> <mark>{{ e.version }}</mark>
-										<br/>
-										<i># of Construct:</i> <code>{{ e.constructcount }}</code>
-										<br/>
-										<i># of Data point:</i> <code>{{ e.datacount }}</code>
-									</p>
-								</td>
-								<td id="{{ e.rmdb_id }}" class="eterna-subpanel">
-									{% for c in e.constructs %}
-									<div style="height:200px;overflow:hidden;">
-										<a href="/repository/detail/{{ e.rmdb_id }}" class="row browse-rotate thumbnail pull-left" style="left:-300px;">
-											<img src='/site_data/thumbs/{{ e.cid }}/{{ c.name|slugify }}.gif'/>
-										</a>
-									</div>
-									{% endfor %}
-								</td>
-							</tr>
-							{% endfor %}
-						</table>
-					</div>
+				<div class="panel-body">
+					<div class="col-md-12" id="panel_eterna"></div>
 				</div>
 			</div>
-			{% endif %}
 
-			{% if not entries_general %}
-			{% if not entries_eterna %}
-			<div class="panel panel-danger category" id="categoryGeneral" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-danger category" id="categoryNA" role="tablist" aria-multiselectable="true" style="display:none;">
 				<div class="panel-heading">
-		            <h3 class="panel-title">No Match Found</h3>
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+		            	&nbsp;&nbsp;No Match Found
+		            </h3>
 				</div>
 				<div class="panel-body">
 					<div class="col-md-12">
@@ -212,8 +80,6 @@
 					</div>
 				</div>
 			</div>
-			{% endif %}
-			{% endif %}
 
 		</div>
 	</div>
@@ -222,23 +88,7 @@
 
 
 {% block script %}
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$(".dropdown-toggle").removeClass("active");
-			$("#nav_browse").addClass("active");
-	    	$("#nav_logo").css("text-decoration","none");
-
-			$("#sidebar").css("width", $("#sidebar").width());
-			$("#sidebar").affix({
-      			offset: {
-      		  	top: $("#main").position().top
-      			}
-			});	
-
-			$("#buttonGeneral, #buttonEteRNA").on("click", function () {
-				$('html, body').stop().animate({scrollTop: $($(this).attr("href")).offset().top - 75}, 500);
-			});
-		});
-	</script>
+	<script type="text/javascript" src="/site_media/js/index_util.js"></script> 
+	<script type="text/javascript" src="/site_media/js/index_search.js"></script>
 
 {% endblock %}

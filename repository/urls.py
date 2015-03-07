@@ -54,6 +54,7 @@ urlpatterns = patterns('repository.views',
     (r'^api/index/news/$', 'api_news'),
     (r'^api/index/history/$', 'api_history'),
     (r'^api/index/browse/(?P<keyword>\w+)$', 'api_browse'),
+    (r'^api/index/search/(?P<keyword>\w+)/(?P<sstring>\w+)$', 'api_search'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

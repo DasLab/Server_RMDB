@@ -2,7 +2,9 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse
 
 from rmdb.repository.models import *
 from helper_stats import *
+from helper_search import *
 
+from itertools import chain
 import simplejson
 
 
@@ -42,13 +44,18 @@ def api_news(request):
 	return HttpResponse(simplejson.dumps(json), mimetype='application/json')
 
 
+def api_history(request):
+	return HttpResponse(get_history())
+
+
 def api_browse(request, keyword):
 	constructs = get_rmdb_category(keyword)
 	return HttpResponse(simplejson.dumps(constructs), mimetype='application/json')
 
 
-def api_history(request):
-	return HttpResponse(get_history())
+def api_search(request, keyword, sstring):
+	sstring = sstring.replace('_', ' ').strip()
+	return HttpResponse(simplejson.dumps(simple_search_list(sstring, keyword)), mimetype='application/json')
 
 
 

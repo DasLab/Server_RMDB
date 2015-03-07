@@ -82,6 +82,7 @@ function fill_category_thumb(data, tag) {
 }
 
 
+
 $(document).ready(function() {
 	$(".dropdown-toggle").removeClass("active");
 	$("#nav_browse").addClass("active");
@@ -184,8 +185,6 @@ $(document).ready(function() {
 		$("#buttonEteRNA").addClass("active");
 	    $('html, body').stop().animate({scrollTop: 0}, 500);
 	});
-
-	$("#view_list, #view_thumb").on("click", function() {$(window).unbind();});
 
 	$("input:radio").on("change", function () {
 		$("#wait").fadeIn();

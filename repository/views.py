@@ -20,7 +20,6 @@ from helper_predict import *
 from helper_register import *
 from helper_stats import *
 
-from itertools import chain
 import simplejson
 import time
 # from sys import stderr
@@ -190,36 +189,7 @@ def predict(request):
 
 
 def search(request):
-	sstring = request.GET['searchtext'].strip()
-	entry_by_name = RMDBEntry.objects.filter(constructsection__name__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
-	entry_by_id = RMDBEntry.objects.filter(rmdb_id__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
-	entry_by_comment = RMDBEntry.objects.filter(comments__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
-	entry_by_desp = RMDBEntry.objects.filter(description__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
-	entry_by_data_anno = RMDBEntry.objects.filter(constructsection__datasection__dataannotation__value__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
-	entry_by_anno = RMDBEntry.objects.filter(entryannotation__value__icontains=sstring).filter(revision_status='PUB').order_by( 'rmdb_id', '-version' )
-	entry_all = list(chain(entry_by_name, entry_by_id, entry_by_desp, entry_by_data_anno, entry_by_anno, entry_by_comment))
-	
-	entry_ids = []
-	entries_general = []
-	entries_eterna = []
-	etypenames = dict(ENTRY_TYPE_CHOICES)
-
-	for e in entry_all:
-		if e.rmdb_id not in entry_ids:
-			e.constructs = ConstructSection.objects.filter(entry=e).values('name').distinct()
-			e.typename = etypenames[e.type]
-			e.cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
-
-			entry_ids.append(e.rmdb_id)
-			if 'ETERNA' in e.rmdb_id:
-				entries_eterna.append(e)
-			else:
-				entries_general.append(e)
-
-	(N_all, _, _, _, _, _) = get_rmdb_stats()
-	N_general = len(entries_general)
-	N_eterna = len(entries_eterna)
-	return render_to_response(HTML_PATH['search_res'], {'entries_general':entries_general, 'entries_eterna':entries_eterna, 'sstring':sstring, 'N_all':N_all, 'N_general':N_general, 'N_eterna':N_eterna}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['search_res'], {}, context_instance=RequestContext(request))
 
 
 def advanced_search(request):
