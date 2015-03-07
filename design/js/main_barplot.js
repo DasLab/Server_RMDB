@@ -230,17 +230,20 @@ $(document).ready(function() {
 	$("#svg_top").on("click", function() {
 		idx = 0;
 		make_barplot(idx);
+		show_tag_ann(idx);
 		$("#page_num").val((idx+1).toString());
 	});
 	$("#svg_bottom").on("click", function() {
 		idx = n_rows-1;
 		make_barplot(idx);
+		show_tag_ann(idx);
 		$("#page_num").val((idx+1).toString());
 	});
 	$("#svg_up").on("click", function() {
 		if (idx > 0) {
 			idx -= 1;
 			make_barplot(idx);
+			show_tag_ann(idx);
 		}
 		$("#page_num").val((idx+1).toString());
 	});
@@ -248,6 +251,7 @@ $(document).ready(function() {
 		if (idx < n_rows-1) {
 			idx += 1;
 			make_barplot(idx);
+			show_tag_ann(idx);
 		}
 		$("#page_num").val((idx+1).toString());
 	});
@@ -297,6 +301,7 @@ $(document).ready(function() {
 			if (idx_tmp > n_rows-1) {idx_tmp = n_rows-1;}
 			idx = idx_tmp-1;
 			make_barplot(idx);
+			show_tag_ann(idx);
 			$("#page_num").val((idx+1).toString());
 		}
 	});

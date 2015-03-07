@@ -1,5 +1,5 @@
 function wbr(str) {  
-	return str.match(/.{1,40}/g);
+	return str.match(/.{1,80}/g);
 }
 
 function show_tag_ann(tag_idx) {
@@ -30,7 +30,13 @@ function show_tag_ann(tag_idx) {
 		tag_html += '</td></tr>';
 		data_ann_idx += 1;
 	}
-	$(tag_html).insertAfter(".tag-temp");
+	$(tag_html).insertAfter("#tag_barplot");
+	$("#img_panel").css("height", Math.min( parseInt($("#tag_browse").css("height")) + parseInt($("#svg_parent").css("height")) + 25, 
+		$(window).height() - parseInt($(".navbar-fixed-top").css("height"))));
+	$("#img_panel").css("top", $(window).height() - parseInt($("#img_panel").css("height")));
+	$("#img-buttons").css("margin-top", 
+		parseInt($("#left-buttons").css("height"))+parseInt($("#left-buttons").css("margin-top"))
+		-parseInt($("#img_panel").css("top"))+parseInt($(".navbar-fixed-top").css("height"))-1);
 }
 
 function fill_tags() {
@@ -104,88 +110,38 @@ function fill_tags() {
     var dat_ann_html = '';
     if (tags.type.indexOf('MOHCA')!=-1 | tags.name.indexOf('EteRNA')!=-1) {
 
-	    $("#tag_data_switch").html('<button id="tag_ann_switch" class="btn btn-default all"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Show All</button>');
+	    $("#tag_data_switch").html('<button id="tag_ann_switch" class="btn btn-default"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Show All</button>');
     	$("#tag_ann_switch").bind("click", function() {
-    		$(".tag-temp").remove();
-    		if ($(this).hasClass("all")) {
-    			$(this).html('<span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Show All').removeClass("all");
+			dat_ann_html = '';
+			$(this).fadeOut();
+		    for (i in tags.data_annotation) {
+		    	dat_ann_html += '<tr class="tag-temp"><td class="text-right"><b><i><u>' + (parseInt(i)+1) + '</u></i></b></td>';
 
-			    dat_ann_html = '<tr class="tag-temp"><td class="pull-right"><span class="btn-group" role="group"><button id="tag_ann_top" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>&nbsp;</button><button id="tag_ann_up" class="btn btn-default"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp;</button></span></td><td><input type="text" class="form-control" id="tag_ann_num" style="text-align: center;"/></td><td><span class="btn-group" role="group"><button id="tag_ann_down" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button><button id="tag_ann_bottom" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>&nbsp;</button></span></td>';
-				$(dat_ann_html).insertAfter("#tag_data_annotation");
-
-				$("#tag_ann_top").bind("click", function() {
-					tag_idx = 0;
-					show_tag_ann(tag_idx);
-				    $("#tag_ann_num").val((tag_idx+1).toString());
-				});
-				$("#tag_ann_bottom").bind("click", function() {
-					tag_idx = n_rows-1;
-					show_tag_ann(tag_idx);
-				    $("#tag_ann_num").val((tag_idx+1).toString());
-				});
-				$("#tag_ann_up").bind("click", function() {
-					if (tag_idx > 0) {
-						tag_idx -= 1;
-						show_tag_ann(tag_idx);
+		    	var data_ann_idx = 0;
+				for (j in tags.data_annotation[i]) {
+					if (data_ann_idx==0) {
+						dat_ann_html += '<td class="lead text-right align-center"><span class="label label-danger">' + j + '</span></td><td class="lead">';
+					} else {
+						dat_ann_html += '<tr class="tag-temp"><td></td><td class="lead text-right align-center"><span class="label label-danger">' + j + '</span></td><td class="lead">';
 					}
-				    $("#tag_ann_num").val((tag_idx+1).toString());
-				});
-				$("#tag_ann_down").bind("click", function() {
-					if (tag_idx < n_rows-1) {
-						tag_idx += 1;
-						show_tag_ann(tag_idx);
-					}
-				    $("#tag_ann_num").val((tag_idx+1).toString());
-				});
-				$("#tag_ann_num").bind("focusout", function () {
-					var idx_tmp = parseInt($(this).val());
-					if (!isNaN(idx_tmp)){
-						if (idx_tmp < 0) {idx_tmp = 0;}
-						if (idx_tmp > n_rows-1) {idx_tmp = n_rows-1;}
-						tag_idx = idx_tmp-1;
-						show_tag_ann(tag_idx);
-					    $("#tag_ann_num").val((tag_idx+1).toString());
-					}
-				});
-				$("#tag_ann_num").bind("keyup", function (e) {
-					if(e.keyCode == 13) {$(this).trigger("focusout");}
-				});
-				$("#tag_ann_num").val((tag_idx+1).toString());
-				$("#tag_ann_num").trigger("focusout");
-
-    		} else {
-    			dat_ann_html = '';
-    			$(this).html('<span class="glyphicon glyphicon-sort" aria-hidden="true"></span> Select Only').addClass("all");
-			    for (i in tags.data_annotation) {
-			    	dat_ann_html += '<tr class="tag-temp"><td class="text-right"><b><i><u>' + (parseInt(i)+1) + '</u></i></b></td>';
-
-			    	var data_ann_idx = 0;
-					for (j in tags.data_annotation[i]) {
-						if (data_ann_idx==0) {
-							dat_ann_html += '<td class="lead text-right align-center"><span class="label label-danger">' + j + '</span></td><td class="lead">';
-						} else {
-							dat_ann_html += '<tr class="tag-temp"><td></td><td class="lead text-right align-center"><span class="label label-danger">' + j + '</span></td><td class="lead">';
-						}
-						for (k in tags.data_annotation[i][j]) {
-							if (k!=tags.data_annotation[i][j].length-1) { dat_ann_html += '<p style=\"padding-bottom:5px;\">'; }
-							if (j.toUpperCase()=='SEQUENCE' | j.toUpperCase()=='STRUCTURE') { 
-								var seq_tmp = wbr(tags.data_annotation[i][j][k]);
-								for (l in seq_tmp) {
-									dat_ann_html += '<p style=\"padding-bottom:5px;\"><samp><span class=\"label label-warning\">' + seq_tmp[l] + '</span></sa,p></p>';
-								}
-							} else {
-								dat_ann_html += '<span class=\"label label-warning\">' + tags.data_annotation[i][j][k] + '</span>';
+					for (k in tags.data_annotation[i][j]) {
+						if (k!=tags.data_annotation[i][j].length-1) { dat_ann_html += '<p style=\"padding-bottom:5px;\">'; }
+						if (j.toUpperCase()=='SEQUENCE' | j.toUpperCase()=='STRUCTURE') { 
+							var seq_tmp = wbr(tags.data_annotation[i][j][k]);
+							for (l in seq_tmp) {
+								dat_ann_html += '<p style=\"padding-bottom:5px;\"><samp><span class=\"label label-warning\">' + seq_tmp[l] + '</span></sa,p></p>';
 							}
-							if (k!=tags.data_annotation[i][j].length-1) { dat_ann_html += '</p>'; }
+						} else {
+							dat_ann_html += '<span class=\"label label-warning\">' + tags.data_annotation[i][j][k] + '</span>';
 						}
-						dat_ann_html += '</td></tr>';
-						data_ann_idx += 1;
+						if (k!=tags.data_annotation[i][j].length-1) { dat_ann_html += '</p>'; }
 					}
-			    }
-				$(dat_ann_html).insertAfter("#tag_data_annotation");
-    		}
-    	})
-	    $("#tag_ann_switch").trigger("click");
+					dat_ann_html += '</td></tr>';
+					data_ann_idx += 1;
+				}
+		    }
+			$(dat_ann_html).insertAfter("#tag_data_annotation");
+    	});
 
     } else {
 	    for (i in tags.data_annotation) {

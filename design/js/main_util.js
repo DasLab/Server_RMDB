@@ -8,7 +8,7 @@ function init_panel_size() {
 		-parseInt($("#left-buttons").css("height"))-parseInt($(".left_close").css("height"))*2);
 
 	$("#img_panel").css("width", $(window).width() - 75);
-	$("#img_panel").css("height", "325px");
+	$("#img_panel").css("height", "500px");
 	$("#img_panel").css("top", $(window).height() - parseInt($("#img_panel").css("height")));
 	$("#img-buttons").css("margin-top", 
 		parseInt($("#left-buttons").css("height"))+parseInt($("#left-buttons").css("margin-top"))

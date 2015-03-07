@@ -269,8 +269,8 @@ def advanced_search(request):
 						entries_visited.append(c.entry.rmdb_id)
 				rdat, all_values, cell_labels, values_min, values_max, values_min_heatmap, values_max_heatmap, unpaired_bins, paired_bins, unpaired_bin_anchors, paired_bin_anchors, rmdb_ids, messages, numallresults, render = get_restricted_RDATFile_and_plot_data(unique_constructs, numresults, query_data, searchid, construct_secstructelemdicts, check_structure_balance)
 				
-				rdat_path = '/search/%s.rdat' % searchid
-				rdat.save(RDAT_FILE_DIR + rdat_path, version=0.24)
+				rdat_path = 'search/%s.rdat' % searchid
+				rdat.save(MEDIA_ROOT + '/data/' + rdat_path, version=0.24)
 
 				return render_to_response(HTML_PATH['adv_search_res'], \
 						{'rdat_path':rdat_path, 'all_values':simplejson.dumps(all_values), 'values_min':values_min, 'values_max':values_max, \
