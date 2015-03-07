@@ -198,8 +198,6 @@ $(document).ready(function() {
 		} else {
 			$("#panel_general").html(fill_category_list(json_general, 'General')); 
 			$("#panel_puzzle").html(fill_category_list(json_puzzle, 'Puzzle')); 
-			console.log(json_puzzle[0]);
-			console.log(json_puzzle[1]);
 			$("#panel_eterna").html(fill_category_list(json_eterna, 'Eterna')); 
 		}
 

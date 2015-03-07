@@ -288,22 +288,18 @@
 					<div class="btn-group pull-right" role="group">
 						<div class="btn-group">
 						    {% if latest %}
-								<button type="button" class="btn btn-success" aria-expanded="false">
+								<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 									<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-						    		&nbsp;&nbsp;Latest
+						    		&nbsp;&nbsp;Latest&nbsp;&nbsp;
+									<span class="caret"></span>
 								</button>
 						    {% else %}
-								<button type="button" class="btn btn-danger" aria-expanded="false">
+								<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 									<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-						    		&nbsp;&nbsp;Superceded
+						    		&nbsp;&nbsp;Superceded&nbsp;&nbsp;
+									<span class="caret"></span>
 								</button>
 						    {% endif %}
-
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-								&nbsp;&nbsp;History&nbsp;&nbsp;
-								<span class="caret"></span>
-							</button>
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
 								{% for e in supercede_list %}
 									{% if e.rmdb_id == rmdb_id %}
@@ -340,6 +336,24 @@
 							&nbsp;&nbsp;Settings&nbsp;&nbsp;
 						</button>
 
+						{% if revision_latest %}
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								&nbsp;&nbsp;History&nbsp;&nbsp;
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+								{% for e in revision_latest %}
+									<li class="li-info"><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}_{{e}}.rdat" download>
+										<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
+										&nbsp;&nbsp;RDAT <i>Version:</i> <mark>{{e}}</mark>
+									</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+						{% endif %}
+
 						<div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
@@ -347,12 +361,12 @@
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-								<li><a id="dl_rdat" download>
+								<li class="li-info"><a id="dl_rdat" download>
 									<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
 									&nbsp;&nbsp;RDAT
 								</a></li>
 								{% if not is_istab %} 
-								<li><a id="dl_isatab" download>
+								<li class="li-brown"><a id="dl_isatab" download>
 									<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 									&nbsp;&nbsp;ISATAB
 								</a></li>
