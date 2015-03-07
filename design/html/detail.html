@@ -287,51 +287,24 @@
 				<div class="col-md-7">
 					<div class="btn-group pull-right" role="group">
 						<div class="btn-group">
-						    {% if latest != 0 %}
-								<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-						    		&nbsp;&nbsp;Latest&nbsp;&nbsp;
+						    {% if latest %}
+								<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						    		&nbsp;&nbsp;Superceded&nbsp;&nbsp;
 									<span class="caret"></span>
 								</button>
 						    {% else %}
-								<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-						    		&nbsp;&nbsp;Superceded
-						    		{% if supercede_list %}
-							    		&nbsp;&nbsp;
-										<span class="caret"></span>
-									{% endif %}
+								<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+						    		&nbsp;&nbsp;Latest&nbsp;&nbsp;
 								</button>
 						    {% endif %}
-						    {% if supercede_list %}
+						    {% if latest %}
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-								{% for e in supercede_list %}
-									{% if e.rmdb_id == rmdb_id %}
-										{% if forloop.first %}
-										<li class="li-green"><a>
-											<span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
-											&nbsp;&nbsp;{{e.rmdb_id}}
-										</a></li>
-										{% else %}
-										<li class="li-danger"><a>
-											<span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
-											&nbsp;&nbsp;{{e.rmdb_id}}
-										</a></li>
-										{% endif %}
-									{% else %}
-										{% if forloop.first %}
-										<li class="li-green"><a href="/repository/detail/{{e.rmdb_id}}">
-											<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-											&nbsp;&nbsp;{{e.rmdb_id}}
-										</a></li>
-										{% else %}
-										<li class="li-warning"><a href="/repository/detail/{{e.rmdb_id}}">
-											<span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-											&nbsp;&nbsp;{{e.rmdb_id}}
-										</a></li>
-										{% endif %}
-									{% endif %}
-								{% endfor %}
+								<li class="li-green"><a href="/repository/detail/{{latest}}">
+									<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+									&nbsp;&nbsp;{{latest}}
+								</a></li>
 							</ul>
 							{% endif %}
 						</div>

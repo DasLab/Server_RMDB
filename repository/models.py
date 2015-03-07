@@ -171,7 +171,7 @@ class RMDBEntry(models.Model):
     version = models.IntegerField(default=1)
     type = models.CharField(max_length=3, choices=ENTRY_TYPE_CHOICES)
 
-    latest = models.IntegerField(default=-1)
+    latest = models.CharField(max_length=25, null=True, blank=True)
     revision_status = models.CharField(max_length=3, choices=ENTRY_STATUS_CHOICES)
 
     authors = models.TextField()
