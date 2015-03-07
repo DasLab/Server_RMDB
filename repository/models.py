@@ -166,24 +166,27 @@ class Organism(models.Model):
 
 
 class RMDBEntry(models.Model):
-    version = models.CharField(max_length=10)
-    comments = models.TextField()
-    publication = models.ForeignKey(Publication)
-    authors = models.TextField()
-    description = models.TextField(blank=True)
-    latest = models.BooleanField(default=False)
+    rmdb_id = models.CharField(max_length=25, null=True)
+    creation_date = models.DateTimeField(auto_now=True, null=True)
+    version = models.IntegerField(default=1)
     type = models.CharField(max_length=3, choices=ENTRY_TYPE_CHOICES)
+
+    latest = models.IntegerField(default=-1)
+    revision_status = models.CharField(max_length=3, choices=ENTRY_STATUS_CHOICES)
+
+    authors = models.TextField()
+    publication = models.ForeignKey(Publication)
+    description = models.TextField(blank=True)
+    comments = models.TextField()
+    pdb_entries = models.CharField(max_length=255, null=True, blank=True)
+
+    owner = models.ForeignKey(User, null=True)
     datacount = models.IntegerField()
     constructcount = models.IntegerField()
-    revision_status = models.CharField(max_length=3, choices=ENTRY_STATUS_CHOICES)
     file = models.FileField(upload_to=get_rdat_filename, blank=True, null=True)
-    rmdb_id = models.CharField(max_length=25, null=True)
-    owner = models.ForeignKey(User, null=True)
-    version = models.IntegerField()
+
     has_traces = models.BooleanField(default=True)
-    creation_date = models.DateTimeField(auto_now=True, null=True)
     from_eterna = models.BooleanField(default=False)
-    pdb_entries = models.CharField(max_length=255, null=True, blank=True)
     organism = models.ForeignKey(Organism, null=True, blank=True)
 
     def short_description(self):

@@ -112,9 +112,10 @@ def detail(request, rmdb_id):
 		current_id = int(entry.rmdb_id[entry.rmdb_id.rfind('_')+1:])
 		entries = RMDBEntry.objects.filter(rmdb_id__startswith=rmdb_id_series).order_by('-rmdb_id', '-version')
 		history_list = []
-		for e in entries:
-			if RMDBEntry.objects.filter(rmdb_id=e.rmdb_id).order_by('-version')[0].version == e.version:
-				history_list.append(e);
+		if entry.latest != -1:
+			for e in entries:
+				if RMDBEntry.objects.filter(rmdb_id=e.rmdb_id).order_by('-version')[0].version == e.version:
+					history_list.append(e);
 
 	except (RMDBEntry.DoesNotExist, IndexError):
 		raise Http404
