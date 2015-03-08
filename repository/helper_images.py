@@ -73,7 +73,7 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 		if d.errors:
 			errors.append([float(x) for x in d.errors.strip().split(',')])
 		if d.xsel:
-			xsels.append([int(x) for x in d.xsel.strip().split(',')])
+			xsels.append([float(x) for x in d.xsel.strip().split(',')])
 	values_array, trace_array, reads_array, xsel_array, errors_array = array(values), array(traces), array(reads), array(xsels), array(errors)
 	
 	dir = CONSTRUCT_IMG_DIR+'%s/'%construct_model.id

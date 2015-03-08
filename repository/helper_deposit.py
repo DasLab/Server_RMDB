@@ -117,7 +117,7 @@ def send_notify_emails(entry, request):
 
 
 def check_rmdb_id(id):
-	m  = re.compile('\w{5,7}_\w{3,3}_\d{4,4}')
+	m  = re.compile('\w{5,7}_\w{3,4}_\d{4,4}')
 	if m.match(id):
 		return True
 	return False
@@ -249,7 +249,7 @@ def submit_rmdb_entry(form, request, rdatfile, isatabfile):
 	rmdb_id_series = entry.rmdb_id[:entry.rmdb_id.rfind('_')]
 	current_id = int(entry.rmdb_id[entry.rmdb_id.rfind('_')+1:])
 
-	entry.latest = -1
+	# entry.latest = -1
 	# current_max = False
 	# entries = RMDBEntry.objects.filter(rmdb_id__startswith=rmdb_id_series)
 	# for e in entries:
