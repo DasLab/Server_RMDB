@@ -12,7 +12,7 @@ if T47_DEV:
     DEBUG = True
 else:
     MEDIA_ROOT = '/home/daslab/rdat/rmdb'
-    DEBUG = False
+    DEBUG =  False
 TEMPLATE_DEBUG = DEBUG
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -21,8 +21,8 @@ MEDIA_URL = ''
 
 
 ADMINS = (
-    ('Pablo Cordero', 'tsuname@stanford.edu'),
     ('Siqi Tian', 't47@stanford.edu'),
+    ('Pablo Cordero', 'tsuname@stanford.edu'),
 )
 MANAGERS = ADMINS
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
