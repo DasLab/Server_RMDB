@@ -87,7 +87,7 @@ function fill_tags() {
 		$("#hist_ver_btn").hide();
 	}
 	if (tags.latest) {
-		$("#tag_supercede").html('<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;Superceded&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu nav nav-pills nav-stacked" role="menu"><li class="li-green"><a href="/repository/detail/' + entry.latest + '"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;' + entry.latest + '</a></li></ul>');
+		$("#tag_supercede").html('<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;Superceded&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu nav nav-pills nav-stacked" role="menu"><li class="li-green"><a href="/repository/detail/' + tags.latest + '"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;' + tags.latest + '</a></li></ul>');
 	} else {
 		$("#tag_supercede").html('<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;Latest&nbsp;&nbsp;</button>');
 	}
