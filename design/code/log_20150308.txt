@@ -1,4 +1,4 @@
-#RMDB 2.1 BETA, phase I
+#RMDB 2.1 BETA, phase II
 !t47
 
 Complete redesign of RMDB front-end interface graphics, reorganization of site map, bug fixes for user login system, improvement for RDAT submission system.
