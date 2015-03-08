@@ -300,51 +300,16 @@
 				</div>
 				<div class="col-md-7">
 					<div class="btn-group pull-right" role="group">
-						<div class="btn-group">
-						    {% if latest %}
-								<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-						    		&nbsp;&nbsp;Superceded&nbsp;&nbsp;
-									<span class="caret"></span>
-								</button>
-						    {% else %}
-								<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-						    		&nbsp;&nbsp;Latest&nbsp;&nbsp;
-								</button>
-						    {% endif %}
-						    {% if latest %}
-							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-								<li class="li-green"><a href="/repository/detail/{{latest}}">
-									<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-									&nbsp;&nbsp;{{latest}}
-								</a></li>
-							</ul>
-							{% endif %}
-						</div>
+						<div class="btn-group" id="tag_supercede"></div>
 
-						<button type="button" class="btn btn-default" aria-expanded="false" id="btn-set">
-							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-							&nbsp;&nbsp;Settings&nbsp;&nbsp;
-						</button>
-
-						{% if revision_latest %}
-						<div class="btn-group">
+						<div class="btn-group" id="hist_ver_btn">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 								&nbsp;&nbsp;History&nbsp;&nbsp;
 								<span class="caret"></span>
 							</button>
-							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-								{% for e in revision_latest %}
-									<li class="li-info"><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}_{{e}}.rdat" download>
-										<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
-										&nbsp;&nbsp;RDAT <i>Version:</i> <mark>{{e}}</mark>
-									</a></li>
-								{% endfor %}
-							</ul>
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu" id="hist_ver_list"></ul>
 						</div>
-						{% endif %}
 
 						<div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -365,6 +330,11 @@
 								{% endif %} 
 							</ul>
 						</div>
+
+						<button type="button" class="btn btn-default" aria-expanded="false" id="btn-set">
+							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							&nbsp;&nbsp;Settings&nbsp;&nbsp;
+						</button>
 					</div>
 				</div>
 			</div>

@@ -110,7 +110,7 @@ def detail(request, rmdb_id):
 	except (RMDBEntry.DoesNotExist, IndexError):
 		raise Http404
 
-	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'revision_latest':range(1,entry.version), 'latest':entry.latest, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
 
 
 def predict(request):

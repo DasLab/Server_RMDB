@@ -233,7 +233,7 @@ def dump_json_tags(entry):
 	elif entry.revision_status == "PUB":
 		rev_stat = '<span class=\"label label-success\">Published</span>'
 
-	tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'construct_count':entry.constructcount, 'data_count':entry.datacount,  'revision_status':entry.revision_status, 'revision_status_label':rev_stat, 'type':str_type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x'), 'owner_name':entry.owner.first_name+' '+entry.owner.last_name,'owner':entry.owner.username}
+	tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'construct_count':entry.constructcount, 'data_count':entry.datacount,  'revision_status':entry.revision_status, 'revision_status_label':rev_stat, 'type':str_type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x'), 'owner_name':entry.owner.first_name+' '+entry.owner.last_name,'owner':entry.owner.username, 'latest':entry.latest}
 	tags_annotation = {'annotation':entry.annotations}
 
 	constructs = ConstructSection.objects.filter(entry=entry)

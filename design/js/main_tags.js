@@ -77,6 +77,20 @@ function fill_tags() {
 
 	$("#dl_isatab").attr("href", "/site_data/files/" + tags.rmdb_id + "/" + tags.rmdb_id + "_" + tags.version + ".xls");
 	$("#dl_rdat").attr("href", "/site_data/files/" + tags.rmdb_id + "/" + tags.rmdb_id + ".rdat");
+	if (tags.version > 1) {
+		var ver_html = '<li class="li-orange"><a href="/site_data/files/' + tags.rmdb_id + '/' + tags.rmdb_id + '_' + tags.version + '.rdat" download><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp;&nbsp;(Current) <i>Version:</i> <mark>' + tags.version + '</mark></a></li>';
+		for (var i = tags.version - 1; i > 0; i--) {
+			ver_html += '<li class="li-info"><a href="/site_data/files/' + tags.rmdb_id + '/' + tags.rmdb_id + '_' + i + '.rdat" download><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp;&nbsp;RDAT <i>Version:</i> <mark>' + i + '</mark></a></li>'
+		}
+		$("#hist_ver_list").html(ver_html);
+	} else {
+		$("#hist_ver_btn").hide();
+	}
+	if (tags.latest) {
+		$("#tag_supercede").html('<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;Superceded&nbsp;&nbsp;<span class="caret"></span></button><ul class="dropdown-menu nav nav-pills nav-stacked" role="menu"><li class="li-green"><a href="/repository/detail/' + entry.latest + '"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;' + entry.latest + '</a></li></ul>');
+	} else {
+		$("#tag_supercede").html('<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;Latest&nbsp;&nbsp;</button>');
+	}
 
 	if (tags.pdb_ids) {
 		var pdb_html = '';
