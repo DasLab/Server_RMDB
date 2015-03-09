@@ -38,6 +38,8 @@ register.filter('get_construct_dataset_type', get_construct_dataset_type)
 
 
 def color_rmdb_id(value):
+	if ('_' not in value):
+		return value
 
 	string = value.split('_')
 	s1 = '<span style=\"color: yellow;\">'+string[1]+'</span>'
@@ -47,6 +49,8 @@ register.filter('color_rmdb_id', color_rmdb_id)
 
 
 def color_eterna_id(value):
+	if ('_' not in value):
+		return value
 
 	string = value.split('_')
 	s1 = '<span style=\"color: yellowgreen;\">'+string[1]+'</span>'
@@ -101,13 +105,19 @@ register.filter('get_user_stats_dtpt', get_user_stats_dtpt)
 
 def get_user_stats_last_entry(user):
 	entries = RMDBEntry.objects.filter(owner=user).order_by('-creation_date')
-	return entries[0].rmdb_id
+	if entries:
+		return entries[0].rmdb_id
+	else:
+		return ''
 register.filter('get_user_stats_last_entry', get_user_stats_last_entry)
 
 
 def get_user_stats_last_date(user):
 	entries = RMDBEntry.objects.filter(owner=user).order_by('-creation_date')
-	return entries[0].creation_date
+	if entries:
+		return entries[0].creation_date
+	else:
+		return ''
 register.filter('get_user_stats_last_date', get_user_stats_last_date)
 
 

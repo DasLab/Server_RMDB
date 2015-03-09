@@ -289,7 +289,9 @@
 											<span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;&nbsp;
 											Most Recent Submission: 
 											<br/>
+											
 											&nbsp;&nbsp;&nbsp;&nbsp;
+											{% if user|get_user_stats_last_entry %}
 											<a href="/repository/detail/{{ user|get_user_stats_last_entry}}">
 												<span class="label label-default">
 													{% autoescape off %}
@@ -300,6 +302,9 @@
 											<br/>
 											&nbsp;&nbsp;&nbsp;&nbsp; 
 											On {{ user|get_user_stats_last_date|date:"SHORT_DATE_FORMAT" }}
+											{% else %}
+											<code>N/A</code>											
+											{% endif %}
 										</div>
 									</li>
 									<li class="divider"></li>
