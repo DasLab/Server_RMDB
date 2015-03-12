@@ -43,6 +43,7 @@ $(document).ready(function() {
 		success: function(data) {
 			$("#wait").fadeIn();
 			$("#search_box").val(search_word);
+			$("#search_headline").text(search_word);
 			$("#N_all").text(data.N_all);
 		},
 		complete: function(xhr) {

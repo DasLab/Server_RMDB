@@ -91,11 +91,11 @@
             <br/>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="panel panel-primary" id="col-1">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h2 class="panel-title">Account Login</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" id="col-1">
                             <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="User ID" data-content="It must be at least 3 characters long. Alphanumeric characters only. Previously used User IDs are not available.">
                                 <div class="col-md-5">User Name: </div>
                                 <div class="col-md-7">{{ reg_form.username }}</div>
@@ -116,11 +116,11 @@
                 </div>
 
                 <div class="col-md-8">
-                    <div class="panel panel-info" id="col-2">
+                    <div class="panel panel-info">
                         <div class="panel-heading">
                             <h2 class="panel-title">Contact Information</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" id="col-2">
                             <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Contact Name" data-content="First name must be at least 3 characters, while last time must be at least 2 characters.">
                                 <div class="col-md-2">First Name: </div>
                                 <div class="col-md-4">{{ reg_form.firstname }}</div>
@@ -183,7 +183,7 @@
 
 
 
-            var col_h = Math.max($("#col-1").height(), $("#col-2").height());
+            var col_h = Math.max($("#col-1").height(), $("#col-2").height()) +25;
             $("#col-1").css("height", col_h);
             $("#col-2").css("height", col_h);
         });
