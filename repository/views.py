@@ -421,3 +421,9 @@ def user_logout(request):
 	logout(request)
 	return HttpResponseRedirect("/repository/")
 
+
+def test(request):
+	raise TypeError, "xxx"
+
+
+

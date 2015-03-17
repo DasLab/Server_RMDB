@@ -30,10 +30,12 @@ MANAGERS = ADMINS
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
 
-SUBMISSION_NOTIFY_EMAIL = 't47@stanford.edu'
-SUBMISSION_HOST_EMAIL = 'stanfordrmdb@gmail.com'
-SUBMISSION_HOST_PWD = 'daslab4ever'
-SUBMISSION_HOST_SMTP = 'smtp.gmail.com:587'
+SUBMISSION = {
+    'SECRET_KEY': 'stanfordrmdb@gmail.com',
+    'PASSWORD': 'daslab4ever',
+    'SMTP': 'smtp.gmail.com:587',
+    'NOTIFY_EMAIL': 't47@stanford.edu'
+}
 
 DATABASES = {
     'default': {

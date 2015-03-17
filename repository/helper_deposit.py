@@ -98,11 +98,11 @@ def send_email(subject, content, address):
 	msg = MIMEText(content)
 	msg['Subject']  = subject
 	msg['To'] = address
-	msg['From'] = SUBMISSION_HOST_EMAIL
+	msg['From'] = SUBMISSION['SECRET_KEY']
 
-	s = smtplib.SMTP(SUBMISSION_HOST_SMTP)
+	s = smtplib.SMTP(SUBMISSION['SMTP'])
 	s.starttls()
-	s.login(SUBMISSION_HOST_EMAIL, SUBMISSION_HOST_PWD)
+	s.login(SUBMISSION['SECRET_KEY'], SUBMISSION['PASSWORD'])
 	s.sendmail(msg['From'], msg['To'], msg.as_string())
 	s.quit()
 
@@ -110,9 +110,9 @@ def send_email(subject, content, address):
 def send_notify_emails(entry, request):
 	msg_subject = 'RMDB: New entry submitted for review'
 	msg_content = ('This is an email triggered by new RMDB entry submission automatically.\n\n' + 'Please review the following submission:\n' + 'RMDB_ID: %s\n' + 'Owner: %s\n' + 'Version: %s\n' + 'Status: %s\n\n' + 'Type: %s\n' + 'Construct(s): %s\n' + 'Data: %s\n' + 'Comments: %s\n' + 'Authors: %s\n' + 'Description: %s\n\n' + 'Please go to the admin page of this entry (http://rmdb.stanford.edu/admin/repository/rmdbentry/%s)\n and check its associated files in RDAT (http://rmdb.stanford.edu/site_media/rdat_files/%s/%s_synced.rdat)\n and ISATAB (http://rmdb.stanford.edu/site_media/isatab_files/%s/%s_%s.xls) formats. \n\n - RMDB server') % (entry.rmdb_id, entry.owner, entry.version, get_choice_type(entry.revision_status, ENTRY_STATUS_CHOICES), get_choice_type(entry.type, ENTRY_TYPE_CHOICES), entry.constructcount, entry.datacount, entry.comments, entry.authors, entry.description, entry.id, entry.rmdb_id, entry.rmdb_id, entry.rmdb_id, entry.rmdb_id, entry.version)
-	send_email(msg_subject, msg_content, SUBMISSION_NOTIFY_EMAIL)
+	send_email(msg_subject, msg_content, SUBMISSION['NOTIFY_EMAIL'])
 	msg_subject = 'Your RMDB Entry %s has been submitted' % entry.rmdb_id
-	msg_content = ('This is an automatic email confirmation regarding the following new RMDB entry submission:\n' + 'RMDB_ID: %s\n' + 'Owner: %s\n' + 'Version: %s\n' + 'Status: %s\n\n' + 'Type: %s\n' + 'Construct(s): %s\n' + 'Data: %s\n' + 'Comments: %s\n' + 'Authors: %s\n' + 'Description: %s\n\n' + 'Your submission has been acknowledged by the RMDB team. We will review your entry shortly.\n\n For any questions, please feel free to contact us. Site admin can be reached at: %s \n\n\n Thank you for your submission,\nRMDB server') % (entry.rmdb_id, entry.owner, entry.version, get_choice_type(entry.revision_status, ENTRY_STATUS_CHOICES), get_choice_type(entry.type, ENTRY_TYPE_CHOICES), entry.constructcount, entry.datacount, entry.comments, entry.authors, entry.description, SUBMISSION_NOTIFY_EMAIL)
+	msg_content = ('This is an automatic email confirmation regarding the following new RMDB entry submission:\n' + 'RMDB_ID: %s\n' + 'Owner: %s\n' + 'Version: %s\n' + 'Status: %s\n\n' + 'Type: %s\n' + 'Construct(s): %s\n' + 'Data: %s\n' + 'Comments: %s\n' + 'Authors: %s\n' + 'Description: %s\n\n' + 'Your submission has been acknowledged by the RMDB team. We will review your entry shortly.\n\n For any questions, please feel free to contact us. Site admin can be reached at: %s \n\n\n Thank you for your submission,\nRMDB server') % (entry.rmdb_id, entry.owner, entry.version, get_choice_type(entry.revision_status, ENTRY_STATUS_CHOICES), get_choice_type(entry.type, ENTRY_TYPE_CHOICES), entry.constructcount, entry.datacount, entry.comments, entry.authors, entry.description, SUBMISSION['NOTIFY_EMAIL'])
 	send_email(msg_subject, msg_content, request.user.email)
 
 
