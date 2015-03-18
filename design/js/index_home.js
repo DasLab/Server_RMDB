@@ -22,7 +22,7 @@ $(document).ready(function() {
           var ind_html = '', body_html = '';
           for (d in data) {
             ind_html += '<li data-target="#carousel-entries" data-slide-to="' + d.toString() + '"></li>';
-            body_html += '<div class="item" style="height:300px;"><br/><br/><div class="row"><p class="text-center"><a href="/repository/detail/' + data[d].rmdb_id + '" target="_blank"><span class="label label-default">' + colorRmdbId(data[d].rmdb_id) + '</span><br/>' + data[d].name + '</a></p></div><div class="row"><a href="/repository/detail/' + data[d].rmdb_id + '" target="_blank"><img src="/site_data/thumbs/' + data[d].cid + '/' + convertToSlug(data[d].name) + '.gif" class="center-block"/></a></div></div>';
+            body_html += '<div class="item" style="height:300px;"><br/><br/><div class="row"><p class="text-center"><a href="/repository/detail/' + data[d].rmdb_id + '" target="_blank"><span class="label label-default">' + colorRmdbId(data[d].rmdb_id) + '</span><br/>' + data[d].name + '</a></p></div><div class="row"><a href="/repository/detail/' + data[d].rmdb_id + '" target="_blank"><img src="/site_data/thumbs/' + data[d].cid + '.gif" class="center-block"/></a></div></div>';
           }
           $("#slide_index").html(ind_html);
           $("#slide_body").html(body_html);
