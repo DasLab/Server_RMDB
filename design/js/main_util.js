@@ -35,25 +35,40 @@ $(document).ready(function() {
 	$(".left_group").on("click", function() {		
 		if (!$("#left_panel").hasClass("visible")) {
 			$("#left_panel").addClass("visible").animate({"margin-left":"0px"});
-			$(".left_close").addClass("visible").show();
+			$(".panel_close").addClass("visible").show();
 			$("#left-buttons").css("margin-top", parseInt($("#left-buttons").css("margin-top"))-parseInt($(".left_close").css("height")));
 			$("#left_panel").css("z-index", "100");
 			$("#img_panel").css("z-index", "10");
+
+			var div = d3.select(".tooltip");
+			div.transition().duration(200)
+				.style("opacity", 0)
+				.each("end", function() {
+					div.style("left", "0px").style("top", "0px");
+				});
 		}	
 	});
-	$(".left_close").on("click", function() {
+	$(".panel_close").on("click", function() {
 		$("#left_panel").removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")});
-		$(".left_close").removeClass("visible").hide();
-		$("#left-buttons").css("margin-top", parseInt($("#left-buttons").css("margin-top"))+parseInt($(".left_close").css("height")));
+		$(".panel_close").removeClass("visible").hide();
+		$("#left-buttons").css("margin-top", parseInt($("#left-buttons").css("margin-top"))+parseInt($(".panel_close").css("height")));
 	});
 	$(".left_alone").on("click", function() {		
 		if (!$("#img_panel").hasClass("visible")) {
 			$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
+			$(".barplot_close").addClass("visible").show();
+			$("#img-buttons").css("margin-top", parseInt($("#img-buttons").css("margin-top"))-parseInt($(".barplot_close").css("height")));
 			$("#left_panel").css("z-index", "10");
 		} else {
-			$("#img_panel").removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")});
+			$(".barplot_close").trigger("click");
 		}	
 	});
+	$(".barplot_close").on("click", function() {
+		$("#img_panel").removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")});
+		$(".barplot_close").removeClass("visible").hide();
+		$("#img-buttons").css("margin-top", parseInt($("#img-buttons").css("margin-top"))+parseInt($(".barplot_close").css("height")));
+	});
+
 	$("#btn-set").on("click", function() {		
 		if (!$("#set_panel").hasClass("visible")) {
 			$("#set_panel").addClass("visible").animate({"margin-right":"0px"}).css("z-index", "100");

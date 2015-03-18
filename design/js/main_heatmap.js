@@ -173,6 +173,15 @@ function draw_heatmap(json) {
 						x_label2_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", true);
 
 						tile.classed("side", false).classed("active", true);
+
+						var pageX = d3.event.pageX, pageY = d3.event.pageY;
+						timer = setTimeout(function() {
+							div.transition().duration(200)
+								.style("opacity", .9);
+							div.html("<table><tr><td><p><span class=\"label label-violet pull-right\">ROW</span></p></td><td><p>&nbsp;&nbsp;<span class=\"label label-orange\">" + (y_cord+1) + "</span>: " + row_names[y_cord] + "</p></td></tr><tr><td><p><span class=\"label label-violet pull-right\">COLUMN</span></p></td><td><p>&nbsp;&nbsp;<span class=\"label label-orange\">" + (x_cord+1) + "</span>: " + col_names[x_cord] + "</p></td></tr><tr><td><p><span class=\"label label-primary pull-right\">SEQUENCE</span></p></td><td><p>&nbsp;&nbsp;" + d.seq + "</p></td></tr><tr><td><p><span class=\"label label-success pull-right\">REACTIVITY</span></p></td><td><p>&nbsp;&nbsp;" + d.value + "</p></td></tr><tr><td><p><span class=\"label label-dark-red pull-right\">ERROR</span></p></td><td><p>&nbsp;&nbsp;" + d.error + "</p></td></tr></table>")  
+								.style("left", pageX + "px")
+								.style("top", (pageY - 28) + "px"); 
+						}, 500);
 					})
 					.on("mouseout", function(d) { 
 						var tile = d3.select(this), x_cord = tile.attr("x"), y_cord = tile.attr("y");
@@ -200,19 +209,9 @@ function draw_heatmap(json) {
 							.each("end", function() {
 								div.style("left", "0px").style("top", "0px");
 							});
+						clearTimeout(timer);
 					})
 					.on("click", function(d) {
-						var tile = d3.select(this), x_cord = tile.attr("x"), y_cord = tile.attr("y");
-						x_cord = (x_cord - main_margin.left)/(w+0.5);
-						y_cord = (y_cord - main_margin.top)/(h+0.5);
-
-						div.transition().duration(200)
-							.style("opacity", .9);
-						div.html("<table><tr><td><p><span class=\"label label-violet pull-right\">ROW</span></p></td><td><p>&nbsp;&nbsp;<span class=\"label label-orange\">" + (y_cord+1) + "</span>: " + row_names[y_cord] + "</p></td></tr><tr><td><p><span class=\"label label-violet pull-right\">COLUMN</span></p></td><td><p>&nbsp;&nbsp;<span class=\"label label-orange\">" + (x_cord+1) + "</span>: " + col_names[x_cord] + "</p></td></tr><tr><td><p><span class=\"label label-primary pull-right\">SEQUENCE</span></p></td><td><p>&nbsp;&nbsp;" + d.seq + "</p></td></tr><tr><td><p><span class=\"label label-success pull-right\">REACTIVITY</span></p></td><td><p>&nbsp;&nbsp;" + d.value + "</p></td></tr><tr><td><p><span class=\"label label-dark-red pull-right\">ERROR</span></p></td><td><p>&nbsp;&nbsp;" + d.error + "</p></td></tr></table>")  
-							.style("left", (d3.event.pageX) + "px")
-							.style("top", (d3.event.pageY - 28) + "px"); 
-					})
-					.on("contextmenu", function(d) {
 						d3.event.preventDefault();
 
 						var tile = d3.select(this), y_cord = tile.attr("y");
@@ -220,6 +219,13 @@ function draw_heatmap(json) {
 						make_barplot(idx);
 						$("#page_num").val((idx+1).toString());
 						$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
+
+						tile.classed("active", false);
+						div.transition().duration(200)
+							.style("opacity", 0)
+							.each("end", function() {
+								div.style("left", "0px").style("top", "0px");
+							});
 					});
 
     var overlayText = d3.select("#main").select("svg").append("g")
