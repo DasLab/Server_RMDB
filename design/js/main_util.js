@@ -89,7 +89,15 @@ $(document).ready(function() {
 
 $(window).on("resize", function() {
 	clearTimeout($.data(this, 'resizeTimer'));
-	$.data(this, 'resizeTimer', setTimeout(function() {init_panel_size();}, 200));
+	$.data(this, 'resizeTimer', setTimeout(function() {
+		init_panel_size();
+
+	    $("#panel_con").css("height", "auto");
+	    $("#panel_cit").css("height", "auto");
+	    var col_h = Math.max(parseInt($("#panel_con").css("height")), parseInt($("#panel_cit").css("height")));
+	    $("#panel_con").css("height", col_h);
+	    $("#panel_cit").css("height", col_h);
+	}, 200));
 });
 
 

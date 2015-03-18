@@ -452,7 +452,7 @@
 
 {% block script %}
 	<script type="text/javascript">
-		var json, tags, idx = 0, tag_idx = 0, n_rows, color_scale = 1;
+		var json, tags, idx = 0, tag_idx = 0, n_rows, color_scale = 1, flag = 0;
 	</script>
 	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_tags.js"></script>
@@ -460,8 +460,8 @@
 	<script type="text/javascript" src="/site_media/js/main_barplot.js"></script>
 	<script type="text/javascript" src="/site_media/js/main_setting.js"></script>
 	<script type="text/javascript">
-		$("#wait").ajaxStart(function() {$(this).fadeIn();})
-			.ajaxStop(function() {$(this).fadeOut();});
+		// $("#wait").ajaxStart(function() {$(this).fadeIn();})
+		// 	.ajaxStop(function() {$(this).fadeOut();});
 
 		$(document).ready(function () {
 			$.ajax({
@@ -473,14 +473,6 @@
 					$("#wait").fadeIn(); 
 				},
 				complete: function(xhr) { 
-					$("#svg_top").trigger("click");
-					setTimeout(function() {
-						$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
-						$(".left_close").removeClass("visible").hide();
-						$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
-						$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
-					}, 10);
-
 					$("#wait").fadeOut(); 
 				},
 				success: function(data) {
@@ -496,7 +488,18 @@
 							fill_tags();
 						}
 					});
-					setTimeout(function() { draw_heatmap(json); }, 10);
+					setTimeout(function() { 
+						draw_heatmap(json); 
+						setTimeout(function() {
+							$("#svg_top").trigger("click");
+							setTimeout(function() {
+								$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
+								$(".left_close").removeClass("visible").hide();
+								$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
+								$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
+							}, 1);
+						}, 1);
+					}, 1);
 				}
 			});
 

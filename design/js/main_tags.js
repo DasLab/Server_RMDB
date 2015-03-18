@@ -102,7 +102,7 @@ function fill_tags() {
 		$("#tag_pdb").text('N/A');
 	}
 
-    var col_h = Math.max($("#panel_con").height(), $("#panel_cit").height()) + 15;
+    var col_h = Math.max(parseInt($("#panel_con").css("height")), parseInt($("#panel_cit").css("height")));
     $("#panel_con").css("height", col_h);
     $("#panel_cit").css("height", col_h);
 

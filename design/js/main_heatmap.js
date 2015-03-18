@@ -140,102 +140,107 @@ function draw_heatmap(json) {
 				.attr("class", "tooltip")
 				.style("opacity", 0);
 
-    var heatMap = d3.select("#main").select("svg").append("g")
-    				.attr("id", "heat_map")
-    				.selectAll("rect")
-					.data(peaks, function(d) { return d.y + ':' + d.x; }).enter()
-					.append("rect")
-					.attr("class", "tile")
-					.attr("y", function(d) { return d.x * (h+0.5) + main_margin.top; })
-					.attr("x", function(d) { return d.y * (w+0.5) + main_margin.left; })
-					.attr("width", w)
-					.attr("height", h)
-					.style("fill", function(d) { return colorScale(d.value); })
-					.style({"stroke":"black", "stroke-width": 1})
-					.on("mouseover", function(d) { 
-						var tile = d3.select(this), x_cord = tile.attr("x"), y_cord = tile.attr("y");
-						x_cord = (x_cord - main_margin.left)/(w+0.5);
-						y_cord = (y_cord - main_margin.top)/(h+0.5);
-
-						heatMap.filter(function(d) { return d.x == y_cord; }).classed("side", true);
-						heatMap.filter(function(d) { return d.y == x_cord; }).classed("side", true);
-
-						y_num.filter(function(d, i) { return i == y_cord; }).classed("active", true);
-						y_label.filter(function(d, i) { return i == y_cord; }).classed("active", true);
-						x_num.filter(function(d, i) { return i == x_cord; }).classed("active", true);
-						x_label.filter(function(d, i) { return i == x_cord; }).classed("active", true);
-						x_label2.filter(function(d, i) { return i == x_cord; }).classed("side", true);
-
-						y_num_bg.filter(function(d, i) { return i == y_cord; }).classed("highlight", true);
-						y_label_bg.filter(function(d, i) { return i == y_cord; }).classed("highlight", true);
-						x_num_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", true);
-						x_label_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", true);
-						x_label2_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", true);
-
-						tile.classed("side", false).classed("active", true);
-
-						var pageX = d3.event.pageX, pageY = d3.event.pageY;
-						timer = setTimeout(function() {
-							div.transition().duration(200)
-								.style("opacity", .9);
-							div.html("<table><tr><td><p><span class=\"label label-violet pull-right\">ROW</span></p></td><td><p>&nbsp;&nbsp;<span class=\"label label-orange\">" + (y_cord+1) + "</span>: " + row_names[y_cord] + "</p></td></tr><tr><td><p><span class=\"label label-violet pull-right\">COLUMN</span></p></td><td><p>&nbsp;&nbsp;<span class=\"label label-orange\">" + (x_cord+1) + "</span>: " + col_names[x_cord] + "</p></td></tr><tr><td><p><span class=\"label label-primary pull-right\">SEQUENCE</span></p></td><td><p>&nbsp;&nbsp;" + d.seq + "</p></td></tr><tr><td><p><span class=\"label label-success pull-right\">REACTIVITY</span></p></td><td><p>&nbsp;&nbsp;" + d.value + "</p></td></tr><tr><td><p><span class=\"label label-dark-red pull-right\">ERROR</span></p></td><td><p>&nbsp;&nbsp;" + d.error + "</p></td></tr></table>")  
-								.style("left", pageX + "px")
-								.style("top", (pageY - 28) + "px"); 
-						}, 500);
-					})
-					.on("mouseout", function(d) { 
-						var tile = d3.select(this), x_cord = tile.attr("x"), y_cord = tile.attr("y");
-						x_cord = (x_cord - main_margin.left)/(w+0.5);
-						y_cord = (y_cord - main_margin.top)/(h+0.5);
-
-						heatMap.filter(function(d) { return d.x == y_cord; }).classed("side", false);
-						heatMap.filter(function(d) { return d.y == x_cord; }).classed("side", false);
-
-						y_num.filter(function(d, i) { return i == y_cord; }).classed("active", false);
-						y_label.filter(function(d, i) { return i == y_cord; }).classed("active", false);
-						x_num.filter(function(d, i) { return i == x_cord; }).classed("active", false);
-						x_label.filter(function(d, i) { return i == x_cord; }).classed("active", false);
-						x_label2.filter(function(d, i) { return i == x_cord; }).classed("side", false);
-
-						y_num_bg.filter(function(d, i) { return i == y_cord; }).classed("highlight", false);
-						y_label_bg.filter(function(d, i) { return i == y_cord; }).classed("highlight", false);
-						x_num_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", false);
-						x_label_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", false);
-						x_label2_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", false);
-
-						tile.classed("active", false);
-						div.transition().duration(200)
-							.style("opacity", 0)
-							.each("end", function() {
-								div.style("left", "0px").style("top", "0px");
-							});
-						clearTimeout(timer);
-					})
-					.on("click", function(d) {
-						d3.event.preventDefault();
-
-						var tile = d3.select(this), y_cord = tile.attr("y");
-						idx = (y_cord - main_margin.top)/(h+0.5);
-						make_barplot(idx);
-						$("#page_num").val((idx+1).toString());
-						$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
-
-						tile.classed("active", false);
-						div.transition().duration(200)
-							.style("opacity", 0)
-							.each("end", function() {
-								div.style("left", "0px").style("top", "0px");
-							});
-					});
-
-    var overlayText = d3.select("#main").select("svg").append("g")
-						.attr("class","overlay").classed("shown", false).attr("id", "seq_overlay")
-    					.selectAll("text")
+	setTimeout(function(){
+	    var heatMap = d3.select("#main").select("svg").append("g")
+	    				.attr("id", "heat_map")
+	    				.selectAll("rect")
 						.data(peaks, function(d) { return d.y + ':' + d.x; }).enter()
-						.append("text")
-						.text(function(d) { return d.seq; })
-						.attr("y", function(d) { return (d.x+1) * (h+0.5) + main_margin.top -1; })
-						.attr("x", function(d) { return d.y * (w+0.5) + main_margin.left +1; })
-						.attr("fill", function(d) { return get_nt_color(d.seq); })
-						.attr("font-size", 12).attr("font-family", "Arial");
+						.append("rect")
+						.attr("class", "tile")
+						.attr("y", function(d) { return d.x * (h+0.5) + main_margin.top; })
+						.attr("x", function(d) { return d.y * (w+0.5) + main_margin.left; })
+						.attr("width", w)
+						.attr("height", h)
+						.style("fill", function(d) { return colorScale(d.value); })
+						.style({"stroke":"black", "stroke-width": 1})
+						.on("mouseover", function(d) { 
+							var tile = d3.select(this), x_cord = tile.attr("x"), y_cord = tile.attr("y");
+							x_cord = (x_cord - main_margin.left)/(w+0.5);
+							y_cord = (y_cord - main_margin.top)/(h+0.5);
+
+							heatMap.filter(function(d) { return d.x == y_cord; }).classed("side", true);
+							heatMap.filter(function(d) { return d.y == x_cord; }).classed("side", true);
+
+							y_num.filter(function(d, i) { return i == y_cord; }).classed("active", true);
+							y_label.filter(function(d, i) { return i == y_cord; }).classed("active", true);
+							x_num.filter(function(d, i) { return i == x_cord; }).classed("active", true);
+							x_label.filter(function(d, i) { return i == x_cord; }).classed("active", true);
+							x_label2.filter(function(d, i) { return i == x_cord; }).classed("side", true);
+
+							y_num_bg.filter(function(d, i) { return i == y_cord; }).classed("highlight", true);
+							y_label_bg.filter(function(d, i) { return i == y_cord; }).classed("highlight", true);
+							x_num_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", true);
+							x_label_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", true);
+							x_label2_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", true);
+
+							tile.classed("side", false).classed("active", true);
+
+							var pageX = d3.event.pageX, pageY = d3.event.pageY;
+							timer = setTimeout(function() {
+								div.transition().duration(200)
+									.style("opacity", .9);
+								div.html("<table><tr><td><p><span class=\"label label-violet pull-right\">ROW</span></p></td><td><p>&nbsp;&nbsp;<span class=\"label label-orange\">" + (y_cord+1) + "</span>: " + row_names[y_cord] + "</p></td></tr><tr><td><p><span class=\"label label-violet pull-right\">COLUMN</span></p></td><td><p>&nbsp;&nbsp;<span class=\"label label-orange\">" + (x_cord+1) + "</span>: " + col_names[x_cord] + "</p></td></tr><tr><td><p><span class=\"label label-primary pull-right\">SEQUENCE</span></p></td><td><p>&nbsp;&nbsp;" + d.seq + "</p></td></tr><tr><td><p><span class=\"label label-success pull-right\">REACTIVITY</span></p></td><td><p>&nbsp;&nbsp;" + d.value + "</p></td></tr><tr><td><p><span class=\"label label-dark-red pull-right\">ERROR</span></p></td><td><p>&nbsp;&nbsp;" + d.error + "</p></td></tr></table>")  
+									.style("left", pageX + "px")
+									.style("top", (pageY - 28) + "px"); 
+							}, 500);
+						})
+						.on("mouseout", function(d) { 
+							var tile = d3.select(this), x_cord = tile.attr("x"), y_cord = tile.attr("y");
+							x_cord = (x_cord - main_margin.left)/(w+0.5);
+							y_cord = (y_cord - main_margin.top)/(h+0.5);
+
+							heatMap.filter(function(d) { return d.x == y_cord; }).classed("side", false);
+							heatMap.filter(function(d) { return d.y == x_cord; }).classed("side", false);
+
+							y_num.filter(function(d, i) { return i == y_cord; }).classed("active", false);
+							y_label.filter(function(d, i) { return i == y_cord; }).classed("active", false);
+							x_num.filter(function(d, i) { return i == x_cord; }).classed("active", false);
+							x_label.filter(function(d, i) { return i == x_cord; }).classed("active", false);
+							x_label2.filter(function(d, i) { return i == x_cord; }).classed("side", false);
+
+							y_num_bg.filter(function(d, i) { return i == y_cord; }).classed("highlight", false);
+							y_label_bg.filter(function(d, i) { return i == y_cord; }).classed("highlight", false);
+							x_num_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", false);
+							x_label_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", false);
+							x_label2_bg.filter(function(d, i) { return i == x_cord; }).classed("highlight", false);
+
+							tile.classed("active", false);
+							div.transition().duration(200)
+								.style("opacity", 0)
+								.each("end", function() {
+									div.style("left", "0px").style("top", "0px");
+								});
+							clearTimeout(timer);
+						})
+						.on("click", function(d) {
+							d3.event.preventDefault();
+
+							var tile = d3.select(this), y_cord = tile.attr("y");
+							idx = (y_cord - main_margin.top)/(h+0.5);
+							make_barplot(idx);
+							$("#page_num").val((idx+1).toString());
+							$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
+
+							tile.classed("active", false);
+							div.transition().duration(200)
+								.style("opacity", 0)
+								.each("end", function() {
+									div.style("left", "0px").style("top", "0px");
+								});
+						});		
+		setTimeout(function() {
+		    var overlayText = d3.select("#main").select("svg").append("g")
+								.attr("class","overlay").classed("shown", false).attr("id", "seq_overlay")
+		    					.selectAll("text")
+								.data(peaks, function(d) { return d.y + ':' + d.x; }).enter()
+								.append("text")
+								.text(function(d) { return d.seq; })
+								.attr("y", function(d) { return (d.x+1) * (h+0.5) + main_margin.top -1; })
+								.attr("x", function(d) { return d.y * (w+0.5) + main_margin.left +1; })
+								.attr("fill", function(d) { return get_nt_color(d.seq); })
+								.attr("font-size", 12).attr("font-family", "Arial");
+			flag = 1
+		}, 1);
+	}, 1);
+
 }
