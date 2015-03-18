@@ -53,7 +53,7 @@ $(document).ready(function() {
 		$(".panel_close").removeClass("visible").hide();
 		$("#left-buttons").css("margin-top", parseInt($("#left-buttons").css("margin-top"))+parseInt($(".panel_close").css("height")));
 	});
-	$(".left_alone").on("click", function() {		
+	$(".left_alone").on("click", function(e) {		
 		if (!$("#img_panel").hasClass("visible")) {
 			$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
 			$(".barplot_close").addClass("visible").show();
@@ -63,10 +63,12 @@ $(document).ready(function() {
 			$(".barplot_close").trigger("click");
 		}	
 	});
-	$(".barplot_close").on("click", function() {
-		$("#img_panel").removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")});
-		$(".barplot_close").removeClass("visible").hide();
-		$("#img-buttons").css("margin-top", parseInt($("#img-buttons").css("margin-top"))+parseInt($(".barplot_close").css("height")));
+	$(".barplot_close").on("click", function(e) {
+		if ($("#img_panel").hasClass("visible")) {
+			$("#img_panel").removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")});
+			$(".barplot_close").removeClass("visible").hide();
+			$("#img-buttons").css("margin-top", parseInt($("#img-buttons").css("margin-top"))+parseInt($(".barplot_close").css("height")));
+		}
 	});
 
 	$("#btn-set").on("click", function() {		

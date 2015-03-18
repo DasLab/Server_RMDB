@@ -141,6 +141,12 @@ function draw_heatmap(json) {
 				.style("opacity", 0);
 
 	setTimeout(function(){
+		// var size_batch = 5000, n = Math.round(peaks.length / size_batch);
+		// console.log(peaks.length)
+		// for (var i = 0; i <= n; i++) {
+		// 	var i_min = i*size_batch, i_max = Math.min(peaks.length, (i+1)*size_batch-1);
+
+		// }
 	    var heatMap = d3.select("#main").select("svg").append("g")
 	    				.attr("id", "heat_map")
 	    				.selectAll("rect")
@@ -219,7 +225,7 @@ function draw_heatmap(json) {
 							idx = (y_cord - main_margin.top)/(h+0.5);
 							make_barplot(idx);
 							$("#page_num").val((idx+1).toString());
-							$("#img_panel").addClass("visible").animate({"margin-left":"0px"}).css("z-index", "100");
+							$(".left_alone").trigger("click");
 
 							tile.classed("active", false);
 							div.transition().duration(200)
