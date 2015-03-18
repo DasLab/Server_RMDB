@@ -221,4 +221,22 @@ $(document).ready(function() {
 		});
 	});
 
+	$('#expand_all').on("click", function () {
+		$(".category").each(function () {
+			$(this).find(".panel-body>.subpanel>.panel-collapse").collapse("show");
+			$(this).find(".panel-body>.subpanel>.panel-collapse").siblings().find(".panel-title>.icon")
+				.removeClass("glyphicon-chevron-right")
+				.addClass("glyphicon-chevron-down");
+		});
+	});
+	$('#collapse_all').on("click", function () {
+		$(".category").each(function () {
+			$(this).find(".panel-body>.subpanel>.panel-collapse").collapse("hide");
+			$(this).find(".panel-body>.subpanel>.panel-collapse").siblings().find(".panel-title>.icon")
+				.removeClass("glyphicon-chevron-down")
+				.addClass("glyphicon-chevron-right");
+		});
+	});
+
+
 });

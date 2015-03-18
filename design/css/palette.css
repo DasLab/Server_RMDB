@@ -45,6 +45,7 @@ p.cap:first-letter {
 .btn-warning {
 	background-color: #fec78a;
 	border-color: #cb9f6e;
+	color: #000 !important;
 }
 .btn-warning:hover {
 	background-color: #fed2a1;
