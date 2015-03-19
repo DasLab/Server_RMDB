@@ -16,9 +16,9 @@ from Tkinter import TclError
 
 def get_spreadsheet(url):
 	url = os.popen('curl '+url+' -L -I -s -o /dev/null -w %{url_effective}').read().strip().replace('%3D','=').replace('%26','&')
-	print url
+	# print url
 	idx = url.find('key=')
-	print idx
+	# print idx
 	if idx > 0:
 		key = ''
 		idx = idx + 4

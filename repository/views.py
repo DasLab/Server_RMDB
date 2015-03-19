@@ -179,6 +179,10 @@ def predict(request):
 			return render_to_response(HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':messages, 'msg_r':['Invalid input. Please check your inputs and try again.']})
 
 
+def str_view(request):
+	return render_to_response(HTML_PATH['index'], context_instance=RequestContext(request))
+
+
 def search(request):
 	return render_to_response(HTML_PATH['search_res'], {}, context_instance=RequestContext(request))
 

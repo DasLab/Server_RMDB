@@ -20,7 +20,7 @@ urlpatterns = patterns('repository.views',
     (r'^deposit/submit/$', 'upload'),
 
     (r'^analyze/predict/$', 'predict'),
-    (r'^analyze/view/$', 'view'),
+    (r'^analyze/view/$', 'str_view'),
 
     (r'^tools/$', 'tools'),
     (r'^tools/mapseeker/license/$', 'license_mapseeker'),

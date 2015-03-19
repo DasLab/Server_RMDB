@@ -9,7 +9,6 @@
 
 {% block content %}
 
-{% if revision_status == "PUB" %}
 <div id="left_panel" class="side_panel well">
 	<div role="tabpanel" class="tabbable tabs-right">
 		<ul class="nav nav_tabs side_tab" role="tablist" id="left-buttons">
@@ -291,7 +290,6 @@
 </div>
 
 
-
 <div class="container">
 	<div class="row">
 		<div class="col-md-10" id="panel_tit">
@@ -309,7 +307,7 @@
 						<div class="btn-group" id="tag_supercede"></div>
 
 						<div class="btn-group" id="hist_ver_btn">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="hist_dropdown">
 								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 								&nbsp;&nbsp;History&nbsp;&nbsp;
 								<span class="caret"></span>
@@ -318,7 +316,7 @@
 						</div>
 
 						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="dl_dropdown">
 								<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
 								&nbsp;&nbsp;Download&nbsp;&nbsp;
 								<span class="caret"></span>
@@ -358,6 +356,8 @@
 		</div>
 	</div>
 </div>
+
+{% if revision_status == "PUB" %}
 
 <div class="container">
 	<div class="col-md-8">
@@ -426,14 +426,13 @@
 -->
 
 
-
 {% else %}
-	{% if revision_status == "REC" %}
-		<h1>Entry {{rmdb_id}} has been received and is currently under review.</h1>
-	{% else %}
-		<h1>Entry {{rmdb_id}} has been received and will undergo review shortly.</h1>
-	{% endif %}
-	<p>Please contact <a href="mailto:rhiju@stanford.edu">rhiju@stanford.edu</a> for further information. </p>
+<div class="container">
+	<h1><span class="label label-warning">In Review</span></h1>
+	<br/>
+	<p class="lead">This entry has been received and is currently under review by the RMDB team. Once approved by the admin, the entry will be released to the public. On average, the review process should take no longer than 2 days.</p>
+	<p class="lead">For any questions, please feel free to <a href="/repository/help/about#contact">contact</a> us.</p>
+</div>
 {% endif %}
 
 <!-- <form class="hidden" id="structureviewform" target="popup"
@@ -463,6 +462,7 @@
 		// $("#wait").ajaxStart(function() {$(this).fadeIn();})
 		// 	.ajaxStop(function() {$(this).fadeOut();});
 
+		{% if revision_status == "PUB" %}
 		$(document).ready(function () {
 			$.ajax({
 				url: '/site_data/files/{{rmdb_id}}/data_heatmap.json',
@@ -504,5 +504,13 @@
 			});
 
 		});
+		{% else %}
+		$(document).ready(function () {
+			init_panel_size();
+			$("#hist_dropdown").addClass("disabled");
+			$("#dl_dropdown").addClass("disabled");
+			$("#tag_supercede").html('<button type="button" class="btn btn-warning disabled" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;In Review&nbsp;&nbsp;</button>');
+		});
+		{% endif %}
 	</script>
 {% endblock %}
