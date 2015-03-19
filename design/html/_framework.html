@@ -102,12 +102,12 @@
 
 			<div class="navbar-collapse collapse" >
 				<ul class="nav navbar-nav">
-					<li class="dropdown clickable" id="nav_browse">
+					<li class=" clickable" id="nav_browse">
 						<a href="/repository/browse"  class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							Browse
-							<span class="caret"></span>
+<!-- 							<span class="caret"></span> -->
 						</a>
-						<ul class="dropdown-menu nav nav-pills nav-stacked clickable" role="menu">
+<!-- 						<ul class="dropdown-menu nav nav-pills nav-stacked clickable" role="menu">
 							<li class="nav-general"><a href="/repository/browse#categoryGeneral" id="navGeneral">
 								<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;&nbsp;
 								General</a>
@@ -122,7 +122,7 @@
 								<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>&nbsp;&nbsp;
 								EteRNA</a>
 							</li>
-						</ul>
+						</ul> -->
 					</li>
 					<li class="dropdown">
 						<a id="nav_deposit" href="/repository/deposit/submit" class="dropdown-toggle clickable disabled" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -151,33 +151,45 @@
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li><a class="li-info clickable" href="/repository/analyze/predict/">
+							<li class="li-danger"><a class="clickable" href="/repository/analyze/predict/">
 								<span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>&nbsp;&nbsp;
-								Secondary Structure Prediction</a>
+								Predict</a>
 							</li>
 							<li class="divider"></li>
-							<li><a class="li-light-blue clickable" href="/repository/analyze/tools">
+							<li class="li-warning disabled"><a class="clickable" href="/repository/analyze/view/">
+								<span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>&nbsp;&nbsp;
+								Structure View</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown" id="nav_tool">
+						<a href="/repository/tools" class="dropdown-toggle disabled clickable" data-toggle="dropdown" role="button" aria-expanded="false">
+							Tools
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+							<li><a class="li-light-blue clickable" href="/repository/tools">
 								<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-								Repository Packages</a>
+								Repository Packages&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 							</li>
 							<li class="divider"></li>
 							<li class="li-primary"><a class="disabled">
 								<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-								Tool Tutorials</a>
+								Tutorials</a>
 							</li>
-							<li class="li-primary"><a class="clickable" href="/repository/analyze/docs/predict">
+							<li class="li-primary disabled"><a class="clickable" href="/repository/tools/docs/predict">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>Structural Server</i></a>
 							</li>
-							<li class="li-primary"><a class="clickable" href="/repository/analyze/docs/api">
+							<li class="li-primary disabled"><a class="clickable" href="/repository/tools/docs/api">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>Website API</i></a>
 							</li>
-							<li class="li-primary"><a class="clickable" href="/repository/analyze/docs/rdatkit">
+							<li class="li-primary"><a class="clickable" href="/repository/tools/docs/rdatkit">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>RDATKit</i></a>
 							</li>
-							<li class="li-primary"><a class="clickable" href="/repository/analyze/docs/hitrace">
+							<li class="li-primary disabled"><a class="clickable" href="/repository/tools/docs/hitrace">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>HiTRACE</i></a>
 							</li>
-							<li class="li-primary"><a class="clickable" href="/repository/analyze/docs/mapseeker">
+							<li class="li-primary disabled"><a class="clickable" href="/repository/tools/docs/mapseeker">
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>MAPseeker</i></a>
 							</li>
 						</ul>
