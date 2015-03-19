@@ -64,7 +64,7 @@ def generate_varna_thumbnails(entry):
 				if (not entry.datacount): entry.datacount = len(datas[0].values.split(','))
 				height = 200 * pow(len(datas), 2) / entry.datacount
 
-				if (len(datas) < 3): height = len(datas)*15
+				if (len(datas) < 3): height = len(datas)*10
 				height = min(height, 1000)
 				if not is_eterna: height = min(height, 250)
 
@@ -149,9 +149,19 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 			aspect_ratio = 'auto'
 		else:
 			aspect_ratio = 'equal'
+		if entry_type == "MA":
+			sub_id = tril_indices(min(shape(values_array)))
+			if (values_array[sub_id].mean() > 10):
+				outliers = where(values_array > values_array[sub_id].mean()*3)
+				values_array[outliers] = values_array[sub_id].mean()*3
+			vmax_adjust = values_array[sub_id].mean()*2 #+ values_array[sub_id].std()*0.35
 
-		vmax_adjust = values_array.std()*0.35
-		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=values_array.mean()+vmax_adjust, aspect=aspect_ratio, interpolation='kaiser')
+			# print values_array[sub_id].mean(), values_array.mean(),values_array[sub_id].std(), values_array.std()
+		else:
+			vmax_adjust = values_array.mean()*1.5 #+ values_array.std()*0.35
+			# print values_array.mean(),values_array.std();
+
+		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='kaiser')
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
