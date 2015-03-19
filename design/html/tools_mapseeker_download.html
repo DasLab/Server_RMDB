@@ -10,7 +10,8 @@
           <b>Thank you for downloading MAPseeker!</b>
         </p>
         <p>
-          Your request for MAPseeker was successfully processed. Please use this link to download the zip file of source code. <a href="/site_media/code/mapseeker.zip" target = "_blank" class="btn btn-primary">&nbsp;&nbsp;Link&nbsp;&nbsp;</a>
+          Your request for MAPseeker was successfully processed. If the download does not start automatically, please use this link to access the zip file of source code. 
+          <a href="/site_media/code/mapseeker.zip" class="btn btn-primary" id="dl_zip" download>&nbsp;&nbsp;Link&nbsp;&nbsp;</a>
         </p>
         <p>
           For tutorial and documentation of the MAPseeker, see
@@ -21,4 +22,15 @@
   </div>
 </div>
 {% endblock %}
+
+
+{% block script %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#dl_zip").on("click", function() {$(window).unbind();});
+      $("#dl_zip")[0].click();
+    });
+  </script>
+{% endblock %}
+
 
