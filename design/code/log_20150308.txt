@@ -1,7 +1,7 @@
 #RMDB 2.1 BETA, phase II
 !t47
 
-Complete redesign of RMDB front-end interface graphics, reorganization of site map, bug fixes for user login system, improvement for RDAT submission system.
+Complete redesign of RMDB front-end visualization interface using d3.js with interactive heatmap and barplot, improvement for browse page loading.
 
 -Home page
 -\Switched to <i>json</i> format for stats, latest entries, and news loading.
