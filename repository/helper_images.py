@@ -160,6 +160,7 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 		else:
 			vmax_adjust = values_array.mean()*1.5 #+ values_array.std()*0.35
 			# print values_array.mean(),values_array.std();
+		if vmax_adjust < 0: vmax_adjust = values_array.mean() + values_array.std()*0.5
 
 		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='kaiser')
 		frame = gca()
