@@ -22,6 +22,19 @@ def get_arrays(datas):
 	return array(values), array(traces), array(reads), array(xsels), array(errors)
 
 
+def get_correct_mapping_bonuses(data, construct):
+	vals = [float(x) for x in data.values.split(',')]
+	seqpos = [int(x) - construct.offset - 1 for x in construct.seqpos.strip('[]').split(',')]
+	bonuses = [-0.1]*len(construct.sequence)
+	valmean = sum(vals)/len(vals)
+	for i, s in enumerate(seqpos):
+		if vals[i] < -0.01:
+			bonuses[s] = valmean
+		else:
+			bonuses[s] = vals[i]
+	return bonuses
+
+
 def generate_varna_thumbnails(entry):
 	try:
 		constructs = ConstructSection.objects.filter(entry=entry)
@@ -32,21 +45,32 @@ def generate_varna_thumbnails(entry):
 			# if not os.path.exists(path):
 			# 	os.mkdir(path)
 			# 	os.system('chmod 777 %s' % path)
-			if not c.structure or ('(' not in c.structure) or entry.type == 'MM' or len(datas) > 100:
-				os.popen('convert %s%s/reactivity.png %s.gif' % (CONSTRUCT_IMG_DIR, c.id, fname))
-				height = min(len(datas), 1000)
-			else:
+
+			is_eterna = 'ETERNA' in entry.values('rmdb_id')[0]['rmdb_id']
+			is_structure = (c.structure) and ('(' in c.structure)
+			is_large = len(datas) > 100
+			is_SS = entry.type in ('SS', 'TT')
+
+			if is_structure and is_SS and (not is_large) and (not is_eterna):
 				height = 200
-				os.popen('rm %s/*.png' % path)
-				for i, data in enumerate(datas[:5]):
+				for i, data in enumerate(datas[:min(6, len(datas))]):
 					bonuses = get_correct_mapping_bonuses(data, c)
 					cms = VARNA.get_colorMapStyle(bonuses)
-					VARNA.cmd(' '*len(c.sequence), c.structure, '%s_%s.png' % (fname, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400} )
-				print path
-				os.popen('convert -delay 100 -resize 300x300 infile.jpg -background none -gravity center -extent 300x300 -loop 0 %s/*.png %s.gif' % (path, fname))
+
+					VARNA.cmd('\" \"', c.structure, '%s_%s.png' % (fname, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400, 'spaceBetweenBases':0.6} )
+				os.popen('convert -delay 100 -resize 300x300 -background none -gravity center -extent 300x300 -loop 0 %s_*.png %s.gif' % (path, fname))
+			else:
+				os.popen('convert %s%s/reactivity.png %s.gif' % (CONSTRUCT_IMG_DIR, c.id, fname))
+				if (not entry.datacount): entry.datacount = len(datas[0].values.split(','))
+				height = 200 * pow(len(datas), 2) / entry.datacount
+
+				if (height < 5): height = len(datas)*15
+				height = min(height, 1000)
+				if not is_eterna: height = min(height, 250)
 
 			width = 200
 			os.popen('mogrify -format gif -thumbnail %sx%s! %s.gif' % (width, height, fname))
+			if (os.path.isfile('%s_0.png' % fname)): os.popen('rm -rf %s_*.png' % fname)
 	except ConstructSection.DoesNotExist:
 		print 'FATAL! There are no constructs for entry %s' % entry.rmdb_id
 
@@ -86,7 +110,8 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 					order.append(order_offset)
 					order_offset += 1
 				else:
-					order.append(int(data.annotations['mutation'][0].replace('Lib1-','').replace('Lib2-', '')[1:-1]))
+					i_order = data.annotations['mutation'][0].replace('Lib1-', '').replace('Lib2-', '').replace('Bad Quality', '').replace('badQuality', '').replace('warning:', '').replace(',', '').strip()
+					order.append(int(i_order[1:-1]))
 			else:
 				order.append(i)
 		order = [i[0] for i in sorted(enumerate(order), key=lambda x:x[1])][::-1]
@@ -95,11 +120,10 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 		# if entry_type == 'MA':
 		# 	order = order[::-1]
 	
-	
+
 	if engine == 'matplotlib':
 		has_traces = False
 		aspect_ratio = "auto"
-		if (entry_type == 'MM'):  aspect_ratio = shape( trace_array[order, :] )[1] / float( shape( trace_array)[0]  )
 
 		figure(2)
 		frame = gca()
@@ -107,22 +131,30 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 		frame.axes.get_yaxis().set_visible(False)
 
 		if size(trace_array) > 0:
+			if (entry_type == 'MM'):  aspect_ratio = shape( trace_array[order, :] )[1] / float( shape( trace_array)[0]  )
 			imshow(trace_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=trace_array.mean()+0.5*trace_array.std(), aspect=aspect_ratio, interpolation='nearest')
-			savefig(dir+'/trace.png')
+			savefig(dir+'/trace.png', bbox_inches='tight')
 			has_traces = True
 
 		if size(reads_array) > 0:
+			if (entry_type == 'MM'):  aspect_ratio = shape( reads_array[order, :] )[1] / float( shape( reads_array)[0]  )
 			imshow(reads_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=reads_array.mean()+0.5*reads_array.std(), aspect=aspect_ratio, interpolation='nearest')
-			savefig(dir+'/trace.png')
+			savefig(dir+'/trace.png', bbox_inches='tight')
 			has_traces = True
 
 		figure(2)
 		clf()
-		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=values_array.mean()+0.5*values_array.std(), aspect='equal', interpolation='kaiser')
+		is_eterna = 'ETERNA' in RMDBEntry.objects.filter(id=construct_model.values('entry'))[0].rmdb_id
+		if is_eterna or shape(values_array)[0] < 3:
+			aspect_ratio = 'auto'
+		else:
+			aspect_ratio = 'equal'
+
+		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=values_array.mean()+0.5*values_array.std(), aspect=aspect_ratio, interpolation='kaiser')
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
-		savefig(dir+'/reactivity.png')
+		savefig(dir+'/reactivity.png', bbox_inches='tight')
 
 		#figure(1)
 		#clf()

@@ -12,18 +12,6 @@ from rmdb.repository.models import *
 from rmdb.repository.views import *
 
 
-def get_correct_mapping_bonuses(data, construct):
-    vals = [float(x) for x in data.values.split(',')]
-    seqpos = [int(x) - construct.offset - 1 for x in construct.seqpos.strip('[]').split(',')]
-    bonuses = [-0.1]*len(construct.sequence)
-    valmean = sum(vals)/len(vals)
-    for i, s in enumerate(seqpos):
-        if vals[i] < -0.01:
-            bonuses[s] = valmean
-        else:
-	    bonuses[s] = vals[i]
-    return bonuses
-
 def precalculate_structures(entry):
     try:
 	constructs = ConstructSection.objects.filter(entry=entry)
