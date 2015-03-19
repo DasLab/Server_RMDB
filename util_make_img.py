@@ -10,7 +10,7 @@ from rmdb.repository.models import *
 from rmdb.repository.helper_display import *
 from rmdb.repository.helper_deposit import *
 
-from rdatkit.datahandlers import RDATFile, RDATSection
+from rdatkit.datahandlers import RDATFile
 
 
 def make_images(id):

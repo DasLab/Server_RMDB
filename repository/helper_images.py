@@ -64,7 +64,7 @@ def generate_varna_thumbnails(entry):
 				if (not entry.datacount): entry.datacount = len(datas[0].values.split(','))
 				height = 200 * pow(len(datas), 2) / entry.datacount
 
-				if (height < 5): height = len(datas)*15
+				if (len(datas) < 3): height = len(datas)*15
 				height = min(height, 1000)
 				if not is_eterna: height = min(height, 250)
 
@@ -132,13 +132,13 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 
 		if size(trace_array) > 0:
 			if (entry_type == 'MM'):  aspect_ratio = shape( trace_array[order, :] )[1] / float( shape( trace_array)[0]  )
-			imshow(trace_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=trace_array.mean()+0.5*trace_array.std(), aspect=aspect_ratio, interpolation='nearest')
+			imshow(trace_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=trace_array.mean()+0.4*trace_array.std(), aspect=aspect_ratio, interpolation='nearest')
 			savefig(dir+'/trace.png', bbox_inches='tight')
 			has_traces = True
 
 		if size(reads_array) > 0:
 			if (entry_type == 'MM'):  aspect_ratio = shape( reads_array[order, :] )[1] / float( shape( reads_array)[0]  )
-			imshow(reads_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=reads_array.mean()+0.5*reads_array.std(), aspect=aspect_ratio, interpolation='nearest')
+			imshow(reads_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=reads_array.mean()+0.4*reads_array.std(), aspect=aspect_ratio, interpolation='nearest')
 			savefig(dir+'/trace.png', bbox_inches='tight')
 			has_traces = True
 
@@ -150,7 +150,8 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 		else:
 			aspect_ratio = 'equal'
 
-		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=values_array.mean()+0.5*values_array.std(), aspect=aspect_ratio, interpolation='kaiser')
+		vmax_adjust = values_array.std()*0.35
+		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=values_array.mean()+vmax_adjust, aspect=aspect_ratio, interpolation='kaiser')
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
