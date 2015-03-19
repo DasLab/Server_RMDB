@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import *
 
+from rmdb.repository.helper_api import *
+
 from settings import *
 
 # Uncomment the next two lines to enable the admin:
@@ -10,8 +12,12 @@ urlpatterns = patterns('',
     (r'^$', 'rmdb.views.home'),
     (r'^repository/', include('repository.urls')),
     # (r'^structureserver/', include('structureserver.urls')),
+    (r'^site_media/isatab_files/(?P<path>.*)$', api_redirect),
+    (r'^site_media/rdat_files/(?P<path>.*)$', api_redirect),
+
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/design'}),
     (r'^site_data/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/data'}),
+
     # Example:
     # (r'^rmdb/', include('rmdb.foo.urls')),
 

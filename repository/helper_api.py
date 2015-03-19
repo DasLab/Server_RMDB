@@ -1,4 +1,5 @@
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpRequest
+from django.core.servers.basehttp import FileWrapper
 
 from rmdb.repository.models import *
 from helper_stats import *
@@ -56,6 +57,12 @@ def api_browse(request, keyword):
 def api_search(request, keyword, sstring):
 	sstring = sstring.replace('_', ' ').strip()
 	return HttpResponse(simplejson.dumps(simple_search_list(sstring, keyword)), mimetype='application/json')
+
+
+def api_redirect(request, path):
+	path = path.rstrip('/')
+	html = "<html><header><meta http-equiv=\"refresh\" content=\"0;url=/site_data/files/%s\"/></header></html>" % path
+	return HttpResponse(html)
 
 
 
