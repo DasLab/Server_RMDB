@@ -46,7 +46,11 @@ def generate_varna_thumbnails(entry):
 			# 	os.mkdir(path)
 			# 	os.system('chmod 777 %s' % path)
 
-			is_eterna = 'ETERNA' in entry.values('rmdb_id')[0]['rmdb_id']
+			if hasattr(entry, 'values'):
+				is_eterna = 'ETERNA' in entry.values('rmdb_id')[0]['rmdb_id']
+			else:
+				is_eterna = 'ETERNA' in entry.rmdb_id
+
 			is_structure = (c.structure) and ('(' in c.structure)
 			is_large = len(datas) > 100
 			is_SS = entry.type in ('SS', 'TT')
@@ -144,7 +148,11 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 
 		figure(2)
 		clf()
-		is_eterna = 'ETERNA' in RMDBEntry.objects.filter(id=construct_model.values('entry'))[0].rmdb_id
+		if hasattr(construct_model, 'values'):
+			is_eterna = 'ETERNA' in RMDBEntry.objects.filter(id=construct_model.values('entry'))[0].rmdb_id
+		else:
+			is_eterna = 'ETERNA' in construct_model.entry.rmdb_id
+
 		if is_eterna or shape(values_array)[0] < 3:
 			aspect_ratio = 'auto'
 		else:

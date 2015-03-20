@@ -7,6 +7,7 @@ from helper_search import *
 
 from itertools import chain
 import simplejson
+import subprocess
 
 
 def api_stats(request):
@@ -63,6 +64,9 @@ def api_redirect(request, path):
 	path = path.rstrip('/')
 	html = "<html><header><meta http-equiv=\"refresh\" content=\"0;url=/site_data/files/%s\"/></header></html>" % path
 	return HttpResponse(html)
+
+
+
 
 
 

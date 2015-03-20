@@ -299,6 +299,7 @@ def upload(request):
 	error_msg = []
 	flag = 0
 	entry = []
+
 	if request.method == 'POST':
 		try:
 			form = UploadForm(request.POST, request.FILES)
