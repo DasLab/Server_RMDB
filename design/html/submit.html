@@ -20,13 +20,14 @@
                     <br/>
                     Entry <i>Statistics</i>: <i># of Constructs</i>: <u>{{ entry.constructcount }}</u>, <i># of Data Points</i>: <u>{{ entry.datacount }}</u>
                     <br/><br/>
-                    Entry <i>Status</i>: <b><u>{{ entry.revision_status|get_stt_type }}</u></b>
+                    Entry <i>Status</i>: 
+                    <span class="lead">{% autoescape off %}{{ entry.revision_status|get_stt_type }}{% endautoescape %}</span>
                     {% if entry.revision_status == 'REV' %}
                         <br/>
                         ** Your submission has been acknowledged by the RMDB team. We will review your entry shortly. For any questions, please feel free to <a href="/repository/help/about#contact">contact</a> us.
                     {% else %}
                         <br/>
-                        ** To visit your entry, click <a href="/repository/detail/{{ entry.rmdb_id }}">here</a>.
+                        ** To visit your entry, click here: <a class="btn btn-danger" href="/repository/detail/{{ entry.rmdb_id }}">Detail</a>.
                     {% endif %}
                 </p>
             </div>
@@ -260,6 +261,7 @@
                 //         url:'/site_data/tmp.txt',
                 //         type: 'GET',
                 //         dataType:'text',
+                //         async: false,
                 //         success: function(data) {
                 //             console.log("got it");
                 //             console.log(data);

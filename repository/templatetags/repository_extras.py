@@ -72,9 +72,14 @@ register.filter('get_exp_type', get_exp_type)
 
 
 def get_stt_type(string):
-	for i in range(len(ENTRY_STATUS_CHOICES)):
-		if string in ENTRY_STATUS_CHOICES[i]:
-			return ENTRY_STATUS_CHOICES[i][1]
+	if string == 'REC':
+		return '<span class=\"label label-info\">Received</span>'
+	elif string == "REV":
+		return '<span class=\"label label-warning\">In Review</span>'
+	elif string == "HOL":
+		return '<span class=\"label label-danger\">On Hold</span>'
+	elif string == "PUB":
+		return '<span class=\"label label-success\">Published</span>'
 register.filter('get_stt_type', get_stt_type)
 
 
