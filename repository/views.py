@@ -1,6 +1,6 @@
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext#, Template
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 # from django.core.urlresolvers import reverse
@@ -111,7 +111,7 @@ def detail(request, rmdb_id):
 	except (RMDBEntry.DoesNotExist, IndexError):
 		raise Http404
 
-	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
+	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
 
 
 def predict(request):
@@ -354,6 +354,37 @@ def upload(request):
 	else:
 		form = UploadForm()
 	return render_to_response(HTML_PATH['upload'], {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def admin_rev_stat(request):
+	new_stat = request.POST['rev_stat']
+	rmdb_id = request.POST['rmdb_id']
+	cid = request.POST['cid']
+	construct = ConstructSection.objects.filter(id=cid)[0]
+	entry = RMDBEntry.objects.filter(id=construct.entry.id).order_by('-version')[0]
+	if new_stat == "PUB":
+		rdatfile = RDATFile()
+		file_name = '%s%s/%s_%s.rdat' %(RDAT_FILE_DIR, rmdb_id, rmdb_id, entry.version)
+		if not os.path.isfile(file_name):
+			file_name = '%s%s/%s.rdat' %(RDAT_FILE_DIR, rmdb_id, rmdb_id)
+		rf = open(file_name, 'r')
+		rdatfile.load(rf)
+		rf.close()
+		for k in rdatfile.constructs:
+			c = rdatfile.constructs[k]
+			entry.has_traces = generate_images(construct, c, entry.type, engine='matplotlib')
+
+		generate_varna_thumbnails(entry)
+		make_json_for_rdat(entry.rmdb_id)
+
+	entry.revision_status = new_stat
+	entry.save()
+	is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (ISATAB_FILE_DIR, entry.rmdb_id, entry.rmdb_id, entry.version)) else False
+
+	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':cid, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
+
 
 
 def user_login(request):

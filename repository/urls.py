@@ -18,6 +18,7 @@ urlpatterns = patterns('repository.views',
     (r'^deposit/specs/(?P<section>\w{,20})$', 'specs'),
     (r'^deposit/validate/$', 'validate'),
     (r'^deposit/submit/$', 'upload'),
+    (r'^deposit/admin_rev_stat/$', 'admin_rev_stat'),
 
     (r'^analyze/predict/$', 'predict'),
     (r'^analyze/view/$', 'str_view'),

@@ -455,10 +455,105 @@
 
 {% else %}
 <div class="container">
-	<h1><span class="label label-warning">In Review</span></h1>
+	<h1>
+		{% if revision_status == "REV" %}
+		<span class="label label-warning">In Review</span>
+		{% endif %}
+		{% if revision_status == "REC" %}
+		<span class="label label-info">Received</span>
+		{% endif %}
+		{% if revision_status == "HOL" %}
+		<span class="label label-danger">On Hold</span>
+		{% endif %}
+	</h1>
 	<br/>
 	<p class="lead">This entry has been received and is currently under review by the RMDB team. Once approved by the admin, the entry will be released to the public. On average, the review process should take no longer than 2 days.</p>
+	<img src="/site_data/construct_img/{{cid}}/reactivity.png" class="center-block"/>
 	<p class="lead">For any questions, please feel free to <a href="/repository/help/about#contact">contact</a> us.</p>
+
+	{% if user.is_superuser %}
+	<hr/>
+	<h3>Admin Options</h3>
+	<form enctype="multipart/form-data" method="post" action="/repository/deposit/admin_rev_stat/">
+		<div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>&nbsp;&nbsp;
+                            Download
+                        </h2>
+                    </div>
+                    <div class="panel-body" id="col-1">
+						<ul class="nav nav-pills nav-stacked" role="menu">
+							<li class="li-info"><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}.rdat" id="dl_rdat" download>
+								<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
+								&nbsp;&nbsp;RDAT
+							</a></li>
+							{% if not is_istab %} 
+							<li class="li-brown"><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}_{{version}}.xls" id="dl_isatab" download>
+								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+								&nbsp;&nbsp;ISATAB
+							</a></li>
+							{% endif %} 
+						</ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            <span class="glyphicon glyphicon-tower" aria-hidden="true"></span>&nbsp;&nbsp;
+                            Change Status
+                        </h2>
+                    </div>
+                    <div class="panel-body" id="col-2">
+                    	<div class="col-md-3">
+	                    	<div class="radio">
+								<label>
+									<input type="radio" name="rev_stat" value="PUB">
+									<p class="lead"><span class="label label-success">Published</span></p>
+								</label>
+							</div>
+	                    	<div class="radio">
+								<label>
+									<input type="radio" name="rev_stat" value="REV" checked>
+									<p class="lead"><span class="label label-warning">In Review</span></p>
+								</label>
+							</div>
+                    	</div>
+                    	<div class="col-md-3">
+	                    	<div class="radio">
+								<label>
+									<input type="radio" name="rev_stat" value="REC">
+									<p class="lead"><span class="label label-info">Received</span></p>
+								</label>
+							</div>
+	                    	<div class="radio">
+								<label>
+									<input type="radio" name="rev_stat" value="HOL">
+									<p class="lead"><span class="label label-danger">On Hold</span></p>
+								</label>
+							</div>
+                    	</div>
+                    	<div class="col-md-6">
+                    		<p>Once submit, the revision status will be updated.</p>
+                    		<p>If switched to <span class="label label-success">Published</span>, json data files will be generated.</p>
+                    		<input id="btn_submit" type="submit" class="btn btn-inverse pull-right" value="&nbsp;Submit&nbsp;"/>
+                    		<br/>
+                    		<input type="text" name="cid" value="{{cid}}" style="display:none;" />
+                    		<input type="text" name="rmdb_id" value="{{rmdb_id}}" style="display:none;" />
+                    	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+	{% endif %}
 </div>
 {% endif %}
 
@@ -541,6 +636,10 @@
 			$("#hist_dropdown").addClass("disabled");
 			$("#dl_dropdown").addClass("disabled");
 			$("#tag_supercede").html('<button type="button" class="btn btn-warning disabled" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;In Review&nbsp;&nbsp;</button>');
+		    var col_h = Math.max(parseInt($("#col-1").css("height")), parseInt($("#col-2").css("height")));
+		    $("#col-1").css("height", col_h);
+		    $("#col-2").css("height", col_h);
+
 		});
 		{% endif %}
 	</script>
