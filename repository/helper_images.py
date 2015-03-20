@@ -61,7 +61,7 @@ def generate_varna_thumbnails(entry):
 					bonuses = get_correct_mapping_bonuses(data, c)
 					cms = VARNA.get_colorMapStyle(bonuses)
 
-					VARNA.cmd('\" \"', c.structure, '%s_%s.png' % (fname, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400, 'spaceBetweenBases':0.6} )
+					VARNA.cmd('\" \"', c.structure, '%s_%s.png' % (fname, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400, 'spaceBetweenBases':0.6, 'flat':False} )
 				os.popen('convert -delay 100 -resize 300x300 -background none -gravity center -extent 300x300 -loop 0 %s_*.png %s.gif' % (path, fname))
 			else:
 				os.popen('convert %s%s/reactivity.png %s.gif' % (CONSTRUCT_IMG_DIR, c.id, fname))
