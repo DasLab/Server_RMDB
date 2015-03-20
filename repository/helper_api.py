@@ -5,9 +5,9 @@ from rmdb.repository.models import *
 from helper_stats import *
 from helper_search import *
 
-from itertools import chain
+# from itertools import chain
 import simplejson
-import subprocess
+# import subprocess
 
 
 def api_stats(request):
@@ -17,7 +17,7 @@ def api_stats(request):
 
 
 def api_latest(request):
-	entries = RMDBEntry.objects.all().order_by('-creation_date')[::-1]
+	entries = RMDBEntry.objects.all().order_by('-creation_date')
 	entries_list = set()
 	for e in entries:
 		entries_list.add(e.rmdb_id)
@@ -28,7 +28,7 @@ def api_latest(request):
 		entries.append(RMDBEntry.objects.filter(rmdb_id=e).order_by('-creation_date')[0])
 
 	entries_list = []
-	for e in entries:
+	for e in entries[::-1]:
 		cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
 		rmdb_id = e.rmdb_id
 		for c in ConstructSection.objects.filter(entry=e).values('name').distinct():
