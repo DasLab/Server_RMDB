@@ -17,7 +17,7 @@ def api_stats(request):
 
 
 def api_latest(request):
-	entries = RMDBEntry.objects.all().order_by('-creation_date')
+	entries = RMDBEntry.objects.all().order_by('-creation_date')[::-1]
 	entries_list = set()
 	for e in entries:
 		entries_list.add(e.rmdb_id)

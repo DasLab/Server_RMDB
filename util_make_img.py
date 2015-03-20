@@ -58,6 +58,7 @@ else:
 	all_ids = [d.values()[0] for d in ConstructSection.objects.values('id').distinct()]
 
 
+print "\033[92m**\033[0m \033[94mYou should be running\033[0m \033[41m\"ssh -X\"\033[0m\033[94m for image processing (matplotlib windows)!\033[0m"
 err_ids = []
 for i, id in enumerate(all_ids):
 	if DEBUG:
