@@ -6,13 +6,15 @@ from helper_stats import *
 from helper_search import *
 
 # from itertools import chain
+import locale
 import simplejson
 # import subprocess
 
 
 def api_stats(request):
+	locale.setlocale(locale.LC_ALL, '')
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-	json = {'N_all':N_all, 'N_RNA':N_RNA, 'N_puzzle':N_puzzle, 'N_eterna':N_eterna, 'N_constructs':N_constructs, 'N_datapoints':N_datapoints}
+	json = {'N_all':locale.format("%d", N_all, grouping=True), 'N_RNA':locale.format("%d", N_RNA, grouping=True), 'N_puzzle':locale.format("%d", N_puzzle, grouping=True), 'N_eterna':locale.format("%d", N_eterna, grouping=True), 'N_constructs':locale.format("%d", N_constructs, grouping=True), 'N_datapoints':locale.format("%d", N_datapoints, grouping=True)}
 	return HttpResponse(simplejson.dumps(json), mimetype='application/json')
 
 

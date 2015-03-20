@@ -1,4 +1,5 @@
 {% load repository_extras %}
+{% load humanize %}
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -365,7 +366,7 @@
 						Chemical Mapping Data of 
 					</b>
 					<br/>
-					<u>{{ user|get_rmdb_constructs }}</u> <b>RNA Sequences</b>
+					<u>{{ user|get_rmdb_constructs|intcomma }}</u> <b>RNA Sequences</b>
 				</span>
 			</div>
 			<div class="col-md-6">
