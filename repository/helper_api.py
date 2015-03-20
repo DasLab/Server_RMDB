@@ -6,15 +6,25 @@ from helper_stats import *
 from helper_search import *
 
 # from itertools import chain
-import locale
 import simplejson
 # import subprocess
 
 
+def format_number_comma(x):
+	if type(x) not in [type(0), type(0L)]:
+		raise TypeError("Parameter must be an integer.")
+	if x < 0:
+		return '-' + intWithCommas(-x)
+	result = ''
+	while x >= 1000:
+		x, r = divmod(x, 1000)
+		result = ",%03d%s" % (r, result)
+	return "%d%s" % (x, result)
+
+
 def api_stats(request):
-	locale.setlocale(locale.LC_ALL, '')
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-	json = {'N_all':locale.format("%d", N_all, grouping=True), 'N_RNA':locale.format("%d", N_RNA, grouping=True), 'N_puzzle':locale.format("%d", N_puzzle, grouping=True), 'N_eterna':locale.format("%d", N_eterna, grouping=True), 'N_constructs':locale.format("%d", N_constructs, grouping=True), 'N_datapoints':locale.format("%d", N_datapoints, grouping=True)}
+	json = {'N_all':format_number_comma( N_all), 'N_RNA':format_number_comma(N_RNA), 'N_puzzle':format_number_comma(N_puzzle), 'N_eterna':format_number_comma(N_eterna), 'N_constructs':format_number_comma(N_constructs), 'N_datapoints':format_number_comma(N_datapoints)}
 	return HttpResponse(simplejson.dumps(json), mimetype='application/json')
 
 
