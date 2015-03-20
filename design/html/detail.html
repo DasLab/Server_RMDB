@@ -363,7 +363,14 @@
 	<div class="col-md-8">
 		<div class="panel panel-violet">
 			<div class="panel-heading">
-				<h3 class="panel-title"><b>Construct</b></h3>
+				<h3 class="panel-title">
+					<b>Construct</b>
+					<span class="pull-right">
+						<a id="show_preview">
+							<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+						</a>
+					</span>
+				</h3>
 			</div>
 			<div class="panel-body" id="panel_con">
 				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;margin-bottom:0px;">
@@ -424,7 +431,27 @@
     </div>
 {% endif %}
 -->
-
+<div id="preview" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalPrv" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content panel-warning">
+			<div class="modal-header panel-heading">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="prv_label">
+					<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+					&nbsp;&nbsp;Entry Preview
+				</h4>
+			</div>
+			<div class="modal-body panel-body">
+				<div class="col-md-12">
+					<div class="row">
+						<img src="/site_data/construct_img/{{cid}}/reactivity.png" class="center-block"/>
+						<br/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 {% else %}
 <div class="container">
@@ -497,6 +524,10 @@
 								$(".left_close").removeClass("visible").hide();
 								$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
 								$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
+
+								$("#show_preview").on("click", function() {
+									$("#preview").modal("show");
+								});
 							}, 1);
 						}, 1);
 					}, 1);
