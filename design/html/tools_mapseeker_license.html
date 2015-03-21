@@ -37,7 +37,7 @@
 {% block script %}
   <script type="text/javascript">
     $(document).ready(function () {
-      $("#license_content").load("/site_media/code/mapseeker_license.md", function (txt) {
+      $("#license_content").load("/site_src/mapseeker/mapseeker_license.md", function (txt) {
         $(this).html(txt.split(/\n/).join("<br>") + "</strong>");
       });
 

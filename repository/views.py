@@ -44,7 +44,7 @@ def license_mapseeker(request):
 
 @login_required
 def download_mapseeker(request):
-	f = open(MEDIA_ROOT + "/design/code/mapseeker_user.csv", "a")
+	f = open(MEDIA_ROOT + "/src/mapseeker/mapseeker_user.csv", "a")
 	f.write("%s," % time.strftime("%c"))
 	request_usr = request.user
 	f.write("%s,%s,%s %s," % (request_usr.username, request_usr.email, request_usr.first_name, request_usr.last_name))
@@ -400,7 +400,7 @@ def user_login(request):
 				if "?login=0" in next:
 					next = "/deposit/submit/"
 				if "?login=-1" in next:
-					next = "/analyze/tools/mapseeker/download/"
+					next = "/tools/mapseeker/download/"
 				return HttpResponseRedirect(next)
 			else:
 				messages.error(request, 'Inactive/disabled account. Please contact us.')
