@@ -66,7 +66,7 @@ urlpatterns = patterns('',
     (r'^site_media/isatab_files/(?P<path>.*)$', api_redirect),
     (r'^site_media/rdat_files/(?P<path>.*)$', api_redirect),
 
-    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/design'}),
+    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/media'}),
     (r'^site_data/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/data'}),
     (r'^site_src/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/src'}),
 

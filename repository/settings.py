@@ -30,7 +30,7 @@ MEDIA_URL = ''
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_URL = '/static/'
-ADMIN_MEDIA_PREFIX = '/design/media/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 ADMINS = (
     ('Siqi Tian', 't47@stanford.edu'),
@@ -139,34 +139,34 @@ ISATAB_FILE_DIR = MEDIA_ROOT + '/data/files/'
 TMPDIR = MEDIA_ROOT + '/structureserver/tmp/'
 
 HTML_PATH = {
-    'index': 'design/html/index.html',
-    'browse': 'design/html/browse.html',
-    'detail': 'design/html/detail.html',
+    'index': 'media/html/index.html',
+    'browse': 'media/html/browse.html',
+    'detail': 'media/html/detail.html',
 
-    'about': 'design/html/about.html',
-    'license': 'design/html/license.html',
-    'history': 'design/html/history.html',
+    'about': 'media/html/about.html',
+    'license': 'media/html/license.html',
+    'history': 'media/html/history.html',
 
-    'specs': 'design/html/specs.html',
-    'validate': 'design/html/validate.html',
-    'upload': 'design/html/submit.html',
+    'specs': 'media/html/specs.html',
+    'validate': 'media/html/validate.html',
+    'upload': 'media/html/submit.html',
 
-    'predict': 'design/html/predict.html',
-    'predict_res': 'design/html/predict_results.html',
-    'repos': 'design/html/tools.html',
-    'license_mapseeker': 'design/html/tools_mapseeker_license.html',
-    'link_mapseeker': 'design/html/tools_mapseeker_download.html',
-    'tt_predict': 'design/html/tutorial_predict.html',
-    'tt_api': 'design/html/tutorial_api.html',
-    'tt_rdatkit': 'design/html/tutorial_rdatkit.html',
-    'tt_hitrace': 'design/html/tutorial_hitrace.html',
-    'tt_mapseeker': 'design/html/tutorial_mapseeker.html',
+    'predict': 'media/html/predict.html',
+    'predict_res': 'media/html/predict_results.html',
+    'repos': 'media/html/tools.html',
+    'license_mapseeker': 'media/html/tools_mapseeker_license.html',
+    'link_mapseeker': 'media/html/tools_mapseeker_download.html',
+    'tt_predict': 'media/html/tutorial_predict.html',
+    'tt_api': 'media/html/tutorial_api.html',
+    'tt_rdatkit': 'media/html/tutorial_rdatkit.html',
+    'tt_hitrace': 'media/html/tutorial_hitrace.html',
+    'tt_mapseeker': 'media/html/tutorial_mapseeker.html',
 
-    'search_res': 'design/html/search_results.html',
-    'adv_search': 'design/html/search_advanced.html',
-    'adv_search_res': 'design/html/search_advanced_results.html',
+    'search_res': 'media/html/search_results.html',
+    'adv_search': 'media/html/search_advanced.html',
+    'adv_search_res': 'media/html/search_advanced_results.html',
 
-    'register': 'design/html/register.html',
+    'register': 'media/html/register.html',
 }
 
 
