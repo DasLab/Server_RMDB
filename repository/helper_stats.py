@@ -1,5 +1,5 @@
-from rmdb.repository.models import *
-from rmdb.settings import *
+from repository.models import *
+from settings import *
 
 import glob
 import textwrap

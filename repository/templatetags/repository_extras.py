@@ -2,7 +2,7 @@ from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
-from rmdb.repository.models import *
+from repository.models import *
 
 register = template.Library()
 

@@ -5,9 +5,9 @@ import os
 import re
 import smtplib
 
-from rmdb.repository.models import *
-from rmdb.repository.settings import *
-from rmdb.settings import *
+from repository.models import *
+from repository.settings import *
+from settings import *
 from helper_display import *
 from helper_images import *
 

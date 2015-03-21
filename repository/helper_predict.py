@@ -2,8 +2,8 @@
 from rdatkit.datahandlers import RDATFile
 from rdatkit import rna, secondary_structure, mapping, view
 
-from rmdb.repository.models import *
-from rmdb.repository.settings import *
+from repository.models import *
+from repository.settings import *
 
 from numpy import *
 

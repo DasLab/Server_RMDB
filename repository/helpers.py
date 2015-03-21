@@ -3,14 +3,15 @@ matplotlib.use('Agg')
 import pdb
 import numpy
 import os
-from rmdb.repository.settings import *
 from rdatkit import rna, secondary_structure, mapping, view
-from rmdb import settings
-from django.core.management  import setup_environ
-setup_environ(settings)
-from rmdb.repository.models import *
-from rmdb.repository.views import *
+# from django.core.management  import setup_environ
+# setup_environ(settings)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings") 
 
+import settings
+from repository.settings import *
+from repository.models import *
+from views import *
 
 def precalculate_structures(entry):
     try:

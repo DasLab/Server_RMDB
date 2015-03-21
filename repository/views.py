@@ -4,14 +4,14 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 # from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, render_to_response, redirect
 # from django import forms
 
 from rdatkit.datahandlers import RDATFile, RDATSection, ISATABFile
 from rdatkit.secondary_structure import SecondaryStructure
 
-from rmdb.repository.models import *
-from rmdb.repository.settings import *
+from repository.models import *
+from repository.settings import *
 from helpers import *
 from helper_api import *
 from helper_deposit import *
@@ -33,7 +33,7 @@ def browse(request):
 
 def specs(request, section):
 	if len(section) > 0:
-		return  HttpResponseRedirect('/repository/specs' + section)
+		return  HttpResponseRedirect('/specs' + section)
 	return render_to_response(HTML_PATH['specs'], {}, context_instance=RequestContext(request))
 
 def tools(request):
@@ -398,9 +398,9 @@ def user_login(request):
 				login(request, user)
 				next = request.META.get('HTTP_REFERER','/').replace("?login=1", "")
 				if "?login=0" in next:
-					next = "/repository/deposit/submit/"
+					next = "/deposit/submit/"
 				if "?login=-1" in next:
-					next = "/repository/analyze/tools/mapseeker/download/"
+					next = "/analyze/tools/mapseeker/download/"
 				return HttpResponseRedirect(next)
 			else:
 				messages.error(request, 'Inactive/disabled account. Please contact us.')
@@ -451,12 +451,12 @@ def register(request):
 	else:
 		form = RegistrationForm()
 
-	return render_to_response(HTML_PATH['register'], {'reg_form':form, 'error_msg':error_msg, 'flag':flag})
+	return render_to_response(HTML_PATH['register'], {'reg_form':form, 'error_msg':error_msg, 'flag':flag}, context_instance=RequestContext(request))
 
 
 def user_logout(request):
 	logout(request)
-	return HttpResponseRedirect("/repository/")
+	return HttpResponseRedirect("/")
 
 
 def test(request):

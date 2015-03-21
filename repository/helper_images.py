@@ -2,8 +2,8 @@ from django.template.defaultfilters import slugify
 
 from rdatkit.view import VARNA
 
-from rmdb.repository.models import *
-from rmdb.repository.settings import *
+from repository.models import *
+from repository.settings import *
 
 from pylab import *
 import matplotlib

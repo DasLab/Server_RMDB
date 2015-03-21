@@ -1,4 +1,4 @@
-from rmdb.repository.models import *
+from repository.models import *
 
 from itertools import chain
 

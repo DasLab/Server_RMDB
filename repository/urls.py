@@ -1,69 +1,75 @@
-from django.conf.urls.defaults import *
-
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
+from django.conf.urls import patterns, include, url
+from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('repository.views',
-    (r'^$', 'index'),
-    (r'^browse/$', 'browse'),
+from helper_api import *
+from settings import MEDIA_ROOT
+from repository import views
 
-    (r'^help/about$', 'about'),
-    (r'^help/license$', 'license'),
-    (r'^help/history$', 'history'),
+urlpatterns = patterns('',
+    (r'^$', views.index),
+    (r'^browse/$', views.browse),
 
-    (r'^detail/(?P<rmdb_id>\w{,20})$', 'detail'),
-    (r'^get_area_peaks/$', 'get_area_peaks'),
+    (r'^help/about$', views.about),
+    (r'^help/license$', views.license),
+    (r'^help/history$', views.history),
 
-    (r'^deposit/specs/(?P<section>\w{,20})$', 'specs'),
-    (r'^deposit/validate/$', 'validate'),
-    (r'^deposit/submit/$', 'upload'),
-    (r'^deposit/admin_rev_stat/$', 'admin_rev_stat'),
+    (r'^detail/(?P<rmdb_id>\w{,20})$', views.detail),
+    (r'^get_area_peaks/$', views.get_area_peaks),
 
-    (r'^analyze/predict/$', 'predict'),
-    (r'^analyze/view/$', 'str_view'),
+    (r'^deposit/specs/(?P<section>\w{,20})$', views.specs),
+    (r'^deposit/validate/$', views.validate),
+    (r'^deposit/submit/$', views.upload),
+    (r'^deposit/admin_rev_stat/$', views.admin_rev_stat),
 
-    (r'^tools/$', 'tools'),
-    (r'^tools/mapseeker/license/$', 'license_mapseeker'),
-    (r'^tools/mapseeker/download/$', 'download_mapseeker'),
+    (r'^analyze/predict/$', views.predict),
+    (r'^analyze/view/$', views.str_view),
 
-    (r'^tools/docs/predict/$', 'tutorial_predict'),
-    (r'^tools/docs/api/$', 'tutorial_api'),
-    (r'^tools/docs/rdatkit/$', 'tutorial_rdatkit'),
-    (r'^tools/docs/hitrace/$', 'tutorial_hitrace'),
-    (r'^tools/docs/mapseeker/$', 'tutorial_mapseeker'),
+    (r'^tools/$', views.tools),
+    (r'^tools/mapseeker/license/$', views.license_mapseeker),
+    (r'^tools/mapseeker/download/$', views.download_mapseeker),
 
-    (r'^search/$', 'search'),
-    (r'^advanced_search/$', 'advanced_search'),
+    (r'^tools/docs/predict/$', views.tutorial_predict),
+    (r'^tools/docs/api/$', views.tutorial_api),
+    (r'^tools/docs/rdatkit/$', views.tutorial_rdatkit),
+    (r'^tools/docs/hitrace/$', views.tutorial_hitrace),
+    (r'^tools/docs/mapseeker/$', views.tutorial_mapseeker),
 
-    (r'^login/$', 'user_login'),
-    (r'^register/$', 'register'),
-    (r'^logout/$', 'user_logout'),
+    (r'^search/$', views.search),
+    (r'^advanced_search/$', views.advanced_search),
 
-    (r'^render_structure$', 'render_structure'),
+    (r'^login/$', views.user_login),
+    (r'^register/$', views.register),
+    (r'^logout/$', views.user_logout),
 
-    (r'^api/entry/fetch/(?P<rmdb_id>\w+)$', 'api_fetch_entry'),
-    (r'^api/entry/all$', 'api_all_entries'),
-    (r'^api/entry/organism/(?P<organism_id>\w+)$', 'api_entries_by_organism'),
-    (r'^api/entry/system/(?P<system_id>\w+)$', 'api_entries_by_system'),
-    (r'^api/rmdbid/organism/(?P<organism_id>\w+)$', 'api_rmdb_ids_by_organism'),
-    (r'^api/rmdbid/system/(?P<system_id>\w+)$', 'api_rmdb_ids_by_system'),
-    (r'^api/rmdbid/all$', 'api_all_rmdb_ids'),
-    (r'^api/organism/all$', 'api_all_organisms'),
-    (r'^api/system/all$', 'api_all_systems'),
+    (r'^render_structure$', views.render_structure),
 
-    (r'^api/index/stats/$', 'api_stats'),
-    (r'^api/index/latest/$', 'api_latest'),
-    (r'^api/index/news/$', 'api_news'),
-    (r'^api/index/history/$', 'api_history'), 
-    (r'^api/index/browse/(?P<keyword>\w+)$', 'api_browse'),
-    (r'^api/index/search/(?P<keyword>\w+)/(?P<sstring>\w+)$', 'api_search'),
+    (r'^api/entry/fetch/(?P<rmdb_id>\w+)$', api_fetch_entry),
+    (r'^api/entry/all$', api_all_entries),
+    (r'^api/entry/organism/(?P<organism_id>\w+)$', api_entries_by_organism),
+    (r'^api/entry/system/(?P<system_id>\w+)$', api_entries_by_system),
+    (r'^api/rmdbid/organism/(?P<organism_id>\w+)$', api_rmdb_ids_by_organism),
+    (r'^api/rmdbid/system/(?P<system_id>\w+)$', api_rmdb_ids_by_system),
+    (r'^api/rmdbid/all$', api_all_rmdb_ids),
+    (r'^api/organism/all$', api_all_organisms),
+    (r'^api/system/all$', api_all_systems),
 
-    (r'^test/$', 'test'),
+    (r'^api/index/stats/$', api_stats),
+    (r'^api/index/latest/$', api_latest),
+    (r'^api/index/news/$', api_news),
+    (r'^api/index/history/$', api_history), 
+    (r'^api/index/browse/(?P<keyword>\w+)$', api_browse),
+    (r'^api/index/search/(?P<keyword>\w+)/(?P<sstring>\w+)$', api_search),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^test/$', views.test),
 
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
+    (r'^site_media/isatab_files/(?P<path>.*)$', api_redirect),
+    (r'^site_media/rdat_files/(?P<path>.*)$', api_redirect),
+
+    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/design'}),
+    (r'^site_data/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/data'}),
+
+    url(r'^admin/', include(admin.site.urls)),
 )
+
+

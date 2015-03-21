@@ -1,4 +1,4 @@
-from rmdb.repository.models import *
+from repository.models import *
 from django.contrib import admin
 
 class ConstructInLine(admin.StackedInline):
