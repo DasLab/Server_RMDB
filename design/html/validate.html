@@ -16,14 +16,15 @@
                     <li>
                         <h3>Input</h3>
                         <p>
-                            Use this form to validate that a file that describes RNA chemical footprinting experiments follows the <a href="/repository/deposit/specs">standards</a> of the format.
+                            Use this form to validate that a file that describes RNA chemical footprinting experiments follows the <a href="/deposit/specs">standards</a> of the format.
                         </p>
                         <p>
                             Other consistency checks such as sequence and data agreement are also made.
                         </p>
                         <br/>
 
-                        <form enctype="multipart/form-data" action="/repository/deposit/validate/" method="post">
+                        <form enctype="multipart/form-data" action="/deposit/validate/" method="post">
+                            {% csrf_token %}
                             <div class="row">
                                 <div class="col-md-12 form-group">
 <!--                                     {{ form.file.errors }}
@@ -68,7 +69,7 @@
                                             <p class="pull-right">
                                                 <input type="submit" value="&nbsp;&nbsp;Submit&nbsp;&nbsp;" class="btn btn-inverse clickable"/>
                                                 &nbsp;&nbsp;
-                                                <a class="btn btn-default clickable" href="/repository/deposit/validate">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
+                                                <a class="btn btn-default clickable" href="/deposit/validate">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                             </p>
                                         </div>

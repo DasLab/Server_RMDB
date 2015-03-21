@@ -61,7 +61,7 @@
 	    	$("#nav_logo").css("text-decoration","none");
 
 	    	$.ajax({
-				url: '/repository/api/index/history/',
+				url: '/api/index/history/',
 				dataType: 'text',
 				async: true,
 				success: function(data) { $("#panel_log").html(data); }

@@ -24,10 +24,10 @@
                     <span class="lead">{% autoescape off %}{{ entry.revision_status|get_stt_type }}{% endautoescape %}</span>
                     {% if entry.revision_status == 'REV' %}
                         <br/>
-                        ** Your submission has been acknowledged by the RMDB team. We will review your entry shortly. For any questions, please feel free to <a href="/repository/help/about#contact">contact</a> us.
+                        ** Your submission has been acknowledged by the RMDB team. We will review your entry shortly. For any questions, please feel free to <a href="/help/about#contact">contact</a> us.
                     {% else %}
                         <br/>
-                        ** To visit your entry, click here: <a class="btn btn-danger" href="/repository/detail/{{ entry.rmdb_id }}">Detail</a>.
+                        ** To visit your entry, click here: <a class="btn btn-danger" href="/detail/{{ entry.rmdb_id }}">Detail</a>.
                     {% endif %}
                 </p>
             </div>
@@ -63,14 +63,15 @@
     </div>
 
     <div class="row col-md-12">
-        <form enctype="multipart/form-data" method="post" action="/repository/deposit/submit/">
+        <form enctype="multipart/form-data" method="post" action="/deposit/submit/">
+            {% csrf_token %}
             <h3>
                 <span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;&nbsp;
                 Submit RMDB Entry
             </h3>
             <div class="row">
                 <div class="col-md-11">
-                    <p>New experimental data can be uploaded to the RMDB as a spreadsheet in either the SNRNASM <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank"><mark>ISATAB</mark>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> format or <a href="/repository/deposit/specs"><mark>RDAT</mark></a> format.</p>
+                    <p>New experimental data can be uploaded to the RMDB as a spreadsheet in either the SNRNASM <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank"><mark>ISATAB</mark>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> format or <a href="/deposit/specs"><mark>RDAT</mark></a> format.</p>
                     <p>Data must be reviewed and approved by RMDB team before public release. It should meet the following requirements:</p>
                     <ul>
                         <li>Includes error estimates;</li>
@@ -80,7 +81,7 @@
                 </div>
                 <div class="col-md-1">
                     <br/><br/><br/><br/>
-                    <a href="/repository/deposit/validate/" class="btn btn-warning pull-right">&nbsp;&nbsp;Validate&nbsp;&nbsp;</a>
+                    <a href="/deposit/validate/" class="btn btn-warning pull-right">&nbsp;&nbsp;Validate&nbsp;&nbsp;</a>
                 </div>
             </div>
             <br/>
@@ -174,7 +175,7 @@
                                 <span class="pull-right">
                                     <input id="btn_submit" type="submit" class="btn btn-inverse" value="&nbsp;Submit&nbsp;"/>
                                     &nbsp;&nbsp;
-                                    <a href="/repository/deposit/submit/" class="btn btn-default">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
+                                    <a href="/deposit/submit/" class="btn btn-default">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
                                 </span>
                             </div>
 

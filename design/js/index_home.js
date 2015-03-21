@@ -2,9 +2,8 @@ $(document).ready(function() {
   $('.dropdown-toggle').removeClass("active");
   $("#nav_logo>span").css("text-decoration","underline");
 
-
   $.ajax({
-    url: '/repository/api/index/stats/',
+    url: '/api/index/stats/',
     dataType: 'json',
     async: true,
     success: function(data) {
@@ -15,14 +14,14 @@ $(document).ready(function() {
     },
     complete: function(xhr) { 
       $.ajax({
-        url: '/repository/api/index/latest/',
+        url: '/api/index/latest/',
         dataType: 'json',
         async: true,
         success: function(data) {
           var ind_html = '', body_html = '';
           for (d in data) {
             ind_html += '<li data-target="#carousel-entries" data-slide-to="' + d.toString() + '"></li>';
-            body_html += '<div class="item" style="height:300px;"><br/><br/><div class="row"><p class="text-center"><a href="/repository/detail/' + data[d].rmdb_id + '" target="_blank"><span class="label label-default">' + colorRmdbId(data[d].rmdb_id) + '</span><br/>' + data[d].name + '</a></p></div><div class="row"><a href="/repository/detail/' + data[d].rmdb_id + '" target="_blank"><img src="/site_data/thumbs/' + data[d].cid + '.gif" class="center-block"/></a></div></div>';
+            body_html += '<div class="item" style="height:300px;"><br/><br/><div class="row"><p class="text-center"><a href="/detail/' + data[d].rmdb_id + '" target="_blank"><span class="label label-default">' + colorRmdbId(data[d].rmdb_id) + '</span><br/>' + data[d].name + '</a></p></div><div class="row"><a href="/detail/' + data[d].rmdb_id + '" target="_blank"><img src="/site_data/thumbs/' + data[d].cid + '.gif" class="center-block"/></a></div></div>';
           }
           $("#slide_index").html(ind_html);
           $("#slide_body").html(body_html);
@@ -33,7 +32,7 @@ $(document).ready(function() {
         },
         complete: function(xhr) {
           $.ajax({
-            url: '/repository/api/index/news/',
+            url: '/api/index/news/',
             dataType: 'json',
             async: true,
             success: function(data) {
