@@ -2,8 +2,8 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpRequest
 from django.core.servers.basehttp import FileWrapper
 
 from repository.models import *
-from helper_stats import *
-from helper_search import *
+from src.helper_stats import *
+from src.helper_search import *
 
 # from itertools import chain
 import simplejson

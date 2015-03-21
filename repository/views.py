@@ -12,13 +12,13 @@ from rdatkit.secondary_structure import SecondaryStructure
 
 from repository.models import *
 from repository.settings import *
-from helpers import *
-from helper_api import *
-from helper_deposit import *
-from helper_display import *
-from helper_predict import *
-from helper_register import *
-from helper_stats import *
+from src.helpers import *
+from src.helper_api import *
+from src.helper_deposit import *
+from src.helper_display import *
+from src.helper_predict import *
+from src.helper_register import *
+from src.helper_stats import *
 
 import simplejson
 import time

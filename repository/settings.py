@@ -70,7 +70,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
 
-    "repository.context_processors.include_login_form"
+    "src.helper_register.include_login_form"
 )
 gettext = lambda s: s
 CMS_TEMPLATES = (

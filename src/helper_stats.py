@@ -1,5 +1,5 @@
 from repository.models import *
-from settings import *
+from repository.settings import *
 
 import glob
 import textwrap

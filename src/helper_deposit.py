@@ -7,9 +7,8 @@ import smtplib
 
 from repository.models import *
 from repository.settings import *
-from settings import *
-from helper_display import *
-from helper_images import *
+from src.helper_display import *
+from src.helper_images import *
 
 from Tkinter import TclError
 

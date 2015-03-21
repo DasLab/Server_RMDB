@@ -1,4 +1,11 @@
+from django.contrib.auth.forms import AuthenticationForm
+
 import string
+
+
+def include_login_form(request):
+    login_form = AuthenticationForm()
+    return {'login_form': login_form}
 
 
 def is_valid_name(input, char_allow, length):

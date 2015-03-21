@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 # admin.autodiscover()
 
-from helper_api import *
+from src.helper_api import *
 from settings import MEDIA_ROOT
 from repository import views
 

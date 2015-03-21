@@ -4,14 +4,11 @@ import pdb
 import numpy
 import os
 from rdatkit import rna, secondary_structure, mapping, view
-# from django.core.management  import setup_environ
-# setup_environ(settings)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings") 
 
-import settings
 from repository.settings import *
 from repository.models import *
-from views import *
+from repository.views import *
 
 def precalculate_structures(entry):
     try:
