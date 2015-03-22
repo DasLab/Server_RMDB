@@ -102,17 +102,17 @@ def upload_file(uploadfile, publication, description, authors, type, pubmed_id, 
 	    if current_version == 0:
 		entry.latest = True 
 	    entry.save()
-	    if not os.path.exists('%s%s' % (RDAT_FILE_DIR, entry.rmdb_id)):
-		os.mkdir('%s%s' % (RDAT_FILE_DIR, entry.rmdb_id))
-	    if not os.path.exists('%s%s' % (ISATAB_FILE_DIR, entry.rmdb_id)):
-		os.mkdir('%s%s' % (ISATAB_FILE_DIR, entry.rmdb_id))
-	    rdatname = '%s%s/%s_%s.rdat' % (RDAT_FILE_DIR, entry.rmdb_id, entry.rmdb_id, entry.version)
+	    if not os.path.exists('%s%s' % (PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id)):
+		os.mkdir('%s%s' % (PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id))
+	    if not os.path.exists('%s%s' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id)):
+		os.mkdir('%s%s' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id))
+	    rdatname = '%s%s/%s_%s.rdat' % (PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)
 	    os.popen('mv /tmp/%s %s' % (filename, rdatname))
-	    os.popen('cp %s %s%s/%s.rdat' % (rdatname, RDAT_FILE_DIR, entry.rmdb_id, entry.rmdb_id))
-	    os.popen('cp %s %s%s/%s_synced.rdat' % (rdatname, RDAT_FILE_DIR, entry.rmdb_id, entry.rmdb_id))
+	    os.popen('cp %s %s%s/%s.rdat' % (rdatname, PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id, entry.rmdb_id))
+	    os.popen('cp %s %s%s/%s_synced.rdat' % (rdatname, PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id, entry.rmdb_id))
 	    # Breaks Excel compatibility if data/columns are > 256
 	    if len(rdatfile.values.values()[0]) < 256:
-		isatabfile.save('%s%s/%s_%s.xls' % (ISATAB_FILE_DIR, entry.rmdb_id, entry.rmdb_id, entry.version))
+		isatabfile.save('%s%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version))
 	    save_annotations(rdatfile.annotations, entry, EntryAnnotation)
 	    for k in rdatfile.constructs:
 		constructcount += 1

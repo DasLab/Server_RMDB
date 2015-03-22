@@ -132,42 +132,49 @@ USE_TZ = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
 
-CONSTRUCT_IMG_DIR = MEDIA_ROOT + '/data/construct_img/'
-CONSTRUCT_THMB_DIR = MEDIA_ROOT + '/data/thumbs/'
-RDAT_FILE_DIR = MEDIA_ROOT + '/data/files/'
-ISATAB_FILE_DIR = MEDIA_ROOT + '/data/files/'
-TMPDIR = MEDIA_ROOT + '/structureserver/tmp/'
+class SYS_PATH:
+    def __init__(self):
+        self.HTML_PATH = {
+            'index': 'media/html/index.html',
+            'browse': 'media/html/browse.html',
+            'detail': 'media/html/detail.html',
 
-HTML_PATH = {
-    'index': 'media/html/index.html',
-    'browse': 'media/html/browse.html',
-    'detail': 'media/html/detail.html',
+            'about': 'media/html/about.html',
+            'license': 'media/html/license.html',
+            'history': 'media/html/history.html',
 
-    'about': 'media/html/about.html',
-    'license': 'media/html/license.html',
-    'history': 'media/html/history.html',
+            'specs': 'media/html/specs.html',
+            'validate': 'media/html/validate.html',
+            'upload': 'media/html/submit.html',
 
-    'specs': 'media/html/specs.html',
-    'validate': 'media/html/validate.html',
-    'upload': 'media/html/submit.html',
+            'predict': 'media/html/predict.html',
+            'predict_res': 'media/html/predict_results.html',
+            'repos': 'media/html/tools.html',
+            'license_mapseeker': 'media/html/tools_mapseeker_license.html',
+            'link_mapseeker': 'media/html/tools_mapseeker_download.html',
+            'tt_predict': 'media/html/tutorial_predict.html',
+            'tt_api': 'media/html/tutorial_api.html',
+            'tt_rdatkit': 'media/html/tutorial_rdatkit.html',
+            'tt_hitrace': 'media/html/tutorial_hitrace.html',
+            'tt_mapseeker': 'media/html/tutorial_mapseeker.html',
 
-    'predict': 'media/html/predict.html',
-    'predict_res': 'media/html/predict_results.html',
-    'repos': 'media/html/tools.html',
-    'license_mapseeker': 'media/html/tools_mapseeker_license.html',
-    'link_mapseeker': 'media/html/tools_mapseeker_download.html',
-    'tt_predict': 'media/html/tutorial_predict.html',
-    'tt_api': 'media/html/tutorial_api.html',
-    'tt_rdatkit': 'media/html/tutorial_rdatkit.html',
-    'tt_hitrace': 'media/html/tutorial_hitrace.html',
-    'tt_mapseeker': 'media/html/tutorial_mapseeker.html',
+            'search_res': 'media/html/search_results.html',
+            'adv_search': 'media/html/search_advanced.html',
+            'adv_search_res': 'media/html/search_advanced_results.html',
 
-    'search_res': 'media/html/search_results.html',
-    'adv_search': 'media/html/search_advanced.html',
-    'adv_search_res': 'media/html/search_advanced_results.html',
+            'register': 'media/html/register.html',
+        }
 
-    'register': 'media/html/register.html',
-}
+        self.DATA_DIR = {
+            'CONSTRUCT_IMG_DIR': MEDIA_ROOT + '/data/construct_img/',
+            'CONSTRUCT_THMB_DIR': MEDIA_ROOT + '/data/thumbs/',
+            'RDAT_FILE_DIR': MEDIA_ROOT + '/data/files/',
+            'ISATAB_FILE_DIR': MEDIA_ROOT + '/data/files/',
+            'TMPDIR': MEDIA_ROOT + '/temp/',
+
+        }
+
+PATH = SYS_PATH()
 
 
 # SECURITY WARNING: keep the secret key used in production secret!

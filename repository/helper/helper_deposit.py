@@ -57,7 +57,7 @@ def validate_file(file_path, link_path, input_type):
 	is_continue = 1
 	if link_path:
 		if input_type == 'rdat':
-			path = RDAT_FILE_DIR + link_path + '/' + link_path + '.rdat'
+			path = PATH.DATA_DIR['RDAT_FILE_DIR'] + link_path + '/' + link_path + '.rdat'
 			is_continue = os.path.exists(path)
 		else:
 			is_continue = get_spreadsheet(link_path)
@@ -143,19 +143,19 @@ def write_annotations(dictionary, section, annotation_model):
 
 
 def write_rmdb_file(entry, uploadfile, rdatfile, isatabfile, error_msg):
-	if not os.path.exists('%s%s' % (RDAT_FILE_DIR, entry.rmdb_id)):
-		os.mkdir('%s%s' % (RDAT_FILE_DIR, entry.rmdb_id))
-	if not os.path.exists('%s%s' % (ISATAB_FILE_DIR, entry.rmdb_id)):
-		os.mkdir('%s%s' % (ISATAB_FILE_DIR, entry.rmdb_id))
+	if not os.path.exists('%s%s' % (PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id)):
+		os.mkdir('%s%s' % (PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id))
+	if not os.path.exists('%s%s' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id)):
+		os.mkdir('%s%s' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id))
 
-	rdatname = '%s%s/%s_%s.rdat' % (RDAT_FILE_DIR, entry.rmdb_id, entry.rmdb_id, entry.version)
+	rdatname = '%s%s/%s_%s.rdat' % (PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)
 	os.popen('mv /tmp/%s %s' % (uploadfile.name, rdatname))
-	os.popen('cp %s %s%s/%s.rdat' % (rdatname, RDAT_FILE_DIR, entry.rmdb_id, entry.rmdb_id))
-	os.popen('cp %s %s%s/%s_synced.rdat' % (rdatname, RDAT_FILE_DIR, entry.rmdb_id, entry.rmdb_id))
+	os.popen('cp %s %s%s/%s.rdat' % (rdatname, PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id, entry.rmdb_id))
+	os.popen('cp %s %s%s/%s_synced.rdat' % (rdatname, PATH.DATA_DIR['RDAT_FILE_DIR'], entry.rmdb_id, entry.rmdb_id))
 
 	# Breaks Excel compatibility if data/columns are > 256
 	if len(rdatfile.values.values()[0]) < 256:
-		isatabfile.save('%s%s/%s_%s.xls' % (ISATAB_FILE_DIR, entry.rmdb_id, entry.rmdb_id, entry.version))
+		isatabfile.save('%s%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version))
 	write_annotations(rdatfile.annotations, entry, EntryAnnotation)
 
 	data_count = 0

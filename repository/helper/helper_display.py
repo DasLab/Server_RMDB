@@ -211,7 +211,7 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 
 
 def dump_json_tags(entry):
-	f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r')
+	f = open(PATH.DATA_DIR['RDAT_FILE_DIR'] + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r')
 	rdat_ver = f.readline().strip().split('\t')[-1].replace('RDAT_VERSION', '').strip()
 	f.close()
 
@@ -265,7 +265,7 @@ def dump_json_tags(entry):
 
 		tags_construct = {'sequence':c.sequence, 'structure':c.structure, 'offset':c.offset, 'sequence_len':len(c.sequence), 'structure_len':len(c.structure), 'data_nrow':len(c.datas), 'data_ncol':len(c.datas[0].values.split(',')), 'err_ncol':c.err_ncol, 'xsel_len':c.xsel_len, 'seqpos_len':c.seqpos_len, 'seqpos':c.seqpos, 'name':c.name}
 
-	f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/data_tags.json', 'w')
+	f = open(PATH.DATA_DIR['RDAT_FILE_DIR'] + '/' + entry.rmdb_id + '/data_tags.json', 'w')
 	tags_all = dict(tags_basic.items() + tags_construct.items() + tags_annotation.items())
 	simplejson.dump(tags_all, f)
 	f.close()
@@ -284,7 +284,7 @@ def prepare_json_data(entry):
 		for d in c.datas:
 			d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
 
-		f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/data_heatmap.json', 'w')
+		f = open(PATH.DATA_DIR['RDAT_FILE_DIR'] + '/' + entry.rmdb_id + '/data_heatmap.json', 'w')
 		json_tmp = dump_json_heatmap(c, entry.type, maxlen)
 		simplejson.dump(json_tmp, f)
 		f.close()
@@ -294,7 +294,7 @@ def prepare_json_data(entry):
 
 def make_json_for_rdat(rmdb_id):
 	entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
-	f = open(RDAT_FILE_DIR + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r')
+	f = open(PATH.DATA_DIR['RDAT_FILE_DIR'] + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r')
 	rdat_ver = f.readline().strip().split('\t')[-1]
 	f.close()
 

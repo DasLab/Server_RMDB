@@ -26,21 +26,21 @@ import time
 
 
 def index(request):
-	return render_to_response(HTML_PATH['index'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['index'], {}, context_instance=RequestContext(request))
 
 def browse(request):
-	return render_to_response(HTML_PATH['browse'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['browse'], {}, context_instance=RequestContext(request))
 
 def specs(request, section):
 	if len(section) > 0:
 		return  HttpResponseRedirect('/specs' + section)
-	return render_to_response(HTML_PATH['specs'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['specs'], {}, context_instance=RequestContext(request))
 
 def tools(request):
-	return render_to_response(HTML_PATH['repos'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['repos'], {}, context_instance=RequestContext(request))
 
 def license_mapseeker(request):
-	return render_to_response(HTML_PATH['license_mapseeker'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['license_mapseeker'], {}, context_instance=RequestContext(request))
 
 @login_required
 def download_mapseeker(request):
@@ -52,31 +52,31 @@ def download_mapseeker(request):
 	request_usr = RMDBUser.objects.filter(user=request_usr)
 	f.write("%s - %s\n" %(request_usr.values('institution')[0]['institution'], request_usr.values('department')[0]['department']))
 	f.close()
-	return render_to_response(HTML_PATH['link_mapseeker'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['link_mapseeker'], {}, context_instance=RequestContext(request))
 
 def tutorial_predict(request):
-	return render_to_response(HTML_PATH['tt_predict'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['tt_predict'], {}, context_instance=RequestContext(request))
 
 def tutorial_api(request):
-	return render_to_response(HTML_PATH['tt_api'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['tt_api'], {}, context_instance=RequestContext(request))
 
 def tutorial_rdatkit(request):
-	return render_to_response(HTML_PATH['tt_rdatkit'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['tt_rdatkit'], {}, context_instance=RequestContext(request))
 
 def tutorial_hitrace(request):
-	return render_to_response(HTML_PATH['tt_hitrace'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['tt_hitrace'], {}, context_instance=RequestContext(request))
 
 def tutorial_mapseeker(request):
-	return render_to_response(HTML_PATH['tt_mapseeker'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['tt_mapseeker'], {}, context_instance=RequestContext(request))
 
 def about(request):
-	return render_to_response(HTML_PATH['about'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['about'], {}, context_instance=RequestContext(request))
 
 def license(request):
-	return render_to_response(HTML_PATH['license'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['license'], {}, context_instance=RequestContext(request))
 
 def history(request):
-	return render_to_response(HTML_PATH['history'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['history'], {}, context_instance=RequestContext(request))
 
 
 def validate(request):
@@ -100,23 +100,23 @@ def validate(request):
 		form = ValidateForm()
 		flag = 0
 
-	return render_to_response(HTML_PATH['validate'], {'form':form, 'valerrors':errors, 'valmsgs':messages, 'flag':flag}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['validate'], {'form':form, 'valerrors':errors, 'valmsgs':messages, 'flag':flag}, context_instance=RequestContext(request))
 
 
 def detail(request, rmdb_id):
 	try:
 		entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
 		entry.cid = ConstructSection.objects.filter(entry=entry).values( 'id' )[ 0 ][ 'id' ]
-		is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (ISATAB_FILE_DIR, entry.rmdb_id, entry.rmdb_id, entry.version)) else False
+		is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)) else False
 	except (RMDBEntry.DoesNotExist, IndexError):
 		raise Http404
 
-	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
 
 
 def predict(request):
 	if request.method != 'POST':
-		return render_to_response(HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'messages':[], 'other_errors':[]}, context_instance=RequestContext(request))
+		return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'messages':[], 'other_errors':[]}, context_instance=RequestContext(request))
 	else:
 		try:
 			sequences, titles, structures, modifiers, mapping_data, base_annotations, messages, valerrors = ([],[],[],[],[],[],[],[])
@@ -126,9 +126,9 @@ def predict(request):
 			if is_get_rmdb or is_get_file:
 				(messages, valerrors, bonuses_1d, bonuses_2d, titles, modifiers, offset_seqpos, temperature, sequences, refstruct) = parse_rdat_data(request, is_get_file)
 				form = fill_predict_form(request, sequences, structures, temperature, refstruct, bonuses_1d, bonuses_2d, modifiers, titles, offset_seqpos)
-				return render_to_response(HTML_PATH['predict'], {'secstr_form':form, 'rdatloaded':True, 'msg_y':messages, 'msg_r':valerrors})
+				return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':form, 'rdatloaded':True, 'msg_y':messages, 'msg_r':valerrors})
 			elif not request.POST['sequences']:
-				return render_to_response(HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':[], 'msg_r':[]})
+				return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':[], 'msg_r':[]})
 
 			other_options = ' -t %s ' % (float(request.POST['temperature']) + 273.15)
 			refstruct = SecondaryStructure(dbn=request.POST['refstruct'])
@@ -143,7 +143,7 @@ def predict(request):
 							sequences.append(rna.RNA(l.strip())) 
 			if not sequences:
 				messages.append('ERROR: No SEQUENCE found. Due to either no input field, or no modification lanes in RDAT.')
-				return render_to_response(HTML_PATH['predict_res'], {'panels':[], 'messages':messages,'bppmimg':'', 'ncols':0, 'nrows':0}, context_instance=RequestContext(request))
+				return render_to_response(PATH.HTML_PATH['predict_res'], {'panels':[], 'messages':messages,'bppmimg':'', 'ncols':0, 'nrows':0}, context_instance=RequestContext(request))
 
 			if 'structures' in request.POST:
 				lines = request.POST['structures'].split('\n')
@@ -173,19 +173,19 @@ def predict(request):
 			visform_params['base_annotations'] = '\n'.join([bpdict_to_str(ann) for ann in base_annotations])
 			visform_params['refstruct'] = refstruct.dbn
 			visform = VisualizerForm(visform_params)
-			return render_to_response(HTML_PATH['predict_res'], {'panels':panels, 'messages':messages,'ncols':ncols, 'nrows':nrows, 'form':visform}, context_instance=RequestContext(request))
+			return render_to_response(PATH.HTML_PATH['predict_res'], {'panels':panels, 'messages':messages,'ncols':ncols, 'nrows':nrows, 'form':visform}, context_instance=RequestContext(request))
 
 		except IndexError, err:
 			print err
-			return render_to_response(HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':messages, 'msg_r':['Invalid input. Please check your inputs and try again.']})
+			return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':messages, 'msg_r':['Invalid input. Please check your inputs and try again.']})
 
 
 def str_view(request):
-	return render_to_response(HTML_PATH['index'], context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['index'], context_instance=RequestContext(request))
 
 
 def search(request):
-	return render_to_response(HTML_PATH['search_res'], {}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['search_res'], {}, context_instance=RequestContext(request))
 
 
 def advanced_search(request):
@@ -277,7 +277,7 @@ def advanced_search(request):
 				rdat_path = 'search/%s.rdat' % searchid
 				rdat.save(MEDIA_ROOT + '/data/' + rdat_path, version=0.24)
 
-				return render_to_response(HTML_PATH['adv_search_res'], \
+				return render_to_response(PATH.HTML_PATH['adv_search_res'], \
 						{'rdat_path':rdat_path, 'all_values':simplejson.dumps(all_values), 'values_min':values_min, 'values_max':values_max, \
 						'values_min_heatmap':values_min_heatmap, 'values_max_heatmap':values_max_heatmap, \
 						'rmdb_ids':simplejson.dumps(rmdb_ids), 'messages':messages, \
@@ -288,11 +288,11 @@ def advanced_search(request):
 						context_instance=RequestContext(request) )
 
 		except ValueError as e:
-			return render_to_response(HTML_PATH['adv_search_res'], {'render':False}, context_instance=RequestContext(request))
+			return render_to_response(PATH.HTML_PATH['adv_search_res'], {'render':False}, context_instance=RequestContext(request))
 
 	else:
 		form = AdvancedSearchForm()
-	return render_to_response(HTML_PATH['adv_search'], {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['adv_search'], {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -353,7 +353,7 @@ def upload(request):
 			error_msg.append('Input file invalid; please check and resubmit.')
 	else:
 		form = UploadForm()
-	return render_to_response(HTML_PATH['upload'], {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['upload'], {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -366,9 +366,9 @@ def admin_rev_stat(request):
 	entry = RMDBEntry.objects.filter(id=construct.entry.id).order_by('-version')[0]
 	if new_stat == "PUB":
 		rdatfile = RDATFile()
-		file_name = '%s%s/%s_%s.rdat' %(RDAT_FILE_DIR, rmdb_id, rmdb_id, entry.version)
+		file_name = '%s%s/%s_%s.rdat' %(PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id, rmdb_id, entry.version)
 		if not os.path.isfile(file_name):
-			file_name = '%s%s/%s.rdat' %(RDAT_FILE_DIR, rmdb_id, rmdb_id)
+			file_name = '%s%s/%s.rdat' %(PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id, rmdb_id)
 		rf = open(file_name, 'r')
 		rdatfile.load(rf)
 		rf.close()
@@ -381,9 +381,9 @@ def admin_rev_stat(request):
 
 	entry.revision_status = new_stat
 	entry.save()
-	is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (ISATAB_FILE_DIR, entry.rmdb_id, entry.rmdb_id, entry.version)) else False
+	is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)) else False
 
-	return render_to_response(HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':cid, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':cid, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
 
 
 
@@ -451,7 +451,7 @@ def register(request):
 	else:
 		form = RegistrationForm()
 
-	return render_to_response(HTML_PATH['register'], {'reg_form':form, 'error_msg':error_msg, 'flag':flag}, context_instance=RequestContext(request))
+	return render_to_response(PATH.HTML_PATH['register'], {'reg_form':form, 'error_msg':error_msg, 'flag':flag}, context_instance=RequestContext(request))
 
 
 def user_logout(request):

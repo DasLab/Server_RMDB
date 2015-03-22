@@ -23,7 +23,7 @@ def parse_rdat_data(request, is_get_file):
 	else:
 		rmdbid = request.POST['rmdbid'].strip()
 		version = RMDBEntry.get_current_version(rmdbid)
-		rf = open(RDAT_FILE_DIR + '/%s/%s_%s.rdat' % (rmdbid, rmdbid, version), 'r')
+		rf = open(PATH.DATA_DIR['RDAT_FILE_DIR'] + '/%s/%s_%s.rdat' % (rmdbid, rmdbid, version), 'r')
 	rdatfile.load(rf)
 	rf.close()
 

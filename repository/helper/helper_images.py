@@ -39,7 +39,7 @@ def generate_varna_thumbnails(entry):
 	try:
 		constructs = ConstructSection.objects.filter(entry=entry)
 		for c in constructs:
-			path = '%s%s' % (CONSTRUCT_THMB_DIR, c.id)
+			path = '%s%s' % (PATH.DATA_DIR['CONSTRUCT_THMB_DIR'], c.id)
 			fname = path
 			datas = DataSection.objects.filter(construct_section=c)
 			# if not os.path.exists(path):
@@ -64,7 +64,7 @@ def generate_varna_thumbnails(entry):
 					VARNA.cmd('\" \"', c.structure, '%s_%s.png' % (fname, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400, 'spaceBetweenBases':0.6, 'flat':False} )
 				os.popen('convert -delay 100 -resize 300x300 -background none -gravity center -extent 300x300 -loop 0 %s_*.png %s.gif' % (path, fname))
 			else:
-				os.popen('convert %s%s/reactivity.png %s.gif' % (CONSTRUCT_IMG_DIR, c.id, fname))
+				os.popen('convert %s%s/reactivity.png %s.gif' % (PATH.DATA_DIR['CONSTRUCT_IMG_DIR'], c.id, fname))
 				if (not entry.datacount): entry.datacount = len(datas[0].values.split(','))
 				height = 200 * pow(len(datas), 2) / entry.datacount
 
@@ -95,7 +95,7 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 	values_array, trace_array, reads_array, xsel_array, errors_array = array(values), array(traces), array(reads), array(xsels), array(errors)
 	values_array, trace_array, reads_array, xsel_array, errors_array = get_arrays(construct_section.data)
 	
-	dir = CONSTRUCT_IMG_DIR + '%s/' % construct_model.id
+	dir = PATH.DATA_DIR['CONSTRUCT_IMG_DIR'] + '%s/' % construct_model.id
 	if not os.path.exists(dir):
 		os.mkdir(dir)
 		os.system('chmod 777 %s' % dir)

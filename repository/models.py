@@ -9,7 +9,7 @@ from simplejson import JSONEncoder
 
 
 def get_rdat_filename(instance, filename):
-    dir = RDAT_FILE_DIR+'%s/'%instance.id
+    dir = PATH.DATA_DIR['RDAT_FILE_DIR']+'%s/'%instance.id
     if not os.path.exists(dir):
         os.mkdir(dir)
     return dir+'%s.rdat'%instance.id
