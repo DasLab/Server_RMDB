@@ -17,10 +17,10 @@ from t47_dev import *
 # SECURITY WARNING: don't run with debug turned on in production!
 if T47_DEV:
     MEDIA_ROOT = '/MATLAB_code/RMDB_Server'
-    DEBUG = True
 else:
     MEDIA_ROOT = '/home/daslab/rdat/rmdb'
-    DEBUG =  False
+
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -70,7 +70,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
 
-    "src.helper_register.include_login_form"
+    "repository.helper.helper_register.include_login_form"
 )
 gettext = lambda s: s
 CMS_TEMPLATES = (

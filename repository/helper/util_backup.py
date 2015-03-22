@@ -3,11 +3,10 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from django.core.management import setup_environ
-import settings
 setup_environ(settings)
-from rmdb.repository.settings import *
-from rmdb.repository.models import *
-from rmdb.repository.helper_display import *
+from repository.settings import *
+from repository.models import *
+from repository.helper.helper_display import *
 
 print "#1: Backing up MySQL database..."
 os.popen('mysqldump --quick rmdb -u root -pbeckman | gzip > %s/data/mysql_dump.gz' % MEDIA_ROOT)

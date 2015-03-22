@@ -12,13 +12,13 @@ from rdatkit.secondary_structure import SecondaryStructure
 
 from repository.models import *
 from repository.settings import *
-from src.helpers import *
-from src.helper_api import *
-from src.helper_deposit import *
-from src.helper_display import *
-from src.helper_predict import *
-from src.helper_register import *
-from src.helper_stats import *
+from repository.helper.helpers import *
+from repository.helper.helper_api import *
+from repository.helper.helper_deposit import *
+from repository.helper.helper_display import *
+from repository.helper.helper_predict import *
+from repository.helper.helper_register import *
+from repository.helper.helper_stats import *
 
 import simplejson
 import time
@@ -44,7 +44,7 @@ def license_mapseeker(request):
 
 @login_required
 def download_mapseeker(request):
-	f = open(MEDIA_ROOT + "/src/mapseeker/mapseeker_user.csv", "a")
+	f = open(MEDIA_ROOT + "/misc/mapseeker/mapseeker_user.csv", "a")
 	f.write("%s," % time.strftime("%c"))
 	request_usr = request.user
 	f.write("%s,%s,%s %s," % (request_usr.username, request_usr.email, request_usr.first_name, request_usr.last_name))

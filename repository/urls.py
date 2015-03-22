@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 # admin.autodiscover()
 
-from src.helper_api import *
+from repository.helper.helper_api import *
 from settings import MEDIA_ROOT
 from repository import views
 
@@ -68,7 +68,7 @@ urlpatterns = patterns('',
 
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/media'}),
     (r'^site_data/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/data'}),
-    (r'^site_src/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/src'}),
+    (r'^site_src/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/misc'}),
 
     url(r'^admin/', include(admin.site.urls)),
 )
