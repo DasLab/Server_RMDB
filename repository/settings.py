@@ -39,12 +39,14 @@ ADMINS = (
 MANAGERS = ADMINS
 ALLOWED_HOSTS = []
 
-SUBMISSION = {
-    'SECRET_KEY': 'stanfordrmdb@gmail.com',
-    'PASSWORD': 'daslab4ever',
-    'SMTP': 'smtp.gmail.com:587',
-    'NOTIFY_EMAIL': 't47@stanford.edu'
-}
+class ADMIN_EMAIL:
+    def __init__(self):
+        self.SMTP = 'smtp.gmail.com:587'
+        self.USERNAME = 'stanfordrmdb@gmail.com'
+        self.PASSWORD = 'daslab4ever'
+        self.NOTIFY_EMAIL = 't47@stanford.edu'
+SUBMISSION = ADMIN_EMAIL()
+
 
 # Application definition
 INSTALLED_APPS = (
@@ -173,7 +175,6 @@ class SYS_PATH:
             'TMPDIR': MEDIA_ROOT + '/temp/',
 
         }
-
 PATH = SYS_PATH()
 
 
