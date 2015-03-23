@@ -14,6 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 from t47_dev import *
 
+from django.utils.translation import ugettext_lazy as _
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if T47_DEV:
@@ -23,7 +24,7 @@ else:
     MEDIA_ROOT = '/home/daslab/rdat/rmdb'
     # ALLOWED_HOSTS = ['rmdb.stanford.edu']
 
-DEBUG = 0 #T47_DEV
+DEBUG = T47_DEV
 TEMPLATE_DEBUG = DEBUG
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -126,6 +127,9 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
+LANGUAGES = (
+    ('en', _('English')),
+)
 SITE_ID = 1
 
 USE_I18N = True

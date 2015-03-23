@@ -10,21 +10,21 @@ import simplejson
 # import subprocess
 
 
-def format_number_comma(x):
-	if type(x) not in [type(0), type(0L)]:
-		raise TypeError("Parameter must be an integer.")
-	if x < 0:
-		return '-' + intWithCommas(-x)
-	result = ''
-	while x >= 1000:
-		x, r = divmod(x, 1000)
-		result = ",%03d%s" % (r, result)
-	return "%d%s" % (x, result)
+# def format_number_comma(x):
+# 	if type(x) not in [type(0), type(0L)]:
+# 		raise TypeError("Parameter must be an integer.")
+# 	if x < 0:
+# 		return '-' + intWithCommas(-x)
+# 	result = ''
+# 	while x >= 1000:
+# 		x, r = divmod(x, 1000)
+# 		result = ",%03d%s" % (r, result)
+# 	return "%d%s" % (x, result)
 
 
 def api_stats(request):
 	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-	json = {'N_all':format_number_comma( N_all), 'N_RNA':format_number_comma(N_RNA), 'N_puzzle':format_number_comma(N_puzzle), 'N_eterna':format_number_comma(N_eterna), 'N_constructs':format_number_comma(N_constructs), 'N_datapoints':format_number_comma(N_datapoints)}
+	json = {'N_all':"{:,}".format(N_all), 'N_RNA':"{:,}".format(N_RNA), 'N_puzzle':"{:,}".format(N_puzzle), 'N_eterna':"{:,}".format(N_eterna), 'N_constructs':"{:,}".format(N_constructs), 'N_datapoints':"{:,}".format(N_datapoints)}
 	return HttpResponse(simplejson.dumps(json), content_type='application/json')
 
 
