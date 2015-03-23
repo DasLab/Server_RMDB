@@ -14,13 +14,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 from t47_dev import *
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 if T47_DEV:
     MEDIA_ROOT = '/MATLAB_code/RMDB_Server'
+    # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 else:
     MEDIA_ROOT = '/home/daslab/rdat/rmdb'
+    # ALLOWED_HOSTS = ['rmdb.stanford.edu']
 
-DEBUG = True
+DEBUG = 0 #T47_DEV
 TEMPLATE_DEBUG = DEBUG
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -34,19 +37,17 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 ADMINS = (
     ('Siqi Tian', 't47@stanford.edu'),
-    ('Pablo Cordero', 'tsuname@stanford.edu'),
+    # ('Pablo Cordero', 'tsuname@stanford.edu'),
 )
 MANAGERS = ADMINS
-ALLOWED_HOSTS = []
+EMAIL_NOTIFY = ADMINS[0][1]
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'stanfordrmdb@gmail.com'
+EMAIL_HOST_PASSWORD = 'daslab4ever'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
-class ADMIN_EMAIL:
-    def __init__(self):
-        self.SMTP = 'smtp.gmail.com:587'
-        self.USERNAME = 'stanfordrmdb@gmail.com'
-        self.PASSWORD = 'daslab4ever'
-        self.NOTIFY_EMAIL = 't47@stanford.edu'
-SUBMISSION = ADMIN_EMAIL()
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = (
@@ -165,6 +166,9 @@ class SYS_PATH:
             'adv_search_res': 'media/html/search_advanced_results.html',
 
             'register': 'media/html/register.html',
+
+            '404': 'media/html/_404.html',
+            '500': 'media/html/_500.html',
         }
 
         self.DATA_DIR = {

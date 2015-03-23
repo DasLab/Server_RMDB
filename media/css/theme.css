@@ -11,6 +11,12 @@ body {
   background-position: right 200px bottom 25px;
   background-size: 30%;
 }
+.bgimg2 {
+  background-image: url("/site_media/images/bg_rna_2.png");
+  background-repeat: no-repeat;
+  background-position: right 25px bottom 25px;
+  background-size: 50%;
+}
 
 html { 
   overflow-y: scroll; 

@@ -1,0 +1,39 @@
+{% extends "media/html/_framework.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+
+	<div class="row bgimg2">
+		<div class="col-md-6" id="panel_left">
+			<img src="/site_media/images/bg_500.png" height=300/>
+		</div>
+		<div class="col-md-6" id="panel_right">
+			<h1>
+				<span class="label label-default">INTERNAL
+				<span style="color: lightpink;">_</span>
+				<span style="color: yellow;">SERVER</span>
+				<span style="color: lightpink;">_</span>
+				<span style="color: skyblue;">ERROR</span>
+			</h1>
+			<br/>
+			<h2><code>Sorry!</code> </h2>
+			<p class="lead">
+				The server encountered an internal error and was unable to complete your request. The admin has been noticed and will look into it. Please try back later.
+			</p>
+			<a href="/" class="btn btn-primary pull-right">&nbsp;&nbsp;Home&nbsp;&nbsp;</a>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_logo>span").css("text-decoration","underline");
+		});
+	</script>
+{% endblock %}
+
