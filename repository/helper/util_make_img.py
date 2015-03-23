@@ -1,7 +1,10 @@
 import os
 import sys
+
+from django.core.wsgi import get_wsgi_application
 sys.path.append(os.path.abspath('../../'))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings") 
+application = get_wsgi_application()
 
 from repository.settings import *
 from repository.models import *
