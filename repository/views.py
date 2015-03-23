@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 # from django.core.urlresolvers import reverse
+# from django.core.mail import send_mail
 from django.shortcuts import render, render_to_response, redirect
 # from django import forms
 
@@ -21,7 +22,9 @@ from repository.helper.helper_register import *
 from repository.helper.helper_stats import *
 
 import simplejson
+import sys
 import time
+import traceback
 # from sys import stderr
 
 
@@ -459,8 +462,18 @@ def user_logout(request):
 	return HttpResponseRedirect("/")
 
 
+def error404(request):
+	return render_to_response(PATH.HTML_PATH['404'], {}, context_instance=RequestContext(request))
+
+def error500(request):
+	# exc_type, exc_value, exc_tb = sys.exc_info()
+	# body = '%s\n%s\n%s\n' % (exc_value, exc_type, traceback.format_exception(exc_type, exc_value, exc_tb))
+	# send_mail('Subject', body, EMAIL_HOST_USER, [EMAIL_NOTIFY])
+	return render_to_response(PATH.HTML_PATH['500'], {}, context_instance=RequestContext(request))
+
 def test(request):
-	raise TypeError, "xxx"
+	
+	print 'a'/0
 
 
 
