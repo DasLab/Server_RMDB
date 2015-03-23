@@ -1,10 +1,8 @@
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+sys.path.append(os.path.abspath('../../'))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings") 
 
-from django.core.management import setup_environ
-import settings
-setup_environ(settings)
 from repository.settings import *
 from repository.models import *
 from repository.helper.helper_display import *
@@ -23,9 +21,9 @@ def make_images(id):
 	rmdb_id = entry.values('rmdb_id')[0]['rmdb_id']
 
 	rdatfile = RDATFile()
-	file_name = '%s%s/%s_%s.rdat' %(RDAT_FILE_DIR, rmdb_id, rmdb_id, entry.version)
+	file_name = '%s%s/%s_%s.rdat' %(PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id, rmdb_id, entry.version)
 	if not os.path.isfile(file_name):
-		file_name = '%s%s/%s.rdat' %(RDAT_FILE_DIR, rmdb_id, rmdb_id)
+		file_name = '%s%s/%s.rdat' %(PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id, rmdb_id)
 	rf = open(file_name, 'r')
 	rdatfile.load(rf)
 	rf.close()
@@ -53,8 +51,8 @@ if len(sys.argv) >= 2:
 	else:
 		all_ids = [int(sys.argv[1])]
 else:
-	os.popen('rm -rf %s/*' % CONSTRUCT_THMB_DIR)
-	os.popen('rm -rf %s/*' % CONSTRUCT_IMG_DIR)
+	os.popen('rm -rf %s/*' % PATH.DATA_DIR['CONSTRUCT_THMB_DIR'])
+	os.popen('rm -rf %s/*' % PATH.DATA_DIR['CONSTRUCT_IMG_DIR'])
 	all_ids = [d.values()[0] for d in ConstructSection.objects.values('id').distinct()]
 
 

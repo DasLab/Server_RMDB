@@ -1,9 +1,10 @@
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+sys.path.append(os.path.abspath('../../'))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings") 
+# from django.core.management import setup_environ
+# setup_environ(settings)
 
-from django.core.management import setup_environ
-setup_environ(settings)
 from repository.settings import *
 from repository.models import *
 from repository.helper.helper_display import *
@@ -16,8 +17,8 @@ print "#2: Backing up RDAT files..."
 if os.path.exists('%s/data/rdat_files' % MEDIA_ROOT):
 	os.popen('rm -rf %s/data/rdat_files' % MEDIA_ROOT)
 os.mkdir('%s/data/rdat_files' % MEDIA_ROOT)
-all_rdats =  os.listdir(RDAT_FILE_DIR)
-all_rdats = [i for i in os.listdir(RDAT_FILE_DIR) if (i[0] != '.' and i != "search")]
+all_rdats =  os.listdir(PATH.DATA_DIR['RDAT_FILE_DIR'])
+all_rdats = [i for i in os.listdir(PATH.DATA_DIR['RDAT_FILE_DIR']) if (i[0] != '.' and i != "search")]
 for rdat in all_rdats:
 	os.popen('cp %s/data/files/%s/%s.rdat %s/data/rdat_files/%s.rdat' % (MEDIA_ROOT, rdat, rdat, MEDIA_ROOT, rdat))
 os.popen('cd %s/data/ && tar zcf rdat_files.tgz rdat_files/*' % MEDIA_ROOT)

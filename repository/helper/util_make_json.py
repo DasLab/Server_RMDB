@@ -1,11 +1,9 @@
 import os
 import shutil
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+sys.path.append(os.path.abspath('../../'))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings") 
 
-from django.core.management import setup_environ
-import settings
-setup_environ(settings)
 from repository.settings import *
 from repository.models import *
 from repository.helper.helper_display import *
@@ -20,18 +18,18 @@ dept_rdats = 1
 DEBUG = False
 while (dept_rdats):
 	rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
-	all_rdats =  os.listdir(RDAT_FILE_DIR)
-	all_rdats = [i for i in os.listdir(RDAT_FILE_DIR) if (i[0] != '.' and i != "search")]
+	all_rdats =  os.listdir(PATH.DATA_DIR['RDAT_FILE_DIR'])
+	all_rdats = [i for i in os.listdir(PATH.DATA_DIR['RDAT_FILE_DIR']) if (i[0] != '.' and i != "search")]
 
 	dept_rdats = [i for i in all_rdats if i not in rmdb_ids]
 	for rmdb_id in dept_rdats:
-		shutil.rmtree(os.path.join(RDAT_FILE_DIR, rmdb_id))
+		shutil.rmtree(os.path.join(PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id))
 
 if len(sys.argv) >= 2:
 	if len(sys.argv) > 2 and sys.argv[2] == 'DEBUG':
 		DEBUG = True
 	all_rdats = [sys.argv[1]]
-	if not os.path.exists(os.path.join(RDAT_FILE_DIR, all_rdats[0])):
+	if not os.path.exists(os.path.join(PATH.DATA_DIR['RDAT_FILE_DIR'], all_rdats[0])):
 		print "\033[41mError\033[0m: rmdb_id invalid, no data files folder found. Abort."
 		exit()
 
