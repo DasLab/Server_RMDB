@@ -129,9 +129,9 @@ def predict(request):
 			if is_get_rmdb or is_get_file:
 				(messages, valerrors, bonuses_1d, bonuses_2d, titles, modifiers, offset_seqpos, temperature, sequences, refstruct) = parse_rdat_data(request, is_get_file)
 				form = fill_predict_form(request, sequences, structures, temperature, refstruct, bonuses_1d, bonuses_2d, modifiers, titles, offset_seqpos)
-				return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':form, 'rdatloaded':True, 'msg_y':messages, 'msg_r':valerrors})
+				return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':form, 'rdatloaded':True, 'msg_y':messages, 'msg_r':valerrors}, context_instance=RequestContext(request))
 			elif not request.POST['sequences']:
-				return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':[], 'msg_r':[]})
+				return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':[], 'msg_r':[]}, context_instance=RequestContext(request))
 
 			other_options = ' -t %s ' % (float(request.POST['temperature']) + 273.15)
 			refstruct = SecondaryStructure(dbn=request.POST['refstruct'])
@@ -176,11 +176,11 @@ def predict(request):
 			visform_params['base_annotations'] = '\n'.join([bpdict_to_str(ann) for ann in base_annotations])
 			visform_params['refstruct'] = refstruct.dbn
 			visform = VisualizerForm(visform_params)
-			return render_to_response(PATH.HTML_PATH['predict_res'], {'panels':panels, 'messages':messages,'ncols':ncols, 'nrows':nrows, 'form':visform}, context_instance=RequestContext(request))
+			return render_to_response(PATH.HTML_PATH['predict_res'], {'panels':[], 'messages':messages,'ncols':[], 'nrows':[], 'form':visform}, context_instance=RequestContext(request))
 
 		except IndexError, err:
 			print err
-			return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':messages, 'msg_r':['Invalid input. Please check your inputs and try again.']})
+			return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':messages, 'msg_r':['Invalid input. Please check your inputs and try again.']}, context_instance=RequestContext(request))
 
 
 def str_view(request):

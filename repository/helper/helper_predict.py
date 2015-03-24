@@ -264,6 +264,7 @@ def predict_run_2D(request, sequences, titles, structures, other_options, messag
 		zdata = data
 	zdata = zdata.T
 
+	base_annotations = []
 	predstructs = secondary_structure.fold(seq.sequence, mapping_data=zdata, fold_opts=bonus_options+other_options, bonus2d=True)
 	if predstructs:
 		struct = predstructs[0]

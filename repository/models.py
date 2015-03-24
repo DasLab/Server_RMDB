@@ -63,6 +63,11 @@ MOD_TYPE_CHOICES = (
     ('CMCT', 'CMCT'),
 )
 
+EXEC_TYPE_CHOICES = (
+    ('Fold', 'Fold'),
+    ('Spkt', 'ShapeKnots')
+)
+
     
 class RMDBJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -316,6 +321,7 @@ class PredictionForm(forms.Form):
     predtype = forms.ChoiceField(choices=PRED_TYPE_CHOICES)
     normalize = forms.BooleanField(initial=True)
     temperature = forms.CharField(initial='37')
+    executable = forms.ChoiceField(choices=EXEC_TYPE_CHOICES)
     refstruct = forms.CharField(widget=forms.Textarea)
     nbootstraps = forms.CharField(initial='100')
 

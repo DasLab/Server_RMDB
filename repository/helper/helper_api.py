@@ -5,8 +5,11 @@ from repository.models import *
 from repository.helper.helper_stats import *
 from repository.helper.helper_search import *
 
+from rdatkit import settings
+
 # from itertools import chain
 import simplejson
+import sys
 # import subprocess
 
 
@@ -78,6 +81,12 @@ def api_redirect(request, path):
 	return HttpResponse(html)
 
 
+def api_rnastr_ver(request):
+	ver_rna = os.popen(settings.RNA_STRUCTURE_FOLD + ' -v').readlines()[0].replace('Fold: Version','').strip()[:-1]
+	ver_rdat = settings.VERSION
+	ver_py = sys.version[0:6].strip()
+	json = {'ver_rna':ver_rna, 'ver_rdat':ver_rdat, 'ver_py':ver_py}
+	return HttpResponse(simplejson.dumps(json), content_type='application/json')
 
 
 
