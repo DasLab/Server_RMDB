@@ -10,6 +10,7 @@ from rdatkit import settings
 # from itertools import chain
 import simplejson
 import sys
+import urllib
 # import subprocess
 
 
@@ -71,7 +72,7 @@ def api_browse(request, keyword):
 
 
 def api_search(request, keyword, sstring):
-	sstring = sstring.replace('_', ' ').strip()
+	sstring = urllib.unquote(sstring.strip().encode("utf8")) #.replace('_', ' ')
 	return HttpResponse(simplejson.dumps(simple_search_list(sstring, keyword)), content_type='application/json')
 
 

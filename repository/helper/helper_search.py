@@ -1,7 +1,7 @@
 from repository.models import *
 
 from itertools import chain
-
+import textwrap
 
 
 def simple_search_list(sstring, keyword):
@@ -23,13 +23,14 @@ def simple_search_list(sstring, keyword):
 
 	entry_all = list(chain(entry_by_name, entry_by_id, entry_by_desp, entry_by_data_anno, entry_by_anno, entry_by_comment))	
 
+
 	entry_ids = []
 	entries = []
 	for e in entry_all:
 		if e.rmdb_id not in entry_ids:
 			e.constructs = ConstructSection.objects.filter(entry=e).values('name').distinct()
-
 			e.cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
+
 			comment = e.comments.split()
 			for i, m in enumerate(comment):
 				if len(m) > 40:

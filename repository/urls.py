@@ -60,7 +60,7 @@ urlpatterns = patterns('',
     (r'^api/index/history/$', api_history), 
     (r'^api/index/rnastr_ver/$', api_rnastr_ver), 
     (r'^api/index/browse/(?P<keyword>\w+)$', api_browse),
-    (r'^api/index/search/(?P<keyword>\w+)/(?P<sstring>\w+)$', api_search),
+    (r'^api/index/search/(?P<keyword>\w+)/(?P<sstring>.+)$', api_search),
 
     (r'^test/$', views.test),
 

@@ -1,3 +1,4 @@
+
 function fill_category_list(data, tag) {
 	if (tag == "Eterna") {
 		var pan_html = '<table class="table table-hover table-striped"><tr><th class="col-md-2"></th><th class="col-md-2"></th><th class="col-md-8"></th></tr>';
@@ -42,8 +43,8 @@ $(document).ready(function() {
 		async: true,
 		success: function(data) {
 			$("#wait").fadeIn();
-			$("#search_box").val(search_word);
-			$("#search_headline").text(search_word);
+			$("#search_box").val(decodeURIComponent(search_word));
+			$("#search_headline").text(decodeURIComponent(search_word));
 			$("#N_all").text(data.N_all);
 		},
 		complete: function(xhr) {
