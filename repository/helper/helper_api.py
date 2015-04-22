@@ -72,7 +72,8 @@ def api_browse(request, keyword):
 
 
 def api_search(request, keyword, sstring):
-	sstring = urllib.unquote(sstring.strip().encode("utf8")) #.replace('_', ' ')
+	sstring = urllib.unquote(sstring.strip().replace('|', ' ').encode("utf8"))
+	print sstring
 	return HttpResponse(simplejson.dumps(simple_search_list(sstring, keyword)), content_type='application/json')
 
 

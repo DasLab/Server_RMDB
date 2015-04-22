@@ -32,7 +32,7 @@ $(document).ready(function() {
 		$('html, body').stop().animate({scrollTop: $($(this).attr("href")).offset().top - 75}, 500);
 	});
 
-	var search_word = $(location).attr("href").split("searchtext=")[1].replace('+','_');
+	var search_word = $(location).attr("href").split("searchtext=")[1].replace(/\+/g,'|');
 	if (search_word.indexOf("#") != -1) {
 		search_word = search_word.split("#")[0];
 	}
@@ -42,8 +42,8 @@ $(document).ready(function() {
 		async: true,
 		success: function(data) {
 			$("#wait").fadeIn();
-			$("#search_box").val(decodeURIComponent(search_word));
-			$("#search_headline").text(decodeURIComponent(search_word));
+			$("#search_box").val(decodeURIComponent(search_word).replace(/\|/g,' '));
+			$("#search_headline").text(decodeURIComponent(search_word).replace(/\|/g,' '));
 			$("#N_all").text(data.N_all);
 		},
 		complete: function(xhr) {

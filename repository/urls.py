@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url, handler404, handler500
 from django.contrib import admin
-from django.core.urlresolvers import reverse_lazy
-from django.views.generic import RedirectView
+# from django.core.urlresolvers import reverse_lazy
+# from django.views.generic import RedirectView
 # admin.autodiscover()
 
 from repository.helper.helper_api import *
