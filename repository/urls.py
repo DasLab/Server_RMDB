@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url, handler404, handler500
 from django.contrib import admin
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import RedirectView
 # admin.autodiscover()
 
 from repository.helper.helper_api import *
@@ -66,6 +68,7 @@ urlpatterns = patterns('',
 
     (r'^site_media/isatab_files/(?P<path>.*)$', api_redirect),
     (r'^site_media/rdat_files/(?P<path>.*)$', api_redirect),
+    (r'^repository/(?P<path>.*)$', views.url_redirect),
 
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/media'}),
     (r'^site_data/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/data'}),

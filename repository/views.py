@@ -1,4 +1,4 @@
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect
 from django.template import RequestContext#, Template
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
@@ -461,6 +461,11 @@ def user_logout(request):
 	logout(request)
 	return HttpResponseRedirect("/")
 
+
+def url_redirect(request, path):
+	if 'detail/' in path:
+		path = path.rstrip('/')
+	return HttpResponsePermanentRedirect("/%s" % path)
 
 def error404(request):
 	return render_to_response(PATH.HTML_PATH['404'], {}, context_instance=RequestContext(request))
