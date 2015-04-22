@@ -32,8 +32,7 @@ $(document).ready(function() {
 		$('html, body').stop().animate({scrollTop: $($(this).attr("href")).offset().top - 75}, 500);
 	});
 
-
-	var search_word = $(location).attr("href").split("&searchtext=")[1].replace('+','_');
+	var search_word = $(location).attr("href").split("searchtext=")[1].replace('+','_');
 	if (search_word.indexOf("#") != -1) {
 		search_word = search_word.split("#")[0];
 	}
