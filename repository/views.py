@@ -465,6 +465,8 @@ def user_logout(request):
 def url_redirect(request, path):
 	if 'detail/' in path:
 		path = path.rstrip('/')
+	if request.GET.get('searchtext'):
+		path = path + '?searchtext=' + request.GET.get('searchtext')
 	return HttpResponsePermanentRedirect("/%s" % path)
 
 def error404(request):
