@@ -411,6 +411,9 @@ def user_login(request):
 			messages.error(request, 'Invalid username and/or password. Please try again.')
 		
 		return redirect('/')
+	else:
+		messages.error(request, 'Invalid username and/or password. Please try again.')
+		return redirect('/')
 
 
 def register(request):
