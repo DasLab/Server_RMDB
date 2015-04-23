@@ -273,7 +273,7 @@ $(document).ready(function() {
 			svg_file = "data:image/svg+xml;base64," + btoa(svg_html);
 		}).done(function() {
 			var svg_name = "barplot_row" + $(".chart").attr("num") + "_" 
-							+ $(".chart").attr("ttl").replace(",","-").replace("/","-").replace("\\","-").replace(";","-").replace(":","-") 
+							+ $(".chart").attr("ttl").replace(/\,/g,"-").replace(/\//g,"-").replace(/\\/g,"-").replace(/\;/g,"-").replace(/\:/g,"-") 
 							+ ".svg"
 			var tmp = document.createElement("a");
 			tmp.setAttribute("download", svg_name);
