@@ -32,6 +32,7 @@ os.mkdir('%s/data/data_backup' % MEDIA_ROOT)
 os.popen('cp -r %s/data/files %s/data/data_backup/' % (MEDIA_ROOT, MEDIA_ROOT))
 os.popen('cp -r %s/data/construct_img %s/data/data_backup/' % (MEDIA_ROOT, MEDIA_ROOT))
 os.popen('cp -r %s/data/thumbs %s/data/data_backup/' % (MEDIA_ROOT, MEDIA_ROOT))
+os.popen('cp -r /etc/apache2 %s/data/data_backup/' % MEDIA_ROOT)
 os.popen('cd %s/data/ && tar zcf data_backup.tgz data_backup/' % MEDIA_ROOT)
 os.popen('rm -rf %s/data/data_backup' % MEDIA_ROOT)
 print "    \033[92mSUCCESS\033[0m: all \033[94mdata\033[0m files synced."
