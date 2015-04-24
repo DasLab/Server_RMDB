@@ -121,8 +121,8 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 		order = [i[0] for i in sorted(enumerate(order), key=lambda x:x[1])][::-1]
 	else:
 		order = range(values_dims[0])
-		# if entry_type == 'MA':
-		# 	order = order[::-1]
+		if entry_type != 'MA':
+			order = order[::-1]
 	
 
 	if engine == 'matplotlib':
