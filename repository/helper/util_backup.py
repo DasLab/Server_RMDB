@@ -40,6 +40,6 @@ print "#4: Backing up apache2 settings..."
 os.popen('cp -r /etc/apache2 %s/data/' % MEDIA_ROOT)
 os.popen('cd %s/data/ && tar zcf apache2_backup.tgz apache2/' % MEDIA_ROOT)
 os.popen('rm -rf %s/data/apache2' % MEDIA_ROOT)
-print "    \033[92mSUCCESS\033[0m:  \033[94mapache2\033[0m settings saved."
+print "    \033[92mSUCCESS\033[0m: \033[94mapache2\033[0m settings saved."
 
 print "All done!"
