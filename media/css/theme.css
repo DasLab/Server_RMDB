@@ -265,6 +265,8 @@ h1.section>span.num {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) !important;
+    -ms-transform: translate(-50%, -50%) !important;
+    -webkit-transform: translate(-50%, -50%) !important;
 }
 
 .active > p > .badge {
