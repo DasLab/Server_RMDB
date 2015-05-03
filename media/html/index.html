@@ -86,7 +86,7 @@
           <div class="row bgimg" style="background-size: 80% !important; background-position: right 20px bottom;">
             <div class="col-md-8">
             <p>
-              The <u>R</u>NA <u>M</u>apping <u>D</u>ata<u>b</u>ase is an archive that contains results of diverse structural mapping experiments performed on ribonucleic acids. Results submitted to the repository are manually curated and annotated, ensuring reliability and quality of reported data. With a total of <u id="N_datapoints"></u> datapoints , RMDB currently houses <u id="N_all"></u> entries, describing more than <u id="N_RNA"></u> experiemnts of <u id="N_constructs"></u> RNA constructs in several solution conditions and has been growing rapidly .
+              The <u>R</u>NA <u>M</u>apping <u>D</u>ata<u>b</u>ase is an archive that contains results of diverse structural mapping experiments performed on ribonucleic acids. Results `ted to the repository are manually curated and annotated, ensuring reliability and quality of reported data. With a total of <u id="N_datapoints"></u> datapoints , RMDB currently houses <u id="N_all"></u> entries, describing more than <u id="N_RNA"></u> experiemnts of <u id="N_constructs"></u> RNA constructs in several solution conditions and has been growing rapidly .
             </p>
             <p>
                In addition, RMDB contributes greatly to the <a href="http://eterna.stanford.edu" target="_blank"><b>EteRNA</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> videogame/synthetic biology project, and the <a href="http://ahsoka.u-strasbg.fr/rnapuzzles/" target="_blank"><b>RNA Puzzles</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> blind RNA structure prediction challenges. It will continue to benefit data sharing for RNA structue mapping community. 
@@ -107,14 +107,12 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-4">
-              <ul class="nav nav-pills nav-stacked clickable">
-                <li class="nav-general list-group-item text-center">
-                  <a href="/browse#categoryGeneral" id="navGeneral">
-                    <span class="lead">General</span>
-                  </a>
-                </li>
-              </ul>
-              <div class="col-md-12">
+              <div class="clickable alert alert-danger text-center">
+                <a href="/browse#categoryGeneral">
+                  <span class="lead">General</span>
+                </a>
+              </div>
+              <div class="col-md-12 li-danger">
                 <br/>
                 <p>
                   Chemical mapping data entries from Das lab in-house and published experiments. 
@@ -126,14 +124,12 @@
             </div>
 
             <div class="col-md-4">
-              <ul class="nav nav-pills nav-stacked clickable">
-                <li class="nav-puzzle list-group-item text-center">
-                  <a href="/browse#categoryGeneral">
-                    <span class="lead">RNA Puzzles</span>
-                  </a>
-                </li>
-              </ul>
-              <div class="col-md-12">
+              <div class="clickable alert alert-success text-center">
+                <a href="/browse#categoryGeneral">
+                  <span class="lead">RNA Puzzles</span>
+                </a>
+              </div>
+              <div class="col-md-12 li-success">
                 <br/>
                 <p>
                   <a href="http://ahsoka.u-strasbg.fr/rnapuzzles/" target="_blank"><b>RNA Puzzles</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> a collective experiment for blind RNA structure prediction, with a goal to assess the cutting edge of RNA structure prediction techniques.
@@ -145,14 +141,12 @@
             </div>
 
             <div class="col-md-4">
-              <ul class="nav nav-pills nav-stacked clickable">
-                <li class="nav-eterna list-group-item text-center">
-                  <a href="/browse#categoryGeneral">
-                    <span class="lead">EteRNA</span>
-                  </a>
-                </li>
-              </ul>
-              <div class="col-md-12">
+              <div class="clickable alert alert-info text-center">
+                <a href="/browse#categoryGeneral">
+                  <span class="lead">EteRNA</span>
+                </a>
+              </div>
+              <div class="col-md-12 li-info">
                 <br/>
                 <p>
                   <a href="http://eterna.stanford.edu" target="_blank"><b>EteRNA</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> is a game where players become citizen scientists, working together to better understand and predict the behavior of RNA. 
@@ -178,7 +172,7 @@
           </div>
           <br/>
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 li-violet">
             <p>
               RMDB accepts experimental data in either the SNRNASM <a href="http://ribosnitch.bio.unc.edu/snrnasm/" target="_blank"><mark>ISATAB</mark>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> format or <a href="/deposit/specs"><mark>RDAT</mark></a> format.
             </p>
@@ -191,15 +185,15 @@
             </div>
             <div class="col-md-4">
               <div class="list-group">
-                <a href="/deposit/specs" class="list-group-item clickable">
+                <a href="/deposit/specs" class="li-violet list-group-item clickable">
                   <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   &nbsp;&nbsp;RDAT Format Specifications
                 </a>
-                <a href="/deposit/validate" class="list-group-item clickable">
+                <a href="/deposit/validate" class="li-violet list-group-item clickable">
                   <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
                   &nbsp;&nbsp;Validation Tools
                 </a>
-                <a href="/deposit/submit" class="list-group-item clickable">
+                <a href="/deposit/submit" class="li-green list-group-item clickable">
                   <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span>
                   &nbsp;&nbsp;Submit Entry
                 </a>
@@ -220,7 +214,7 @@
           </div>
           <br/>
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 li-green">
             <p>
               RMDB allows advanced search for particular structural or sequence motifs of interest. Fast and efficient filtering and retrieval of data facilitates in-depth data and feature mining.
             </p>
@@ -233,15 +227,15 @@
             </div>
             <div class="col-md-4">
               <div class="list-group">
-                <a href="/advanced_search" class="list-group-item clickable">
+                <a href="/advanced_search" class="li-warning list-group-item clickable">
                   <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
                   &nbsp;&nbsp;Advanced Search
                 </a>
-                <a href="/site_data/rdat_files.tgz" target="_blank" class="list-group-item">
+                <a href="/site_data/rdat_files.tgz" target="_blank" class="li-green list-group-item">
                   <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
                   &nbsp;&nbsp;Download Database
                 </a>
-                <a href="/tools/docs/api" class="list-group-item clickable">
+                <a href="/tools/docs/api" class="li-info list-group-item clickable">
                   <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
                   &nbsp;&nbsp;Web API
                 </a>
@@ -262,7 +256,7 @@
           </div>
           <br/>
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 li-danger">
               <h4>
                 <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
                 &nbsp;&nbsp;<i><a href="/analyze/predict/" class="clickable">Secondary Structure 
@@ -274,8 +268,8 @@
               <p>RDAT format bonus and RMDB entries are supported as input. Non-parametric bootstrapping reports confidence estimate of helices.</p>
             </div>
 
-            <div class="col-md-4">
-              <h4>
+            <div class="col-md-4 li-light-blue">
+              <h4 class="">
                 <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                 &nbsp;&nbsp;<i><a href="/tools" class="clickable">Repository Packages</a></i>
               </h4>
@@ -291,19 +285,19 @@
               </h4>
               <br/>
               <div class="list-group">
-                <a href="/tools/docs/predict" class="list-group-item clickable">
+                <a href="/tools/docs/predict" class="li-primary list-group-item clickable">
                   <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Structural Server
                 </a>
-                <a href="/tools/docs/api" class="list-group-item clickable">
+                <a href="/tools/docs/api" class="li-primary list-group-item clickable">
                   <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;Website API
                 </a>
-                <a href="/tools/docs/rdatkit" class="list-group-item clickable">
+                <a href="/tools/docs/rdatkit" class="li-primary list-group-item clickable">
                   <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;RDATKit
                 </a>
-                <a href="/tools/docs/hitrace" class="list-group-item clickable">
+                <a href="/tools/docs/hitrace" class="li-primary list-group-item clickable">
                   <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;HiTRACE
                 </a>
-                <a href="/tools/docs/mapseeker" class="list-group-item clickable">
+                <a href="/tools/docs/mapseeker" class="li-primary list-group-item clickable">
                   <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;MAPseeker
                 </a>
               </div>
@@ -324,7 +318,7 @@
           </div>
           <br/>
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 li-primary">
               <p>
                 RMDB has upgraded to version <u><i><span id="site_ver_2"></span></i></u> for online preview. More changes and updates are in progress. Please report bugs and make suggestions. We really appreciate your feedback.
               </p>
@@ -332,19 +326,19 @@
             </div>
             <div class="col-md-4">
               <div class="list-group">
-                <a href="/help/about#contact" class="list-group-item clickable">
+                <a href="/help/about#contact" class="li-orange list-group-item clickable">
                   <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
                   &nbsp;&nbsp;Contact Us
                 </a>
-                <a href="/help/about#citation" class="list-group-item clickable">
+                <a href="/help/about#citation" class="li-orange list-group-item clickable">
                   <span class="glyphicon glyphicon-education" aria-hidden="true"></span>
                   &nbsp;&nbsp;Cite RMDB
                 </a>
-                <a href="/help/license" class="list-group-item clickable">
+                <a href="/help/license" class="li-orange list-group-item clickable">
                   <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
                   &nbsp;&nbsp;License
                 </a>
-                <a href="/help/history" class="list-group-item clickable">
+                <a href="/help/history" class="li-default list-group-item clickable">
                   <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
                  &nbsp;&nbsp; History
                 </a>

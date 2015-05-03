@@ -273,7 +273,24 @@ h1.section>span.num {
   color: #428bca;
   background-color: #fff;
 }
-
+a.nav-list-item {
+  opacity:0.5;
+}
+a.nav-list-item.active {
+  color: #428bca;
+  border: none;
+  opacity: 1;
+}
+a.nav-list-item.active > p {
+  color: #428bca !important;
+}
+a.nav-list-item.active > p > .badge {
+  color: #fff;
+  background-color: #428bca;
+}
+a.nav-list-item.active > h4 {
+  color: #000 !important;
+}
 
 @media (min-width: 979px) {
   #sidebar.affix-top {

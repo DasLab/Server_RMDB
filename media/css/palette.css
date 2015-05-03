@@ -227,6 +227,10 @@ p.cap:first-letter {
 	border-bottom: 5px solid #fec78a !important;
 	background-color: #fefacd !important;
 }
+.alert-info {
+	border-bottom: 5px solid #3ed4e7 !important;
+	background-color: #c5f2f7 !important;
+}
 .alert-default {
 	border-bottom: 5px solid #a19193 !important;
 	background-color: #f5f5f5 !important;
