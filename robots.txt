@@ -34,19 +34,11 @@ User-agent: Yahoo-MMCrawler
 
 # Directories
 Disallow: /data/
-Disallow: /data/construct_img/
-Disallow: /data/files/
-Disallow: /data/search/
-Disallow: /data/thumbs/
 Disallow: /misc/
-Disallow: /misc/external/
-Disallow: /misc/mapseeker/
 Disallow: /media/admin/
 Disallow: /repository/
-Disallow: /repository/helper/
-Disallow: /repository/templatetags/
-# Files
 
+# Files
 Disallow: /__init__.py
 Disallow: /db
 Disallow: /django.wsgi
@@ -73,5 +65,7 @@ Disallow: /admin/
 # Paths (no clean URLs)
 Disallow: /site_media/rdat_files/
 Disallow: /site_media/isatab_files/
+Disallow: /search/?searchtext=*/
+Disallow: /repository/search?searchtext=*/
 
 Crawl-delay: 600
