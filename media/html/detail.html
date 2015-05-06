@@ -475,6 +475,7 @@
 	<hr/>
 	<h3>Admin Options</h3>
 	<form enctype="multipart/form-data" method="post" action="/deposit/admin_rev_stat/">
+		{% csrf_token %}
 		<div class="row">
             <div class="col-md-4">
                 <div class="panel panel-default">
