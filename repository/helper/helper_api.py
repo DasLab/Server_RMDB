@@ -34,9 +34,10 @@ def api_stats(request):
 
 def api_latest(request):
 	entries = RMDBEntry.objects.all().order_by('-creation_date')
-	entries_list = set()
+	entries_list = []
 	for e in entries:
-		entries_list.add(e.rmdb_id)
+		if e.rmdb_id not in entries_list:
+			entries_list.append(e.rmdb_id)
 		if len(entries_list) == 10:
 			break
 	entries = []
@@ -44,7 +45,7 @@ def api_latest(request):
 		entries.append(RMDBEntry.objects.filter(rmdb_id=e).order_by('-creation_date')[0])
 
 	entries_list = []
-	for e in entries[::-1]:
+	for e in entries:
 		cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
 		rmdb_id = e.rmdb_id
 		for c in ConstructSection.objects.filter(entry=e).values('name').distinct():
@@ -55,7 +56,8 @@ def api_latest(request):
 
 
 def api_news(request):
-	news = NewsItem.objects.all().order_by('-date')[:10]
+	n_news = 20
+	news = NewsItem.objects.all().order_by('-date')[:n_news]
 	json = {}
 	for i, n in enumerate(news):
 		json[i] = {'title':n.title, 'date':n.date.strftime('%b %d, %Y')}
