@@ -33,7 +33,7 @@ def api_stats(request):
 
 
 def api_latest(request):
-	entries = RMDBEntry.objects.all().order_by('-creation_date')
+	entries = RMDBEntry.objects.all().filter(revision_status='PUB').order_by('-creation_date')
 	entries_list = []
 	for e in entries:
 		if e.rmdb_id not in entries_list:
@@ -75,7 +75,6 @@ def api_browse(request, keyword):
 
 def api_search(request, keyword, sstring):
 	sstring = urllib.unquote(sstring.strip().replace('|', ' ').encode("utf8"))
-	print sstring
 	return HttpResponse(simplejson.dumps(simple_search_list(sstring, keyword)), content_type='application/json')
 
 
@@ -91,9 +90,6 @@ def api_rnastr_ver(request):
 	ver_py = sys.version[0:6].strip()
 	json = {'ver_rna':ver_rna, 'ver_rdat':ver_rdat, 'ver_py':ver_py}
 	return HttpResponse(simplejson.dumps(json), content_type='application/json')
-
-
-
 
 
 def get_constructs_by_ids():
@@ -174,3 +170,5 @@ def api_all_systems(request):
 	constructs = get_constructs_by_ids()
 	jsonres = '[' + ','.join([simplejson.dumps({'id':i, 'name':n}) for i, n in enumerate(constructs)]) + ']'
 	return HttpResponse(jsonres, content_type='application/json')
+
+

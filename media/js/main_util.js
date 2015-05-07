@@ -99,6 +99,12 @@ $(window).on("resize", function() {
 	    var col_h = Math.max(parseInt($("#panel_con").css("height")), parseInt($("#panel_cit").css("height")));
 	    $("#panel_con").css("height", col_h);
 	    $("#panel_cit").css("height", col_h);
+
+		if ($("#main>svg").width() <= $("div.jumbotron").width()) {
+			$("#main").addClass("text-center");
+		} else {
+			$("#main").removeClass("text-center");
+		}
 	}, 200));
 });
 

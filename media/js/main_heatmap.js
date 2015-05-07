@@ -246,6 +246,9 @@ function draw_heatmap(json) {
 								.attr("fill", function(d) { return get_nt_color(d.seq); })
 								.attr("font-size", 12).attr("font-family", "Arial");
 			flag = 1
+			if ($("#main>svg").width() <= $("div.jumbotron").width()) {
+				$("#main").addClass("text-center");
+			}
 		}, 1);
 	}, 1);
 
