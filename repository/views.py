@@ -3,6 +3,7 @@ from django.template import RequestContext#, Template
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db import IntegrityError
 # from django.core.urlresolvers import reverse
 # from django.core.mail import send_mail
 from django.shortcuts import render, render_to_response, redirect
@@ -21,6 +22,7 @@ from repository.helper.helper_predict import *
 from repository.helper.helper_register import *
 from repository.helper.helper_stats import *
 
+import datetime
 import simplejson
 import sys
 import time
@@ -426,7 +428,7 @@ def register(request):
 
 			if not error_msg:
 				try:
-					user =  User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
+					user =  User.objects.create_user(username=form.cleaned_data['username'], email=form.cleaned_data['email'], password=form.cleaned_data['password'], last_login=datetime.datetime.now())
 					user.first_name = form.cleaned_data['firstname']
 					user.last_name = form.cleaned_data['lastname']
 					user.set_password(form.cleaned_data['password'])
@@ -440,8 +442,11 @@ def register(request):
 					rmdbuser.save()
 
 					flag = 1
-				except:
+				except IntegrityError as e:
 					error_msg.append('Username already exists. Try another.')
+				except:
+					error_msg.append('Unknown error. Please contact admin.')
+
 				# authuser = authenticate(username=user.username, password=form.cleaned_data['password'])
 				# login(request, authuser)
 				# return HttpResponseRedirect('/repository/')
