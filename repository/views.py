@@ -323,7 +323,18 @@ def upload(request):
 
 					uploadfile = request.FILES['file']
 					rf = write_temp_file(uploadfile)
+					txt = rf.readlines()
+					txt = filter(lambda x:'experimentType:' in x, txt)[0]
+					idx = txt.find('experimentType:')
+					txt = txt[idx:]
+					txt = txt[txt.find(':')+1 : txt.find('\t')]
+					expType = [x[1] for i, x in enumerate(ENTRY_TYPE_CHOICES) if x[0] == form.cleaned_data['type']][0]
+					if txt != expType:
+						error_msg.append('experimentType mismatch between selected file and web page form; please check and resubmit.')
+						flag = 1
+						proceed = False
 
+					rf.seek(0)
 					if form.cleaned_data['filetype'] == 'isatab':
 						try:
 							isatabfile.load(rf.name)
@@ -342,6 +353,8 @@ def upload(request):
 							error_msg.append('RDAT file invalid; please check and resubmit.')
 							flag = 1
 							proceed = False
+
+				# form.cleaned_data['type']
 
 				if proceed:
 					(error_msg, entry) = submit_rmdb_entry(form, request, rdatfile, isatabfile)

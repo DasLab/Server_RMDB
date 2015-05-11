@@ -270,7 +270,7 @@ def submit_rmdb_entry(form, request, rdatfile, isatabfile):
 	uploadfile = request.FILES['file']
 	error_msg = write_rmdb_file(entry, uploadfile, rdatfile, isatabfile, error_msg)
 
-	send_notify_emails(entry, request)
+	if not DEBUG: send_notify_emails(entry, request)
 	return (error_msg, entry)
 
 
