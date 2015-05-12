@@ -354,8 +354,6 @@ def upload(request):
 							flag = 1
 							proceed = False
 
-				# form.cleaned_data['type']
-
 				if proceed:
 					(error_msg, entry) = submit_rmdb_entry(form, request, rdatfile, isatabfile)
 					flag = 2
@@ -500,8 +498,7 @@ def error500(request):
 	return render_to_response(PATH.HTML_PATH['500'], {}, context_instance=RequestContext(request))
 
 def test(request):
-	
-	print 'a'/0
+	raise ValueError
 
 
 
