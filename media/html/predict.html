@@ -348,6 +348,31 @@
         
     </form>
 
+    <div id="stat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalStat" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content panel-warning">
+                <div class="modal-header panel-heading">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="stat_label">
+                        <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
+                        &nbsp;&nbsp;RMDB Development
+                    </h4>
+                </div>
+                <div class="modal-body panel-body">
+                    <div class="col-md-9">
+                        <img src="/site_media/images/fg_under_construction.gif" style="width:400px;">
+                    </div>
+                    <div class="col-md-3">
+                        <h2>Page not ready~</h2>
+                        <p>Please check back soon!</p>
+                        <a href="/" class="btn btn-primary text-center">Home</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <br/>
 
@@ -433,6 +458,7 @@
                 }
             });
 
+            $("#stat").modal("show");
         });
     </script>
 
