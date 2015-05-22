@@ -1,3 +1,4 @@
 *.pyc
 t47_dev.py
-design/rdat_files.tgz
+misc/mapseeker/mapseeker_user.csv
+data/
