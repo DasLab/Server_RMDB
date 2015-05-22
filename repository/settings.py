@@ -11,19 +11,12 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-from t47_dev import *
+MEDIA_ROOT = os.path.join(os.path.abspath("."))
 
 from django.utils.translation import ugettext_lazy as _
 
+from t47_dev import *
 # SECURITY WARNING: don't run with debug turned on in production!
-if T47_DEV:
-    MEDIA_ROOT = '/MATLAB_code/RMDB_Server'
-    # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-else:
-    MEDIA_ROOT = '/home/ubuntu/RMDB_Server'
-    # ALLOWED_HOSTS = ['rmdb.stanford.edu']
-
 DEBUG = T47_DEV
 TEMPLATE_DEBUG = DEBUG
 
