@@ -21,7 +21,7 @@ if T47_DEV:
     MEDIA_ROOT = '/MATLAB_code/RMDB_Server'
     # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 else:
-    MEDIA_ROOT = '/home/daslab/rdat/rmdb'
+    MEDIA_ROOT = '/home/ubuntu/RMDB_Server'
     # ALLOWED_HOSTS = ['rmdb.stanford.edu']
 
 DEBUG = T47_DEV
@@ -142,37 +142,37 @@ USE_TZ = True
 class SYS_PATH:
     def __init__(self):
         self.HTML_PATH = {
-            'index': 'media/html/index.html',
-            'browse': 'media/html/browse.html',
-            'detail': 'media/html/detail.html',
+            'index': MEDIA_ROOT + '/media/html/index.html',
+            'browse': MEDIA_ROOT + '/media/html/browse.html',
+            'detail': MEDIA_ROOT + '/media/html/detail.html',
 
-            'about': 'media/html/about.html',
-            'license': 'media/html/license.html',
-            'history': 'media/html/history.html',
+            'about': MEDIA_ROOT + '/media/html/about.html',
+            'license': MEDIA_ROOT + '/media/html/license.html',
+            'history': MEDIA_ROOT + '/media/html/history.html',
 
-            'specs': 'media/html/specs.html',
-            'validate': 'media/html/validate.html',
-            'upload': 'media/html/submit.html',
+            'specs': MEDIA_ROOT + '/media/html/specs.html',
+            'validate': MEDIA_ROOT + '/media/html/validate.html',
+            'upload': MEDIA_ROOT + '/media/html/submit.html',
 
-            'predict': 'media/html/predict.html',
-            'predict_res': 'media/html/predict_results.html',
-            'repos': 'media/html/tools.html',
-            'license_mapseeker': 'media/html/tools_mapseeker_license.html',
-            'link_mapseeker': 'media/html/tools_mapseeker_download.html',
-            'tt_predict': 'media/html/tutorial_predict.html',
-            'tt_api': 'media/html/tutorial_api.html',
-            'tt_rdatkit': 'media/html/tutorial_rdatkit.html',
-            'tt_hitrace': 'media/html/tutorial_hitrace.html',
-            'tt_mapseeker': 'media/html/tutorial_mapseeker.html',
+            'predict': MEDIA_ROOT + '/media/html/predict.html',
+            'predict_res': MEDIA_ROOT + '/media/html/predict_results.html',
+            'repos': MEDIA_ROOT + '/media/html/tools.html',
+            'license_mapseeker': MEDIA_ROOT + '/media/html/tools_mapseeker_license.html',
+            'link_mapseeker': MEDIA_ROOT + '/media/html/tools_mapseeker_download.html',
+            'tt_predict': MEDIA_ROOT + '/media/html/tutorial_predict.html',
+            'tt_api': MEDIA_ROOT + '/media/html/tutorial_api.html',
+            'tt_rdatkit': MEDIA_ROOT + '/media/html/tutorial_rdatkit.html',
+            'tt_hitrace': MEDIA_ROOT + '/media/html/tutorial_hitrace.html',
+            'tt_mapseeker': MEDIA_ROOT + '/media/html/tutorial_mapseeker.html',
 
-            'search_res': 'media/html/search_results.html',
-            'adv_search': 'media/html/search_advanced.html',
-            'adv_search_res': 'media/html/search_advanced_results.html',
+            'search_res': MEDIA_ROOT + '/media/html/search_results.html',
+            'adv_search': MEDIA_ROOT + '/media/html/search_advanced.html',
+            'adv_search_res': MEDIA_ROOT + '/media/html/search_advanced_results.html',
 
-            'register': 'media/html/register.html',
+            'register': MEDIA_ROOT + '/media/html/register.html',
 
-            '404': 'media/html/_404.html',
-            '500': 'media/html/_500.html',
+            '404': MEDIA_ROOT + '/media/html/_404.html',
+            '500': MEDIA_ROOT + '/media/html/_500.html',
         }
 
         self.DATA_DIR = {
