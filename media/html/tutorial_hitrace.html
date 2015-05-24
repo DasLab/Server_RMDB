@@ -1,16 +1,70 @@
 {% extends "media/html/_framework.html" %}
 
 {% block content %}
-<div class="container">
-	<div class="col-md-9">
-		<img src="/site_media/images/fg_under_construction.gif" style="width:800px;">
-	</div>
-	<div class="col-md-3">
-		<h2>Page not ready~</h2>
-		<p>Please check back soon!</p>
-		<a href="/" class="btn btn-primary text-center">Home</a>
+
+<div class="panel-group" id="categories">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="panel panel-warning" id="sidebar" data-spy="affix">
+				<div class="panel-heading">
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+              			&nbsp;&nbsp;Sections
+              		</h3>
+				</div>
+				<div class="panel-body scroll_nav">
+					<ul class="nav" role="tablist" id="scroll_nav">
+						<li class="li-success">
+							<a id="sec-install" href="#install">
+								<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>&nbsp;&nbsp;<b>Installation</b>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-9" id="main">
+			<h2>
+				<span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;&nbsp;
+				Tutorial: HiTRACE
+			</h2>
+			<br/>
+			<p class="cap">
+				HiTRACE is a complete set of MATLAB<sup>&reg;</sup> scripts that automates the key tasks in large-scale nucleic acid CE analysis, including the profile alignment that has heretofore been a rate-limiting step in the highest throughput experiments. By applying a series of robust dynamic programming algorithms, HiTRACE outperforms other tools in terms of alignment and fitting quality, as assessed by measures including the correlation between quantified band intensities between replicate datasets. 
+			</p>
+			<p>
+				It has been intensively used for quantitating data for RNA and DNA based on the mutate-and-map methodology, chromatin footprinting, and other high-throughput structure mapping techniques. Therefore, HiTRACE resolves a critical barrier to the efficient and accurate analysis of nucleic acid structure in experiments involving tens of thousands of electrophoretic bands.
+			</p>
+			<br/>
+
+			<div class="well well-lg" style="background-color:#fff;">
+				<div id="install">
+		            <div class="panel panel-success" >
+		            	<div class="panel-heading">
+		            		<span class="lead"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>&nbsp;&nbsp;<b>Installation</b></span>
+		            	</div>
+		            </div>
+			        </br>
+		            <div class="row">
+		            	<div class="col-md-12">
+							<p>
+								The toolset is available as a GitHub repository: <a href="https://github.com/hitrace/hitrace" target="_blank"><code>hitrace/hitrace</code>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>. You can download the source code directly with:
+							</p>
+				            <div class="row">
+					            <div class="col-md-8">
+									<p><pre>git clone https://github.com/hitrace/hitrace.git</pre></p>
+					            </div>
+					        </div>
+			        </div>
+			    </div>
+
+
+			</div>
+		</div>
 	</div>
 </div>
+
 {% endblock %}
 
 
@@ -18,8 +72,19 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.dropdown-toggle').removeClass("active");
-			$("#nav_analyze").addClass("active");
+			$("#nav_tool").addClass("active");
 	    	$("#nav_logo").css("text-decoration","none");
+
+	    	$("#sidebar").css("width", $("#sidebar").width());
+			$("#sidebar").affix({
+	  			offset: {
+	  		  	top: $("#main").position().top
+	  			}
+			});	
+
+			$("[id^=sec-]").on("click", function () {
+			    $('html, body').stop().animate({scrollTop: $($(this).attr("href")).offset().top - 100}, 500);
+			});
 		});
 	</script>
 
