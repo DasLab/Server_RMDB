@@ -6,12 +6,15 @@
 		<div class="col-md-3">
 			<div class="panel panel-warning" id="sidebar" data-spy="affix">
 				<div class="panel-heading">
-		            <h3 class="panel-title">Sections</h3>
+	            	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+          			&nbsp;&nbsp;Sections
 				</div>
 				<div class="panel-body scroll_nav">
 					<ul class="nav" role="tablist" id="scroll_nav">
 						<li class="li-success">
-							<a id="sec-install" href="#install"><b>Installation</b></a>
+							<a id="sec-install" href="#install">
+								<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>&nbsp;&nbsp;<b>Installation</b>
+							</a>
 						</li>
 						<li class="li-green">
 							<ul>
@@ -24,7 +27,9 @@
 							</ul>
 						</li>
 						<li class="li-primary">
-							<a id="sec-rdat-h" href="#rdat_handling"><b>RDAT Files Handling</b></a>
+							<a id="sec-rdat-h" href="#rdat_handling">
+								<span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;<b>RDAT Files Handling</b>
+							</a>
 						</li>
 						<li class="li-info">
 							<ul>
@@ -37,7 +42,9 @@
 							</ul>
 						</li>
 						<li class="li-violet">
-							<a id="sec-ist-h" href="#isatab_handling"><b>ISATAB Files Handling</b></a>
+							<a id="sec-ist-h" href="#isatab_handling">
+								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;<b>ISATAB Files Handling</b>
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -46,7 +53,7 @@
 
 		<div class="col-md-9" id="main">
 			<h2>
-				<span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;
+				<span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;&nbsp;
 				Tutorial: RDATkit (RNA Dataset Toolkit)
 			</h2>
 			<br/>
@@ -60,7 +67,7 @@
 				<div id="install">
 		            <div class="panel panel-success" >
 		            	<div class="panel-heading">
-		            		<span class="lead"><b>Installation</b></span>
+		            		<span class="lead"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>&nbsp;&nbsp;<b>Installation</b></span>
 		            	</div>
 		            </div>
 			        </br>
@@ -168,7 +175,7 @@
 	            <div id="rdat_handling">
 		            <div class="panel panel-primary" >
 		            	<div class="panel-heading">
-		            		<span class="lead"><b>RDAT Files Handling</b></span>
+		            		<span class="lead"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;<b>RDAT Files Handling</b></span>
 		            	</div>
 		            </div>
 		            <div class="panel panel-info" id="rdat_python">
@@ -262,7 +269,7 @@ isatab = rdat.toISATAB()</pre>
 	            <div id="isatab_handling">
 		            <div class="panel panel-violet">
 		            	<div class="panel-heading">
-		            		<span class="lead"><b>ISATAB Files Handling</sup></b></span>
+		            		<span class="lead"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;<b>ISATAB Files Handling</sup></b></span>
 		            	</div>
 		            </div>
 		            <br/>
@@ -308,7 +315,7 @@ isatab.save('test.xls', type='xls')</pre></p>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.dropdown-toggle').removeClass("active");
-			$("#nav_analyze").addClass("active");
+			$("#nav_tool").addClass("active");
 	    	$("#nav_logo").css("text-decoration","none");
 
 	    	$("#sidebar").css("width", $("#sidebar").width());
