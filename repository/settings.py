@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-MEDIA_ROOT = os.path.join(os.path.abspath("."))
+MEDIA_ROOT = BASE_DIR
+# MEDIA_ROOT = os.path.join(os.path.abspath("."))
 
 from django.utils.translation import ugettext_lazy as _
 
