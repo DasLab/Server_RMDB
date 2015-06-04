@@ -68,6 +68,7 @@ urlpatterns = patterns('',
     (r'^api/index/search/(?P<keyword>\w+)/(?P<sstring>.+)$', api_search),
 
     (r'^test/$', views.test),
+    (r'^api/test/$', api_test),
 
     (r'^site_media/isatab_files/(?P<path>.*)$', api_redirect),
     (r'^site_media/rdat_files/(?P<path>.*)$', api_redirect),

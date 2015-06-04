@@ -172,3 +172,8 @@ def api_all_systems(request):
 	return HttpResponse(jsonres, content_type='application/json')
 
 
+
+def api_test(request):
+	return HttpResponse(simplejson.dumps({'status': 'ok'}), content_type='application/json')
+
+
