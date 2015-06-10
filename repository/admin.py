@@ -27,3 +27,4 @@ admin.site.register(NewsItem, NewsItemAdmin)
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Organism, OrganismAdmin)
 
+

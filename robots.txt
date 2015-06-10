@@ -41,14 +41,9 @@ Disallow: /media/admin/
 Disallow: /repository/
 
 # Files
-Disallow: /__init__.py
-Disallow: /db
-Disallow: /django.wsgi
-Disallow: /t47_dev.py
-Disallow: /t47_dev.pyc
-Disallow: /manage.py
-Disallow: /README.md
-Disallow: /LICENSE.md
+Disallow: /*.py
+Disallow: /*.pyc
+Disallow: /*.md
 
 # Paths (clean URLs)
 Disallow: /site_data/
