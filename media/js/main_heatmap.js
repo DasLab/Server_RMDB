@@ -224,6 +224,7 @@ function draw_heatmap(json) {
 							var tile = d3.select(this), y_cord = tile.attr("y");
 							idx = (y_cord - main_margin.top)/(h+0.5);
 							make_barplot(idx);
+							show_tag_ann(idx);
 							$("#page_num").val((idx+1).toString());
 							$(".left_alone").trigger("click");
 
