@@ -612,7 +612,16 @@
 						}
 					});
 					setTimeout(function() { 
-						draw_heatmap(json); 
+						if (json.x_labels.length >= 300 | json.y_labels.length >= 300 & $(location).attr("href").indexOf("?full=1") == -1) {
+							$("#main").html('<img src="/site_data/construct_img/{{cid}}/reactivity.png" class="center-block well"/><p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap">Load</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large. Rendering may take a few seconds.)</i></p>');
+
+						    $("#btn_load_heatmap").bind("click", function() {
+						    	$(location).attr("href",$(location).attr("href") + "?full=1");
+							});
+
+						} else {
+							draw_heatmap(json); 
+						}
 						setTimeout(function() {
 							$("#svg_top").trigger("click");
 							setTimeout(function() {
@@ -640,6 +649,7 @@
 		    var col_h = Math.max(parseInt($("#col-1").css("height")), parseInt($("#col-2").css("height")));
 		    $("#col-1").css("height", col_h);
 		    $("#col-2").css("height", col_h);
+
 
 		});
 		{% endif %}
