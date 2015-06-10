@@ -167,7 +167,7 @@ def dump_json_heatmap(construct, entry_type, maxlen):
 						else:
 							seq = annotations["sequence"][0][j]
 					else:
-						print "ERROR parsing annotation row:", i, ": ", annotations
+						print "ERROR parsing annotation row:", i+1, ": ", annotations
 						seq = 'X'	
 				else:
 					seq = sequence[j]
