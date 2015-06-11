@@ -7,7 +7,7 @@ from repository.settings import *
 
 from pylab import *
 import matplotlib
-matplotlib.use('Agg')
+# matplotlib.use('Agg')
 
 
 def get_arrays(datas):
@@ -149,8 +149,6 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 			savefig(dir+'/trace.png', bbox_inches='tight')
 			has_traces = True
 
-		figure(2)
-		clf()
 		if hasattr(construct_model, 'values'):
 			is_eterna = 'ETERNA' in RMDBEntry.objects.filter(id=construct_model.values('entry'))[0].rmdb_id
 		else:
@@ -173,25 +171,36 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 			# print values_array.mean(),values_array.std();
 		if vmax_adjust < 0: vmax_adjust = values_array.mean() + values_array.std()*0.5
 
+		figure(2)
+		clf()
 		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest')
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
 		savefig(dir+'/reactivity_crisp.png', bbox_inches='tight')
 
+		figure(2)
+		clf()
 		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='kaiser')
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
 		savefig(dir+'/reactivity_blur.png', bbox_inches='tight')
 
-		aspect_ratio = 'equal'
+		figure(2)
+		clf()
+		# tight_layout()
+		if is_eterna:
+			aspect_ratio = .25 #shape(values_array)[0]/shape(values_array)[1] / 5
+		else:
+			aspect_ratio = 'equal'
 		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest')
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
-		savefig(dir+'/reactivity_equal.png', bbox_inches='tight')
+		savefig(dir+'/reactivity_equal.png', bbox_inches='tight', pad_inches=1e-2, dpi=600)
 
+		close('all')
 		#figure(1)
 		#clf()
 		#matshow(corrcoef(values_array.T)**10)
