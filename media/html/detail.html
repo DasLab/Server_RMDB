@@ -616,8 +616,8 @@
 						n_cols = json.x_labels.length;
 						if ((n_rows >= 300 | n_cols >= 300) & $(location).attr("href").indexOf("?full=1") == -1) {
 							$("#main").html('<p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap">Load</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large (<code>' + n_rows + '-by-' + n_cols + '</code>). Rendering may take a few seconds.)</i></p><img id="img_preview" src="/site_data/construct_img/{{cid}}/reactivity_equal.png" class="center-block well"/>');
-							if ($("#img_preview").width > 600) {
-								$("#img_preview").width = "600";
+							if (parseInt($("#img_preview").css("width")) > 600) {
+								$("#img_preview").css("width", "600");
 							}
 						    $("#btn_load_heatmap").bind("click", function() {
 						    	$(location).attr("href",$(location).attr("href") + "?full=1");
