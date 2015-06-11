@@ -5,9 +5,9 @@ from rdatkit.view import VARNA
 from repository.models import *
 from repository.settings import *
 
-from pylab import *
 import matplotlib
-# matplotlib.use('Agg')
+matplotlib.use('Agg')
+from pylab import *
 
 
 def get_arrays(datas):
@@ -187,18 +187,20 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 		frame.axes.get_yaxis().set_visible(False)
 		savefig(dir+'/reactivity_blur.png', bbox_inches='tight')
 
-		figure(2)
+		figure(3)
 		clf()
 		# tight_layout()
 		if is_eterna:
 			aspect_ratio = .25 #shape(values_array)[0]/shape(values_array)[1] / 5
+			dpi = 600
 		else:
 			aspect_ratio = 'equal'
+			dpi = 120
 		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest')
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
-		savefig(dir+'/reactivity_equal.png', bbox_inches='tight', pad_inches=1e-2, dpi=600)
+		savefig(dir+'/reactivity_equal.png', bbox_inches='tight', pad_inches=1e-2, dpi=dpi)
 
 		close('all')
 		#figure(1)
