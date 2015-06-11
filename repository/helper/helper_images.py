@@ -191,7 +191,7 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 		clf()
 		# tight_layout()
 		if is_eterna:
-			aspect_ratio = .25 #shape(values_array)[0]/shape(values_array)[1] / 5
+			aspect_ratio = .025 #shape(values_array)[0]/shape(values_array)[1] / 5
 			dpi = 600
 		else:
 			aspect_ratio = 'equal'
