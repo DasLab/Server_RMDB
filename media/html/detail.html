@@ -444,7 +444,7 @@
 			<div class="modal-body panel-body">
 				<div class="col-md-12">
 					<div class="row">
-						<img src="/site_data/construct_img/{{cid}}/reactivity.png" class="center-block"/>
+						<img src="/site_data/construct_img/{{cid}}/reactivity_crisp.png" class="center-block"/>
 						<br/>
 					</div>
 				</div>
@@ -468,7 +468,7 @@
 	</h1>
 	<br/>
 	<p class="lead">This entry has been received and is currently under review by the RMDB team. Once approved by the admin, the entry will be released to the public. On average, the review process should take no longer than 2 days.</p>
-	<img src="/site_data/construct_img/{{cid}}/reactivity.png" class="center-block"/>
+	<img src="/site_data/construct_img/{{cid}}/reactivity_crisp.png" class="center-block"/>
 	<p class="lead">For any questions, please feel free to <a href="/help/about#contact">contact</a> us.</p>
 
 	{% if user.is_superuser %}
@@ -615,7 +615,7 @@
 						n_rows = json.y_labels.length;
 						n_cols = json.x_labels.length;
 						if ((n_rows >= 300 | n_cols >= 300) & $(location).attr("href").indexOf("?full=1") == -1) {
-							$("#main").html('<img src="/site_data/construct_img/{{cid}}/reactivity_clear.png" class="center-block well"/><p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap">Load</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large (<code>' + n_rows + '-by-' + n_cols + '</code>). Rendering may take a few seconds.)</i></p>');
+							$("#main").html('<img src="/site_data/construct_img/{{cid}}/reactivity_equal.png" class="center-block well"/><p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap">Load</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large (<code>' + n_rows + '-by-' + n_cols + '</code>). Rendering may take a few seconds.)</i></p>');
 						    $("#btn_load_heatmap").bind("click", function() {
 						    	$(location).attr("href",$(location).attr("href") + "?full=1");
 							});
