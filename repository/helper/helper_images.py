@@ -171,11 +171,18 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 			# print values_array.mean(),values_array.std();
 		if vmax_adjust < 0: vmax_adjust = values_array.mean() + values_array.std()*0.5
 
-		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='kaiser')
+		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest') #'kaiser'
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
 		savefig(dir+'/reactivity.png', bbox_inches='tight')
+
+		aspect_ratio = 'equal'
+		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest')
+		frame = gca()
+		frame.axes.get_xaxis().set_visible(False)
+		frame.axes.get_yaxis().set_visible(False)
+		savefig(dir+'/reactivity_equal.png', bbox_inches='tight')
 
 		#figure(1)
 		#clf()
