@@ -64,7 +64,8 @@ def generate_varna_thumbnails(entry):
 					VARNA.cmd('\" \"', c.structure, '%s_%s.png' % (fname, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400, 'spaceBetweenBases':0.6, 'flat':False} )
 				os.popen('convert -delay 100 -resize 300x300 -background none -gravity center -extent 300x300 -loop 0 %s_*.png %s.gif' % (path, fname))
 			else:
-				os.popen('convert %s%s/reactivity.png %s.gif' % (PATH.DATA_DIR['CONSTRUCT_IMG_DIR'], c.id, fname))
+				os.popen('convert %s%s/reactivity_crisp.png %s.gif' % (PATH.DATA_DIR['CONSTRUCT_IMG_DIR'], c.id, fname))
+				os.popen('convert %s%s/reactivity_blur.png %s_blur.gif' % (PATH.DATA_DIR['CONSTRUCT_IMG_DIR'], c.id, fname))
 				if (not entry.datacount): entry.datacount = len(datas[0].values.split(','))
 				height = 200 * pow(len(datas), 2) / entry.datacount
 
@@ -74,6 +75,7 @@ def generate_varna_thumbnails(entry):
 
 			width = 200
 			os.popen('mogrify -format gif -thumbnail %sx%s! %s.gif' % (width, height, fname))
+			if (os.path.isfile('%s_blur.png' % fname)): os.popen('mogrify -format gif -thumbnail %sx%s! %s_blur.gif' % (width, height, fname))
 			if (os.path.isfile('%s_0.png' % fname)): os.popen('rm -rf %s_*.png' % fname)
 	except ConstructSection.DoesNotExist:
 		print 'FATAL! There are no constructs for entry %s' % entry.rmdb_id
@@ -171,11 +173,17 @@ def generate_images(construct_model, construct_section, entry_type, engine='matp
 			# print values_array.mean(),values_array.std();
 		if vmax_adjust < 0: vmax_adjust = values_array.mean() + values_array.std()*0.5
 
-		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest') #'kaiser'
+		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest')
 		frame = gca()
 		frame.axes.get_xaxis().set_visible(False)
 		frame.axes.get_yaxis().set_visible(False)
-		savefig(dir+'/reactivity.png', bbox_inches='tight')
+		savefig(dir+'/reactivity_crisp.png', bbox_inches='tight')
+
+		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='kaiser')
+		frame = gca()
+		frame.axes.get_xaxis().set_visible(False)
+		frame.axes.get_yaxis().set_visible(False)
+		savefig(dir+'/reactivity_blur.png', bbox_inches='tight')
 
 		aspect_ratio = 'equal'
 		imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest')
