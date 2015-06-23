@@ -38,10 +38,11 @@ ADMINS = (
 MANAGERS = ADMINS
 EMAIL_NOTIFY = ADMINS[0][1]
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'stanfordrmdb@gmail.com'
-EMAIL_HOST_PASSWORD = 'daslab4ever'
+EMAIL_HOST_USER = 'daslabsu@gmail.com'
+EMAIL_HOST_PASSWORD = 'l4bd4s2014'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+EMAIL_SUBJECT_PREFIX = '[Django] {rmdb.stanford.edu}'
 
 ALLOWED_HOSTS = ['*']
 
@@ -120,7 +121,7 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Los_Angeles'
 LANGUAGE_CODE = 'en-us'
 LANGUAGES = (
     ('en', _('English')),
