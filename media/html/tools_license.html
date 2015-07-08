@@ -17,7 +17,7 @@
         <br/>
         <div class="row">
           <div class="col-md-2">
-            <a class="btn btn-success clikable" href="/tools/mapseeker/download" id="btn_accept">&nbsp;&nbsp;&nbsp;Accept&nbsp;&nbsp;&nbsp;</a>
+            <a class="btn btn-success clikable" href="/tools/{{keyword}}/download" id="btn_accept">&nbsp;&nbsp;&nbsp;Accept&nbsp;&nbsp;&nbsp;</a>
           </div>
           <div class="col-md-8">
             {% if not user.is_authenticated %}
@@ -31,13 +31,12 @@
       </div>
     </div>
     <br/>
-    <hr/>
 {% endblock %}
 
 {% block script %}
   <script type="text/javascript">
     $(document).ready(function () {
-      $("#license_content").load("/site_src/mapseeker/mapseeker_license.md", function (txt) {
+      $("#license_content").load("/site_src/{{keyword}}/{{keyword}}_license.md", function (txt) {
         $(this).html(txt.split(/\n/).join("<br>") + "</strong>");
       });
 

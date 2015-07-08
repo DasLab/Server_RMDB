@@ -44,35 +44,37 @@ def specs(request, section):
 def tools(request):
 	return render_to_response(PATH.HTML_PATH['repos'], {}, context_instance=RequestContext(request))
 
-def license_mapseeker(request):
-	return render_to_response(PATH.HTML_PATH['license_mapseeker'], {}, context_instance=RequestContext(request))
+def tools_license(request, keyword):
+	if keyword in ('mapseeker', 'reeffit'):
+		return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword':keyword}, context_instance=RequestContext(request))
+	else:
+		raise Http404
 
 @login_required
-def download_mapseeker(request):
-	f = open(MEDIA_ROOT + "/misc/mapseeker/mapseeker_user.csv", "a")
-	f.write("%s," % time.strftime("%c"))
-	request_usr = request.user
-	f.write("%s,%s,%s %s," % (request_usr.username, request_usr.email, request_usr.first_name, request_usr.last_name))
-	request_usr = User.objects.filter(username=request_usr.username)
-	request_usr = RMDBUser.objects.filter(user=request_usr)
-	f.write("%s - %s\n" %(request_usr.values('institution')[0]['institution'], request_usr.values('department')[0]['department']))
-	f.close()
-	return render_to_response(PATH.HTML_PATH['link_mapseeker'], {}, context_instance=RequestContext(request))
+def tools_download(request, keyword):
+	if keyword in ('mapseeker', 'reeffit'):
+		f = open(MEDIA_ROOT + "/misc/%s/%s_user.csv" % (keyword, keyword), "a")
+		f.write("%s," % time.strftime("%c"))
+		request_usr = request.user
+		f.write("%s,%s,%s %s," % (request_usr.username, request_usr.email, request_usr.first_name, request_usr.last_name))
+		request_usr = User.objects.filter(username=request_usr.username)
+		request_usr = RMDBUser.objects.filter(user=request_usr)
+		f.write("%s - %s\n" %(request_usr.values('institution')[0]['institution'], request_usr.values('department')[0]['department']))
+		f.close()
 
-def tutorial_predict(request):
-	return render_to_response(PATH.HTML_PATH['tt_predict'], {}, context_instance=RequestContext(request))
+		if keyword == 'mapseeker':
+			title = "MAPseeker"
+		elif keyword == 'reeffit':
+			title = "REEFFIT"
+		return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword':keyword, 'title':title}, context_instance=RequestContext(request))
+	else:
+		raise Http404
 
-def tutorial_api(request):
-	return render_to_response(PATH.HTML_PATH['tt_api'], {}, context_instance=RequestContext(request))
-
-def tutorial_rdatkit(request):
-	return render_to_response(PATH.HTML_PATH['tt_rdatkit'], {}, context_instance=RequestContext(request))
-
-def tutorial_hitrace(request):
-	return render_to_response(PATH.HTML_PATH['tt_hitrace'], {}, context_instance=RequestContext(request))
-
-def tutorial_mapseeker(request):
-	return render_to_response(PATH.HTML_PATH['tt_mapseeker'], {}, context_instance=RequestContext(request))
+def tutorial(request, keyword):
+	if keyword in ('predict', 'api', 'rdatkit', 'hitrace', 'mapseeker', 'reeffit'):
+		return render_to_response(PATH.HTML_PATH['tutorial'].replace('xxx', keyword), {}, context_instance=RequestContext(request))
+	else:
+		raise Http404
 
 def about(request):
 	return render_to_response(PATH.HTML_PATH['about'], {}, context_instance=RequestContext(request))
@@ -422,7 +424,12 @@ def user_login(request):
 				if "?login=0" in next:
 					next = "/deposit/submit/"
 				if "?login=-1" in next:
-					next = "/tools/mapseeker/download/"
+					if 'mapseeker' in next:
+						next = "/tools/mapseeker/download/"
+					elif 'reeffit' in next:
+						next = "/tools/reeffit/download/"
+					else:
+						return Http404
 				return HttpResponseRedirect(next)
 			else:
 				messages.error(request, 'Inactive/disabled account. Please contact us.')

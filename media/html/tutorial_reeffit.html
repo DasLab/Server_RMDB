@@ -1,0 +1,88 @@
+{% extends "media/html/_framework.html" %}
+
+{% block content %}
+
+<div class="panel-group" id="categories">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="panel panel-warning" id="sidebar" data-spy="affix">
+				<div class="panel-heading">
+	            	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+          			&nbsp;&nbsp;Sections
+				</div>
+				<div class="panel-body scroll_nav">
+					<ul class="nav" role="tablist" id="scroll_nav">
+						<li class="li-success">
+							<a id="sec-install" href="#install">
+								<span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>&nbsp;&nbsp;<b>Installation</b>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-9" id="main">
+			<h2>
+				<span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;&nbsp;
+				Tutorial: REEFFIT
+			</h2>
+			<br/>
+			<p class="cap">
+				REEFFIT is a method to fit RNA secondary structure ensembles to multi-dimensional chemical mapping data. It is useful in scenarios where the probed RNA is suspected to fold into multiple states that are stabilized through perturbations (such as mutations in a mutate-and-map experiment). REEFFIT will attempt to come up with a secondary structure ensemble <i>de novo</i> and set their weights to best model the data.
+			</p>
+			<br/>
+
+			<div class="well well-lg" style="background-color:#fff;">
+				<div id="install">
+		            <div class="panel panel-success" >
+		            	<div class="panel-heading">
+		            		<span class="lead"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>&nbsp;&nbsp;<b>Installation</b></span>
+		            	</div>
+		            </div>
+			        </br>
+		            <div class="row">
+		            	<div class="col-md-12">
+				            <p>The toolset GitHub repository: <a href="https://github.com/DasLab/REEFFIT" target="_blank"><code>DasLab/REEFFIT</code>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> is private. REEFFIT source code is available for non-commercial use: <a href="/tools/reeffit/license" class="btn btn-info pull-right">&nbsp;&nbsp;Download&nbsp;&nbsp;</a></p>
+				            <div class="row">
+					            <div class="col-md-8">
+									<p><pre>git clone https://github.com/DasLab/REEFFIT.git</pre></p>
+					            </div>
+					        </div>
+							<p>
+								For commercial use, please <a href="/help/about#contact" class="btn btn-warning pull-right">&nbsp;Contact us&nbsp;&nbsp;</a>
+							</p>
+						</div>
+			        </div>
+			    </div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.dropdown-toggle').removeClass("active");
+			$("#nav_tool").addClass("active");
+	    	$("#nav_logo").css("text-decoration","none");
+
+	    	$("#sidebar").css("width", $("#sidebar").width());
+			$("#sidebar").affix({
+	  			offset: {
+	  		  	top: $("#main").position().top
+	  			}
+			});	
+
+			$("[id^=sec-]").on("click", function () {
+			    $('html, body').stop().animate({scrollTop: $($(this).attr("href")).offset().top - 100}, 500);
+			});
+		});
+	</script>
+
+{% endblock %}
