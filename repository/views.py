@@ -59,7 +59,10 @@ def tools_download(request, keyword):
 		f.write("%s,%s,%s %s," % (request_usr.username, request_usr.email, request_usr.first_name, request_usr.last_name))
 		request_usr = User.objects.filter(username=request_usr.username)
 		request_usr = RMDBUser.objects.filter(user=request_usr)
-		f.write("%s - %s\n" %(request_usr.values('institution')[0]['institution'], request_usr.values('department')[0]['department']))
+		(inst, dept) = ('', '')
+		if request_usr.values('institution'): inst = request_usr.values('institution')[0]['institution']
+		if request_usr.values('department'): dept = request_usr.values('department')[0]['department']
+		f.write("%s - %s\n" % (inst, dept))
 		f.close()
 
 		if keyword == 'mapseeker':
