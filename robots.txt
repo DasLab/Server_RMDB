@@ -44,6 +44,7 @@ Disallow: /repository/
 Disallow: /*.py
 Disallow: /*.pyc
 Disallow: /*.md
+Disallow: /*.sh
 
 # Paths (clean URLs)
 Disallow: /site_data/
