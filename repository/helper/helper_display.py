@@ -45,12 +45,12 @@ def get_area_peaks():
 	pass
 
 
-def get_codebase(request):
-	if 'mac' in request.META['HTTP_USER_AGENT']:
-		codebase = 'http://rmdb.stanford.edu/site_media/bin/mac'
-	else:
-		codebase = 'http://rmdb.stanford.edu/site_media/bin'
-	return codebase
+# def get_codebase(request):
+# 	if request.META.has_key('HTTP_USER_AGENT') and ('mac' in request.META['HTTP_USER_AGENT']):
+# 		codebase = 'http://rmdb.stanford.edu/site_media/bin/mac'
+# 	else:
+# 		codebase = 'http://rmdb.stanford.edu/site_media/bin'
+# 	return codebase
 
 
 def render_structure(request):
