@@ -38,6 +38,7 @@ User-agent: Yahoo-MMCrawler
 Disallow: /data/
 Disallow: /misc/
 Disallow: /media/admin/
+Disallow: /media/images/src/
 Disallow: /repository/
 
 # Files
