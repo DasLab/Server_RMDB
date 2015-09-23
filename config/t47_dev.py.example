@@ -1,0 +1,3 @@
+# set to 0 for test environment
+# set to 1 for server deployment
+T47_DEV = 0

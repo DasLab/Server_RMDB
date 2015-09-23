@@ -1,0 +1,9 @@
+{
+	"CRONJOBS": [
+		["cron_string", "backup_job", ">> path/log_cron.log # backup_weekly"],
+		["cron_string", "upload_job", ">> path/log_cron.log # gdrive_weekly"],
+		["cron_string", "sys_ver_job", ">> path/log_cron.log # sys_ver_weekly"]
+	],
+	"CRONTAB_LOCK_JOBS": true,
+	"KEEP_BACKUP": 60
+}

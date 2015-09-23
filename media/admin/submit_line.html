@@ -1,0 +1,10 @@
+{% load i18n %}
+<div class="submit-row clearfix">
+  {% if show_save %}<button type="submit" class="btn btn-high btn-success" name="_save"><span class='glyphicon glyphicon-ok-sign'></span>&nbsp;&nbsp;{% trans 'Save' %}</button>{% endif %}
+  {% if show_save_and_continue %}<button type="submit" name="_continue" class=" btn btn-high btn-warning"><span class='glyphicon glyphicon-circle-arrow-right'></span>&nbsp;{% trans 'Save and <br>Continue Editing' %}</button>{% endif %}
+  {% if show_save_as_new %}<button type="submit" name="_saveasnew" class="btn btn-warning"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;&nbsp;{% trans 'Save as New' %}</button>{%endif%}
+  {% if show_save_and_add_another %}<button type="submit" name="_addanother" class="btn btn-warning"><span class='glyphicon glyphicon-plus-sign'></span>&nbsp;&nbsp;{% trans 'Save and <br>Add Another' %}</button>{% endif %}
+
+  {% if show_delete_link %}<a href="delete/" class="text-error deletelink btn btn-danger"><span class='glyphicon glyphicon-minus-sign'></span>&nbsp;&nbsp;{% trans "Delete" %}</a>
+  {% endif %}
+</div>

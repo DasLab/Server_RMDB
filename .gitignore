@@ -1,4 +1,7 @@
-*.pyc
-t47_dev.py
-misc/mapseeker/mapseeker_user.csv
 data/
+backup/
+misc/
+*.pyc
+
+config/t47_dev.py
+config/*.conf

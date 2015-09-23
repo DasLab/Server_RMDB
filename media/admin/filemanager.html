@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="/site_media/js/admin/load.js"></script>  
+  <script type="text/javascript">
+    if (isCDN) {
+      document.write('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.2.1/jquery-migrate.min.js"><\/script>');
+      document.write('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zclip/1.1.2/jquery.zclip.min.js"><\/script>');
+    } else {
+      document.write('<script type="text/javascript" src="/site_media/js/jquery-migrate.min.js"><\/script>');
+      document.write('<script type="text/javascript" src="/site_media/js/jquery-zclip.min.js"><\/script>');
+    }
+  </script>
+  <link rel="stylesheet" type="text/css" href="/site_media/css/_filemanager.css"/>
+
+  <script type="text/javascript">
+    var dir_structure = {{dir_structure|safe}};
+    var messages = {{messages|safe}};
+    var dir_id = {{current_id}};
+    var ckeditor_baseurl = '{{ ckeditor_baseurl }}';
+    var CKEditorFuncNum = {% if CKEditorFuncNum %}{{CKEditorFuncNum}}{% else %}null{%endif%};
+    var static_url = '{{STATIC_URL}}';
+    {% if public_url_base %}
+    var public_url_base = '{{public_url_base}}';
+    {% endif %}
+    var clipboard = { 'empty':true, 'path': 'full path will come here' ,
+       'mode': 'cut or copy', 'type': 'file or dir'}
+    var space_consumed = {{space_consumed}};
+    var max_space = {{max_space}}*1024;
+  </script>
+  <script type="text/javascript" src="/site_media/js/admin/_filemanager.js"></script>
+</head>
+
+<body oncontextmenu='return false;'>
+  <div id="main" class="row">
+    <div id="left" class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
+    <div id="right" class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+      <div id="control" class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <form method="POST" id="form" enctype="multipart/form-data" style="">{% csrf_token %}
+            <input type="file" id="ufile" name="ufile" style="position:fixed;top:-100px" multiple>
+            <input type="text" id="action" name="action" style="display:none;">
+            <input type="text" id="path" name="path" value="" style="display:none;">
+            <input type="text" id="name" name="name" value="" style="display:none;">
+            <input type="text" id="current_path" name="current_path" value="" style="display:none;">
+            <input type="text" id="file_or_dir" name="file_or_dir" value="" style="display:none;">
+            <input type="submit" id="submit" name="submit" value="Submit" style="display:none;">
+
+            <label class="btn btn-info" id="upload-label" for="ufile">
+              <span class="glyphicon glyphicon-cloud-upload">
+              <span>Upload Files</span>
+            </label>
+          </form>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+         <p id="message"></p>
+        </div>
+      </div>
+      <div class="row">
+        <div id="content" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div>
+      </div>
+    </div>
+
+    <div id="dir-menu" class="list-group menu" style="display:none">
+      <a id="add-dir" class="list-group-item list-group-item-success" onclick="do_action('add','dir')">
+        <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;<b>Create Sub-Folder</b>
+      </a>
+      <a id="cut-dir" class="list-group-item list-group-item-warning" onclick="do_action('cut','dir')">
+        <span class="glyphicon glyphicon-scissors"></span>&nbsp;&nbsp;<b>Cut</b>
+      </a>
+      <a id="copy-dir" class="list-group-item list-group-item-warning" onclick="do_action('copy','dir')">
+        <span class="glyphicon glyphicon-duplicate"></span>&nbsp;&nbsp;<b>Copy</b>
+      </a>
+      <a id="paste-dir" class="list-group-item list-group-item-warning" onclick="do_action('paste','dir')">
+        <span class="glyphicon glyphicon-paste"></span>&nbsp;&nbsp;<b>Paste</b>
+      </a>
+      <a id="rename-dir" class="list-group-item list-group-item-info" onclick="do_action('rename','dir')">
+        <span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;<b>Rename</b>
+      </a>
+      <a id="download-dir" class="list-group-item list-group-item-info" onclick="do_action('download','dir')">
+        <span class="glyphicon glyphicon-cloud-download"></span>&nbsp;&nbsp;<b>Download</b>
+      </a>
+      <a id="delete-dir" class="list-group-item list-group-item-danger" onclick="do_action('delete','dir')">
+        <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;<b>Delete</b>
+      </a>
+    </div>
+
+    <div id="file-menu" class="list-group menu" style="display:none">
+      <a id="cut-file" class="list-group-item list-group-item-warning" onclick="do_action('cut','file')">
+        <span class="glyphicon glyphicon-duplicate"></span>&nbsp;&nbsp;<b>Cut</b>
+      </a>
+      <a id="copy-file" class="list-group-item list-group-item-warning" onclick="do_action('copy','file')">
+        <span class="glyphicon glyphicon-duplicate"></span>&nbsp;&nbsp;<b>Copy</b>
+      </a>
+      <a id="rename-file" class="list-group-item list-group-item-info" onclick="do_action('rename','file')">
+        <span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;<b>Rename</b>
+      </a>
+      <a id="download-file" class="list-group-item list-group-item-info" onclick="do_action('download','file')">
+        <span class="glyphicon glyphicon-cloud-download"></span>&nbsp;&nbsp;<b>Download</b>
+      </a>
+      <a id="delete-file" class="list-group-item list-group-item-danger" onclick="do_action('delete','file')">
+        <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;<b>Delete</b>
+      </a>
+
+      {% if public_url_base %}
+      <a id="copy-public-link-file" class="list-group-item list-group-item-danger">
+        <span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;<b>Delete Copy public link</b>
+      </a>
+      {% endif %}
+
+    </div>
+
+
+
+    <div id="popup" class="modal-dialog">
+      <div class="modal-content panel-orange">
+        <div class="modal-header panel-heading">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#popup').hide();"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="heading"></h4>
+        </div>
+        <div class="modal-body panel-body">
+          <input id="input" type="text" class="form-control">
+        </div>
+          <div class="modal-footer panel-footer">
+            <div class="row">
+              <span class="pull-right">
+                <button type="submit" id="pop_submit" class="btn btn-primary"/>&nbsp;&nbsp;Submit&nbsp;&nbsp;</button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-default" onclick="$('#popup').hide();">&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+            </div>
+      </div>
+    </div>
+
+<!--     <div id="status-bar">
+      {% if show_space %}
+      <div class="progress">
+        <div class="bar" id="space_quota"></div>
+      </div>
+      <span id="space_quota_string"></span>
+      {% endif %}
+
+      <span id="status"></span>
+    </div>
+ -->  
+  </div>
+
+  </body> 
+</html>

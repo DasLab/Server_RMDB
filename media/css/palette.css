@@ -1,3 +1,4 @@
+
 p.cap:first-letter {
   font-size: 36px;
   font-family: Georgia, serif;
@@ -43,13 +44,13 @@ p.cap:first-letter {
 	border-color: #ff5c2b;
 }
 .btn-warning {
-	background-color: #fec78a;
-	border-color: #cb9f6e;
+	background-color: #eeb211;
+	border-color: #be8e0d;
 	color: #000 !important;
 }
 .btn-warning:hover {
-	background-color: #fed2a1;
-	border-color: #fec78a;
+	background-color: #f3c958;
+	border-color: #eeb211;
 }
 .btn-primary {
 	background-color: #5496d7;
@@ -86,6 +87,9 @@ p.cap:first-letter {
 }
 .panel-body {
 	border: 1px solid #b7bac5;
+	border-top: none;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
 }
 
 .panel-default > .panel-heading {
@@ -132,6 +136,30 @@ p.cap:first-letter {
 	border-bottom: 5px solid #ff912e !important;
 	background-color: #ffdec0 !important;
 }
+.panel-magenta > .panel-heading {
+	border-bottom: 5px solid #ff69bc !important;
+	background-color: #ffd2ea !important;
+}
+.panel-dark-red > .panel-heading {
+	border-bottom: 5px solid #d86f5c !important;
+	background-color: #efc5bd !important;
+}
+.panel-dark-blue > .panel-heading  {
+	border-bottom: 5px solid #7d95c9 !important;
+	background-color: #becae4 !important;
+}
+.panel-gray > .panel-heading  {
+	border-bottom: 5px solid #b7bac5 !important;
+	background-color: #dbdce2 !important;
+}
+.panel-dark-green > .panel-heading  {
+	border-bottom: 5px solid #24920C !important;
+	background-color: #a7d39d !important;
+}
+.panel-teal > .panel-heading  {
+	border-bottom: 5px solid #008080 !important;
+	background-color: #99cccc !important;
+}
 
 .li-default {
 	border-left: 5px solid #a19193;
@@ -140,7 +168,7 @@ p.cap:first-letter {
 	border-left: 5px solid #5496d7;
 }
 .li-warning {
-	border-left: 5px solid #fec78a;
+	border-left: 5px solid #eeb211;
 }
 .li-danger {
 	border-left: 5px solid #ff5c2b;
@@ -166,6 +194,25 @@ p.cap:first-letter {
 .li-orange {
 	border-left: 5px solid #ff912e;
 }
+.li-magenta {
+	border-left: 5px solid #ff69bc;
+}
+.li-dark-red {
+	border-left: 5px solid #d86f5c;
+}
+.li-dark-blue {
+	border-left: 5px solid #7d95c9;
+}
+.li-gray {
+	border-left: 5px solid #b7bac5;
+}
+.li-dark-green {
+	border-left: 5px solid #24920C;
+}
+.li-teal {
+	border-left: 5px solid #008080;
+}
+
 
 /*.label-default {
 	background-color: #a19193;
@@ -210,6 +257,21 @@ p.cap:first-letter {
 .label-white {
 	color: #fff;
 }
+.label-dark-blue {
+	background-color: #7d95c9;
+}
+.label-gray {
+	background-color: #b7bac5;
+}
+.label-dark-green {
+	background-color: #24920C;
+}
+.label-teal {
+	background-color: #008080;
+}
+.label-magenta {
+	background-color: #ff69bc;
+}
 
 .alert-orange {
 	border-bottom: 5px solid #ff912e !important;
@@ -227,11 +289,71 @@ p.cap:first-letter {
 	border-bottom: 5px solid #fec78a !important;
 	background-color: #fefacd !important;
 }
+.alert-default {
+	border-bottom: 5px solid #a19193 !important;
+	background-color: #f5f5f5 !important;
+}
+.alert-violet {
+	border-bottom: 5px solid #c28fdd !important;
+	background-color: #ecddf4 !important;
+}
 .alert-info {
 	border-bottom: 5px solid #3ed4e7 !important;
 	background-color: #c5f2f7 !important;
 }
-.alert-default {
-	border-bottom: 5px solid #a19193 !important;
-	background-color: #f5f5f5 !important;
+.alert-light-blue {
+	border-bottom: 5px solid #8ee4cf !important;
+	background-color: #ddf6f0 !important;
+}
+
+.timeline-default {
+	background-color: #a19193;
+}
+.timeline-primary {
+	background-color: #5496d7;
+}
+.timeline-warning {
+	background-color: #eeb211;
+}
+.timeline-danger {
+	background-color: #ff5c2b;
+}
+.timeline-info {
+	background-color: #3ed4e7;
+}
+.timeline-success {
+	background-color: #29be92;
+}
+.timeline-green {
+	background-color: #50cc32;
+}
+.timeline-light-blue {
+	background-color: #8ee4cf;
+}
+.timeline-brown {
+	background-color: #d39a6f;
+}
+.timeline-violet {
+	background-color: #c28fdd;
+}
+.timeline-orange {
+	background-color: #ff912e;
+}
+.timeline-magenta {
+	background-color: #ff69bc;
+}
+.timeline-dark-red {
+	background-color: #d86f5c;
+}
+.timeline-dark-blue {
+	background-color: #7d95c9;
+}
+.timeline-gray {
+	background-color: #b7bac5;
+}
+.timeline-dark-green {
+	background-color: #24920C;
+}
+.timeline-teal {
+	background-color: #008080;
 }

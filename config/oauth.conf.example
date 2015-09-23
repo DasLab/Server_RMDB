@@ -1,0 +1,63 @@
+
+{
+	"AWS": {
+		"REGION": "region",
+		"ELB_NAME": "elb_name",
+		"EC2_INSTANCE_ID": "instance_id",
+		"EBS_VOLUME_ID": "volume_id",
+
+		"ACCESS_KEY_ID": "access_key_id",
+		"SECRET_ACCESS_KEY": "secret_access_key"
+	},
+
+	"GA": {
+		"ACCOUNT": "account_id",
+		"ID": "ids",
+		"TRACKING_ID": "tracking_id",
+
+		"CLIENT_ID": "client_id",
+		"CLIENT_SECRET": "client_secret",
+
+		"REFRESH_TOKEN": "refresh_token"
+	},
+
+	"CALENDAR": {
+		"ICS": "private_ics_url",
+
+		"CLIENT_ID": "client_id",
+		"CLIENT_SECRET": "client_secret",
+
+		"REFRESH_TOKEN": "refresh_token"
+	},
+
+	"DRIVE": {
+		"SPREADSHEET_ID": "spreadsheet_id",
+
+		"CLIENT_ID": "client_id",
+		"CLIENT_SECRET": "client_secret",
+
+		"REFRESH_TOKEN": "refresh_token"
+	},
+
+	"GIT": {
+		"CLIENT_ID": "client_id",
+		"CLIENT_SECRET": "client_secret",
+
+		"ACCESS_TOKEN": "access_token"
+	},
+
+	"SLACK": {
+		"CLIENT_ID": "client_id",
+		"CLIENT_SECRET": "client_secret",
+
+		"ACCESS_TOKEN": "access_token"
+	},
+
+	"DROPBOX": {
+		"APP_KEY": "app_key",
+		"APP_SECRET": "app_secret",
+	
+		"ACCESS_TOKEN": "access_token"
+	}	
+}
+
