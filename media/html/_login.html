@@ -1,0 +1,80 @@
+
+{% block preload %}
+  <title>DAS LAB + Stanford Biochemistry Department + Stanford University</title>
+  <script type="text/javascript" src="/site_media/js/admin/load.js"></script>  
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#main").addClass("DASerr");
+      $("#nav-home").addClass("active");
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+<div class="text-center BODY-ERR">
+	<form enctype="multipart/form-data" action="/login/" method="post">
+		{% csrf_token %}
+		<div class="bgimg2-lg center-block text-center">
+			<h2 class="center-block text-center"><span class="label label-teal">AUTHORIZATION REQUIRED</span></h2>
+			<b>
+			{% if flag == 'Member' %}
+	  			<p style="padding-top:10px;" class="center-block text-center">This site is for internal use. Das Lab member only.</p>
+  			{% else %}
+  				<p style="padding-top:10px;" class="center-block text-center">This site is for internal administration.</p>
+  			{% endif %}
+	  		</b>
+            <div class="form-group center-block" style="margin-bottom:0px;">
+            	<p style="margin-top:25px;">
+					<div class="input-group" style="left:300px;">
+						<span class="input-group-addon" style="color:#000;"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+		                <input class="form-control" type="text" id="username" name="username" placeholder="Username" style="width: 220px; display:inline-block;"/>
+		            </div>
+	            </p>
+                <p>
+					<div class="input-group" style="left:300px;">
+						<span class="input-group-addon" style="color:#000;"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+		                <input class="form-control" type="password" id="password" name="password" placeholder="Password" style="width: 220px; display:inline-block;"/>
+		            </div>
+                </p>
+                <br/>
+                <p>
+					<input class="form-control" type="password" id="flag" name="flag" style="display:none;" value="{{flag}}"/>
+					<input type="submit" value="&nbsp;&nbsp;Sign In&nbsp;&nbsp;" class="btn btn-primary clickable"/>
+					&nbsp;&nbsp;
+					<button type="button" class="btn btn-default" onclick="location.href='/'">&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+				</p>
+            </div>
+		</div>
+
+		{% if messages %}
+		<div class="center-block text-center">
+            <div class="form-group center-block" style="margin-bottom:0px; width: 640px;">
+				<br/>
+                <div class="alert alert-danger center-block" role="alert" style="margin: 0px 15px;">
+                    <p>
+                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                        <b>ERROR</b>: The following messages were produced:
+                    </p>
+                    <p>{{ messages }}</p>
+                </div>
+			</div>
+		</div>
+		{% endif %}
+	</form>
+</div>
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+		{% if messages %}
+		$("#DasFOOTER").css({"top": "483px", "display": "inline"});
+		$("#DasICON").css({"top": "538px", "display": "inline"});
+		{% else %}
+		$("#DasFOOTER").css({"top": "423px", "display": "inline"});
+		$("#DasICON").css({"top": "478px", "display": "inline"});
+		{% endif %}
+    });
+  </script>
+{% endblock %}
+

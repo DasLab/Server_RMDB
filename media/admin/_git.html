@@ -1,0 +1,91 @@
+{% extends "admin/base.html" %}
+{% load i18n admin_static %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block content %}
+	<div id="content-main" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="row">
+			<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+				<table class="table table-overview applist">
+					<tr>
+		                <th scope="row"><b><span class="glyphicon glyphicon-globe"></span> Link</th>
+		                <td class="active"><a href="https://github.com/DasLab/Server_DasLab" target="_blank" class="addlink icon">https://github.com/DasLab/Server_DasLab</a></td>
+		                <td class="active"><span class="glyphicon glyphicon-lock"></span> GitHub Authorization Required</td>
+		              </tr>
+				</table>
+			</div>
+			<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+				<span class="pull-right"><u>(Timezone: <b>{{timezone}}</b>)</u></span>
+			</div>
+		</div>
+		<!-- <iframe src="/admin/git_inspector" class="well" id="iframe" frameborder="0" scrolling="auto" seamless="true"></iframe> -->
+
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h4><span class="label label-inverse" style="color: #ff0;">Commits</span></h4>
+				<div id="plot_c" class="thumbnail place_holder" style="padding:20px 20px 0px 20px; height: 350px;"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+				<h4><span class="label label-inverse" style="color: #ff0;">Additions & Deletions</span></h4>
+				<div id="plot_ad" class="thumbnail place_holder" style="padding:0px 20px; height: 275px;"></div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+				<table class="table table-hover">
+					<tbody id="git_num_body">
+						<tr><td colspan="3" class="place_holder"></td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+				<h4><span class="label label-inverse" style="color: #ff0;">Contributors</span></h4>
+				<table class="table table-hover">
+					<thead>
+						<tr class="active">
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><span class="glyphicon glyphicon-user"></span> Account</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+								<span class="pull-right">
+									<span class="glyphicon glyphicon-circle-arrow-up"></span>&nbsp;&nbsp;Commits&nbsp;&nbsp;&nbsp;&nbsp;
+								</span>
+							</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+								<span class="pull-right">
+									<span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Additions&nbsp;&nbsp;&nbsp;&nbsp;
+								</span>
+							</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+								<span class="pull-right">
+									<span class="glyphicon glyphicon-minus-sign"></span>&nbsp;&nbsp;Deletions&nbsp;&nbsp;&nbsp;&nbsp;
+								</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody id="git_table_body">
+						<tr><td colspan="3" class="place_holder"></td></tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+				<div id="plot_pie" class="thumbnail place_holder" style="padding:0px 20px;"></div>
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block extrajs %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#view-selector-container").hide();
+			$("ul.breadcrumb").append('<li class="active"><img src="/site_media/images/icons/git.png" height="21px" style="vertical-align:text-top;">&nbsp;&nbsp;GitHub Repository</li>');
+		});
+	</script>
+	<script type="text/javascript" src="https://www.google.com/jsapi" ></script>
+	<script type="text/javascript" src="/site_media/js/admin/git.js"></script>
+{% endblock %}
+

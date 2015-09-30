@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+{% load i18n admin_static %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block content %}
+	<div id="content-main" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<iframe src="/admin/browse" class="well" id="iframe" scrolling="no"></iframe>
+	</div>
+{% endblock %}
+
+
+{% block extrajs %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#iframe").css("width", parseInt($("#content").css("width")) - 50);
+			// $("#iframe").css("height", $("#footer").position().top - $("#content").position().top - 175);
+			$("#iframe").css("height", 800);
+			$("ul.breadcrumb").append('<li class="active"><span style="color: #000;" class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Directory Browser</li>');
+		});
+	</script>
+{% endblock %}
+

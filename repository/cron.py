@@ -6,8 +6,8 @@ import traceback
 
 # from django.core.mail import send_mail
 
-from src.settings import *
-from src.console import *
+from repository.settings import *
+from repository.console import *
 
 
 def send_notify_emails(msg_subject, msg_content):

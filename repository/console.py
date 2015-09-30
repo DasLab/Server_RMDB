@@ -21,8 +21,8 @@ import requests
 from django.core.management import call_command
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 
-from src.settings import *
-from src.models import BackupForm, Publication
+from repository.settings import *
+from repository.models import BackupForm, Publication
 
 
 def get_backup_stat():
@@ -106,7 +106,7 @@ def set_backup_form(request):
 
 def restyle_apache():
     password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    apache_url = "http://daslab.stanford.edu/server-status/"
+    apache_url = "http://rmdb.stanford.edu/server-status/"
     password_mgr.add_password(None, apache_url, env('APACHE_USER'), env('APACHE_PASSWORD'))
     handler = urllib2.HTTPBasicAuthHandler(password_mgr)
     opener = urllib2.build_opener(handler)
@@ -115,7 +115,7 @@ def restyle_apache():
     request = urllib2.urlopen(apache_url)
     response = request.read().split('\n')
 
-    title = 'Apache Server Status for <code>daslab.stanford.edu</code> (via <kbd>%s</kbd> )' % response[4].replace(')</h1>', '')[-13:].replace('via ', '')
+    title = 'Apache Server Status for <code>rmdb.stanford.edu</code> (via <kbd>%s</kbd> )' % response[4].replace(')</h1>', '')[-13:].replace('via ', '')
     ver = response[6].replace('<dl><dt>Server Version: Apache/', '').replace('(Ubuntu) OpenSSL/', '').replace('mod_wsgi/', '').replace('Python/', '').replace('</dt>', '').split()
     mpm = response[7].replace('<dt>Server MPM: ', '').replace('</dt>', '')
     tz = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone("America/Los_Angeles")).tzname()
@@ -137,7 +137,7 @@ def restyle_apache():
     workers = response[19].replace('<dt>', '').replace('requests currently being processed, ', '').replace('idle workers</dt>', '').split()
     worker = '<p style="margin-bottom:0px;">' + '</p><p style="margin-bottom:0px;">'.join(textwrap.wrap(''.join(response[20:22]).replace('</dl><pre>', '').replace('</pre>', ''), 30)).replace('.', '<span class="label label-primary">.</span>').replace('_', '<span class="label label-inverse">_</span>').replace('S', '<span class="label label-default">S</span>').replace('R', '<span class="label label-violet">R</span>').replace('W', '<span class="label label-info">W</span>').replace('K', '<span class="label label-success">K</span>').replace('D', '<span class="label label-warning">D</span>').replace('C', '<span class="label label-danger">C</span>').replace('L', '<span class="label label-orange">L</span>').replace('G', '<span class="label label-green">G</span>').replace('I', '<span class="label label-brown">I</span>') + '</p>'
 
-    table = ''.join(response[40:len(response)-23]).replace('<td>.</td>', '<td><span class="label label-primary">.</span></td>').replace('<td>_</td>', '<td><span class="label label-inverse">_</span></td>').replace('<td><b>S</b></td>', '<td><span class="label label-default">S</span></td>').replace('<td><b>R</b></td>', '<td><span class="label label-violet">R</span></td>').replace('<td><b>W</b></td>', '<td><span class="label label-info">W</span></td>').replace('<td><b>K</b></td>', '<td><span class="label label-success">K</span></td>').replace('<td><b>D</b></td>', '<td><span class="label label-warning">D</span></td>').replace('<td><b>C</b></td>', '<td><span class="label label-danger">C</span></td>').replace('<td><b>L</b></td>', '<td><span class="label label-orange">L</span></td>').replace('<td><b>G</b></td>', '<td><span class="label label-green">G</span></td>').replace('<td><b>I</b></td>', '<td><span class="label label-brown">I</span></td>')
+    table = ''.join(response[42:len(response)-23]).replace('<td>.</td>', '<td><span class="label label-primary">.</span></td>').replace('<td>_</td>', '<td><span class="label label-inverse">_</span></td>').replace('<td><b>S</b></td>', '<td><span class="label label-default">S</span></td>').replace('<td><b>R</b></td>', '<td><span class="label label-violet">R</span></td>').replace('<td><b>W</b></td>', '<td><span class="label label-info">W</span></td>').replace('<td><b>K</b></td>', '<td><span class="label label-success">K</span></td>').replace('<td><b>D</b></td>', '<td><span class="label label-warning">D</span></td>').replace('<td><b>C</b></td>', '<td><span class="label label-danger">C</span></td>').replace('<td><b>L</b></td>', '<td><span class="label label-orange">L</span></td>').replace('<td><b>G</b></td>', '<td><span class="label label-green">G</span></td>').replace('<td><b>I</b></td>', '<td><span class="label label-brown">I</span></td>')
     ssl = response[len(response)-6].replace('<b>', '').replace('</b>', '').replace('cache type: ', '').replace(', shared memory: ', '<br>').replace(' bytes, current entries: ', '<br>').replace('subcaches: ', '').replace(', indexes per subcache: ', '<br>').replace('index usage: ', '').replace(', cache usage: ', '<br>').split('<br>')
     ssl_subcache = '%s of %s' % (ssl[6], ssl[3])
     ssl_index = '%s of %s' % (ssl[5], ssl[4])
@@ -408,6 +408,15 @@ def git_stats(request):
             return results
     else:
         return HttpResponseBadRequest("Invalid query.")
+
+
+def ssl_stats(request):
+    subprocess.check_call('echo | openssl s_client -connect daslab.stanford.edu:443 | openssl x509 -noout -enddate > %s' % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    exp_date = subprocess.Popen('sed %s %s' % ("'s/^notAfter\=//g'", os.path.join(MEDIA_ROOT, 'data/temp.txt')), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+    subprocess.check_call('rm %s' % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+    exp_date = datetime.strptime(exp_date.replace('notAfter=', ''), "%b %d %H:%M:%S %Y %Z").strftime('%Y-%m-%d %H:%M:%S')
+    return simplejson.dumps({'exp_date':exp_date})
 
 
 def export_citation(request):

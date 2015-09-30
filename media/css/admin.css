@@ -41,25 +41,25 @@ body {
 }
 
 .bgimg {
-  background-image: url("/site_media/images/group/bg_rna.png");
+  background-image: url("/site_media/images/bg_rna.png");
   background-repeat: no-repeat;
   background-position: right 200px bottom 25px;
   background-size: 30%;
 }
 .bgimg-lg {
-  background-image: url("/site_media/images/group/bg_rna.png");
+  background-image: url("/site_media/images/bg_rna.png");
   background-repeat: no-repeat;
   background-position: right 25px bottom 50px;
   background-size: 90%;
 }
 .bgimg2 {
-  background-image: url("/site_media/images/group/bg_rna_2.png");
+  background-image: url("/site_media/images/bg_rna_2.png");
   background-repeat: no-repeat;
   background-position: right 25px bottom 25px;
   background-size: 50%;
 }
 .bgimg2-lg {
-  background-image: url("/site_media/images/group/bg_rna_2.png");
+  background-image: url("/site_media/images/bg_rna_2.png");
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: 75%;
@@ -312,7 +312,7 @@ h1.section>span.num {
   opacity: 0.5;
   background-color: #fff;
   background-repeat: no-repeat;
-  background-image: url("/site_media/images/group/fg_load_2.gif");  
+  background-image: url("/site_media/images/fg_load.gif");  
   background-position: center;
 }
 
@@ -329,7 +329,7 @@ h1.section>span.num {
   opacity: 0.5;
   background-color: #fff;
   background-repeat: no-repeat;
-  background-image: url("/site_media/images/group/fg_load_2.gif");  
+  background-image: url("/site_media/images/fg_load.gif");  
 }
 
 .modal-dialog { 

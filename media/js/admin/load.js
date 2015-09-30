@@ -30,7 +30,7 @@ xmlhttp.onreadystatechange = function() {
 			document.write('<script type="text/javascript" src="/site_media/js/bootstrap.min.js"><\/script>');
 			document.write('<link rel="stylesheet" href="/site_media/css/bootstrap.min.css" \/>');
 		}
-		document.write('<link rel="stylesheet" href="/site_media/css/theme.css" \/>');
+		document.write('<link rel="stylesheet" href="/site_media/css/admin.css" \/>');
 		document.write('<link rel="stylesheet" href="/site_media/css/palette.css" \>');
 		document.write('<link rel="shortcut icon" href="/site_media/images/icon_daslab.png" \/>');
 		document.write('<link rel="icon" type-"image/gif" href="/site_media/images/icon_daslab.png" \/>');

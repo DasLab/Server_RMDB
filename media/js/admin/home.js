@@ -10,7 +10,7 @@ $(document).ready(function() {
   $("lspan").remove();
 
   $.ajax({
-        url : "/get_ver",
+        url : "/admin/get_ver",
         dataType: "text",
         success : function (data) {
         	var txt = data.split(/\t/);
@@ -102,22 +102,6 @@ $(document).ready(function() {
             $("#id_ssl_exp").html('<span class="label label-inverse">' + data.exp_date + '</span> (UTC)');
         }
     });
-
-   $.ajax({
-        url : "/admin/dash_dash",
-        dataType: "json",
-        success : function (data) {
-            $("#id_dash_aws").html(data.t_aws);
-            $("#id_dash_ga").html(data.t_ga);
-            $("#id_dash_git").html(data.t_git);
-            $("#id_dash_slack").html(data.t_slack);
-            $("#id_dash_dropbox").html(data.t_dropbox);
-            $("#id_dash_cal").html(data.t_cal);
-            $("#id_dash_sch").html(data.t_sch);
-        }
-    });
-
-
 
 });
 

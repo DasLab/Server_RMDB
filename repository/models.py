@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django import forms
+from django.utils.html import format_html
 
 from repository.settings import *
 
@@ -148,18 +149,25 @@ class RMDBJSONEncoder(JSONEncoder):
 
 
 class NewsItem(models.Model):
-    title = models.TextField()
-    reference = models.CharField(max_length=400, blank=True)
-    date = models.DateField()
+    date = models.DateField(verbose_name='Display Date')
+    content = models.TextField(blank=True, verbose_name='Main Text Content', help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;HTML supported.')
+
+    class Meta():
+        verbose_name = 'News Item'
+        verbose_name_plural = 'News Items'
 
 
 class Publication(models.Model):
-    title = models.TextField()
-    authors = models.TextField()
-    pubmed_id = models.CharField(max_length=30)
+    title = models.TextField(help_text='<i class="icon-bullhorn"></i> Do <span class="label label-danger">NOT</span> use "CamelCase / InterCaps / CapWords". Only capitalize the first word.')
+    authors = models.TextField(help_text='<span class="glyphicon glyphicon-user"></span>&nbsp; Follow the format seen on the website: <span class="label label-inverse">Das, R.,</span>.')
+    pubmed_id = models.CharField(max_length=30, verbose_name='PubMed ID')
 
     def __unicode__(self):
         return u'%s;PMID:%s' % (self.authors, self.pubmed_id)
+
+    class Meta():
+        verbose_name = 'Publication Entry'
+        verbose_name_plural = 'Publication Entries'
 
 
 class Organism(models.Model):
@@ -324,4 +332,60 @@ class PredictionForm(forms.Form):
     executable = forms.ChoiceField(choices=EXEC_TYPE_CHOICES)
     refstruct = forms.CharField(widget=forms.Textarea)
     nbootstraps = forms.CharField(initial='100')
+
+
+############################################################################################################################################
+
+
+WEEKDAY_CHOICES = (
+    ('0', 'Sunday'),
+    ('1', 'Monday'),
+    ('2', 'Tuesday'),
+    ('3', 'Wednesday'),
+    ('4', 'Thursday'),
+    ('5', 'Friday'),
+    ('6', 'Saturday'),
+)
+
+class BackupForm(forms.Form):
+    # is_backup = forms.BooleanField()
+    # is_upload = forms.BooleanField()
+    time_backup = forms.TimeField(required=True)
+    time_upload = forms.TimeField(required=True)
+    day_backup = forms.ChoiceField(choices=WEEKDAY_CHOICES)
+    day_upload = forms.ChoiceField(choices=WEEKDAY_CHOICES)
+    keep = forms.IntegerField()
+
+
+TEXT_TYPE_CHOICES = (
+    (0, ' Plain Text'),
+    (1, ' Word Document'),
+)
+
+SORT_ORDER_CHOICES = (
+    (0, ' Year Ascending'),
+    (1, ' Year Descending'),
+)
+
+NUMBER_ORDER_CHOICES = (
+    (0, ' Incremental'),
+    (1, ' Decremental'),
+)
+
+class ExportForm(forms.Form):
+    text_type = forms.ChoiceField(choices=TEXT_TYPE_CHOICES, widget=forms.RadioSelect(), initial=1)
+    year_start = forms.IntegerField(initial=1996)
+    sort_order = forms.ChoiceField(choices=SORT_ORDER_CHOICES, widget=forms.RadioSelect(), initial=1)
+    number_order = forms.ChoiceField(choices=NUMBER_ORDER_CHOICES, widget=forms.RadioSelect(), initial=1)
+
+    bold_author = forms.BooleanField(initial=True)
+    bold_year = forms.BooleanField(initial=True)
+    underline_title = forms.BooleanField(initial=True)
+    italic_journal = forms.BooleanField(initial=True)
+    bold_volume = forms.BooleanField(initial=True)
+
+    order_number = forms.BooleanField(initial=True)
+    quote_title = forms.BooleanField(initial=True)
+    double_space = forms.BooleanField(initial=False)
+    include_preprint = forms.BooleanField(initial=True)
 

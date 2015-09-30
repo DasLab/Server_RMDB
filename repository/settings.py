@@ -9,17 +9,29 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import environ
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-MEDIA_ROOT = BASE_DIR
-# MEDIA_ROOT = os.path.join(os.path.abspath("."))
+import simplejson
 
 from django.utils.translation import ugettext_lazy as _
+from django.contrib import messages
 
-from t47_dev import *
+from config.t47_dev import *
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = T47_DEV
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = DEBUG = T47_DEV
+
+root = environ.Path(os.path.dirname(os.path.dirname(__file__)))
+MEDIA_ROOT = root()
+# MEDIA_ROOT = os.path.join(os.path.abspath("."))
+FILEMANAGER_STATIC_ROOT = root('media/admin') + '/'
+
+env = environ.Env(DEBUG=DEBUG,) # set default values and casting
+environ.Env.read_env('%s/config/env.conf' % MEDIA_ROOT) # reading .env 
+
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env('SECRET_KEY')
+
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -27,35 +39,101 @@ TEMPLATE_DEBUG = DEBUG
 MEDIA_URL = ''
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-STATIC_ROOT = MEDIA_ROOT + '/media/'
 STATIC_URL = '/static/'
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+STATIC_ROOT = '' # MEDIA_ROOT + '/media/'
+STATICFILES_DIRS = (root('data'), root('media'))
+
+env_oauth = simplejson.load(open('%s/config/oauth.conf' % MEDIA_ROOT))
+AWS = env_oauth['AWS']
+GA = env_oauth['GA']
+DRIVE = env_oauth['DRIVE']
+GIT = env_oauth['GIT']
+APACHE_ROOT = '/var/www'
+
 
 ADMINS = (
     ('Siqi Tian', 't47@stanford.edu'),
     # ('Pablo Cordero', 'tsuname@stanford.edu'),
 )
-MANAGERS = ADMINS
 EMAIL_NOTIFY = ADMINS[0][1]
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'daslabsu@gmail.com'
-EMAIL_HOST_PASSWORD = 'l4bd4s2014'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_SUBJECT_PREFIX = '[Django] {rmdb.stanford.edu}'
+(EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, EMAIL_USE_TLS, EMAIL_PORT, EMAIL_HOST) = [v for k, v in env.email_url().items() if k in ['EMAIL_HOST_PASSWORD', 'EMAIL_HOST_USER', 'EMAIL_USE_TLS', 'EMAIL_PORT', 'EMAIL_HOST']]
+EMAIL_SUBJECT_PREFIX = '[Django] {daslab.stanford.edu}'
 
-ALLOWED_HOSTS = ['*']
+ROOT_URLCONF = 'repository.urls'
+WSGI_APPLICATION = 'repository.wsgi.application'
+
+# Database
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+DATABASES = {
+    'default': env.db_url(),
+}
+LOGIN_URL = '/login/'
+
+# Internationalization
+# https://docs.djangoproject.com/en/1.7/topics/i18n/
+TIME_ZONE = 'America/Los_Angeles'
+LANGUAGE_CODE = 'en-us'
+LANGUAGES = (
+    ('en', _('English')),
+)
+SITE_ID = 1
+
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home/media/media.lawrence.com/"
+from repository.path import *
+PATH = SYS_PATH()
+
+
+env_cron = simplejson.load(open('%s/config/cron.conf' % MEDIA_ROOT))
+#     os.getlogin()
+CRONJOBS = env_cron['CRONJOBS'][0:2]
+CRONTAB_LOCK_JOBS = env_cron['CRONTAB_LOCK_JOBS']
+KEEP_BACKUP = env_cron['KEEP_BACKUP']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django_crontab.crontab': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
+
+class ExceptionUserInfoMiddleware(object):
+    def process_exception(self, request, exception):
+        try:
+            if request.user.is_authenticated():
+                request.META['USERNAME'] = str(request.user.username)
+                request.META['USER_EMAIL'] = str(request.user.email)
+        except:
+            pass
+
 
 # Application definition
 INSTALLED_APPS = (
-    'django.contrib.admin',
+    'django_crontab',
+    'filemanager',
+    'adminplus',
+    'suit',
+    # 'django.contrib.admin',
+    'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.sites',
     'django.contrib.staticfiles',
-    'django.contrib.flatpages',
     'django.contrib.humanize',
 
     'repository',
@@ -78,6 +156,7 @@ CMS_TEMPLATES = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'repository.settings.ExceptionUserInfoMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,9 +164,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 # List of callables that know how to import templates from various sources.
@@ -97,88 +174,34 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 TEMPLATE_DIRS = (
-    MEDIA_ROOT,
+    root('media'),
+    root(),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
 
-ROOT_URLCONF = 'repository.urls'
-WSGI_APPLICATION = 'repository.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'rmdb',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'beckman',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
+SUIT_CONFIG = {
+    # header
+    'ADMIN_NAME': 'RMDB',
+    'HEADER_DATE_FORMAT': 'F d, Y (l)',
+    'HEADER_TIME_FORMAT': 'h:i a (e)',
+
+    # forms
+    'SHOW_REQUIRED_ASTERISK': True,  # Default True
+    'CONFIRM_UNSAVED_CHANGES': True, # Default True
+
+    # menu
+    # 'SEARCH_URL': '/admin/auth/user/',
+    'MENU_OPEN_FIRST_CHILD': True, # Default True
+
+    # misc
+    'LIST_PER_PAGE': 25
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
-TIME_ZONE = 'America/Los_Angeles'
-LANGUAGE_CODE = 'en-us'
-LANGUAGES = (
-    ('en', _('English')),
-)
-SITE_ID = 1
 
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/"
-
-class SYS_PATH:
-    def __init__(self):
-        self.HTML_PATH = {
-            'index': MEDIA_ROOT + '/media/html/index.html',
-            'browse': MEDIA_ROOT + '/media/html/browse.html',
-            'detail': MEDIA_ROOT + '/media/html/detail.html',
-
-            'about': MEDIA_ROOT + '/media/html/about.html',
-            'license': MEDIA_ROOT + '/media/html/license.html',
-            'history': MEDIA_ROOT + '/media/html/history.html',
-
-            'specs': MEDIA_ROOT + '/media/html/specs.html',
-            'validate': MEDIA_ROOT + '/media/html/validate.html',
-            'upload': MEDIA_ROOT + '/media/html/submit.html',
-
-            'predict': MEDIA_ROOT + '/media/html/predict.html',
-            'predict_res': MEDIA_ROOT + '/media/html/predict_results.html',
-            'repos': MEDIA_ROOT + '/media/html/tools.html',
-            'tools_license': MEDIA_ROOT + '/media/html/tools_license.html',
-            'tools_download': MEDIA_ROOT + '/media/html/tools_download.html',
-            'tutorial': MEDIA_ROOT + '/media/html/tutorial_xxx.html',
-
-            'search_res': MEDIA_ROOT + '/media/html/search_results.html',
-            'adv_search': MEDIA_ROOT + '/media/html/search_advanced.html',
-            'adv_search_res': MEDIA_ROOT + '/media/html/search_advanced_results.html',
-
-            'register': MEDIA_ROOT + '/media/html/register.html',
-
-            '404': MEDIA_ROOT + '/media/html/_404.html',
-            '500': MEDIA_ROOT + '/media/html/_500.html',
-        }
-
-        self.DATA_DIR = {
-            'CONSTRUCT_IMG_DIR': MEDIA_ROOT + '/data/construct_img/',
-            'CONSTRUCT_THMB_DIR': MEDIA_ROOT + '/data/thumbs/',
-            'RDAT_FILE_DIR': MEDIA_ROOT + '/data/files/',
-            'ISATAB_FILE_DIR': MEDIA_ROOT + '/data/files/',
-            'TMPDIR': MEDIA_ROOT + '/temp/',
-
-        }
-PATH = SYS_PATH()
-
-
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = '!9g7%50idfw-=(ii6mr3kmt@a*&-b%32q^!a!tkrwt%%+p^iu#'
-SECRET_KEY = 'xas()lrqak#89v7k+di9!infy&+1+jk0-zzzr__y#0agy^c1n@'
-
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

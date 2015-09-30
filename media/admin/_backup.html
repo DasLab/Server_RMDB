@@ -1,0 +1,313 @@
+{% extends "admin/base.html" %}
+{% load i18n admin_static %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block content %}
+  <div id="content-main" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <h4 class="italic-title"><span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;{% trans 'Directory Status' %}</h4>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <a href="/admin/backup_stat" class="btn btn-warning pull-right"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;Refresh</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <table class="table table-hover">
+          <thead>
+            <tr class="active">
+              <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"></th>
+              <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;# of Files</th>
+              <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><span class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;News Items</td><td id="id_news_n"></td><td id="id_news_s"></td>
+            </tr>
+            <tr>
+              <td><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Members</td><td id="id_member_n"></td><td id="id_member_s"></td>
+            </tr>
+            <tr>
+              <td><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;Publication PDFs</td><td id="id_pub_n"></td><td id="id_pub_s"></td>
+            </tr>
+            <tr>
+              <td><span class="glyphicon glyphicon-retweet"></span>&nbsp;&nbsp;Rotation Students</td><td id="id_rot_n"></td><td id="id_rot_s"></td>
+            </tr>
+            <tr>
+              <td><span class="glyphicon glyphicon-cd"></span>&nbsp;&nbsp;Archived Presentations</td><td id="id_spe_n"></td><td id="id_spe_s"></td>
+            </tr>
+            <tr><td colspan="3" style="padding: 0px;"></td></tr>
+          </tbody>
+        </table>
+
+        <h4 class="italic-title"><span class="glyphicon glyphicon-hdd"></span>&nbsp;&nbsp;{% trans 'Local Backup' %}</h4>
+        <table class="table table-hover">
+          <thead>
+            <tr class="active">
+              <th class="col-lg-9 col-md-9 col-sm-9 col-xs-9"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;File</th>
+              <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><span class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="id_mysql_p"><span class="glyphicon glyphicon-oil"></span>&nbsp;&nbsp;MySQL Database</td><td id="id_mysql_s"></td>
+            </tr>
+            <tr>
+              <td id="id_static_p"><span class="glyphicon glyphicon-adjust"></span>&nbsp;&nbsp;Static Files</td><td id="id_static_s"></td>
+            </tr>
+            <tr>
+              <td id="id_apache_p"><span class="glyphicon glyphicon-grain"></span>&nbsp;&nbsp;Apache Setting</td><td id="id_apache_s"></td>
+            </tr>
+            <tr><td colspan="2" style="padding: 0px;"></td></tr>
+          </tbody>
+        </table>
+
+        <h4 class="italic-title">
+          <img src="/site_media/images/icons/gdrive.png" height="17px" />&nbsp;&nbsp;{% trans 'Google Drive' %}
+          <span class="pull-right">
+            <a href="http://drive.google.com" target="_blank" class="btn btn-warning">
+              <img src="/site_media/images/icons/gdrive_o.png" height="14px" />&nbsp;&nbsp;Google Drive
+            </a>
+          </span>
+        </h4>
+        <p>The <u>{{email}}</u> account is used for sync.</p>
+        <table class="table table-hover">
+          <thead>
+            <tr class="active">
+              <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;File</th>
+              <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;Time</th>
+              <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2"><span class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;Size</th>
+            </tr>
+          </thead>
+          <tbody id="gdrive_list"></tbody>
+        </table>
+      </div>
+
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <br/>
+        <h4 class="italic-title"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;{% trans 'Settings' %}</h4>
+        <table class="table table-hover">
+          <thead>
+            <tr class="active">
+              <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"></th>
+              <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6"><span class="glyphicon glyphicon-fullscreen"></span>&nbsp;&nbsp;Size (Used | Available)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="glyphicon glyphicon-hdd"></span>&nbsp;&nbsp;Local Disk</td>
+              <td id="id_disk_space">
+                <div class="progress" style="margin-bottom: 0px;">
+                  <div class="progress-bar progress-bar-danger"></div>
+                  <div class="progress-bar progress-bar-success"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><img src="/site_media/images/icons/gdrive.png" height="14px" />&nbsp;&nbsp;Google Drive</td>
+              <td id="id_drive_space">
+                <div class="progress" style="margin-bottom: 0px;">
+                  <div class="progress-bar progress-bar-danger"></div>
+                  <div class="progress-bar progress-bar-success"></div>
+                </div>
+              </td>
+            </tr>
+            <tr><td colspan="2" style="padding: 0px;"></td></tr>
+          </tbody>
+        </table>
+
+        <div class="thumbnail" style="margin-bottom:0px;">
+          <form enctype="multipart/form-data" action="/admin/backup/" method="post">
+            {% csrf_token %}
+            <div class="form-group" style="padding:10px;margin-bottom:0px;">
+              <div class="well" style="margin-bottom:0px;">
+                <div class="alert alert-success" id="banner_backup">
+                  <label>
+                    <span class="glyphicon glyphicon-ok-sign" id="sign_backup"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;&nbsp;Weekly Backup
+                  </label>
+                </div>
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                      <label for="username" class="pull-right">
+                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                        &nbsp;&nbsp;On:
+                      </label>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                     {{form.time_backup}}
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                      <label for="username" class="pull-right">
+                        &nbsp;&nbsp;Every:
+                      </label>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                     {{form.day_backup}}
+                  </div>
+                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                </div>  
+                <br/>
+                <div class="row">
+                  <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs"></div>
+                  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                    <b>Note</b>: Time above is in <abbr title="">UTC</abbr>. Equivalent to:
+                    <br/>
+                    <span id="time_backup_pdt" class="label label-primary"></span>, <span id="day_backup_pdt" class="label label-inverse"></span> (PDT)
+                  </div>
+                  <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" style="padding:10px;margin-bottom:0px;">
+              <div class="well" style="margin-bottom:0px;">
+                <div class="alert alert-success" id="banner_sync">
+                  <label>
+                    <span class="glyphicon glyphicon-ok-sign" id="sign_sync"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-floppy-open"></span>&nbsp;&nbsp;Sync to Google Drive
+                  </label>
+                </div>
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                      <label for="username" class="pull-right">
+                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                        &nbsp;&nbsp;On:
+                      </label>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                     {{form.time_upload}}
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                      <label for="username" class="pull-right">
+                        &nbsp;&nbsp;Every:
+                      </label>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                     {{form.day_upload}}
+                  </div>
+                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                </div>  
+                <br/>
+                <div class="row">
+                  <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs"></div>
+                  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                    <b>Note</b>: Time above is in <abbr title="">UTC</abbr>. Equivalent to:
+                    <br/>
+                    <span id="time_upload_pdt" class="label label-primary"></span>, <span id="day_upload_pdt" class="label label-inverse"></span> (PDT)
+                  </div>
+                  <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs"></div>
+                </div>
+                <br/>
+                <div class="row">
+                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                      <label for="username" class="pull-right">
+                        <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
+                        &nbsp;&nbsp;Keep on Google Drive:
+                      </label>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                     {{form.keep}}
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"> Days.</div>
+                </div>
+
+              </div>
+            </div>
+            <div class="row">
+              <span class="pull-right">
+                <button type="submit" class="btn btn-info"/><span class="glyphicon glyphicon-ok-circle"></span>&nbsp;&nbsp;Save</button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-default" onclick="location.href='/admin/backup'"><span class="glyphicon glyphicon-ban-circle"></span>&nbsp;&nbsp;Reset</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+            </div>
+            <br/>
+
+          </form>
+        </div>
+
+        <br/>
+        <div class="well">
+          <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <p><b>Note</b>: This may take 1-2 minutes to complete.</p>
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+              <span class="pull-right">
+                <a href="/admin/backup_now" class="btn btn-danger"/><span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;&nbsp;Backup Now</a>
+                &nbsp;&nbsp;
+                <a href="/admin/upload_now" class="btn btn-blue"><span class="glyphicon glyphicon-floppy-open"></span>&nbsp;&nbsp;Upload Now</a>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalStat" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content panel-success">
+        <div class="modal-header panel-heading">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="stat_label">
+            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+              &nbsp;&nbsp;Change of Settings
+          </h4>
+        </div>
+        <div class="modal-body panel-body">
+          <h2><span class="label label-danger">NEW SETTINGS APPLIED</span></h2>
+          <br/>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <td><span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;&nbsp;Weekly Backup</td>
+                  <td id="modal_backup"></td>
+                </tr>
+                <tr>
+                  <td><span class="glyphicon glyphicon-floppy-open"></span>&nbsp;&nbsp;Sync to Google Drive</td>
+                  <td id="modal_upload"></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td id="modal_keep"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+
+{% block extrajs %}
+  <script type="text/javascript" src="/site_media/js/admin/backup.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("ul.breadcrumb").append('<li class="active"><span style="color: #000;" class="glyphicon glyphicon-floppy-open"></span>&nbsp;&nbsp;Backup Schedule</li>');
+
+      $("#id_keep").val({{keep}});
+      $("#modal_keep").html('Keep <span class="label label-orange">' + $("#id_keep").val() + '</span> Days');
+
+      if ({{flag}}) {$("#modal").modal("show");}
+    });
+  </script>
+{% endblock %}
+
