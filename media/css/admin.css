@@ -308,11 +308,11 @@ h1.section>span.num {
 
 .place_holder {
   height: 200px;
-  background-size: 96px;
+  background-size: 64px;
   opacity: 0.5;
   background-color: #fff;
   background-repeat: no-repeat;
-  background-image: url("/site_media/images/fg_load.gif");  
+  background-image: url("/site_media/images/fg_load_3.gif");  
   background-position: center;
 }
 
@@ -325,7 +325,7 @@ h1.section>span.num {
   height:     100%;
   width:      100%;
   background-position: center center;
-  background-size: 192px;
+  background-size: 128px;
   opacity: 0.5;
   background-color: #fff;
   background-repeat: no-repeat;

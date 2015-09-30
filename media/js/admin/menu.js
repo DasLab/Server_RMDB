@@ -34,7 +34,7 @@ function navbar_collapse() {
           function(){ $(this).addClass("open"); },
           function(){ $(this).removeClass("open"); }
         );
-        $("#nav_logo").css("width", parseInt($("#nav_logo").css("width")) + 250 - parseInt($("#nav_external").position().left));
+        $("#nav_logo").css("width", $("#sidebar-wrapper").css("width"));
     }
 }
 

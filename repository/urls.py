@@ -84,7 +84,7 @@ urlpatterns = [
     url(r'^site_data/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/data'}),
     url(r'^site_src/(?P<path>.*)$', 'django.views.static.serve', {'document_root': MEDIA_ROOT+'/misc'}),
 
-    url(r'^admin/browse/' + path_end, views.browse),
+    url(r'^admin/browse/' + path_end, views.admin_browse),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^(?:robots.txt)?$', 'django.views.static.serve', kwargs={'path': 'robots.txt', 'document_root': MEDIA_ROOT}),
 ]

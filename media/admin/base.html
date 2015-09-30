@@ -87,16 +87,16 @@
               <ul class="dropdown-menu dropdown-menu-right nav nav-pills nav-stacked" role="menu">
                 <li>
                   <a><span class="glyphicon glyphicon-calendar"></span>&nbsp;
-                  <span class="date" id="date"></span>&nbsp;&nbsp;</a>
+                  <span class="label label-primary" id="date"></span>&nbsp;&nbsp;</a>
                 </li>
                 <li>
                   <a><span class="glyphicon glyphicon-time"></span>&nbsp;
-                  <span class="time" id="clock"></span>&nbsp;&nbsp;</a>
+                  <span class="label label-primary" id="clock"></span>&nbsp;&nbsp;</a>
                 </li>
                 <li class="divider"></li>
                 <li>
-                  <a><span class="glyphicon glyphicon-globe"></span>&nbsp;UTC:&nbsp;
-                  <span class="time" id="utc"></span>&nbsp;&nbsp;</a>
+                  <a><span class="glyphicon glyphicon-globe"></span>&nbsp;<span class="label label-dark-green">UTC</span>&nbsp;
+                  <span class="label label-inverse" id="utc"></span>&nbsp;&nbsp;</a>
                 </li>
               </ul>
             </li>
@@ -297,11 +297,7 @@
 
     $(document).ready(function(){
       $("#wait").fadeOut(250);
-      $("#footer").load("/site_media/html/_footer.html", function () {
-        var today = new Date();
-        $("#cp_year").text(today.getFullYear());
-      });
-
+      $("#footer").load("/site_media/html/_footer.html");
     });
 
     $(window).on("beforeunload", function () {

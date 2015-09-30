@@ -316,20 +316,11 @@ def ga_stats():
 
 
 def git_stats(request):
-    # gdrive_dir = 'echo'
-    # if not DEBUG: gdrive_dir = 'cd %s' % APACHE_ROOT
-    # try:
-    #     subprocess.check_call('%s && gitinspector -wHlmrT %s -F html > %s/data/stat_git.html' % (gdrive_dir, MEDIA_ROOT, MEDIA_ROOT), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    # except subprocess.CalledProcessError:
-    #     print "    \033[41mERROR\033[0m: Failed to generate \033[94mgitinspector\033[0m stats."
-    #     print traceback.format_exc()
-    #     raise Exception('Error with generating gitinsepctor stats.')
-
     if request.GET.has_key('qs') and request.GET.has_key('tqx'):
         qs = request.GET.get('qs')
         req_id = request.GET.get('tqx').replace('reqId:', '')
         gh = Github(login_or_token=GIT["ACCESS_TOKEN"])
-        repo_name = 'DasLab/Server_DasLab'
+        repo_name = 'DasLab/Server_RMDB'
         repo = gh.get_repo(repo_name)
 
         if qs in ['init', 'num']:

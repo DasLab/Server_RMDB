@@ -184,7 +184,7 @@ TEMPLATE_DIRS = (
 
 SUIT_CONFIG = {
     # header
-    'ADMIN_NAME': 'RMDB',
+    'ADMIN_NAME': 'RNA Mappng Database',
     'HEADER_DATE_FORMAT': 'F d, Y (l)',
     'HEADER_TIME_FORMAT': 'h:i a (e)',
 

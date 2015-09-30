@@ -29,6 +29,8 @@ import time
 import traceback
 # from sys import stderr
 
+from filemanager import FileManager
+
 
 def index(request):
     return render_to_response(PATH.HTML_PATH['index'], {}, context_instance=RequestContext(request))
@@ -526,6 +528,10 @@ def url_redirect(request, path):
         path = path + '?searchtext=' + request.GET.get('searchtext')
     return HttpResponsePermanentRedirect("/%s" % path)
 
+
+def admin_browse(request, path):
+    fm = FileManager(MEDIA_ROOT + '/data')
+    return fm.render(request, path)
 
 def get_admin(request):
     return HttpResponse(simplejson.dumps({'email':EMAIL_NOTIFY}), content_type='application/json')
