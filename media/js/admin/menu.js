@@ -85,60 +85,46 @@ $(document).ready(function () {
     	$("#nav_sys_lg").addClass("active");
     	$("ul.breadcrumb").css("border-bottom", "5px solid #ff69bc");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;<a href="">System</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/news") != -1) {
+
+    } else if ($(location).attr("href").indexOf("admin/repository/news") != -1) {
     	$("#nav_news").addClass("active");
     	$("#nav_global").addClass("active");
     	$("#nav_global_lg").addClass("active");
     	$("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;<a href="">Global Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-	} else if ($(location).attr("href").indexOf("admin/src/member") != -1) {
-    	$("#nav_member").addClass("active");
+    } else if ($(location).attr("href").indexOf("admin/repository/rmdbentry") != -1) {
+        $("#nav_ent").addClass("active");
+        $("#nav_global").addClass("active");
+        $("#nav_global_lg").addClass("active");
+        $("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;<a href="">Global Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+    } else if ($(location).attr("href").indexOf("admin/repository/organism") != -1) {
+    	$("#nav_org").addClass("active");
     	$("#nav_global").addClass("active");
     	$("#nav_global_lg").addClass("active");
     	$("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;<a href="">Global Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/publication") != -1) {
+
+        if ($(location).attr("pathname") != "/admin/repository/organism/" && $(location).attr("pathname") != "/admin/repository/organism") {
+            $("ul.breadcrumb > li.active").html("Organism Object");
+        }
+    } else if ($(location).attr("href").indexOf("admin/repository/publication") != -1) {
     	$("#nav_pub").addClass("active");
     	$("#nav_global").addClass("active");
     	$("#nav_global_lg").addClass("active");
     	$("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;<a href="">Global Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-	} else if ($(location).attr("href").indexOf("admin/export") != -1) {
-    	$("#nav_export").addClass("active");
-    	$("#nav_global").addClass("active");
-    	$("#nav_global_lg").addClass("active");
-    	$("ul.breadcrumb").css("border-bottom", "5px solid #008080");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;<a href="">Global Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+        if ($(location).attr("pathname") != "/admin/repository/publication/" && $(location).attr("pathname") != "/admin/repository/publication") {
+            $("ul.breadcrumb > li.active").html("Publication Object");
+        }
+
 	} else if ($(location).attr("href").indexOf("admin/auth/user") != -1) {
     	$("#nav_auth").addClass("active");
     	$("#nav_internal").addClass("active");
     	$("#nav_internal_lg").addClass("active");
     	$("ul.breadcrumb").css("border-bottom", "5px solid #ff912e");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Internal Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-	} else if ($(location).attr("href").indexOf("admin/src/flashslide") != -1) {
-    	$("#nav_flash").addClass("active");
-    	$("#nav_internal").addClass("active");
-    	$("#nav_internal_lg").addClass("active");
-    	$("ul.breadcrumb").css("border-bottom", "5px solid #eeb211");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Internal Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
- 	} else if ($(location).attr("href").indexOf("admin/src/eternayoutube") != -1) {
-    	$("#nav_eterna").addClass("active");
-    	$("#nav_internal").addClass("active");
-    	$("#nav_internal_lg").addClass("active");
-    	$("ul.breadcrumb").css("border-bottom", "5px solid #eeb211");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Internal Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-	} else if ($(location).attr("href").indexOf("admin/src/rotationstudent") != -1) {
-    	$("#nav_rot").addClass("active");
-    	$("#nav_internal").addClass("active");
-    	$("#nav_internal_lg").addClass("active");
-    	$("ul.breadcrumb").css("border-bottom", "5px solid #eeb211");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Internal Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
- 	} else if ($(location).attr("href").indexOf("admin/src/presentation") != -1) {
-    	$("#nav_archive").addClass("active");
-    	$("#nav_internal").addClass("active");
-    	$("#nav_internal_lg").addClass("active");
-    	$("ul.breadcrumb").css("border-bottom", "5px solid #eeb211");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Internal Site</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+
  	} else if ($(location).attr("href").indexOf("admin/doc") != -1) {
     	$("#nav_doc").addClass("active");
     	$("#nav_doc_lg").addClass("active");

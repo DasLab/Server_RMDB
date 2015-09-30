@@ -161,30 +161,27 @@ class Publication(models.Model):
     title = models.TextField(help_text='<i class="icon-bullhorn"></i> Do <span class="label label-danger">NOT</span> use "CamelCase / InterCaps / CapWords". Only capitalize the first word.')
     authors = models.TextField(help_text='<span class="glyphicon glyphicon-user"></span>&nbsp; Follow the format seen on the website: <span class="label label-inverse">Das, R.,</span>.')
     pubmed_id = models.CharField(max_length=30, verbose_name='PubMed ID')
-
     def __unicode__(self):
         return u'%s;PMID:%s' % (self.authors, self.pubmed_id)
-
     class Meta():
         verbose_name = 'Publication Entry'
         verbose_name_plural = 'Publication Entries'
 
 
 class Organism(models.Model):
-    name = models.TextField()
-    taxonomy_id = models.TextField()
-
+    name = models.CharField(max_length=255, verbose_name='Organism Name', help_text='<i class="icon-bullhorn"></i> Use binomial nomenclature.')
+    taxonomy_id = models.IntegerField(verbose_name='Taxonomy ID', help_text='<i class="icon-credit-card"></i> Follow <a href="http://www.ncbi.nlm.nih.gov/taxonomy" targat="_blank">http://www.ncbi.nlm.nih.gov/taxonomy</a>.')
     def __unicode__(self):
         return u'%s;TAXID:%s' % (self.name, self.taxonomy_id)
 
 
 class RMDBEntry(models.Model):
-    rmdb_id = models.CharField(max_length=25, null=True)
+    rmdb_id = models.CharField(max_length=25, null=True, verbose_name='RMDB ID')
     creation_date = models.DateTimeField(auto_now=True, null=True)
-    version = models.IntegerField(default=1)
-    type = models.CharField(max_length=3, choices=ENTRY_TYPE_CHOICES)
+    version = models.IntegerField(default=1, verbose_name='Revision Status')
+    type = models.CharField(max_length=3, choices=ENTRY_TYPE_CHOICES, verbose_name='Experiment Type')
 
-    latest = models.CharField(max_length=25, null=True, blank=True)
+    latest = models.CharField(max_length=25, null=True, blank=True, verbose_name='Superceded By')
     revision_status = models.CharField(max_length=3, choices=ENTRY_STATUS_CHOICES)
 
     authors = models.TextField()
@@ -194,16 +191,16 @@ class RMDBEntry(models.Model):
     pdb_entries = models.CharField(max_length=255, null=True, blank=True)
 
     owner = models.ForeignKey(User, null=True)
-    datacount = models.IntegerField()
-    constructcount = models.IntegerField()
+    datacount = models.IntegerField(verbose_name='Data Count')
+    constructcount = models.IntegerField(verbose_name='Construct Count')
     file = models.FileField(upload_to=get_rdat_filename, blank=True, null=True)
 
-    has_traces = models.BooleanField(default=True)
-    from_eterna = models.BooleanField(default=False)
+    has_traces = models.BooleanField(default=True, verbose_name='Contains TRACE Field')
+    from_eterna = models.BooleanField(default=False, verbose_name='Is EteRNA Dataset')
     organism = models.ForeignKey(Organism, null=True, blank=True)
 
     def short_description(self):
-        return self.description[:200]+'...'
+        return self.description[:100] + '...'
 
     @classmethod
     def get_current_version(self, rmdb_id):
@@ -250,16 +247,7 @@ class RMDBUser(models.Model):
     department = models.CharField(max_length=255)
 
 
-class UploadForm(forms.Form):
-    file = forms.FileField()
-    publication = forms.CharField(required=False)
-    pubmed_id = forms.CharField(required=False)
-    authors = forms.CharField(required=True)
-    description = forms.CharField(widget=forms.Textarea, required=False)
-    rmdb_id = forms.CharField(required=True)
-    type = forms.ChoiceField(choices=ENTRY_TYPE_CHOICES)
-    filetype = forms.ChoiceField(choices=FORMAT_TYPE_CHOICES)
-
+############################################################################################################################################
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(required=True, max_length=31)
@@ -270,6 +258,17 @@ class RegistrationForm(forms.Form):
     institution = forms.CharField(required=True, max_length=255)
     department = forms.CharField(required=True, max_length=255)
     email = forms.EmailField(required=True, max_length=255)
+
+
+class UploadForm(forms.Form):
+    file = forms.FileField()
+    publication = forms.CharField(required=False)
+    pubmed_id = forms.CharField(required=False)
+    authors = forms.CharField(required=True)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+    rmdb_id = forms.CharField(required=True)
+    type = forms.ChoiceField(choices=ENTRY_TYPE_CHOICES)
+    filetype = forms.ChoiceField(choices=FORMAT_TYPE_CHOICES)
 
 
 class ValidateForm(forms.Form):

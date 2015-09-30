@@ -6,7 +6,7 @@
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{% block title %}Das Lab Website Administration{% endblock %}</title>
+  <title>{% block title %}RNA Mapping Database Administration{% endblock %}</title>
   <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% endblock %}"/>
   {% block extrastyle %}{% endblock %}
   
@@ -24,6 +24,7 @@
   <script type="text/javascript" src="/site_media/js/suit/RelatedObjectLookups.js"></script>
   <script type="text/javascript" src="/site_media/js/suit/jquery.init.js"></script>
   <script type="text/javascript" src="/site_media/js/suit/actions.min.js"></script>
+  <script type="text/javascript" src="/site_media/admin/js/inlines.min.js"></script>
   <script type="text/javascript" src="/site_media/js/suit/DateTimeShortcuts.js"></script>
   {% block extratail %}{% endblock %}
 
@@ -52,7 +53,7 @@
           </li>
         </ul>
         <a class="navbar-brand" href="/admin" id="nav_logo">
-          &nbsp;&nbsp;{% block branding %}{{ 'ADMIN_NAME'|suit_conf }}{% endblock %}
+          &nbsp;&nbsp;{{ 'ADMIN_NAME'|suit_conf }}
         </a>
       </div>
 
@@ -198,15 +199,15 @@
         </li>
 
         <li id="nav_global_lg" class="nav-ul nav-ul-lg li-green">
-          <a href="/admin/src/news/" ><span class="lead glyphicon glyphicon-globe"></span></a>
+          <a href="/admin/src/newsitem/" ><span class="lead glyphicon glyphicon-globe"></span></a>
         </li>
         <li id="nav_global" class="nav-ul li-green">
-          <a href="/admin/src/news/"><span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;Global Site</a>
+          <a href="/admin/repository/newsitem/"><span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;Global Site</a>
           <ul class="nav-li-sub">
-            <li id="nav_news" class="nav-li"><span class="glyphicon glyphicon-picture nav-icon"></span><a href="/admin/src/news/">&nbsp;&nbsp;News Items</a></li>
-            <li id="nav_member" class="nav-li"><span class="glyphicon glyphicon-user nav-icon"></span><a href="/admin/src/member/">&nbsp;&nbsp;Member Management</a></li>
-            <li id="nav_pub" class="nav-li"><span class="glyphicon glyphicon-education nav-icon"></span><a href="/admin/src/publication/">&nbsp;&nbsp;Publication Entries</a></li>
-            <li id="nav_export" class="nav-li"><span class="glyphicon glyphicon-floppy-save nav-icon"></span><a href="/admin/export/">&nbsp;&nbsp;Publication Export</a></li>
+            <li id="nav_news" class="nav-li"><span class="glyphicon glyphicon-picture nav-icon"></span><a href="/admin/repository/newsitem/">&nbsp;&nbsp;News Items</a></li>
+            <li id="nav_ent" class="nav-li"><span class="glyphicon glyphicon-inbox nav-icon"></span><a href="/admin/repository/rmdbentry/">&nbsp;&nbsp;RMDB Entries</a></li>
+            <li id="nav_org" class="nav-li"><span class="glyphicon glyphicon-adjust nav-icon"></span><a href="/admin/repository/organism/">&nbsp;&nbsp;Organisms</a></li>
+            <li id="nav_pub" class="nav-li"><span class="glyphicon glyphicon-education nav-icon"></span><a href="/admin/repository/publication/">&nbsp;&nbsp;Publications</a></li>
           </ul>
         </li>
 
@@ -217,10 +218,6 @@
           <a href="/admin/auth/user/"><span class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;Internal Site</a>
           <ul class="nav-li-sub">
             <li id="nav_auth" class="nav-li"><span class="glyphicon glyphicon-lock nav-icon"></span><a href="/admin/auth/user/">&nbsp;&nbsp;User Autherization</a></li>
-            <li id="nav_flash" class="nav-li"><span class="glyphicon glyphicon-blackboard nav-icon"></span><a href="/admin/src/flashslide/">&nbsp;&nbsp;Flash Slides</a></li>
-            <li id="nav_eterna" class="nav-li"><span class="glyphicon glyphicon-facetime-video nav-icon"></span><a href="/admin/src/eternayoutube/">&nbsp;&nbsp;EteRNA Videos</a></li>
-            <li id="nav_rot" class="nav-li"><span class="glyphicon glyphicon-retweet nav-icon"></span><a href="/admin/src/rotationstudent/">&nbsp;&nbsp;Rotation Students</a></li>
-            <li id="nav_archive" class="nav-li"><span class="glyphicon glyphicon-cd nav-icon"></span><a href="/admin/src/presentation/">&nbsp;&nbsp;Archived Presentations</a></li>
           </ul>
         </li>
 

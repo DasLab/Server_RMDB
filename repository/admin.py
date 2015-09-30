@@ -32,23 +32,37 @@ class EntryAnnotationInLine(admin.TabularInline):
 
 class EntryAdmin(admin.ModelAdmin):
     inlines = [EntryAnnotationInLine, ConstructInLine]
-    list_display = ('id', 'rmdb_id', 'version', 'short_description', 'revision_status')
+    list_display = ('id', 'rmdb_id', 'version', 'revision_status', 'type', 'short_description', 'datacount', 'constructcount')
+    ordering = ('-id',)
+    fieldsets = [
+        (format_html('<span class="glyphicon glyphicon-book"></span>&nbsp;Entry'), {'fields': ['rmdb_id', ('revision_status', 'type'), ('version', 'latest'), 'authors', 'publication', 'description', 'comments', 'owner', ('has_traces', 'from_eterna'), ('datacount', 'constructcount'), 'file', ('organism', 'pdb_entries')]}),
+    ]
 
 class PublicationAdmin(admin.ModelAdmin):
-    list_display = ('pubmed_id', 'title', 'authors')
+    list_display = ('id', 'pubmed_id', 'authors', 'title')
+    ordering = ('-id',)
+    fieldsets = [
+        (format_html('<span class="glyphicon glyphicon-book"></span>&nbsp;Citation'), {'fields': ['pubmed_id', 'authors', 'title']}),
+    ]
 
 class OrganismAdmin(admin.ModelAdmin):
     list_display = ('taxonomy_id', 'name')
+    ordering = ('-taxonomy_id',)
+    fieldsets = [
+        (format_html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;Profile'), {'fields': ['taxonomy_id', 'name']}),
+    ]
 
 class NewsItemAdmin(admin.ModelAdmin):
-    list_display = ('date', 'title')
+    list_display = ('date', 'content')
+    ordering = ('-date',)
+    fieldsets = [
+        (format_html('<span class="glyphicon glyphicon-comment"></span>&nbsp;Contents'), {'fields': ['date', 'content']}),
+	]
 
 admin.site.register(RMDBEntry, EntryAdmin)
 admin.site.register(NewsItem, NewsItemAdmin)
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Organism, OrganismAdmin)
-
-
 
 
 
