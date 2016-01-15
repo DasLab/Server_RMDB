@@ -7,7 +7,6 @@ function navbar_collapse() {
         $("#nav_toggle").trigger("click");
         $("#nav_toggle").hide();
         $("#nav_external").unbind();
-        $("#nav_group").unbind();
         $("#nav_time").unbind();
         $("#nav_email").unbind();
         $("#nav_upload").unbind();
@@ -23,10 +22,6 @@ function navbar_collapse() {
         $("#nav_external").hover(
           function(){ $("#nav_external_text").fadeIn(250).siblings().css("color", "#ff912e"); },
           function(){ $("#nav_external_text").fadeOut(250).siblings().css("color", "#fff"); }
-        );
-        $("#nav_group").hover(
-          function(){ $("#nav_group_text").fadeIn(250).siblings().css("color", "#eeb211"); },
-          function(){ $("#nav_group_text").fadeOut(250).siblings().css("color", "#fff"); }
         );
 
         $(".dropdown-toggle").dropdown();
