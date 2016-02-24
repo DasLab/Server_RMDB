@@ -1,11 +1,7 @@
-(function(w,d,s,g,js,fs){
-    g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
-    js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
-    js.src='https://apis.google.com/js/platform.js';
-    fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
-}(window,document,'script'));
+google.load('visualization', '1', {packages: ['corechart']});
+google.setOnLoadCallback(drawDash);
+var gviz_handles = [];
 
-var gviz_handles = [], resize_flag = false;
 
 function readyHandler() {
     $(".place_holder").each(function() {
@@ -14,230 +10,11 @@ function readyHandler() {
 }
 
 
-function drawGA(id) {
-    new gapi.analytics.ViewSelector({ 'container': 'view-selector-container' }).execute();
-
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:sessions',
-            'dimensions': 'ga:dateHour',
-            'start-date': 'yesterday',
-            'end-date': 'today'
-        },
-        'chart': {
-            'container': 'chart_24h',
-            'type': 'LINE',
-            'options': {
-                'width': '100%',
-                'height': '25%',
-                'title': 'Last 24 Hours',
-                'colors': ['#c28fdd'],
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:sessions',
-            'dimensions': 'ga:date',
-            'start-date': '7daysAgo',
-            'end-date': 'today'
-        },
-        'chart': {
-            'container': 'chart_7d',
-            'type': 'LINE',
-            'options': {
-                'width': '100%',
-                'height': '25%',
-                'title': 'Last 7 Days',
-                'colors': ['#d86f5c'],
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:sessions',
-            'dimensions': 'ga:date',
-            'start-date': '30daysAgo',
-            'end-date': 'yesterday'
-        },
-        'chart': {
-            'container': 'chart_1m',
-            'type': 'LINE',
-            'options': {
-                'width': '100%',
-                'height': '25%',
-                'title': 'Last 30 Days',
-                'colors': ['#ff912e'],
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:sessions',
-            'dimensions': 'ga:date',
-            'start-date': '90daysAgo',
-            'end-date': 'yesterday'
-        },
-        'chart': {
-            'container': 'chart_3m',
-            'type': 'LINE',
-            'options': {
-                'width': '100%',
-                'height': '25%',
-                'title': 'Last 90 Days',
-                'colors': ['#29be92'],
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:sessions',
-            'dimensions': 'ga:country',
-            'start-date': '30daysAgo',
-            'end-date': 'yesterday'
-        },
-        'chart': {
-            'container': 'geo_session',
-            'type': 'GEO',
-            'options': {
-                'width': '100%',
-                'title': 'Sessions',
-                'colorAxis': {'colors': ['#ddf6f0','#5496d7']},
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:sessions',
-            'dimensions': 'ga:userType',
-            'start-date': '30daysAgo',
-            'end-date': 'yesterday'
-        },
-        'chart': {
-            'container': 'pie_session',
-            'type': 'PIE',
-            'options': {
-                'width': '100%',
-                'title': 'Sessions',
-                'legend': {'position': 'bottom'},
-                'colors': ['#50cc32', '#ff69bc'],
-                'pieHole': 0.33,
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:users',
-            'dimensions': 'ga:userType',
-            'start-date': '30daysAgo',
-            'end-date': 'yesterday'
-        },
-        'chart': {
-            'container': 'pie_user',
-            'type': 'PIE',
-            'options': {
-                'width': '100%',
-                'title': 'Visitors',
-                'legend': {'position': 'bottom'},
-                'colors': ['#3ed4e7', '#ff912e'],
-                'pieHole': 0.33,
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:users',
-            'dimensions': 'ga:browser',
-            'start-date': '30daysAgo',
-            'end-date': 'yesterday',
-            'filters': 'ga:browser=@Firefox,ga:browser=@Chrome,ga:browser=@Safari,ga:browser=@Internet Explorer',
-            'sort': 'ga:browser',
-            'max-results': 4,
-        },
-        'chart': {
-            'container': 'pie_browser',
-            'type': 'PIE',
-            'options': {
-                'width': '100%',
-                'title': 'Browser',
-                'legend': {'position': 'bottom', 'maxLines': 2},
-                'colors': ['#29be92', '#ff912e', '#5496d7', '#ff5c2b'],
-                'pieHole': 0.33,
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-    var chart = new gapi.analytics.googleCharts.DataChart({
-        'query': {
-            'ids': id,
-            'metrics': 'ga:pageviews',
-            'dimensions': 'ga:userType',
-            'start-date': '30daysAgo',
-            'end-date': 'yesterday',
-        },
-        'chart': {
-            'container': 'pie_pageview',
-            'type': 'PIE',
-            'options': {
-                'width': '100%',
-                'title': 'Page Views',
-                'legend': {'position': 'bottom'},
-                'colors': ['#8ee4cf', '#c28fdd'],
-                'pieHole': 0.33,
-                'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
-            }
-        }
-    });
-    chart.once('success', readyHandler).execute();
-    gviz_handles.push(chart);
-}
-
-
-gapi.analytics.ready(function() {
+function drawDash() {
     $.ajax({
-        url : "/admin/ga_admin",
+        url : "/admin/ga_stat/?qs=init&tqx=reqId%3A52",
         dataType: "json",
         success: function (data) {
-            gapi.analytics.auth.authorize({
-                'container': 'embed-api-auth-container',
-                'clientid': data.client_id,
-                'serverAuth': { 'access_token': data.access_token }
-            });
-            new gapi.analytics.ViewSelector({ 'container': 'view-selector-container' }).execute();
-
             $("#br").html(data.bounceRate + ' %').removeClass('place_holder');
             $("#br_prv").html(data.bounceRate_prev + ' %');
             $("#u").html(data.users).removeClass('place_holder');
@@ -250,8 +27,6 @@ gapi.analytics.ready(function() {
             $("#pvs_prv").html(data.pageviewsPerSession_prev);
             $("#pv").html(data.pageviews).removeClass('place_holder');
             $("#pv_prv").html(data.pageviews_prev);
-
-            drawGA('ga:' + data.id);
         },
         complete: function () {
             var green = "#50cc32", red = "#ff5c2b";
@@ -305,19 +80,206 @@ gapi.analytics.ready(function() {
             }
         }
     });
-});
 
+    var chart = new google.visualization.ChartWrapper({
+        'chartType': 'AreaChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=chart&sp=24h',
+        'containerId': 'chart_24h',
+        'options': {
+            'chartArea': {'width': '90%', 'left': '10%'},
+            'legend': {'position': 'none'},
+            'title': 'Last 24 Hours',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'vAxis': {
+                'title': 'Count (#)',
+                'titleTextStyle': {'bold': true},
+            },
+            'hAxis': {
+                'gridlines': {'count': -1},
+                'textStyle': {'italic': true}
+            },
+            'lineWidth': 3,
+            'pointSize': 5,
+            'colors': ['#c28fdd'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+    chart = new google.visualization.ChartWrapper({
+        'chartType': 'AreaChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=chart&sp=7d',
+        'containerId': 'chart_7d',
+        'options': {
+            'chartArea': {'width': '90%', 'left': '10%'},
+            'legend': {'position': 'none'},
+            'title': 'Last 7 Days',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'vAxis': {
+                'title': 'Count (#)',
+                'titleTextStyle': {'bold': true},
+            },
+            'hAxis': {
+                'gridlines': {'count': -1},
+                'textStyle': {'italic': true}
+            },
+            'lineWidth': 3,
+            'pointSize': 5,
+            'colors': ['#d86f5c'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+    chart = new google.visualization.ChartWrapper({
+        'chartType': 'AreaChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=chart&sp=1m',
+        'containerId': 'chart_1m',
+        'options': {
+            'chartArea': {'width': '90%', 'left': '10%'},
+            'legend': {'position': 'none'},
+            'title': 'Last 30 Days',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'vAxis': {
+                'title': 'Count (#)',
+                'titleTextStyle': {'bold': true},
+            },
+            'hAxis': {
+                'gridlines': {'count': -1},
+                'textStyle': {'italic': true}
+            },
+            'lineWidth': 3,
+            'pointSize': 5,
+            'colors': ['#ff912e'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+    chart = new google.visualization.ChartWrapper({
+        'chartType': 'AreaChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=chart&sp=3m',
+        'containerId': 'chart_3m',
+        'options': {
+            'chartArea': {'width': '90%', 'left': '10%'},
+            'legend': {'position': 'none'},
+            'title': 'Last 90 Days',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'vAxis': {
+                'title': 'Count (#)',
+                'titleTextStyle': {'bold': true},
+            },
+            'hAxis': {
+                'gridlines': {'count': -1},
+                'textStyle': {'italic': true}
+            },
+            'lineWidth': 3,
+            'pointSize': 5,
+            'colors': ['#29be92'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+
+    chart = new google.visualization.ChartWrapper({
+        'chartType': 'PieChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=pie&sp=session',
+        'containerId': 'pie_session',
+        'options': {
+            'chartArea': {'width': '90%', 'left': '10%'},
+            'legend': {'position': 'bottom'},
+            'title': 'Sessions',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'pieHole': 0.33,
+            'colors': ['#50cc32', '#ff69bc'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+    chart = new google.visualization.ChartWrapper({
+        'chartType': 'PieChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=pie&sp=user',
+        'containerId': 'pie_user',
+        'options': {
+            'chartArea': {'width': '90%', 'left': '10%'},
+            'legend': {'position': 'bottom'},
+            'title': 'Visitors',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'pieHole': 0.33,
+            'colors': ['#3ed4e7', '#ff912e'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+    chart = new google.visualization.ChartWrapper({
+        'chartType': 'PieChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=pie&sp=browser',
+        'containerId': 'pie_browser',
+        'options': {
+            'chartArea': {'width': '90%', 'left': '10%'},
+            'legend': {'position': 'bottom'},
+            'title': 'Browser',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'pieHole': 0.33,
+            'colors': ['#29be92', '#ff912e', '#5496d7', '#ff5c2b'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+    chart = new google.visualization.ChartWrapper({
+        'chartType': 'PieChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=pie&sp=pageview',
+        'containerId': 'pie_pageview',
+        'options': {
+            'chartArea': {'width': '90%', 'left': '10%'},
+            'legend': {'position': 'bottom'},
+            'title': 'Page Views',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'pieHole': 0.33,
+            'colors': ['#8ee4cf', '#c28fdd'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+
+    chart = new google.visualization.ChartWrapper({
+        'chartType': 'GeoChart',
+        'dataSourceUrl': '/admin/ga_stat/?qs=geo',
+        'containerId': 'geo_session',
+        'options': {
+            'height': 300,
+            'displayMode': 'regions',
+            'legend': {'position': 'bottom'},
+            'title': 'Sessions',
+            'titleTextStyle': {'bold': false, 'fontSize': 16},
+            'colors': ['#ddf6f0','#5496d7'],
+            'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
+        }
+    });
+    google.visualization.events.addListener(chart, 'ready', readyHandler);
+    chart.draw();
+    gviz_handles.push(chart);
+}
 
 
 $(window).on("resize", function() {
     clearTimeout($(window).data(this, 'resizeTimer'));
     $(window).data(this, 'resizeTimer', setTimeout(function() {
-        if (!resize_flag) {
-            resize_flag = true
-            for (var i = 0; i < gviz_handles.length; i++) {
-                gviz_handles[i].execute();
-            }
-            setTimeout(function() { resize_flag = false; }, 1000);
+        for (var i = 0; i < gviz_handles.length; i++) {
+            gviz_handles[i].draw();
         }
     }, 200));
 });

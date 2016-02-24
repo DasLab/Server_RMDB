@@ -12,7 +12,7 @@ function readyHandler() {
 function drawDash() {
     var chart = new google.visualization.ChartWrapper({
         'chartType': 'Calendar',
-        'dataSourceUrl': '/admin/git_stat?qs=c',
+        'dataSourceUrl': '/admin/git_stat/?qs=c',
         'containerId': 'plot_c',
         'options': {
             'title': 'Last Year',
@@ -25,7 +25,10 @@ function drawDash() {
                 'monthOutlineColor': {'stroke': '#d86f5c', 'strokeOpacity': 0.8, 'strokeWidth': 2},
                 'dayOfWeekLabel': {'color': '#000'}
             },
-            'colorAxis': { 'minValue': 0, 'colors': ['#e8f9f5', '#5496d7']},
+            'colorAxis': {
+                'values': [0, 3, 6, 9, 12],
+                'colors': ['#f8f8f8', '#fae621', '#5cc861', '#23888d', '#3a518a']
+            },
             'animation': {'startup': true, 'duration': 1000, 'easing': 'inAndOut'}
         }
     });
@@ -33,9 +36,9 @@ function drawDash() {
     chart.draw();
     gviz_handles.push(chart);
 
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/git_stat?qs=ad',
+        'dataSourceUrl': '/admin/git_stat/?qs=ad',
         'containerId': 'plot_ad',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -61,9 +64,9 @@ function drawDash() {
     chart.draw();
     gviz_handles.push(chart);
 
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'PieChart',
-        'dataSourceUrl': '/admin/git_stat?qs=au',
+        'dataSourceUrl': '/admin/git_stat/?qs=au',
         'containerId': 'plot_pie',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -83,20 +86,20 @@ function drawDash() {
 
 
 $.ajax({
-    url : "/admin/git_stat?qs=init&tqx=reqId%3A52",
+    url : "/admin/git_stat/?qs=init&tqx=reqId%3A52",
     dataType: "json",
     success: function (data) {
         var html = "";
         for (var i = 0; i < data.contrib.length; i++) {
             html += '<tr><td>' + data.contrib[i].Contributors + '</td><td><span class="pull-right" style="color:#00f;">' + data.contrib[i].Commits + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td><span class="pull-right" style="color:#080;">' + data.contrib[i].Additions + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td><span class="pull-right" style="color:#f00;">' + data.contrib[i].Deletions + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>';
         }
-        html += '<tr><td colspan="4" style="padding: 0px;"></td></tr>'
+        html += '<tr><td colspan="4" style="padding: 0px;"></td></tr>';
         $("#git_table_body").html(html).removeClass('place_holder');
     }
 });
 
 $.ajax({
-    url : "/admin/git_stat?qs=num&tqx=reqId%3A53",
+    url : "/admin/git_stat/?qs=num&tqx=reqId%3A53",
     dataType: "json",
     success: function (data) {
         $("#git_num_body").html('<tr><td><span class="label label-green">created</span></td><td><span class="label label-primary">' + data.created_at + '</span></td></tr><tr><td><span class="label label-dark-green">last pushed</span></td><td><span class="label label-primary">' + data.pushed_at + '</span></td></tr><tr><td><span class="label label-danger">issue</span></td><td>' + data.num_issues + '</td></tr><tr><td><span class="label label-info">download</span></td><td>' + data.num_downloads + '</td></tr><tr><td><span class="label label-info">pull</span></td><td>' + data.num_pulls + '</td></tr><tr><td><span class="label label-orange">branch</span></td><td>' + data.num_branches + '</td></tr><tr><td><span class="label label-orange">fork</span></td><td>' + data.num_forks + '</td></tr><tr><td><span class="label label-violet">watcher</span></td><td>' + data.num_watchers + '</td></tr><tr><td colspan="2" style="padding: 0px;"></td></tr>').removeClass('place_holder');

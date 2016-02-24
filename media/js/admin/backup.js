@@ -10,83 +10,47 @@ $(document).ready(function() {
     $("lspan").remove();
 
     $.ajax({
-        url : "/admin/get_backup",
-        dataType: "text",
+        url : "/admin/get_backup/",
+        dataType: "json",
         success : function (data) {
-            var txt = data.split(/\t/);
+            $("#id_design_1d").html('<i>' + data['1d'][0] + '</i>');
+            $("#id_design_1d_s").html('<span style="color:#00f;">' + data['1d'][1] + '</span>');
+            $("#id_design_2d").html('<i>' + data['2d'][0] + '</i>');
+            $("#id_design_2d_s").html('<span style="color:#00f;">' + data['2d'][1] + '</span>');
+            $("#id_design_3d").html('<i>' + data['3d'][0] + '</i>');
+            $("#id_design_3d_s").html('<span style="color:#00f;">' + data['3d'][1] + '</span>');
 
-            $("#id_news_n").html('<i>' + txt[0] + '</i>');
-            $("#id_news_s").html('<span style="color:#00f;">' + txt[1] + '</span>');
-            $("#id_member_n").html('<i>' + txt[2] + '</i>');
-            $("#id_member_s").html('<span style="color:#00f;">' + txt[3] + '</span>');
-            $("#id_pub_n").html('<i>' + txt[4] + '</i>');
-            $("#id_pub_s").html('<span style="color:#00f;">' + txt[5] + '</span>');
-            $("#id_rot_n").html('<i>' + txt[6] + '</i>');
-            $("#id_rot_s").html('<span style="color:#00f;">' + txt[7] + '</span>');
-            $("#id_spe_n").html('<i>' + txt[8] + '</i>');
-            $("#id_spe_s").html('<span style="color:#00f;">' + txt[9] + '</span>');
+            $("#id_mysql_s").html('<span style="color:#00f;">' + data.backup.mysql[1] + '</span>');
+            $("#id_static_s").html('<span style="color:#00f;">' + data.backup.data[1] + '</span>');
+            $("#id_apache_s").html('<span style="color:#00f;">' + data.backup.apache[1] + '</span>');
+            $("#id_config_s").html('<span style="color:#00f;">' + data.backup.config[1] + '</span>');
+            $("#id_mysql_p").html($("#id_mysql_p").html() + '<br/><code>' + data.backup.mysql[0] + '</code>');
+            $("#id_static_p").html($("#id_static_p").html() + '<br/><code>' + data.backup.data[0] + '</code>');
+            $("#id_apache_p").html($("#id_apache_p").html() + '<br/><code>' + data.backup.apache[0] + '</code>');
+            $("#id_config_p").html($("#id_config_p").html() + '<br/><code>' + data.backup.config[0] + '</code>');
 
-            $("#id_mysql_s").html('<span style="color:#00f;">' + txt[10] + '</span>');
-            $("#id_static_s").html('<span style="color:#00f;">' + txt[11] + '</span>');
-            $("#id_apache_s").html('<span style="color:#00f;">' + txt[12] + '</span>');
-            $("#id_mysql_p").html($("#id_mysql_p").html() + '<br/><code>' + txt[13] + '</code>');
-            $("#id_static_p").html($("#id_static_p").html() + '<br/><code>' + txt[14] + '</code>');
-            $("#id_apache_p").html($("#id_apache_p").html() + '<br/><code>' + txt[15] + '</code>');
-
-            var gdrive = txt[16].split(/~|~/);
-            var names = [], sizes = [], times = [];
-            for (var i = 0; i < gdrive.length; i += 12) {
-                names.push(gdrive[i+2]);
-                sizes.push(gdrive[i+4] + ' ' + gdrive[i+6]);
-                times.push(gdrive[i+8] + ' ' + gdrive[i+10]);
-            }
             var html = '';
-            for (var i = 0; i < names.length; i++) {
-                html += '<tr><td><code>' + names[i] + '</code></td><td><span class="label label-primary">' + times[i] + '</span></td><td><span style="color:#00f;">' + sizes[i] + '</span></td></tr>'
+            for (var i = 0; i < data.gdrive.length; i++) {
+                html += '<tr><td><code>' + data.gdrive[i][0] + '</code></td><td><span class="label label-primary">' + data.gdrive[i][2] + '</span></td><td><span style="color:#00f;">' + data.gdrive[i][1] + '</span></td></tr>';
             }
-            html += '<tr><td colspan="3" style="padding: 0px;"></td></tr>'
+            html += '<tr><td colspan="3" style="padding: 0px;"></td></tr>';
             $("#gdrive_list").html(html);
 
         }
     });
 
-  $.ajax({
-        url : "/admin/get_ver",
-        dataType: "text",
-        success : function (data) {
-            var txt = data.split(/\t/);
-            var drive_free = parseFloat(txt[44]), drive_used = parseFloat(txt[43]), drive_total = parseFloat(txt[45]);
-            $("#id_drive_space > div > div.progress-bar-success").css("width", (drive_free / drive_total * 100).toString() + '%' ).html(drive_free + ' G');
-            $("#id_drive_space > div > div.progress-bar-danger").css("width", (drive_used / drive_total * 100).toString() + '%' ).html(drive_used + ' G');
-            var disk_sp = txt[36].split(/\//);
-            $("#id_disk_space > div > div.progress-bar-success").css("width", (parseFloat(disk_sp[0]) / (parseFloat(disk_sp[0]) + parseFloat(disk_sp[1])) * 100).toString() + '%' ).html(disk_sp[0]);
-            $("#id_disk_space > div > div.progress-bar-danger").css("width", (parseFloat(disk_sp[1]) / (parseFloat(disk_sp[0]) + parseFloat(disk_sp[1])) * 100).toString() + '%' ).html(disk_sp[1]);
-        }
-    });
-
     $.ajax({
-        url : "/admin/backup_form",
+        url : "/admin/get_ver/",
         dataType: "json",
         success : function (data) {
-            $("#id_time_backup").val(data.time_backup);
-            $("#id_day_backup").val(data.day_backup);
-            $("#id_time_upload").val(data.time_upload);
-            $("#id_day_upload").val(data.day_upload);
-            if (!data.time_backup || !data.day_backup) {
-                $("#banner_backup").removeClass("alert-success").addClass("alert-danger");
-                $("#sign_backup").removeClass("glyphicon-ok-sign").addClass("glyphicon-remove-sign");
-            }
-            if (!data.time_upload || !data.day_upload) {
-                $("#banner_sync").removeClass("alert-success").addClass("alert-danger");
-                $("#sign_sync").removeClass("glyphicon-ok-sign").addClass("glyphicon-remove-sign");
-            }
-
-            $("#id_time_backup").trigger("change");
-            $("#id_time_upload").trigger("change");
-            $("#modal_backup").html('On <span class="label label-primary">' + $("#id_time_backup").val() + '</span> every <span class="label label-inverse">' + weekdayNames[$("#id_day_backup").val()] + '</span> (UTC).');
-            $("#modal_upload").html('On <span class="label label-primary">' + $("#id_time_upload").val() + '</span> every <span class="label label-inverse">' + weekdayNames[$("#id_day_upload").val()] + '</span> (UTC).');
+            var drive_used = parseFloat(data._drive[0]), drive_free = parseFloat(data._drive[1]), drive_total = parseFloat(data._drive[2]);
+            $("#id_drive_space > div > div.progress-bar-success").css("width", (drive_free / drive_total * 100).toString() + '%' ).html(drive_free + ' G');
+            $("#id_drive_space > div > div.progress-bar-danger").css("width", (100 - drive_free / drive_total * 100).toString() + '%' ).html(drive_used + ' G');
+            $("#id_disk_space > div > div.progress-bar-success").css("width", (parseFloat(data._disk[0]) / (parseFloat(data._disk[0]) + parseFloat(data._disk[1])) * 100).toString() + '%' ).html(data._disk[0]);
+            $("#id_disk_space > div > div.progress-bar-danger").css("width", (parseFloat(data._disk[1]) / (parseFloat(data._disk[0]) + parseFloat(data._disk[1])) * 100).toString() + '%' ).html(data._disk[1]);
         }
     });
+
 
     $("#id_time_backup, #id_day_backup").on("change", function() {
         var time = $("#id_time_backup").val();
@@ -100,6 +64,20 @@ $(document).ready(function() {
         $("#time_upload_pdt").html(backup.toLocaleTimeString());
         $("#day_upload_pdt").html(weekdayNames[backup.getDay()]);
     });
+
+    if (!$("#id_time_backup").val() || !$("#id_day_backup").val()) {
+        $("#banner_backup").removeClass("alert-success").addClass("alert-danger");
+        $("#sign_backup").removeClass("glyphicon-ok-sign").addClass("glyphicon-remove-sign");
+    }
+    if (!$("#id_time_upload").val() || !$("#id_day_upload").val()) {
+        $("#banner_sync").removeClass("alert-success").addClass("alert-danger");
+        $("#sign_sync").removeClass("glyphicon-ok-sign").addClass("glyphicon-remove-sign");
+    }
+
+    $("#id_time_backup").trigger("change");
+    $("#id_time_upload").trigger("change");
+    $("#modal_backup").html('On <span class="label label-primary">' + $("#id_time_backup").val() + '</span> every <span class="label label-inverse">' + weekdayNames[$("#id_day_backup").val()] + '</span> (UTC).');
+    $("#modal_upload").html('On <span class="label label-primary">' + $("#id_time_upload").val() + '</span> every <span class="label label-inverse">' + weekdayNames[$("#id_day_upload").val()] + '</span> (UTC).');
 
 });
 

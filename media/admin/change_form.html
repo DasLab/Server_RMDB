@@ -1,6 +1,5 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static admin_modify suit_tags admin_urls %}
-{% load url from future %}
 
 {% block extrahead %}{{ block.super }}
   {% url 'admin:jsi18n' as jsi18nurl %}
@@ -11,10 +10,10 @@
 {% endblock %}
 
 {% block extratail %}
-  <script type="text/javascript" src="/site_media/js/suit/calendar.js"></script>
-  <script type="text/javascript" src="/site_media/js/suit/RelatedWidgetWrapper.js"></script>
-  <script type="text/javascript" src="/site_media/js/suit/SelectBox.js"></script>
-  <script type="text/javascript" src="/site_media/js/suit/SelectFilter2.js"></script>
+  <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}calendar{{DEBUG_STR}}.js"></script>
+  <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}RelatedWidgetWrapper{{DEBUG_STR}}.js"></script>
+  <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}SelectBox{{DEBUG_STR}}.js"></script>
+  <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}SelectFilter2{{DEBUG_STR}}.js"></script>
 
 {% endblock %}
 
@@ -24,7 +23,7 @@
 
   {% if 'CONFIRM_UNSAVED_CHANGES'|suit_conf %}
     <!-- Warn on leaving unsaved form -->
-    <script src="/site_media/js/admin/_suit-form-confirm.js"></script>
+    <script src="/site_media/js/admin/{{DEBUG_DIR}}_suit-form-confirm{{DEBUG_STR}}.js"></script>
     <script type="text/javascript">
       confirmExitIfModified('{{ opts.module_name }}_form', '{% trans 'You have unsaved changes' %}.');
     </script>

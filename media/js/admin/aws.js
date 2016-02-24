@@ -12,7 +12,7 @@ function readyHandler() {
 
 function drawDash() {
     $.ajax({
-        url : "/admin/aws_stat?qs=init&sp=init&tqx=reqId%3A52",
+        url : "/admin/aws_stat/?qs=init&sp=init&tqx=reqId%3A52",
         dataType: "json",
         success: function (data) {
             $("#aws_table_body").parent().remove();
@@ -43,7 +43,7 @@ function drawDash() {
 
     var chart = new google.visualization.ChartWrapper({
         'chartType': 'ColumnChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=latency&sp=48h',
+        'dataSourceUrl': '/admin/aws_stat/?qs=latency&sp=48h',
         'containerId': 'plot_lat1',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -66,9 +66,9 @@ function drawDash() {
     google.visualization.events.addListener(chart, 'ready', readyHandler);
     chart.draw();
     gviz_handles.push(chart);
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=latency&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=latency&sp=7d',
         'containerId': 'plot_lat2',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -94,9 +94,9 @@ function drawDash() {
     chart.draw();
     gviz_handles.push(chart);
 
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'ColumnChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=request&sp=48h',
+        'dataSourceUrl': '/admin/aws_stat/?qs=request&sp=48h',
         'containerId': 'plot_req1',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -119,9 +119,9 @@ function drawDash() {
     google.visualization.events.addListener(chart, 'ready', readyHandler);
     chart.draw();
     gviz_handles.push(chart);
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=request&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=request&sp=7d',
         'containerId': 'plot_req2',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -147,9 +147,9 @@ function drawDash() {
     chart.draw();
     gviz_handles.push(chart);
 
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'ColumnChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=cpu&sp=48h',
+        'dataSourceUrl': '/admin/aws_stat/?qs=cpu&sp=48h',
         'containerId': 'plot_cpu1',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -172,9 +172,9 @@ function drawDash() {
     google.visualization.events.addListener(chart, 'ready', readyHandler);
     chart.draw();
     gviz_handles.push(chart);
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=cpu&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=cpu&sp=7d',
         'containerId': 'plot_cpu2',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -200,9 +200,9 @@ function drawDash() {
     chart.draw();
     gviz_handles.push(chart);
 
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=host&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=host&sp=7d',
         'containerId': 'plot_host',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -229,9 +229,9 @@ function drawDash() {
     google.visualization.events.addListener(chart, 'ready', readyHandler);
     chart.draw();
     gviz_handles.push(chart);
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=credit&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=credit&sp=7d',
         'containerId': 'plot_credit',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -257,9 +257,9 @@ function drawDash() {
     google.visualization.events.addListener(chart, 'ready', readyHandler);
     chart.draw();
     gviz_handles.push(chart);
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=status&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=status&sp=7d',
         'containerId': 'plot_status',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -286,9 +286,9 @@ function drawDash() {
     chart.draw();
     gviz_handles.push(chart);
 
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=network&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=network&sp=7d',
         'containerId': 'plot_net',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -313,9 +313,9 @@ function drawDash() {
     google.visualization.events.addListener(chart, 'ready', readyHandler);
     chart.draw();
     gviz_handles.push(chart);
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=volbytes&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=volbytes&sp=7d',
         'containerId': 'plot_vol',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -341,9 +341,9 @@ function drawDash() {
     chart.draw();
     gviz_handles.push(chart);
 
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=23xx&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=23xx&sp=7d',
         'containerId': 'plot_23xx',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
@@ -368,9 +368,9 @@ function drawDash() {
     google.visualization.events.addListener(chart, 'ready', readyHandler);
     chart.draw();
     gviz_handles.push(chart);
-    var chart = new google.visualization.ChartWrapper({
+    chart = new google.visualization.ChartWrapper({
         'chartType': 'AreaChart',
-        'dataSourceUrl': '/admin/aws_stat?qs=45xx&sp=7d',
+        'dataSourceUrl': '/admin/aws_stat/?qs=45xx&sp=7d',
         'containerId': 'plot_45xx',
         'options': {
             'chartArea': {'width': '90%', 'left': '10%'},
