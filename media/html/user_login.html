@@ -1,8 +1,9 @@
 {% extends "media/html/_public.html" %}
 
 {% block content %}
-    <div class="bgimg2-md center-block text-center" style="padding:50px 0px; min-height:400px;">
-        <h2><span class="label label-teal">AUTHORIZATION REQUIRED</span></h2>
+<div class="container">
+    <div class="bgimg2-lg center-block text-center" style="padding:50px 0px; min-height:400px;">
+        <h2><span class="label label-success">AUTHORIZATION REQUIRED</span></h2>
         <b><p id="form_header" style="padding-top:10px;" class="center-block text-center"></p></b>
         <form enctype="multipart/form-data" action="/login/" method="post">
             {% csrf_token %}
@@ -44,6 +45,7 @@
         </div>
     </div>
     {% endif %}
+</div>
 {% endblock %}
 
 {% block script %}

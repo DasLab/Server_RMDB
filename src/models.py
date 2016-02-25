@@ -67,6 +67,10 @@ EXEC_TYPE_CHOICES = (
     ('Spkt', 'ShapeKnots')
 )
 
+DOWNLOAD_SRC_CHOICES = (
+    ('reeffit', 'REEFFIT'),
+    ('mapseeker', 'MAPSeeker')
+)
     
 
 class NewsItem(models.Model):
@@ -190,6 +194,15 @@ class RMDBUser(models.Model):
     last_entry = models.CharField(max_length=25, null=True, verbose_name='Last Submitted RMDB ID')
     last_date = models.DateField(null=True, verbose_name='Last Submission Date')
 
+    def __unicode__(self):
+        if not self.user:
+            return '__(None)__'
+        return self.user.username
+
+    class Meta():
+        verbose_name = 'RMDB User'
+        verbose_name_plural = 'RMDB Users'
+
     def full_name(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)
     full_name.short_description = 'Full Name'
@@ -198,6 +211,16 @@ class RMDBUser(models.Model):
     def affiliation(self):
         return '%s - %s' % (self.institution, self.department)
     affiliation.admin_order_field = 'institution'
+
+
+class SourceDownloader(models.Model):
+    date = models.DateField(verbose_name='Request Date')
+    package = models.CharField(max_length=3, choices=DOWNLOAD_SRC_CHOICES)
+    rmdb_user = models.ForeignKey(RMDBUser, verbose_name='RMDB User')
+
+    class Meta():
+        verbose_name = 'Source Downloader'
+        verbose_name_plural = 'Source Downloaders'
 
 
 ############################################################################################################################################

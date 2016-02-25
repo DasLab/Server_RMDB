@@ -32,6 +32,16 @@ function render_type(string) {
     return '<span class="label label-' + span_class + '">' + string + '</span>';
 }
 
+function render_package(string) {
+    var span_class = 'default';
+    if (string == 'MAPSeeker') {
+        span_class = 'primary';
+    } else if (string == 'REEFFIT') {
+        span_class = 'danger';
+    }
+    return '<span class="label label-' + span_class + '">' + string + '</span>';
+}
+
 $(document).ready(function () {
     $("label.required").css("font-weight", "bold");
     $("table").addClass("table-hover").removeClass("table-bordered table-condensed");
@@ -196,7 +206,39 @@ $(document).ready(function () {
         $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-lock"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
         $("ul.breadcrumb > li:first").next().remove();
         $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;');
+    } else if ($(location).attr("href").indexOf("admin/src/rmdbuser") != -1) {
+        $("th.column-id").addClass("col-lg-1 col-md-1 col-sm-1 col-xs-1");
+        $("th.column-user").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
+        $("th.column-full_name").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
+        $("th.column-affiliation").addClass("col-lg-4 col-md-4 col-sm-4 col-xs-4");
+        $("th.column-last_date").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
 
+        $("td.field-user").each(function() { $(this).html('<kbd>' + $(this).text() + '</kbd>'); });
+
+        $("th.column-id > div.text > a").html('<span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;User ID');
+        $("th.column-user > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Login Name');
+        $("th.column-full_name > div.text > a").html('<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Full Name');
+        $("th.column-affiliation > div.text > a").html('<span class="glyphicon glyphicon-education"></span>&nbsp;&nbsp;Affiliation');
+        $("th.column-last_date > div.text > a").html('<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;Last Submission');
+
+        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-user"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
+        $("ul.breadcrumb > li:first").next().remove();
+        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;');
+    } else if ($(location).attr("href").indexOf("admin/src/sourcedownloader") != -1) {
+        $("th.column-date").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
+        $("th.column-rmdb_user").addClass("col-lg-5 col-md-5 col-sm-5 col-xs-5");
+        $("th.column-package").addClass("col-lg-4 col-md-4 col-sm-4 col-xs-4");
+
+        $("td.field-rmdb_user").each(function() { $(this).html('<kbd>' + $(this).text() + '</kbd>'); });
+        $("td.field-package").each(function() { $(this).html(render_package($(this).html())); });
+
+        $("th.column-date > div.text > a").html('<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;Request Date');
+        $("th.column-rmdb_user > div.text > a").html('<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;RMDB User');
+        $("th.column-package > div.text > a").html('<span class="glyphicon glyphicon-compressed"></span>&nbsp;&nbsp;Requested Package');
+
+        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-download-alt"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
+        $("ul.breadcrumb > li:first").next().remove();
+        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp;');
     }
 
 });

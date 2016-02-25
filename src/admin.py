@@ -63,11 +63,30 @@ class HistoryItemAdmin(admin.ModelAdmin):
         (format_html('<span class="glyphicon glyphicon-comment"></span>&nbsp;Contents'), {'fields': ['date', 'content']}),
     ]
 
+class RMDBUserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'full_name', 'affiliation', 'last_date')
+    ordering = ('-id',)
+    fieldsets = [
+        (format_html('<span class="glyphicon glyphicon-user"></span>&nbsp;Personal Information'), {'fields': ['user', 'institution', 'department']}),
+        (format_html('<span class="glyphicon glyphicon-dashboard"></span>&nbsp;Personal Statistics'), {'fields': ['entry_count', ('data_count', 'construct_count'), ('last_entry', 'last_date')]})
+    ]
+
+class SourceDownloaderAdmin(admin.ModelAdmin):
+    list_display = ('date', 'rmdb_user', 'package')
+    ordering = ('-date', 'rmdb_user',)
+
+    fieldsets = [
+        (format_html('<span class="glyphicon glyphicon-user"></span>&nbsp;Personal Information'), {'fields': ['date', 'rmdb_user', 'package']}),
+    ]
+
+
 admin.site.register(RMDBEntry, EntryAdmin)
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Organism, OrganismAdmin)
 admin.site.register(NewsItem, NewsItemAdmin)
 admin.site.register(HistoryItem, HistoryItemAdmin)
+admin.site.register(RMDBUser, RMDBUserAdmin)
+admin.site.register(SourceDownloader, SourceDownloaderAdmin)
 
 
 ############################################################################################################################################

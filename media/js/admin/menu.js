@@ -110,6 +110,18 @@ $(document).ready(function () {
         $("#nav_user_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #ff912e");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">User Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+    } else if ($(location).attr("href").indexOf("admin/src/rmdbuser") != -1) {
+        $("#nav_ruser").addClass("active");
+        $("#nav_user").addClass("active");
+        $("#nav_user_lg").addClass("active");
+        $("ul.breadcrumb").css("border-bottom", "5px solid #ff912e");
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">User Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+    } else if ($(location).attr("href").indexOf("admin/src/sourcedownloader") != -1) {
+        $("#nav_download").addClass("active");
+        $("#nav_user").addClass("active");
+        $("#nav_user_lg").addClass("active");
+        $("ul.breadcrumb").css("border-bottom", "5px solid #ff912e");
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">User Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
     } else if ($(location).attr("href").indexOf("admin/doc") != -1) {
         $("#nav_django").addClass("active");
         $("#nav_doc").addClass("active");

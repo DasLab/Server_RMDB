@@ -1,8 +1,0 @@
-#RMDB reborn
-!t47
-
-<img src=/site_media/images/docs/pic_old_retire.jpg class=center-block />
-
--We have migrated our server to AWS for better performance and reliability. 
--\Our old desktop server is now officially retired. It has witnessed the founding years.
--\The new server is now hosted at AWS as EC2 instances.

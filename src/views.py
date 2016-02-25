@@ -49,17 +49,8 @@ def tools_license(request, keyword):
 @login_required
 def tools_download(request, keyword):
     if keyword in ('mapseeker', 'reeffit'):
-        f = open(MEDIA_ROOT + "/misc/%s/%s_user.csv" % (keyword, keyword), "a")
-        f.write("%s," % time.strftime("%c"))
-        request_usr = request.user
-        f.write("%s,%s,%s %s," % (request_usr.username, request_usr.email, request_usr.first_name, request_usr.last_name))
-        request_usr = User.objects.filter(username=request_usr.username)
-        request_usr = RMDBUser.objects.filter(user=request_usr)
-        (inst, dept) = ('', '')
-        if request_usr.values('institution'): inst = request_usr.values('institution')[0]['institution']
-        if request_usr.values('department'): dept = request_usr.values('department')[0]['department']
-        f.write("%s - %s\n" % (inst, dept))
-        f.close()
+        new = SourceDownloader(date=datetime.datetime.now(), package=keyword, rmdb_user=RMDBUser.objects.get(user=request.user))
+        new.save()
 
         if keyword == 'mapseeker':
             title = "MAPseeker"

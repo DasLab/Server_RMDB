@@ -1,4 +1,4 @@
-{% extends "media/html/_framework.html" %}
+{% extends "media/html/_public.html" %}
 
 {% block content %}
     <div class="container theme-showcase" role="main">
@@ -14,20 +14,20 @@
           {{ license_txt }}
          </div>
         </div>
-        <br/>
         <div class="row">
-          <div class="col-md-2">
-            <a class="btn btn-success clikable" href="/tools/{{keyword}}/download" id="btn_accept">&nbsp;&nbsp;&nbsp;Accept&nbsp;&nbsp;&nbsp;</a>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <a class="btn btn-success btn-lg btn-block" href="/tools/{{keyword}}/download/" id="btn_accept" style="color: #ffffff;"><span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Accept&nbsp;&nbsp;&nbsp;</a>
           </div>
-          <div class="col-md-8">
+          <div class="col-lg-4 col-md-4 hidden-sm hidden-xs">
             {% if not user.is_authenticated %}
-              <b>Note</b>: To download, myRMDB login is <i>required</i>.
+              <p class="lead"><b>Note</b>: myRMDB login is <i>required</i>.</p>
             {% endif %}
           </div>
-          <div class="col-md-2">
-            <a class="btn btn-danger pull-right clikable" href="/">&nbsp;&nbsp;&nbsp;Decline&nbsp;&nbsp;&nbsp;</a>
+          <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <a class="btn btn-danger btn-lg btn-block" href="/" style="color: #ffffff;"><span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;Decline&nbsp;&nbsp;&nbsp;</a>
           </div>
         </div>
+
       </div>
     </div>
     <br/>
@@ -36,19 +36,8 @@
 {% block script %}
   <script type="text/javascript">
     $(document).ready(function () {
-      $("#license_content").load("/site_src/{{keyword}}/{{keyword}}_license.md", function (txt) {
+      $("#license_content").load("/site_src/{{keyword}}_license.md", function (txt) {
         $(this).html(txt.split(/\n/).join("<br>") + "</strong>");
-      });
-
-      $("#btn_accept").on("click", function(e) {
-        {% if not user.is_authenticated %}
-          e.preventDefault();
-          if ($(location).attr("href").indexOf("?login=-1") == -1) {
-            $(location).attr("href",$(location).attr("href") + "?login=-1");
-          } else {
-            $(location).attr("href",$(location).attr("href"));
-          }
-        {% endif %}
       });
     });
   </script>

@@ -1,21 +1,21 @@
-{% extends "media/html/_framework.html" %}
+{% extends "media/html/_public.html" %}
 
 {% block content %}
 <div class="container theme-showcase" role="main">
   <div class="alert alert-success">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <p class="lead">
-          <span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;
+          <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>&nbsp;&nbsp;
           <b>Thank you for downloading {{title}}!</b>
         </p>
         <p>
           Your request for {{title}} was successfully processed. If the download does not start automatically, please use this link to access the zip file of source code. 
-          <a href="/site_src/{{keyword}}/{{keyword}}.zip" class="btn btn-primary" id="dl_zip" download>&nbsp;&nbsp;Link&nbsp;&nbsp;</a>
+          <a href="/site_src/{{keyword}}.zip" class="btn btn-primary" id="dl_zip" download><span class="glyphicon glyphicon-new-window"></span>&nbsp;&nbsp;Link&nbsp;&nbsp;</a>
         </p>
         <p>
           For tutorial and documentation of the {{title}}, see
-          <a href="/tools/docs/{{keyword}}" class="btn btn-warning">&nbsp;&nbsp;Tutorial&nbsp;&nbsp;</a>
+          <a href="/tools/docs/{{keyword}}/" class="btn btn-warning"><span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;Tutorial&nbsp;&nbsp;</a>
         </p>
       </div>
     </div>
