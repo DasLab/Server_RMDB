@@ -54,12 +54,20 @@ class NewsItemAdmin(admin.ModelAdmin):
     ordering = ('-date',)
     fieldsets = [
         (format_html('<span class="glyphicon glyphicon-comment"></span>&nbsp;Contents'), {'fields': ['date', 'content']}),
-	]
+    ]
+
+class HistoryItemAdmin(admin.ModelAdmin):
+    list_display = ('date', 'content')
+    ordering = ('-date',)
+    fieldsets = [
+        (format_html('<span class="glyphicon glyphicon-comment"></span>&nbsp;Contents'), {'fields': ['date', 'content']}),
+    ]
 
 admin.site.register(RMDBEntry, EntryAdmin)
-admin.site.register(NewsItem, NewsItemAdmin)
 admin.site.register(Publication, PublicationAdmin)
 admin.site.register(Organism, OrganismAdmin)
+admin.site.register(NewsItem, NewsItemAdmin)
+admin.site.register(HistoryItem, HistoryItemAdmin)
 
 
 ############################################################################################################################################

@@ -289,22 +289,24 @@
 
 	<div class="container">
 		<div class="jumbotron row bgimg">
-			<div class="col-md-3">
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
 				<a href="/">
-					<img src="/site_media/images/logo_rmdb_4.png" style="max-width:100%;"/>
+					<img src="/site_media/images/logo_rmdb.png" style="max-width:100%;"/>
 				</a>
 			</div>
-			<div class="col-md-3">
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
 				<span style="vertical-align:middle;">
 					<b>Information Portal to 
 						<br/>
 						Chemical Mapping Data of 
 					</b>
 					<br/>
-					<u id="header_count">{{ user|get_rmdb_constructs|intcomma }}</u> <b>RNA Sequences</b>
+					<u id="header_count"></u> <b>RNA Sequences</b>
 				</span>
+				<br class="hidden-lg hidden-md" />
+				<br class="hidden-lg hidden-md" />
 			</div>
-			<div class="col-md-6">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 				<form class="pull-right" action="/search/" method="get">
 					{% csrf_token %}
 					<div class="input-group">
@@ -334,47 +336,12 @@
       {% include "media/html/_footer.html" %}
     </div>
 
-    <a href="#" id="up"><img style="position:fixed;display:block;right:5%;bottom:5%;opacity:0.85;" src="/site_media/images/fg_top.png" height="60"/></a>
 
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$("#wait").fadeOut(500);
-			var today = new Date();
-			$("#cp_year").text(today.getFullYear());
-
-			$(".dropdown-toggle").dropdown();
-			$(".dropdown").hover(
-	            function(){ $(this).addClass("open") },
-    	        function(){ $(this).removeClass("open") }
-        	);
-            $("[data-toggle='popover']").popover({trigger: "hover"});
-			$("[data-toggle='tooltip']").tooltip();
-
-			$("#up").on("click", function () {
-				$("html, body").stop().animate({scrollTop: 0}, 500);
-			});
-			$("#up").hide();
-
-			$(".clickable").on("click", function () {
-				if ($("#buttonAll").length && $(this).attr("id") == "nav_browse") {
-					$("#wait").hide();
-				} else {
-					$("#wait").fadeIn(500);
-				}
-			});
-		});
-
-		$(window).on("beforeunload", function () {
-			$("#wait").fadeIn(500);
-		});
-		$(window).on("scroll", function () {
-			if ($(this).scrollTop() > $(window).height()/2) {
-				$('#up').fadeIn();
-			} else {
-				$('#up').fadeOut();
-			}
-		});
-	</script>
+    <a href="#" id="top" style="z-index:2000;">
+      <img style="position:fixed; display:block; right:-5%; bottom:100px; opacity:0.85; z-index:2000;" src="/site_media/images/fg_top_hover.png" name="top" height="60"/>
+    </a>
+    
+    <script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}util{{DEBUG_STR}}.js"></script>  
 
 	{% block script %}{% endblock %}
 </body>

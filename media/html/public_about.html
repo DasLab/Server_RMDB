@@ -1,94 +1,96 @@
-{% extends "media/html/_framework.html" %}
+{% extends "media/html/_public.html" %}
 {% block content %}
 <div class="container">
 
-	<div class="col-md-8" class="row">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h2 class="panel-title">
-					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;
-					<u><i>R</i></u>NA <u><i>M</i></u>apping <u><i>D</i></u>ata<u><i>B</i></u>ase
-				</h2>
-			</div>
-			<div class="panel-body">
-				<a href="#" id="logo"><img src="/site_media/images/logo_rmdb_4.png" class="logo" /></a>
-				<p class="cap">
-					RMDB was originally an in-house repository of chemical mapping data collected by the <a href="http://daslab.stanford.edu" target="_blank">Das lab&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> at Stanford University. It was created to enable structural, thermodynamic and kinetic comparisons across single-nucleotide-resolution RNA structure mapping experiments.
-				</p>
-				<p>
-					The volume of structure mapping data has greatly increased since the development of high-throughput sequencing techniques, accelerated software pipelines and large-scale mutagenesis. For scientists wishing to infer relationships between RNA sequence/structure and these mapping data, there is a need for a database that is curated, tagged with error estimates and interfaced with tools for sharing, visualization, search and meta-analysis. Through its on-line front-end, the RMDB allows users to explore single-nucleotide-resolution mapping data in heat-map, bar-graph and colored secondary structure graphics; to leverage these data to generate secondary structure hypotheses; and to download the data in standardized and computer-friendly files, including the RDAT and community-consensus SNRNASM formats. 
-				</p>
-				<p>
-					With a total of <u id="N_datapoints"></u> datapoints, RMDB currently houses <u id="N_all"></u> entries, describing more than <u id="N_RNA"></u> experiemnts of <u id="N_constructs"></u> RNA constructs in several solution conditions and has been growing rapidly. In addition, it contributes greatly to the <a href="http://eterna.stanford.edu" target="_blank"><b>EteRNA</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> videogame/synthetic biology project, and the <a href="http://ahsoka.u-strasbg.fr/rnapuzzles/" target="_blank"><b>RNA Puzzles</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> blind RNA structure prediction challenges. It will continue to benefit data sharing for RNA structue mapping community.
-				</p>
-			</div>
-		</div>
-
-		<div class="panel panel-success" id="citation">
-			<div class="panel-heading">
-				<h2 class="panel-title"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;Citation</h2>
-			</div>
-			<div class="panel-body">
-				Please cite use of RMDB with:
-				<br/>
-				<blockquote class="h5">
-					<p>
-						Cordero P., <i>et al.</i> (<b>2012</b>). <a href="http://bioinformatics.oxfordjournals.org/content/28/22/3006.long" target="_blank"><u>An RNA Mapping DataBase for Curating RNA Structure Mapping Experiments.</u>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> <i>Bioinformatics</i> <b>28(22)</b>: 3006-3008.
+	<div class="row">
+		<div class="col-lg-8 col-md-7 col-sm-12 col-xs-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;
+						<u><i>R</i></u>NA <u><i>M</i></u>apping <u><i>D</i></u>ata<u><i>B</i></u>ase
+					</h2>
+				</div>
+				<div class="panel-body">
+					<a href="#" id="logo"><img src="/site_media/images/logo_rmdb.png" class="logo" /></a>
+					<p class="cap">
+						RMDB was originally an in-house repository of chemical mapping data collected by the <a href="https://daslab.stanford.edu/" target="_blank">Das lab&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> at Stanford University. It was created to enable structural, thermodynamic and kinetic comparisons across single-nucleotide-resolution RNA structure mapping experiments.
 					</p>
-				</blockquote>
+					<p>
+						The volume of structure mapping data has greatly increased since the development of high-throughput sequencing techniques, accelerated software pipelines and large-scale mutagenesis. For scientists wishing to infer relationships between RNA sequence/structure and these mapping data, there is a need for a database that is curated, tagged with error estimates and interfaced with tools for sharing, visualization, search and meta-analysis. Through its on-line front-end, the RMDB allows users to explore single-nucleotide-resolution mapping data in heat-map, bar-graph and colored secondary structure graphics; to leverage these data to generate secondary structure hypotheses; and to download the data in standardized and computer-friendly files, including the RDAT and community-consensus SNRNASM formats. 
+					</p>
+					<p>
+						With a total of <u id="N_datapoints"></u> datapoints, RMDB currently houses <u id="N_all"></u> entries, describing more than <u id="N_RNA"></u> experiemnts of <u id="N_constructs"></u> RNA constructs in several solution conditions and has been growing rapidly. In addition, it contributes greatly to the <a href="http://eterna.stanford.edu" target="_blank"><b>EteRNA</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> videogame/synthetic biology project, and the <a href="http://ahsoka.u-strasbg.fr/rnapuzzles/" target="_blank"><b>RNA Puzzles</b>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> blind RNA structure prediction challenges. It will continue to benefit data sharing for RNA structue mapping community.
+					</p>
+				</div>
 			</div>
+
+			<div class="panel panel-success" id="citation">
+				<div class="panel-heading">
+					<h2 class="panel-title"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;Citation</h2>
+				</div>
+				<div class="panel-body">
+					Please cite use of RMDB with:
+					<br/>
+					<blockquote class="h5">
+						<p>
+							Cordero P., <i>et al.</i> (<b>2012</b>). <a href="http://bioinformatics.oxfordjournals.org/content/28/22/3006.long" target="_blank"><u>An RNA Mapping DataBase for Curating RNA Structure Mapping Experiments.</u>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> <i>Bioinformatics</i> <b>28(22)</b>: 3006-3008.
+						</p>
+					</blockquote>
+				</div>
+			</div>
+
 		</div>
 
-	</div>
-
-	<div class="col-md-4" class="row">
-		<div class="panel panel-info" id="contact">
-			<div class="panel-heading">
-				<h2 class="panel-title"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;Contact</h2>
-			</div>
-			<div class="panel-body">
-				<p>
-					Please feel free to contact the Das Lab for further questions/issues regarding the web server, suggestions for feature improvements, or citations. 
-				</p>
-				<br/>
-				<img src="/site_media/images/fg_load.gif" height="16" style="padding-right:10px;"/><b>Principal Investigator:</b>
-				<br/>
-				<div class="col-md-12">
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="mailto:rhiju@stanford.edu" target="_blank">
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						&nbsp;&nbsp;&nbsp;&nbsp;Rhiju Das
-					</a>
+		<div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
+			<div class="panel panel-info" id="contact">
+				<div class="panel-heading">
+					<h2 class="panel-title"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;Contact</h2>
 				</div>
-				<br/><br/>
-				<img src="/site_media/images/fg_load2.gif" height="16" style="padding-right:10px;"/><b>Database Server Team:</b>
-				<br/>
-				<div class="col-md-7">
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="mailto:t47@stanford.edu" target="_blank">
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						&nbsp;&nbsp;&nbsp;&nbsp;Siqi Tian
-					</a>
+				<div class="panel-body">
+					<p>
+						Please feel free to contact the Das Lab for further questions/issues regarding the web server, suggestions for feature improvements, or citations. 
+					</p>
 					<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="mailto:tsuname@stanford.edu" target="_blank">
-						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-						&nbsp;&nbsp;&nbsp;&nbsp;Pablo Cordero
-					</a>
+					<img src="/site_media/images/fg_load.gif" height="16" style="padding-right:10px;"/><b>Principal Investigator:</b>
 					<br/>
-				</div>
-				<div class="col-md-5">
-					<i style="color: gray;">
-						<span class="glyphicon glyphicon-queen" aria-hidden="true"></span>&nbsp;&nbsp;(site admin)
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="mailto:rhiju@stanford.edu" target="_blank">
+							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+							&nbsp;&nbsp;&nbsp;&nbsp;Rhiju Das
+						</a>
+					</div>
+					<br/><br/>
+					<img src="/site_media/images/fg_load_2.gif" height="16" style="padding-right:10px;"/><b>Database Server Team:</b>
+					<br/>
+					<div class="col-lg-7 col-md-7 col-sm-6 col-xs-12">
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="mailto:t47@stanford.edu" target="_blank">
+							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+							&nbsp;&nbsp;&nbsp;&nbsp;Siqi Tian
+						</a>
 						<br/>
-						<span class="glyphicon glyphicon-knight" aria-hidden="true"></span>&nbsp;&nbsp;(founder)
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="mailto:tsuname@stanford.edu" target="_blank">
+							<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+							&nbsp;&nbsp;&nbsp;&nbsp;Pablo Cordero
+						</a>
 						<br/>
-					</i>
+					</div>
+					<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+						<i style="color: gray;">
+							<span class="glyphicon glyphicon-queen" aria-hidden="true"></span>&nbsp;&nbsp;(site admin)
+							<br/>
+							<span class="glyphicon glyphicon-knight" aria-hidden="true"></span>&nbsp;&nbsp;(founder)
+							<br/>
+						</i>
+					</div>
+					<br/><br/><br/>
+					<p>
+						Please do not hesitate to let us know if you would like to share or integrate your data with our repository. You are welcome to report a bug or request user login autherization help. 
+					</p>
 				</div>
-				<br/><br/><br/>
-				<p>
-					Please do not hesitate to let us know if you would like to share or integrate your data with our repository. You are welcome to report a bug or request user login autherization help. 
-				</p>
 			</div>
 		</div>
 	</div>
@@ -104,11 +106,11 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<img src="/site_media/images/logo_rmdb_4_lg.png" class="center-block" width="800px"/>
+					<img src="/site_media/images/logo_rmdb_lg.png" class="center-block" width="800px"/>
 				</div>
 				<div class="modal-footer">
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<p class="text-center">Logo design by <a href="http://t47.io/"><i>t47</i>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></p>
 						</div>
 					</div>
@@ -123,36 +125,5 @@
 
 
 {% block script %}
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('.dropdown-toggle').removeClass("active");
-			$("#nav_about").addClass("active");
-	    	$("#nav_logo").css("text-decoration","none");
-
-			$.ajax({
-				url: '/api/index/stats/',
-				dataType: 'json',
-				async: true,
-				success: function(data) {
-					$("#N_all").text(data.N_all);
-					$("#N_RNA").text(data.N_RNA);
-					$("#N_datapoints").text(data.N_datapoints);
-					$("#N_constructs").text(data.N_constructs);
-				}
-			});
-
-	    	$(".clickable").on("click", function () {
-	    		var click_id = $(this).attr("id")
-	    		if ( click_id == "nav_contact" | click_id == "nav_cite") {
-	    			$("#wait").hide();
-	    		}
-	    	});
-
-	    	$("#logo").on("click", function (e) {
-	    		e.preventDefault();
-	    		$("#show_logo").modal("show");
-	    	});
-		});
-	</script>
-
+  <script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}about{{DEBUG_STR}}.js"></script>  
 {% endblock %}

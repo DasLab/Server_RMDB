@@ -163,6 +163,18 @@ $(document).ready(function () {
         $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-picture"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
         $("ul.breadcrumb > li:first").next().remove();
         $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;');
+    } else if ($(location).attr("href").indexOf("admin/src/historyitem") != -1) {
+        $("th.column-date").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
+        $("th.column-content").addClass("col-lg-9 col-md-9 col-sm-9 col-xs-9");
+
+        $("td.field-content").each(function() { $(this).html($(this).text()); });
+
+        $("th.column-date > div.text > a").html('<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;Display Date');
+        $("th.column-content > div.text > a").html('<span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;HTML Content');
+
+        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-time"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
+        $("ul.breadcrumb > li:first").next().remove();
+        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;');
     } else if ($(location).attr("href").indexOf("admin/auth/user") != -1) {
         $("th.column-username").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
         $("th.column-email").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");

@@ -15,36 +15,20 @@ from filemanager import FileManager
 from src.models import *
 
 
-def get_user_stats_entry(user):
-    return len(RMDBEntry.objects.filter(owner=user))
-
-def get_user_stats_const(user):
-    N_constructs = 0
+def get_user_stats(user):
     entries = RMDBEntry.objects.filter(owner=user)
+    N_entries = len(entries)
+    N_constructs = 0
+    N_datapoints = 0
     for e in entries:
         N_constructs += e.construct_count
-    return N_constructs
-
-def get_user_stats_dtpt(user):
-    N_datapoints = 0
-    entries = RMDBEntry.objects.filter(owner=user)
-    for e in entries:
         N_datapoints += e.data_count
-    return N_datapoints
 
-def get_user_stats_last_entry(user):
     entries = RMDBEntry.objects.filter(owner=user).order_by('-creation_date')
     if entries:
-        return entries[0].rmdb_id
+        return (N_entries, N_constructs, N_datapoints, entries[0].rmdb_id, entries[0].creation_date)
     else:
-        return None
-
-def get_user_stats_last_date(user):
-    entries = RMDBEntry.objects.filter(owner=user).order_by('-creation_date')
-    if entries:
-        return entries[0].creation_date
-    else:
-        return None
+        return (N_entries, N_constructs, N_datapoints, None, None)
 
 
 def user_login(request):
@@ -69,11 +53,7 @@ def user_login(request):
                         return HttpResponseRedirect('/admin/')
                     else:
                         rmdb_user = RMDBUser.objects.get(user=user)
-                        rmdb_user.construct_count = get_user_stats_const(user)
-                        rmdb_user.data_count = get_user_stats_dtpt(user)
-                        rmdb_user.entry_count = get_user_stats_entry(user)
-                        rmdb_user.last_entry = get_user_stats_last_entry(user)
-                        rmdb_user.last_date = get_user_stats_last_date(user)
+                        (rmdb_user.entry_count, rmdb_user.construct_count, rmdb_user.data_count, rmdb_user.last_entry, rmdb_user.last_date) = get_user_stats(user)
                         rmdb_user.save()
 
                         return HttpResponseRedirect('/')

@@ -98,6 +98,12 @@ $(document).ready(function () {
         $("#nav_data_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Data Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+    } else if ($(location).attr("href").indexOf("admin/src/historyitem") != -1) {
+        $("#nav_data_hist").addClass("active");
+        $("#nav_data").addClass("active");
+        $("#nav_data_lg").addClass("active");
+        $("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Data Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
     } else if ($(location).attr("href").indexOf("admin/auth/user") != -1) {
         $("#nav_auth").addClass("active");
         $("#nav_user").addClass("active");

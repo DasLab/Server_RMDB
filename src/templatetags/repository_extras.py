@@ -84,21 +84,6 @@ register.filter('get_stt_type', get_stt_type)
 
 
 
-def get_rmdb_constructs(_):
-    N_constructs = 0
-    rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
-    for rmdb_id in rmdb_ids:
-        entries = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')
-        # print rmdb_id
-        if len(entries) >= 0:
-            e = entries[0]
-        N_constructs += e.construct_count
-
-    return N_constructs
-register.filter('get_rmdb_constructs', get_rmdb_constructs)
-
-
-
 def get_annotation_item(a_all, key):
     val = a_all[key]
     string = ''

@@ -26,8 +26,8 @@ def get_rmdb_stats():
 			if 'ETERNA' in rmdb_id:
 				N_eterna += 1
 			e = entries[0]
-		N_datapoints += e.datacount
-		N_constructs += e.constructcount		
+		N_datapoints += e.data_count
+		N_constructs += e.construct_count		
 	return (N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints)
 
 

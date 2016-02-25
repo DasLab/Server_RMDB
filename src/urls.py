@@ -89,7 +89,12 @@ else:
 
         url(r'^ping_test/?$', views.ping_test),
         url(r'^get_admin/?$', views.get_admin),
+        url(r'^get_user/?$', views.get_user),
         url(r'^get_js/?$', views.get_js),
+        url(r'^get_stats/?$', views.get_stats),
+        url(r'^get_news/?$', views.get_news),
+        url(r'^get_recent/?$', views.get_recent),
+        
         # url(r'^repository/(?P<path>.*)$', views.url_redirect),
 
         # url(r'^site_media/isatab_files/(?P<path>.*)$', api_redirect),

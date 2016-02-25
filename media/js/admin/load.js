@@ -30,8 +30,8 @@ xmlhttp.onreadystatechange = function() {
         }
         document.write('<link rel="stylesheet" href="/site_media/css/' + DEBUG_DIR + 'theme' + DEBUG_STR + '.css" \/>');
         document.write('<link rel="stylesheet" href="/site_media/css/' + DEBUG_DIR + 'palette' + DEBUG_STR + '.css" \>');
-        document.write('<link rel="shortcut icon" href="/site_media/images/ico_rmdb_3.png" \/>');
-        document.write('<link rel="icon" type-"image/gif" href="/site_media/images/ico_rmdb_3.gif" \/>');
+        document.write('<link rel="shortcut icon" href="/site_media/images/icon_rmdb.png" \/>');
+        document.write('<link rel="icon" type-"image/gif" href="/site_media/images/icon_rmdb.png" \/>');
     }
 };
 xmlhttp.open("GET", "/get_js/", false);

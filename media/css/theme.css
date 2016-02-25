@@ -302,6 +302,7 @@ li.nav-general > a, li.nav-puzzle > a, li.nav-eterna> a  {
     border-radius: 5px;
     border-width: 1px;
     border-color: #112d52;
+    margin: 0px;
 }
 
 .nav-list{
@@ -500,8 +501,8 @@ a.btn-default {
 img.logo {
   clear: both;
   float: right;
-  padding-left: 10px;
-  padding-bottom: 5px;
+  margin-left: 15px;
+  margin-bottom: 5px;
   max-height: 72px;
   max-width: 200px;
 }

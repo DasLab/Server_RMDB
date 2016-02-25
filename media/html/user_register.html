@@ -5,105 +5,137 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-md-12">
-        {% if flag == 1 %}
-            <div class="alert alert-success" role="alert">
-                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                <b>SUCCESS</b>: Your MyRMDB account has been processed. Now you can <a href="/?login=1">sign in</a>.
-                <br/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Thank you for registration.
-            </div>
-        {% endif %}
-
-        {% if flag == 0 and error_msg %}
-            <div class="alert alert-danger" role="alert">
-                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                <b>ERROR</b>: The following messages were produced:
-                <br/>
-                <ul>
-                    {% for msg in error_msg %}
-                        <li>{{ msg }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <hr/>
-        {% endif %}
-    </div>
-
-    <div class="row col-md-12">
+        <h3>
+            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;
+            MyRMDB Account Registration
+        </h3>
+        <br/>
         <form method="post" action="/register/">
             {% csrf_token %}
-            <h3>
-                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;
-                MyRMDB Account Registration
-            </h3>
-            <br/>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h2 class="panel-title">Account Login</h2>
+                            <h2 class="panel-title"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Account Login</h2>
                         </div>
-                        <div class="panel-body" id="col-1">
-                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="User ID" data-content="It must be at least 3 characters long. Alphanumeric characters only. Previously used User IDs are not available.">
-                                <div class="col-md-5">User Name: </div>
-                                <div class="col-md-7">{{ reg_form.username }}</div>
+                        <div class="panel-body">
+                            <div class="row" data-toggle="popover" data-placement="bottom" title="User ID" data-content="It must be at least 3 characters long. Alphanumeric characters only. Previously used User IDs are not available.">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                    <span class="pull-right"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;User Name:</span>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{{ reg_form.username }}</div>
                             </div>
-                            <br/><br/><br/>
-                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Password" data-content="It must be at least 6 characters long. No limit on combinations.">
-                                <div class="col-md-5">Password: </div>
-                                <div class="col-md-7">{{ reg_form.password }}</div>
+                            <br/>
+                            <div class="row" data-toggle="popover" data-placement="bottom" title="Password" data-content="It must be at least 6 characters long. No limit on combinations.">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                    <span class="pull-right"><span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Password:</span>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{{ reg_form.password }}</div>
                             </div>
-                            <br/><br/><br/>
-                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Password" data-content="Type your password for a second time. Both times must match.">
-                                <div class="col-md-5"><i>Repeat</i> Password: </div>
-                                <div class="col-md-7">{{ reg_form.repeat_password }}</div>
+                            <br/>
+                            <div class="row" data-toggle="popover" data-placement="bottom" title="Password" data-content="Type your password for a second time. Both times must match.">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                    <span class="text-right pull-right"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;Repeat Password:</span>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{{ reg_form.repeat_password }}</div>
                             </div>
-                            <br/><br/><br/>
+                            <br/>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-8">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h2 class="panel-title">Contact Information</h2>
+                            <h2 class="panel-title"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Contact Information</h2>
                         </div>
-                        <div class="panel-body" id="col-2">
-                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Contact Name" data-content="First name must be at least 3 characters, while last time must be at least 2 characters.">
-                                <div class="col-md-2">First Name: </div>
-                                <div class="col-md-4">{{ reg_form.first_name }}</div>
-                                <div class="col-md-2">Last Name: </div>
-                                <div class="col-md-4">{{ reg_form.last_name }}</div>
+                        <div class="panel-body">
+                            <br/>
+                            <div class="row" data-toggle="popover" data-placement="bottom" title="Contact Name" data-content="First name must be at least 3 characters, while last time must be at least 2 characters.">
+                                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
+                                    <span class="pull-right"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;First Name:</span>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
+                                    {{reg_form.first_name}}
+                                    <br class="hidden-lg hidden-md" />
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">
+                                    <span class="pull-right"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Last Name:</span>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
+                                    {{reg_form.last_name}}
+                                    <br class="hidden-lg hidden-md" />
+                                </div>
+                                <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
                             </div>
-                            <br/><br/><br/>
-                            <div class="row col-md-12" data-toggle="popover" data-placement="bottom" title="Affiliation" data-content="Institution and department names must be at least 4 characters long.">
-                                <div class="col-md-2">Insititution: </div>
-                                <div class="col-md-4">{{ reg_form.institution }}</div>
-                                <div class="col-md-2">Department: </div>
-                                <div class="col-md-4">{{ reg_form.department }}</div>
+                            <br/>
+                            <div class="row" data-toggle="popover" data-placement="bottom" title="Affiliation" data-content="Institution and department names must be at least 4 characters long.">
+                                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
+                                <span class="pull-right"><span class="glyphicon glyphicon-education"></span>&nbsp;&nbsp;Insititution:</span>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
+                                    {{reg_form.institution}}
+                                    <br class="hidden-lg hidden-md" />
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">
+                                    <span class="pull-right"><span class="glyphicon glyphicon-tower"></span>&nbsp;&nbsp;Department:</span>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
+                                    {{reg_form.department}}
+                                    <br class="hidden-lg hidden-md" />
+                                </div>
+                                <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
                             </div>
-                            <br/><br/><br/>
+                            <br/>
                             <div class="row" data-toggle="popover" data-placement="bottom" title="Email" data-content="Please use valid email address.">
-                                <div class="col-md-3">&nbsp;&nbsp;&nbsp;&nbsp;E-mail Address:</div>
-                                <div class="col-md-8">{{ reg_form.email }}</div>
-                                <div class="col-md-1"></div>
+                                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
+                                    <span class="pull-right"><span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;E-mail Address:</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-7 col-xs-7">{{reg_form.email}}</div>
+                                <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
                             </div>
+                            <br/>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row col-md-12">
-                <div class="pull-right">
-                    <input type="submit" class="btn btn-inverse" value="&nbsp;Submit&nbsp;"/>
-                    &nbsp;&nbsp;
-                    <a href="/register/" class="btn btn-default">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-inverse"><span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Submit&nbsp;</button>
+                        &nbsp;
+                        <a href="/register/" class="btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
+                    </div>
                 </div>
             </div>
-            <br/><br/><br/>
         </form>
+        <br/><br/>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            {% if flag == 1 %}
+                <div class="alert alert-success" role="alert">
+                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                    <b>SUCCESS</b>: Your MyRMDB account has been processed. Thank you for registration. Now you can 
+                    <a href="/login/" class="btn btn-inverse">
+                        <span class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;Sign In&nbsp;
+                    </a>.
+                </div>
+            {% endif %}
+
+            {% if flag == 0 and error_msg %}
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                    <b>ERROR</b>: The following messages were produced:
+                    <br/>
+                    <ul>
+                        {% for msg in error_msg %}
+                            <li>{{ msg }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
     </div>
 
 </div>
@@ -118,24 +150,7 @@
             $("#nav_deposit").addClass("active");
             $("#nav_logo").css("text-decoration","none");
 
-            $("#id_username").addClass("form-control");
-            $("#id_password").addClass("form-control");
-            $("#id_repeat_password").addClass("form-control");
-            $("#id_first_name").addClass("form-control");
-            $("#id_last_name").addClass("form-control");
-            $("#id_institution").addClass("form-control");
-            $("#id_department").addClass("form-control");
-            $("#id_email").addClass("form-control");
-
-            $("#id_username, #id_password, #id_repeatpassword, #id_firstname, #id_lastname, #id_institution, #id_department, #id_email").on("focusout", function() {
-                $(this).parent().removeClass("has-error");
-            });
-
-
-
-            var col_h = Math.max($("#col-1").height(), $("#col-2").height()) +25;
-            $("#col-1").css("height", col_h);
-            $("#col-2").css("height", col_h);
+            $("#id_username, #id_password, #id_repeat_password, #id_first_name, #id_last_name, #id_institution, #id_department, #id_email").addClass("form-control");
         });
     </script>
 

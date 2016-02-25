@@ -78,6 +78,15 @@ class NewsItem(models.Model):
         verbose_name_plural = 'News Items'
 
 
+class HistoryItem(models.Model):
+    date = models.DateField(verbose_name='Display Date')
+    content = models.TextField(blank=False, verbose_name='HTML Content', help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;HTML supported.')
+
+    class Meta():
+        verbose_name = 'History Item'
+        verbose_name_plural = 'History Items'
+
+
 class Publication(models.Model):
     title = models.TextField(help_text='<i class="icon-bullhorn"></i> Do <span class="label label-danger">NOT</span> use "CamelCase / InterCaps / CapWords". Only capitalize the first word.')
     authors = models.TextField(help_text='<span class="glyphicon glyphicon-user"></span>&nbsp; Follow the format seen on the website: <span class="label label-inverse">Das, R.,</span>.')

@@ -26,43 +26,6 @@ import urllib
 # 	return "%d%s" % (x, result)
 
 
-def api_stats(request):
-	(N_all, N_RNA, N_puzzle, N_eterna, N_constructs, N_datapoints) = get_rmdb_stats()
-	json = {'N_all':"{:,}".format(N_all), 'N_RNA':"{:,}".format(N_RNA), 'N_puzzle':"{:,}".format(N_puzzle), 'N_eterna':"{:,}".format(N_eterna), 'N_constructs':"{:,}".format(N_constructs), 'N_datapoints':"{:,}".format(N_datapoints)}
-	return HttpResponse(simplejson.dumps(json), content_type='application/json')
-
-
-def api_latest(request):
-	entries = RMDBEntry.objects.all().filter(revision_status='PUB').order_by('-creation_date')
-	entries_list = []
-	for e in entries:
-		if e.rmdb_id not in entries_list:
-			entries_list.append(e.rmdb_id)
-		if len(entries_list) == 10:
-			break
-	entries = []
-	for e in entries_list:
-		entries.append(RMDBEntry.objects.filter(rmdb_id=e).order_by('-creation_date')[0])
-
-	entries_list = []
-	for e in entries:
-		cid = ConstructSection.objects.filter(entry=e).values( 'id' )[ 0 ][ 'id' ]
-		rmdb_id = e.rmdb_id
-		for c in ConstructSection.objects.filter(entry=e).values('name').distinct():
-			name = c['name']
-		e_temp = {'cid':cid, 'name':name, 'rmdb_id':rmdb_id}
-		entries_list.append(e_temp)
-	return HttpResponse(simplejson.dumps(entries_list), content_type='application/json')
-
-
-def api_news(request):
-	n_news = 20
-	news = NewsItem.objects.all().order_by('-date')[:n_news]
-	json = {}
-	for i, n in enumerate(news):
-		json[i] = {'title':n.title, 'date':n.date.strftime('%b %d, %Y')}
-	return HttpResponse(simplejson.dumps(json), content_type='application/json')
-
 
 def api_history(request):
 	return HttpResponse(get_history())

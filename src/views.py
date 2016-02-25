@@ -1,24 +1,22 @@
-from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect
 from django.template import RequestContext#, Template
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-# from django.core.urlresolvers import reverse
-# from django.core.mail import send_mail
 from django.shortcuts import render, render_to_response, redirect
-# from django import forms
 
 from rdatkit.datahandlers import RDATFile, RDATSection, ISATABFile
 from rdatkit.secondary_structure import SecondaryStructure
 
+from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
 from src.settings import *
+
 from src.helper.helpers import *
 from src.helper.helper_api import *
 from src.helper.helper_deposit import *
 from src.helper.helper_display import *
 from src.helper.helper_predict import *
-from src.helper.helper_stats import *
 
 import datetime
 import simplejson
@@ -36,7 +34,7 @@ def browse(request):
 
 def specs(request, section):
     if len(section) > 0:
-        return  HttpResponseRedirect('/specs' + section)
+        return HttpResponseRedirect('/specs/' + section)
     return render_to_response(PATH.HTML_PATH['specs'], {}, context_instance=RequestContext(request))
 
 def tools(request):
@@ -46,7 +44,7 @@ def tools_license(request, keyword):
     if keyword in ('mapseeker', 'reeffit'):
         return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword':keyword}, context_instance=RequestContext(request))
     else:
-        raise Http404
+        return error404(request)
 
 @login_required
 def tools_download(request, keyword):
@@ -69,13 +67,13 @@ def tools_download(request, keyword):
             title = "REEFFIT"
         return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword':keyword, 'title':title}, context_instance=RequestContext(request))
     else:
-        raise Http404
+        return error404(request)
 
 def tutorial(request, keyword):
     if keyword in ('predict', 'api', 'rdatkit', 'hitrace', 'mapseeker', 'reeffit'):
         return render_to_response(PATH.HTML_PATH['tutorial'].replace('xxx', keyword), {}, context_instance=RequestContext(request))
     else:
-        raise Http404
+        return error404(request)
 
 def about(request):
     return render_to_response(PATH.HTML_PATH['about'], {}, context_instance=RequestContext(request))
@@ -84,7 +82,41 @@ def license(request):
     return render_to_response(PATH.HTML_PATH['license'], {}, context_instance=RequestContext(request))
 
 def history(request):
-    return render_to_response(PATH.HTML_PATH['history'], {}, context_instance=RequestContext(request))
+    hist_list = []
+    hist = HistoryItem.objects.all()
+    for h in hist:
+        lines = h.content
+        lines = [line for line in lines.split('\r\n') if line.strip()]
+        ls_1_flag = 0
+        ls_2_flag = 0
+        for i in range(len(lines)):
+            lines[i] = lines[i].rstrip()
+            if lines[i][0] == "#":
+                lines[i] = "<span class=\"lead\"><b>" + lines[i][1:] + "</b></span><br/>"
+            elif lines[i][0] != '-':
+                if lines[i][0] == "!":
+                    lines[i] = "by <kbd><i>" + lines[i][1:] + "</i></kbd><br/><br/>"
+                else:
+                    lines[i] = "<p>" + lines[i] + "</p><p><ul>"
+                
+            else:
+                if lines[i][:2] != '-\\':
+                    lines[i] = "<li><u>" + lines[i][1:] + "</u></li>"
+                    if ls_1_flag:
+                        lines[i] = "</ul></p>" + lines[i]
+                    ls_1_flag = i
+
+                else:
+                    lines[i] = "<li>" + lines[i][2:] + "</li>"
+                    if ls_2_flag < ls_1_flag:
+                        lines[i] = "<ul><p>" + lines[i]
+                    ls_2_flag = i        
+        lines.append("</ul></ul><br/><hr/>")
+        date_string = h.date.strftime("%b %d, %Y (%a)")
+        lines.insert(0, "<i>%s</i><br/>" % date_string)
+        hist_list.insert(0, ''.join(lines))
+        
+    return render_to_response(PATH.HTML_PATH['history'], {'hist': hist_list}, context_instance=RequestContext(request))
 
 
 def validate(request):
@@ -117,7 +149,7 @@ def detail(request, rmdb_id):
         entry.cid = ConstructSection.objects.filter(entry=entry).values( 'id' )[ 0 ][ 'id' ]
         is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)) else False
     except (RMDBEntry.DoesNotExist, IndexError):
-        raise Http404
+        return error404(request)
 
     # {'codebase':get_codebase(request)}
     return render_to_response(PATH.HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'version':entry.version, 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
@@ -435,6 +467,42 @@ def get_js(request):
     stats = simplejson.load(open('%s/cache/stat_sys.json' % MEDIA_ROOT, 'r'))
     json = {'jquery':stats['jquery'], 'bootstrap':stats['bootstrap'], 'd3':stats['d3'], 'zclip':stats['zclip']}
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
+
+def get_stats(request):
+    json = simplejson.load(open('%s/cache/stat_stats.json' % MEDIA_ROOT, 'r'))
+    for key in json.keys():
+        json[key] = '{:,}'.format(json[key])
+    return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
+
+def get_news(request):
+    n_news = 20
+    news = NewsItem.objects.all().order_by('-date')[:n_news]
+    json = {}
+    for i, n in enumerate(news):
+        json[i] = {'content': n.content, 'date': n.date.strftime('%b %d, %Y')}
+    return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
+
+def get_recent(request):
+    entries = RMDBEntry.objects.all().filter(status='PUB').order_by('-creation_date')
+    entries_list = []
+    for e in entries:
+        if e.rmdb_id not in entries_list:
+            entries_list.append(e.rmdb_id)
+        if len(entries_list) == 10:
+            break
+    entries = []
+    for e in entries_list:
+        entries.append(RMDBEntry.objects.filter(rmdb_id=e).order_by('-creation_date')[0])
+
+    entries_list = []
+    for e in entries:
+        cid = ConstructSection.objects.filter(entry=e).values('id')[0]['id']
+        rmdb_id = e.rmdb_id
+        for c in ConstructSection.objects.filter(entry=e).values('name').distinct():
+            name = c['name']
+        e_temp = {'cid':cid, 'name':name, 'rmdb_id':rmdb_id}
+        entries_list.append(e_temp)
+    return HttpResponse(simplejson.dumps(entries_list, sort_keys=True, indent=' ' * 4), content_type='application/json')    
 
 
 def ping_test(request):

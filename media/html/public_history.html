@@ -1,50 +1,57 @@
-{% extends "media/html/_framework.html" %}
+{% extends "media/html/_public.html" %}
 {% block content %}
 <div class="container">
-
-	<div class="col-md-12" class="row">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h2 class="panel-title">
-					<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;&nbsp;
-					Future Development
-				</h2>
-			</div>
-			<div class="panel-body">
-				<div class="col-md-12">
-					<p class="lead">RMDB version 2.2 BETA, phase III</p>
-					<p>The following new features is currently under active development, and will be released for preview soon:</p>
-					<ul>
-						<li>
-							<p>
-								Interactive data browser: 
-								<br/>
-								For EteRNA entries: A new interface with faster search and locate to particular entry or design project, and extract particular entries into separate RDAT file for download.
-								<br/>
-								For all: use canvas element for faster heatmap rendering.
-							</p>
-						</li>
-						<li>
-							<p>Advanced search: finer and more detailed search tool for all RMDB data, retrieving construct entries instead of whole RDAT.</p>
-						</li>
-						<li>
-							<p>Structure Server: new result page without VARNA applet, enabling boostrapping and result download. Cache modeling run results for all RMDB_ID entries for preview.</p>
-						</li>
-					</ul>
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;&nbsp;
+						Future Development
+					</h2>
+				</div>
+				<div class="panel-body">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<p class="lead">RMDB version 2.2 BETA, phase III</p>
+						<p>The following new features is currently under active development, and will be released for preview soon:</p>
+						<ul>
+							<li>
+								<p>
+									Interactive data browser: 
+									<br/>
+									For EteRNA entries: A new interface with faster search and locate to particular entry or design project, and extract particular entries into separate RDAT file for download.
+									<br/>
+									For all: use canvas element for faster heatmap rendering.
+								</p>
+							</li>
+							<li>
+								<p>Advanced search: finer and more detailed search tool for all RMDB data, retrieving construct entries instead of whole RDAT.</p>
+							</li>
+							<li>
+								<p>Structure Server: new result page without VARNA applet, enabling boostrapping and result download. Cache modeling run results for all RMDB_ID entries for preview.</p>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
 
 
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h2 class="panel-title">
-					<span class="glyphicon glyphicon-scale" aria-hidden="true"></span>&nbsp;&nbsp;
-					Change Log History
-				</h2>
-			</div>
-			<div class="panel-body">
-				<div class="col-md-12" id="panel_log"></div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<span class="glyphicon glyphicon-scale" aria-hidden="true"></span>&nbsp;&nbsp;
+						Change Log History
+					</h2>
+				</div>
+				<div class="panel-body">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="panel_log">
+						{% for h in hist %}
+						{% autoescape off %}
+							{{h}}
+						{% endautoescape %}
+						{% endfor %}
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -59,13 +66,6 @@
 			$('.dropdown-toggle').removeClass("active");
 			$("#nav_about").addClass("active");
 	    	$("#nav_logo").css("text-decoration","none");
-
-	    	$.ajax({
-				url: '/api/index/history/',
-				dataType: 'text',
-				async: true,
-				success: function(data) { $("#panel_log").html(data); }
-	    	});
 
 	    	$(".clickable").on("click", function () {
 	    		var click_id = $(this).attr("id")
