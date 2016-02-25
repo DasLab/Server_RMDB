@@ -1,42 +1,38 @@
 var $ = django.jQuery;
 
 function replace_path(string) {
-    return string.replace('/home/ubuntu/Server_Primerize/data/', '/site_data/').replace('/Website_Server/Primerize/data/', '/site_data/');
+    return string.replace('/home/ubuntu/Server_RMDB/data/', '/site_data/').replace('/Website_Server/RMDB/data/', '/site_data/');
 }
 
 function render_status(string) {
     var span_class = 'default';
-    if (string == 'Success') {
+    if (string == 'Published') {
         span_class = 'success';
-    } else if (string == 'Error') {
-        span_class = 'danger';
-    } else if (string == 'Underway') {
+    } else if (string == 'On Hold') {
         span_class = 'warning';
-    } else if (string == 'Fail') {
-        span_class = 'orange';
-    } else if (string == 'Demo') {
+    } else if (string == 'In Review') {
         span_class = 'info';
+    } else if (string == 'Received') {
+        span_class = 'danger';
     }
     return '<span class="label label-' + span_class + '">' + string + '</span>';
 }
 
 function render_type(string) {
     var span_class = 'default';
-    if (string == 'Simple Assembly') {
+    if (string == 'Standard State') {
         span_class = 'primary';
-    } else if (string == 'Mutate-and-Map') {
-        span_class = 'orange';
-    } else if (string == 'Mutation/Rescue') {
-        span_class = 'teal';
+    } else if (string == 'Mutate And Map') {
+        span_class = 'success';
+    } else if (string == 'MOHCA') {
+        span_class = 'danger';
+    } else if (string == 'Titration') {
+        span_class = 'info';
     }
     return '<span class="label label-' + span_class + '">' + string + '</span>';
 }
 
 $(document).ready(function () {
-    // $('script[src="/static/admin/js/admin/DateTimeShortcuts.js"]').remove();
-    // $('script[src="/static/admin/js/jquery.js"]').remove();
-    // $('script[src="/static/admin/js/jquery.init.js"]').remove();
-
     $("label.required").css("font-weight", "bold");
     $("table").addClass("table-hover").removeClass("table-bordered table-condensed");
     $('[scope="col"]').addClass("info");
@@ -44,9 +40,8 @@ $(document).ready(function () {
     $("a.deletelink").css("box-sizing", "border-box");
     $("input").addClass("form-control");
     $("select").addClass("form-control");
-    $("textarea").addClass("form-control");
+    $("textarea").addClass("form-control").attr("rows", 5);
     $("#id_sequence, #id_primers, #id_params, #id_plates").addClass("monospace");
-    $("#id_job_id, #id_job_1d, #id_job_2d, #id_job_3d").addClass("monospace job_id");
     $("span.add-on").html('<span class="glyphicon glyphicon-calendar"></span>').addClass("input-group-addon").removeClass("add-on");
 
     $('th > div.text > span > input[type="checkbox"]').each(function() {
@@ -97,118 +92,77 @@ $(document).ready(function () {
     $(".sortoptions").addClass("pull-right").removeClass("sortoptions");
     $("div.pagination-info").html("<br/>&nbsp;&nbsp;&nbsp;&nbsp;" + $("div.pagination-info").html());
 
-    if ($(location).attr("href").indexOf("admin/src/jobids") != -1) {
-        $("th.column-date").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
-        $("th.column-job_id").addClass("col-lg-6 col-md-6 col-sm-6 col-xs-6");
-        $("th.column-type").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
-
-        $("td.field-job_id").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
-        $("td.field-type").each(function() { $(this).html(render_type($(this).html())); });
-
-        $("th.column-job_id > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Job IDs');
-        $("th.column-type > div.text > a").html('<span class="glyphicon glyphicon-adjust"></span>&nbsp;&nbsp;Job Type');
-
-        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
-        $("ul.breadcrumb > li:first").next().remove();
-        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;');
-    } else if ($(location).attr("href").indexOf("admin/src/jobgroups") != -1) {
+    if ($(location).attr("href").indexOf("admin/src/rmdbentry") != -1) {
         $("th.column-id").addClass("col-lg-1 col-md-1 col-sm-1 col-xs-1");
-        $("th.column-tag").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
-        $("th.column-job_1d").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
-        $("th.column-job_2d").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
-        $("th.column-job_3d").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
-
-        $("td.field-tag").css("font-style", "italic");
-        $("td.field-job_1d").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
-        $("td.field-job_2d").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
-        $("td.field-job_3d").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
-
-        $("th.column-id > div.text > a").html('<span class="glyphicon glyphicon-th-large"></span>');
-        $("th.column-tag > div.text > a").html('<span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;Job Tag');
-        $("th.column-job_1d > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Job Entry of <code>Design1D</code>');
-        $("th.column-job_2d > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Job Entry of <code>Design2D</code>');
-        $("th.column-job_3d > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Job Entry of <code>Design3D</code>');
-
-        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-qrcode"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
-        $("ul.breadcrumb > li:first").next().remove();
-        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-qrcode"></span>&nbsp;&nbsp;');
-    } else if ($(location).attr("href").indexOf("admin/src/design1d") != -1) {
-        $("th.column-date").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
-        $("th.column-job_id").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
-        $("th.column-tag").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
+        $("th.column-rmdb_id").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
+        $("th.column-version").addClass("col-lg-1 col-md-1 col-sm-1 col-xs-1");
         $("th.column-status").addClass("col-lg-1 col-md-1 col-sm-1 col-xs-1");
-        $("th.column-sequence").addClass("col-lg-5 col-md-5 col-sm-5 col-xs-5");
+        $("th.column-type").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
+        $("th.column-short_desp").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
+        $("th.column-data_count").addClass("col-lg-1 col-md-1 col-sm-1 col-xs-1");
+        $("th.column-construct_count").addClass("col-lg-1 col-md-1 col-sm-1 col-xs-1");
 
-        $("td.field-tag").css("font-style", "italic");
-        $("td.field-job_id").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
+        $("td.field-rmdb_id").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
         $("td.field-status").each(function() { $(this).html(render_status($(this).html())); });
-        $("td.field-sequence").css("word-break", "break-all");
-        $("td.field-sequence").each(function() { $(this).html('<code style="padding:0px; border-radius:0px;">' + $(this).html() + "</code>"); });
+        $("td.field-type").each(function() { $(this).html(render_type($(this).html())); });
+        $("td.field-data_count").each(function() { $(this).html("<code>" + $(this).html() + "</code>"); });
+        $("td.field-construct_count").each(function() { $(this).html("<code>" + $(this).html() + "</code>"); });
 
-        $("th.column-date > div.text > a").html('<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;Submission Date');
-        $("th.column-job_id > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Job ID');
-        $("th.column-tag > div.text > a").html('<span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;Tag');
+        $("th.column-id > div.text > a").html('<span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;ID');
+        $("th.column-rmdb_id > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;RMDB IDs');
+        $("th.column-version > div.text > a").html('<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;Version');
         $("th.column-status > div.text > a").html('<span class="glyphicon glyphicon-hourglass"></span>&nbsp;&nbsp;Status');
-        $("th.column-sequence > div.text > a").html('<span class="glyphicon glyphicon-console"></span>&nbsp;&nbsp;Sequence');
+        $("th.column-type > div.text > a").html('<span class="glyphicon glyphicon-adjust"></span>&nbsp;&nbsp;Data Type');
+        $("th.column-short_desp > div.text > span").html('<span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;Description');
+        $("th.column-data_count > div.text > a").html('<span class="glyphicon glyphicon-signal"></span>&nbsp;&nbsp;# Data Points');
+        $("th.column-construct_count > div.text > a").html('<span class="glyphicon glyphicon-signal"></span>&nbsp;&nbsp;# Constructs');
 
-        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-tint"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
+        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-file"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
         $("ul.breadcrumb > li:first").next().remove();
-        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp;');
-    } else if ($(location).attr("href").indexOf("admin/src/design2d") != -1) {
-        $("th.column-date").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
-        $("th.column-job_id").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
-        $("th.column-tag").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
-        $("th.column-status").addClass("col-lg-1 col-md-1 col-sm-1 col-xs-1");
-        $("th.column-sequence").addClass("col-lg-5 col-md-5 col-sm-5 col-xs-5");
+        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;');
+     } else if ($(location).attr("href").indexOf("admin/src/publication") != -1) {
+        $("th.column-id").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
+        $("th.column-pubmed_id").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
+        $("th.column-authors").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
+        $("th.column-title").addClass("col-lg-5 col-md-5 col-sm-5 col-xs-5");
 
-        $("td.field-tag").css("font-style", "italic");
-        $("td.field-job_id").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
-        $("td.field-status").each(function() { $(this).html(render_status($(this).html())); });
-        $("td.field-sequence").css("word-break", "break-all");
-        $("td.field-sequence").each(function() { $(this).html('<code style="padding:0px; border-radius:0px;">' + $(this).html() + "</code>"); });
+        $("td.field-pubmed_id").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
 
-        $("th.column-date > div.text > a").html('<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;Submission Date');
-        $("th.column-job_id > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Job ID');
-        $("th.column-tag > div.text > a").html('<span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;Tag');
-        $("th.column-status > div.text > a").html('<span class="glyphicon glyphicon-hourglass"></span>&nbsp;&nbsp;Status');
-        $("th.column-sequence > div.text > a").html('<span class="glyphicon glyphicon-console"></span>&nbsp;&nbsp;Sequence');
+        $("th.column-id > div.text > a").html('<span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;ID');
+        $("th.column-pubmed_id > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;PubMed ID');
+        $("th.column-authors > div.text > a").html('<span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Authors');
+        $("th.column-title > div.text > a").html('<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Title');
 
-        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-tint"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
+        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-education"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
         $("ul.breadcrumb > li:first").next().remove();
-        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-tint"></span>&nbsp;&nbsp;');
-    } else if ($(location).attr("href").indexOf("admin/src/design3d") != -1) {
-        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-leaf"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
+        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-education"></span>&nbsp;&nbsp;');
+    } else if ($(location).attr("href").indexOf("admin/src/organism") != -1) {
+        $("th.column-id").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
+        $("th.column-tax_id").addClass("col-lg-4 col-md-4 col-sm-4 col-xs-4");
+        $("th.column-name").addClass("col-lg-6 col-md-6 col-sm-6 col-xs-6");
+
+        $("td.field-name").css("font-style", "italic");
+        $("td.field-tax_id").each(function() { $(this).html("<kbd>" + $(this).html() + "</kbd>"); });
+
+        $("th.column-id > div.text > a").html('<span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;ID');
+        $("th.column-tax_id > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Taxonomy ID');
+        $("th.column-name > div.text > a").html('<span class="glyphicon glyphicon-piggy-bank"></span>&nbsp;&nbsp;Organism Name');
+
+        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-piggy-bank"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
         $("ul.breadcrumb > li:first").next().remove();
-        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-leaf"></span>&nbsp;&nbsp;');
-    } else if ($(location).attr("href").indexOf("admin/src/sourcedownloader") != -1) {
-        $("th.column-date").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
-        $("th.column-full_name").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
-        $("th.column-affiliation").addClass("col-lg-5 col-md-5 col-sm-5 col-xs-5");
-        $("th.column-email").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
-
-        $("td.field-full_name").css("font-weight", "bold");
-        $("td.field-email").css("text-decoration", "underline");
-
-        $("th.column-date > div.text > a").html('<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;Request Date');
-        $("th.column-full_name > div.text > a").html('<span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Full Name');
-        $("th.column-affiliation > div.text > a").html('<span class="glyphicon glyphicon-education"></span>&nbsp;&nbsp;Affiliation');
-        $("th.column-email > div.text > a").html('<span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;Email');
-
-        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-cloud-download"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
-        $("ul.breadcrumb > li:first").next().remove();
-        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-cloud-download"></span>&nbsp;&nbsp;');
-    } else if ($(location).attr("href").indexOf("admin/src/historyitem") != -1) {
+        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-piggy-bank"></span>&nbsp;&nbsp;');
+    } else if ($(location).attr("href").indexOf("admin/src/newsitem") != -1) {
         $("th.column-date").addClass("col-lg-3 col-md-3 col-sm-3 col-xs-3");
-        $("th.column-content_html").addClass("col-lg-9 col-md-9 col-sm-9 col-xs-9");
+        $("th.column-content").addClass("col-lg-9 col-md-9 col-sm-9 col-xs-9");
 
-        $("td.field-content_html").each(function() { $(this).html($(this).text()); });
+        $("td.field-content").each(function() { $(this).html($(this).text()); });
 
         $("th.column-date > div.text > a").html('<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;Display Date');
-        $("th.column-content_html > div.text > a").html('<span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;HTML Content');
+        $("th.column-content > div.text > a").html('<span class="glyphicon glyphicon-globe"></span>&nbsp;&nbsp;HTML Content');
 
-        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-list-alt"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
+        $("div.col-md-6 > h2.legend").html('<span class="glyphicon glyphicon-picture"></span>&nbsp;' + $("div.col-md-6 > h2.legend").html() + '<span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>');
         $("ul.breadcrumb > li:first").next().remove();
-        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;');
+        $("ul.breadcrumb > li:first").next().prepend('<span style="color: #000;" class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;');
     } else if ($(location).attr("href").indexOf("admin/auth/user") != -1) {
         $("th.column-username").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
         $("th.column-email").addClass("col-lg-2 col-md-2 col-sm-2 col-xs-2");
@@ -251,7 +205,6 @@ $(window).load(function () {
             if ($(this).parent().next().hasClass("datetimeshortcuts")) {
                 elem = $(this).parent().next();
             } else {
-                // $('<br><br>').insertBefore($(this).parent().next());
                 $(this).parent().next().css("display", "block");
                 elem = $(this).siblings().last();
             }
@@ -286,7 +239,6 @@ $(window).load(function () {
             if ($(this).parent().next().hasClass("datetimeshortcuts")) {
                 elem = $(this).siblings().last();
             } else {
-                // $('<br><br>').insertBefore($(this).parent().next());
                 $(this).parent().next().css("display", "block");
                 elem = $(this).siblings().last();
             }
@@ -309,12 +261,6 @@ $(window).load(function () {
         });
 
         if ($(location).attr("href").indexOf("admin/auth/user") != -1) {
-            // $(".vDateField").each(function () {
-            //  $(this).parent().contents().filter(function () {return this.data === "Date: ";}).replaceWith("");
-            // });
-            // $(".vTimeField").each(function () {
-            //  $(this).parent().contents().filter(function () {return this.data === "Time: ";}).replaceWith("");
-            // });
             $("span.help-icon").removeClass("help help-tooltip help-icon").addClass("glyphicon glyphicon-question-sign");
 
             $("select").addClass("form-control").removeClass("filtered");
@@ -332,6 +278,16 @@ $(window).load(function () {
             $("a.selector-chooseall").addClass("btn btn-info").html('<span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Choose All');
             $("<br/>").insertBefore($("a.selector-clearall"));
             $("a.selector-clearall").addClass("btn btn-default").html('<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;Remove All');
+        } else if ($(location).attr("href").indexOf("admin/src/rmdbentry") != -1) {
+            $("#entryannotation_set-group > div.tabular > fieldset > h2").html('<span class="glyphicon glyphicon-list-alt"></span>&nbsp;Entry Annotations').addClass("legend").css('margin-top', 'auto');
+            $('<br/>').insertAfter($("#entryannotation_set-group > div.tabular > fieldset > h2"));
+            $('<br/>').insertBefore($("#entryannotation_set-group > div.tabular > fieldset > h2"));
+            $("#constructsection_set-group > h2").html('<span class="glyphicon glyphicon-file"></span>&nbsp;Construct Annotations').addClass("legend");
+            $("a.inline-deletelink").addClass("btn btn-danger").html('<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;Remove');
+            $("a.add-row").addClass("btn btn-success add_row").removeClass("add-row").each(function() {
+                $(this).html('<span class="glyphicon glyphicon-plus-sign"></span>&nbsp;' + $(this).html());
+            });
+            $("<br/>").insertBefore($("a.add_row"));
         }
 
         $("img[src$='/static/admin/img/icon-yes.svg']").each(function() {

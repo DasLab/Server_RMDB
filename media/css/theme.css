@@ -1,3 +1,108 @@
+@charset "UTF-8";
+/* CSS Document */
+@font-face {
+    font-family: "Helvetica";
+    src: local("Helvetica"), url("/site_media/fonts/Helvetica/Helvetica.ttf");
+    font-weight: normal; font-style: normal;
+}
+@font-face {
+    font-family: "Helvetica";
+    src: local("Helvetica Bold"), local("Helvetica-Bold"), url("/site_media/fonts/Helvetica/Helvetica-Bold.ttf");
+    font-weight: bold; font-style: normal;
+}
+@font-face {
+    font-family: "Helvetica";
+    src: local("Helvetica Oblique"), local("Helvetica-Oblique"), url("/site_media/fonts/Helvetica/Helvetica-Oblique.ttf");
+    font-weight: normal; font-style: italic;
+}
+@font-face {
+    font-family: "Helvetica";
+    src: local("Helvetica Oblique"), local("Helvetica-Oblique"), url("/site_media/fonts/Helvetica/Helvetica-Oblique.ttf");
+    font-weight: normal; font-style: oblique;
+}
+@font-face {
+    font-family: "Helvetica";
+    src: local("Helvetica Bold Oblique"), local("Helvetica-BoldOblique"), url("/site_media/fonts/Helvetica/Helvetica-BoldOblique.ttf");
+    font-weight: bold; font-style: italic;
+}
+@font-face {
+    font-family: "Helvetica";
+    src: local("Helvetica Bold Oblique"), local("Helvetica-BoldOblique"), url("/site_media/fonts/Helvetica/Helvetica-BoldOblique.ttf");
+    font-weight: bold; font-style: oblique;
+}
+
+* { font-family: "Helvetica", Arial, sans-serif; }
+
+.checkbox > label {
+  padding-left: 0px;
+}
+
+.checkbox label:after, 
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr,
+.radio .cr {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #a9a9a9;
+    border-radius: .25em;
+    width: 1.3em;
+    height: 1.3em;
+    float: left;
+    /*margin-right: .5em;*/
+}
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg);
+    opacity: 0;
+    transition: all .3s ease-in;
+    color: #fff;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr,
+.radio label input[type="radio"]:checked + .cr {
+    background-color: #5496d7;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}
+
+
 body {
   padding-top: 50px;
   padding-bottom: 30px;

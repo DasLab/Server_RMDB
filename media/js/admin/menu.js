@@ -74,62 +74,38 @@ $(document).ready(function () {
         $("#nav_sys_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #ff69bc");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;<a href="">System</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/jobids") != -1) {
-        $("#nav_job_id").addClass("active");
-        $("#nav_job").addClass("active");
-        $("#nav_job_lg").addClass("active");
+    } else if ($(location).attr("href").indexOf("admin/src/rmdbentry") != -1) {
+        $("#nav_data_rmdb").addClass("active");
+        $("#nav_data").addClass("active");
+        $("#nav_data_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Job Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/jobgroups") != -1) {
-        $("#nav_job_group").addClass("active");
-        $("#nav_job").addClass("active");
-        $("#nav_job_lg").addClass("active");
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Data Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+    } else if ($(location).attr("href").indexOf("admin/src/publication") != -1) {
+        $("#nav_data_pub").addClass("active");
+        $("#nav_data").addClass("active");
+        $("#nav_data_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Job Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/design1d") != -1) {
-        $("#nav_design_1d").addClass("active");
-        $("#nav_job").addClass("active");
-        $("#nav_job_lg").addClass("active");
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Data Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+    } else if ($(location).attr("href").indexOf("admin/src/organism") != -1) {
+        $("#nav_data_org").addClass("active");
+        $("#nav_data").addClass("active");
+        $("#nav_data_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Job Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/design2d") != -1) {
-        $("#nav_design_2d").addClass("active");
-        $("#nav_job").addClass("active");
-        $("#nav_job_lg").addClass("active");
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Data Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+    } else if ($(location).attr("href").indexOf("admin/src/newsitem") != -1) {
+        $("#nav_data_news").addClass("active");
+        $("#nav_data").addClass("active");
+        $("#nav_data_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Job Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/design3d") != -1) {
-        $("#nav_design_3d").addClass("active");
-        $("#nav_job").addClass("active");
-        $("#nav_job_lg").addClass("active");
-        $("ul.breadcrumb").css("border-bottom", "5px solid #50cc32");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Job Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">Data Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
     } else if ($(location).attr("href").indexOf("admin/auth/user") != -1) {
         $("#nav_auth").addClass("active");
         $("#nav_user").addClass("active");
         $("#nav_user_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #ff912e");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">User Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/sourcedownloader") != -1) {
-        $("#nav_source_download").addClass("active");
-        $("#nav_user").addClass("active");
-        $("#nav_user_lg").addClass("active");
-        $("ul.breadcrumb").css("border-bottom", "5px solid #ff912e");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">User Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/src/historyitem") != -1) {
-        $("#nav_history_item").addClass("active");
-        $("#nav_user").addClass("active");
-        $("#nav_user_lg").addClass("active");
-        $("ul.breadcrumb").css("border-bottom", "5px solid #ff912e");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;<a href="">User Management</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/doc_django") != -1) {
+    } else if ($(location).attr("href").indexOf("admin/doc") != -1) {
         $("#nav_django").addClass("active");
-        $("#nav_doc").addClass("active");
-        $("#nav_doc_lg").addClass("active");
-        $("ul.breadcrumb").css("border-bottom", "5px solid #c28fdd");
-        $('<li><span style="color: #000;" class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;<a href="">Documentation</a></li>').insertAfter($("ul.breadcrumb > li:first"));
-    } else if ($(location).attr("href").indexOf("admin/doc_cherrypy") != -1) {
-        $("#nav_cherrypy").addClass("active");
         $("#nav_doc").addClass("active");
         $("#nav_doc_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #c28fdd");

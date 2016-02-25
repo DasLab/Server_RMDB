@@ -13,12 +13,12 @@ $(document).ready(function() {
         url : "/admin/get_backup/",
         dataType: "json",
         success : function (data) {
-            $("#id_design_1d").html('<i>' + data['1d'][0] + '</i>');
-            $("#id_design_1d_s").html('<span style="color:#00f;">' + data['1d'][1] + '</span>');
-            $("#id_design_2d").html('<i>' + data['2d'][0] + '</i>');
-            $("#id_design_2d_s").html('<span style="color:#00f;">' + data['2d'][1] + '</span>');
-            $("#id_design_3d").html('<i>' + data['3d'][0] + '</i>');
-            $("#id_design_3d_s").html('<span style="color:#00f;">' + data['3d'][1] + '</span>');
+            $("#id_rdat").html('<i>' + data.rdat[0] + '</i>');
+            $("#id_rdat_s").html('<span style="color:#00f;">' + data.rdat[1] + '</span>');
+            $("#id_image").html('<i>' + data.image[0] + '</i>');
+            $("#id_image_s").html('<span style="color:#00f;">' + data.image[1] + '</span>');
+            $("#id_search").html('<i>' + data.search[0] + '</i>');
+            $("#id_search_s").html('<span style="color:#00f;">' + data.search[1] + '</span>');
 
             $("#id_mysql_s").html('<span style="color:#00f;">' + data.backup.mysql[1] + '</span>');
             $("#id_static_s").html('<span style="color:#00f;">' + data.backup.data[1] + '</span>');

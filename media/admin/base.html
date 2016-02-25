@@ -26,6 +26,7 @@
   <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}core{{DEBUG_STR}}.js"></script>
   <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}RelatedObjectLookups{{DEBUG_STR}}.js"></script>
   <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}jquery.init{{DEBUG_STR}}.js"></script>
+  <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}jquery.formset{{DEBUG_STR}}.js"></script>
   <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}actions{{DEBUG_STR}}.js"></script>
   <script type="text/javascript" src="/site_media/js/suit/{{DEBUG_DIR}}DateTimeShortcuts{{DEBUG_STR}}.js"></script>
   {% block extratail %}{% endblock %}
@@ -193,17 +194,16 @@
           </ul>
         </li>
 
-        <li id="nav_job_lg" class="nav-ul nav-ul-lg li-green">
+        <li id="nav_data_lg" class="nav-ul nav-ul-lg li-green">
           <a href="/admin/src/jobids/" ><span class="lead glyphicon glyphicon-inbox"></span></a>
         </li>
-        <li id="nav_job" class="nav-ul li-green">
-          <a href="/admin/src/jobids/"><span class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;Job Management</a>
+        <li id="nav_data" class="nav-ul li-green">
+          <a href="/admin/src/jobids/"><span class="glyphicon glyphicon-inbox"></span>&nbsp;&nbsp;Data Management</a>
           <ul class="nav-li-sub">
-            <li id="nav_job_id" class="nav-li"><span class="glyphicon glyphicon-credit-card nav-icon"></span><a href="/admin/src/jobids/">&nbsp;&nbsp;Job IDs</a></li>
-            <li id="nav_job_group" class="nav-li"><span class="glyphicon glyphicon-qrcode nav-icon"></span><a href="/admin/src/jobgroups/">&nbsp;&nbsp;Job Groupings</a></li>
-            <li id="nav_design_1d" class="nav-li"><span class="glyphicon glyphicon-tint nav-icon"></span><a href="/admin/src/design1d/">&nbsp;&nbsp;Design 1D Items</a></li>
-            <li id="nav_design_2d" class="nav-li"><span class="glyphicon glyphicon-fire nav-icon"></span><a href="/admin/src/design2d/">&nbsp;&nbsp;Design 2D Items</a></li>
-            <li id="nav_design_3d" class="nav-li"><span class="glyphicon glyphicon-leaf nav-icon"></span><a href="/admin/src/design3d/">&nbsp;&nbsp;Design 3D Items</a></li>
+            <li id="nav_data_rmdb" class="nav-li"><span class="glyphicon glyphicon-file nav-icon"></span><a href="/admin/src/rmdbentry/">&nbsp;&nbsp;RMDB Entries</a></li>
+            <li id="nav_data_pub" class="nav-li"><span class="glyphicon glyphicon-education nav-icon"></span><a href="/admin/src/publication/">&nbsp;&nbsp;Publications</a></li>
+            <li id="nav_data_org" class="nav-li"><span class="glyphicon glyphicon-piggy-bank nav-icon"></span><a href="/admin/src/organism/">&nbsp;&nbsp;Organisms</a></li>
+            <li id="nav_data_news" class="nav-li"><span class="glyphicon glyphicon-picture nav-icon"></span><a href="/admin/src/newsitem/">&nbsp;&nbsp;News Items</a></li>
           </ul>
         </li>
 
@@ -214,17 +214,14 @@
           <a href="/admin/auth/user/"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;User Management</a>
           <ul class="nav-li-sub">
             <li id="nav_auth" class="nav-li"><span class="glyphicon glyphicon-lock nav-icon"></span><a href="/admin/auth/user/">&nbsp;&nbsp;User Autherization</a></li>
-            <li id="nav_source_download" class="nav-li"><span class="glyphicon glyphicon-cloud-download nav-icon"></span><a href="/admin/src/sourcedownloader/">&nbsp;&nbsp;Source Downloaders</a></li>
-            <li id="nav_history_item" class="nav-li"><span class="glyphicon glyphicon-list-alt nav-icon"></span><a href="/admin/src/historyitem/">&nbsp;&nbsp;History Items</a></li>
           </ul>
         </li>
 
-        <li id="nav_doc_lg" class="nav-ul nav-ul-lg li-violet"><a href="/admin/doc_django/"><span class="lead glyphicon glyphicon-book"></span></a></li>
+        <li id="nav_doc_lg" class="nav-ul nav-ul-lg li-violet"><a href="/admin/doc/"><span class="lead glyphicon glyphicon-book"></span></a></li>
         <li id="nav_doc" class="nav-ul li-violet">
-          <a href="/admin/doc_django/"><span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;Documentation</a>
+          <a href="/admin/doc/"><span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;Documentation</a>
           <ul class="nav-li-sub">
-            <li id="nav_django" class="nav-li"><img src="/site_media/images/icons/django_o.png" class="nav-icon" height="14px"><a href="/admin/doc_django/">&nbsp;&nbsp;Django (Current)</a></li>
-            <li id="nav_cherrypy" class="nav-li"><span class="glyphicon glyphicon-apple nav-icon"></span><a href="/admin/doc_cherrypy/">&nbsp;&nbsp;CherryPy (Obsolete)</a></li>
+            <li id="nav_django" class="nav-li"><img src="/site_media/images/icons/django_o.png" class="nav-icon" height="14px"><a href="/admin/doc/">&nbsp;&nbsp;Django (Current)</a></li>
           </ul>
         </li>
       </ul>

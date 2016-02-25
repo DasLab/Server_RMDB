@@ -33,6 +33,10 @@
 
 * { font-family: "Helvetica", Arial, sans-serif; }
 
+textarea.form-control, input.form-control, select.form-control {
+  font-family: "Helvetica";
+}
+
 body {
   padding-top: 50px;
   padding-bottom: 30px;
@@ -65,6 +69,18 @@ body {
   background-size: 75%;
 }
 
+
+div.input-group > select.form-control {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20fill%3D%22%23555555%22%20%0A%09%20width%3D%2224px%22%20height%3D%2224px%22%20viewBox%3D%22-261%20145.2%2024%2024%22%20style%3D%22enable-background%3Anew%20-261%20145.2%2024%2024%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%3Cpath%20d%3D%22M-245.3%2C156.1l-3.6-6.5l-3.7%2C6.5%20M-252.7%2C159l3.7%2C6.5l3.6-6.5%22%2F%3E%0A%3C%2Fsvg%3E");
+  padding-right: 50px;
+  background-repeat: no-repeat;
+  background-position: right center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+
 html { 
   overflow-y: scroll; 
 }
@@ -89,6 +105,7 @@ label {
 .navbar {
   background-color: #2da89c;
   /*border-color: #112d52;*/
+  border-bottom: 0px;
 }
 .navbar .navbar-brand {
   color: #fff;
@@ -285,11 +302,13 @@ h1.section>span.num {
 .excerpt {
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 2.8em;
+  max-height: 5em;
+  height: initial;
 }
 
 .excerpt:hover {
   height: auto;
+  max-height: none;
 }
 
 .popover-title{
@@ -308,11 +327,11 @@ h1.section>span.num {
 
 .place_holder {
   height: 200px;
-  background-size: 64px;
+  background-size: 48px;
   opacity: 0.5;
   background-color: #fff;
   background-repeat: no-repeat;
-  background-image: url("/site_media/images/fg_load_3.gif");  
+  background-image: url("/site_media/images/fg_load.gif");  
   background-position: center;
 }
 
@@ -325,7 +344,7 @@ h1.section>span.num {
   height:     100%;
   width:      100%;
   background-position: center center;
-  background-size: 128px;
+  background-size: 72px;
   opacity: 0.5;
   background-color: #fff;
   background-repeat: no-repeat;
