@@ -1,0 +1,26 @@
+{% extends "media/html/_public.html" %}
+
+
+{% block content %}
+  <div class="row bgimg2-lg" style="padding:50px 0px; min-height:400px;">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="panel_left">
+      <img src="/site_media/images/bg_401.png" height="auto" style="max-width:100%;" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="panel_right">
+      <h2 style="margin-bottom:20px;">
+        <span class="label label-orange">Translation Failure</span>
+      </h2>
+      <p style="font-weight:bold; font-size:16px;">
+        <b>
+          The RBS or IRES in your mRNA to access the ribosome was coded incorrectly. 
+          <br/>
+          Making a nascent transcript might restore proper ribosomal recruitment.
+        </b>
+      </p>
+      <br/>
+      <p><i>In other words,</i></p>
+      <h3><span class="label label-orange">401: Unauthorized</span></h3>
+      <p>The server could not verify that you are authorized to access the document requested. Either you supplied the wrong credentials (e.g., bad password), or your browser doesn't understand how to supply the credentials required.</p>
+    </div>
+  </div> 
+{% endblock %}

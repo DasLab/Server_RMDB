@@ -1,0 +1,44 @@
+
+{% extends "media/html/_framework.html" %}
+{% block content %}
+<h2>Results</h2>
+{% for m in messages %}
+<p class="error_message">{{m}}</p>
+{% endfor %}
+<h3>Secondary structure visualization</h3>
+<p>Visualization provided by the VARNA applet</p>
+{% if panels %}
+{% if panels|length > 1 %}
+<p><a id="prev2" href="#">Previous</a> <a id="next2" href="#">Next</a></p>
+{% endif %}
+<div class="jqslideshow">
+{% for p in panels %}
+{% autoescape off %}{{ p }}{% endautoescape %}
+{% endfor %}
+</div>
+{% endif %}
+<form action="/structureserver/visualize" method="POST">
+<div class="hidden">
+{{ form.sequences }}
+{{ form.structures }}
+{{ form.md_datas }}
+{{ form.md_seqposes }}
+{{ form.base_annotations }}
+{{ form.modifiers }}
+{{ form.titles}}
+</div>
+<p><h4>Legend</h4></p>
+<table>
+<tr>
+<td bgcolor="#FF6600" width="30px"></td><td>Missed base pairs</td>
+</tr>
+<tr>
+<td bgcolor="#00CCFF" width="30px"></td><td>Incorrect base pair predictions</td>
+</tr>
+<table>
+<i>*With respect to reference structure</i>
+<h3>Visualizer parameters</h3>
+<p>Reference structure:</p>
+{{ form.refstruct}} <input type='submit' value='Submit'/>
+</form>
+{% endblock %}

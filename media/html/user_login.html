@@ -1,0 +1,63 @@
+{% extends "media/html/_public.html" %}
+
+{% block content %}
+    <div class="bgimg2-md center-block text-center" style="padding:50px 0px; min-height:400px;">
+        <h2><span class="label label-teal">AUTHORIZATION REQUIRED</span></h2>
+        <b><p id="form_header" style="padding-top:10px;" class="center-block text-center"></p></b>
+        <form enctype="multipart/form-data" action="/login/" method="post">
+            {% csrf_token %}
+            <div style="margin-top:25px; width:300px;" class="center-block text-center">
+                <div class="input-group">
+                    <span class="input-group-addon" style="color:#000;"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                    {{form.username}}
+                </div>
+            </div>
+            <div style="margin-top:20px; width:300px;" class="center-block text-center">
+                <div class="input-group">
+                    <span class="input-group-addon" style="color:#000;"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                    {{form.password}}
+                </div>
+            </div>
+            <p style="margin-top:20px;">
+                {{form.flag}}
+                <button type="submit" value="" class="btn btn-primary clickable">
+                    <span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Sign In&nbsp;&nbsp;
+                </button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-default" onclick="location.href='/'">
+                    <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Cancel&nbsp;&nbsp;
+                </button>
+            </p>
+        </form>
+    </div>
+
+    {% if messages %}
+    <div class="center-block text-center">
+        <div class="form-group center-block" style="margin-bottom:0px; width: 640px;">
+            <div class="alert alert-danger center-block" role="alert" style="margin: 0px 15px;">
+                <p>
+                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                    <b>ERROR</b>: The following messages were produced:
+                </p>
+                <p>{{ messages }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+        $("#id_username").addClass("form-control translucent").attr("placeholder", "Username").css("font-family", "Helvetica");
+        $("#id_password").addClass("form-control translucent").attr("placeholder", "Password").css("font-family", "Helvetica");
+        $("#id_flag").css("display", "none");
+        if ($("#id_flag").val() == 'Admin') {
+            $("#form_header").html("This site is for internal administration.");
+        } else {
+            $("#form_header").html("This site is for registered member only.");
+        }
+    });
+  </script>
+{% endblock %}
+

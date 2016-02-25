@@ -1,0 +1,26 @@
+{% extends "media/html/_public.html" %}
+
+
+{% block content %}
+  <div class="row bgimg2-lg" style="padding:50px 0px; min-height:400px;">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="panel_left">
+      <img src="/site_media/images/bg_404.png" height="auto" style="max-width:100%;" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="panel_right">
+      <h2 style="margin-bottom:20px;">
+        <span class="label label-success">Sequence Mismatch</span>
+      </h2>
+      <p style="font-weight:bold; font-size:16px;">
+        <b>Transcript fidelity was compromised possibly by RNase degradation, post-transcriptional editing, or <i>trans</i> inactivation.</b>
+      </p>
+      <br/>
+      <p><i>In other words,</i></p>
+      <h3><span class="label label-success">404: Not Found</span></h3>
+      <p>
+        <code>Sorry!</code>
+        <br/>
+        The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. 
+      </p>
+    </div>
+  </div>  
+{% endblock %}

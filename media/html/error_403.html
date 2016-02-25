@@ -1,0 +1,59 @@
+{% extends "media/html/_public.html" %}
+
+
+{% block content %}
+  <div class="row bgimg2-lg" style="padding:50px 0px; min-height:400px;">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="panel_left">
+      <img src="/site_media/images/bg_403.png" height="auto" style="max-width:100%;" />
+      <br/><br/>
+      <p style="font-weight:bold;">This page is for site <span class="label label-success">admin</span> only.</p>
+      <p>Please contact the site <span class="label label-success">admin</span> for administrative tasks (<a target="_blank">&nbsp;<u id="admin_email"></u>&nbsp;&nbsp;<span class="glyphicon glyphicon-envelope"></span>&nbsp;</a>).</p>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="panel_right">
+      <h2 style="margin-bottom:20px;">
+        <span class="label label-magenta">Translation Abortion</span>
+      </h2>
+      <p style="font-weight:bold; font-size:16px;">
+        <b>
+          Your mRNA <span id="user_1" class="label label-warning">{{sunet_id}}</span> lacks a RBS or IRES to access the ribosome. 
+          <i>trans</i>-splicing with the <span class="label label-success">admin</span> might activate proper gene expression. 
+        </b>
+      </p>
+      <br/>
+      <p><i>In other words,</i></p>
+      <h3><span class="label label-magenta">403: Forbidden</span></h3>
+      <p>
+        The server understood the request but refused to fulfill it.
+        <br/>
+        Your login account <span id="user_2" class="label label-warning">{{sunet_id}}</span> lacks the required permission.
+        <br/>
+        <b>For emergency, please use the <span class="label label-warning">daslab</span> shared account.</b>
+      </p>
+    </div>
+  </div>  
+{% endblock %}
+
+
+{% block script %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $.ajax({
+        url : "/get_admin/",
+        dataType: "json",
+        success: function (data) {
+          $("#admin_email").html(data.email);
+          $("#admin_email").parent().attr("href", "mailto:" + data.email);
+        }
+      });
+
+      $.ajax({
+        url : "/get_user/",
+        dataType: "json",
+        success: function (data) {
+          $("#user_1").html(data.user);
+          $("#user_2").html(data.user);  
+        }
+      });
+    });
+  </script>
+{% endblock %}

@@ -116,11 +116,35 @@ body {
   background-position: right 200px bottom 25px;
   background-size: 30%;
 }
+.bgimg-md {
+  background-image: url("/site_media/images/bg_rna.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50%;
+}
+.bgimg-lg {
+  background-image: url("/site_media/images/bg_rna.png");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 90%;
+}
 .bgimg2 {
   background-image: url("/site_media/images/bg_rna_2.png");
   background-repeat: no-repeat;
   background-position: right 25px bottom 25px;
   background-size: 50%;
+}
+.bgimg2-md {
+  background-image: url("/site_media/images/bg_rna_2.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50%;
+}
+.bgimg2-lg {
+  background-image: url("/site_media/images/bg_rna_2.png");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 90%;
 }
 
 html { 

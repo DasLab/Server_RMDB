@@ -1,0 +1,26 @@
+{% extends "media/html/_public.html" %}
+
+
+{% block content %}
+  <div class="row bgimg2-lg" style="padding:50px 0px; min-height:400px;">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="panel_left">
+      <img src="/site_media/images/bg_400.png" height="auto" style="max-width:100%;" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" id="panel_right">
+      <h2 style="margin-bottom:20px;">
+        <span class="label label-info">Ligand Dissociation</span>
+      </h2>
+      <p style="font-weight:bold; font-size:16px;">
+        <b>The aptamer showed negligible affinity for binding your ligand. Modify some chemical moieties might promote docking to the riboswitch.</b>
+      </p>
+      <br/>
+      <p><i>In other words,</i></p>
+      <h3><span class="label label-info">400: Bad Request</span></h3>
+      <p>
+        <code>Sorry!</code>
+        <br/>
+        The server was unable to understand your request. Please check the syntax and try again later.
+      </p>
+    </div>
+  </div>   
+{% endblock %}

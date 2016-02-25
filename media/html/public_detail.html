@@ -1,0 +1,658 @@
+{% extends "media/html/_framework.html" %}
+{% load repository_extras %}
+
+{% block head %}
+<link rel="stylesheet" href="/site_media/css/svg_barplot.css" />
+<link rel="stylesheet" href="/site_media/css/svg_heatmap.css" />
+{% endblock %}
+
+
+{% block content %}
+
+<div id="left_panel" class="side_panel well">
+	<div role="tabpanel" class="tabbable tabs-right">
+		<ul class="nav nav_tabs side_tab" role="tablist" id="left-buttons">
+			<li class="left_close panel_close">
+				<a class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+			</li>
+			<br/>
+			<li role="presentation" class="left_tab left_group active">
+				<a href="#tab_left_1" aria-controls="tab_left_1" role="tab" data-toggle="tab">Annotation</a>
+			</li>
+			<br/>
+			<li role="presentation" class="left_tab left_group">
+				<a href="#tab_left_4" aria-controls="tab_left_4" role="tab" data-toggle="tab">Prediction</a>
+			</li>
+			<br/>
+			<li class="left_close panel_close">
+				<a class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+			</li>
+		</ul>
+		<br/>
+
+		<div class="tab-content" style="margin-top:-20px;">
+			<div role="tabpanel" class="tab-pane active fade in side_block" id="tab_left_1">
+				<ul class="nav nav-tabs tab-top" role="tablist">
+					<li role="presentation" class="active"><a href="#gen" aria-controls="gen" role="tab" data-toggle="tab">General</a></li>
+					<li role="presentation"><a href="#ann" aria-controls="ann" role="tab" data-toggle="tab">Annotations</a></li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active tab-inner" id="gen">
+
+						<table class="table table-hover">
+							<tr>
+								<td class="lead text-right"><span class="label label-default" style="background:#000;">RMDB_ID</span></td>
+								<td class="lead">
+									{% autoescape off %}
+					                <span class="label label-default">{{rmdb_id|color_rmdb_id}}</span>
+					                {% endautoescape %}
+					            </td>
+					        </tr>
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
+								<td class="lead" id="tag_name_panel"></td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">COMMENT</span></td>
+								<td id="tag_comments"></td>
+					        </tr>
+
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
+								<td id="tag_sequence_len"></td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
+								<td id="tag_structure_len"></td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">SEQPOS</span></td>
+								<td id="tag_seqpos"></td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">OFFSET</span></td>
+								<td id="tag_offset"></td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-success">REACTIVITY</span></td>
+								<td id="tag_data"></td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-success">REACTIVITY_ERROR</span></td>
+								<td id="tag_data_err"></td>
+					        </tr>
+					        <tr>
+								<td class="lead text-right"><span class="label label-success">XSEL</span></td>
+								<td id="tag_xsel"></td>
+					        </tr>
+
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-default">RDAT_VERSION</span></td>
+								<td id="tag_rdat_ver"></td>
+					        </tr>
+					        
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-violet">Stats</span></td>
+								<td>
+									<p>
+										<i>Version:</i> <mark id="tag_version"></mark>
+										<br/>
+										<i># of Construct:</i> <code id="tag_n_construct"></code>
+										<br/>
+										<i># of Data Point:</i> <code id="tag_n_data"></code>
+										<br/>
+										<i>Last Modified:</i> <mark id="tag_creation_date"></mark>
+										<br/>
+										<i>Revision Status:</i>
+										<span id="tag_rev_stat"></span>
+									</p>
+								</td>
+					        </tr>
+							<tr>
+								<td class="lead text-right align-center"><span class="label label-violet">Owner</span></td>
+								<td id="tag_owner"></td>
+					        </tr>
+										
+							<tr>
+								<th class="col-md-3"></th>
+								<th class="col-md-9"></th>
+							</tr>
+						</table>
+					</div>
+
+					<div role="tabpanel" class="tab-pane tab-inner" id="ann">
+						<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
+							<tr id="tag_annotation">
+								<td class="lead text-right align-center"><span class="label label-primary">ANNOTATION</span></td>
+								<td class="lead text-right align-center"><span class="label label-danger">experimentType</span></td>
+								<td class="lead">
+									<span class="label label-success" id="tag_type"></span>
+								</td>
+					        </tr>
+							<tr id="tag_data_annotation">
+								<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
+								<td></td>
+								<td id="tag_data_switch"></td>
+					        </tr>
+
+							<tr>
+								<th class="col-md-3"></th>
+								<th class="col-md-3"></th>
+								<th class="col-md-6"></th>
+							</tr>
+						</table>						
+					</div>
+				</div>
+			</div>
+
+			<div role="tabpanel" class="tab-pane active fade in side_block" id="tab_left_4">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="set_panel" class="view_panel">
+	<div class="col-md-12">
+		<p>
+			<a class="text-center" id="close-set" style="color:#fff;">
+				<span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+			</a>
+		</p>
+		<br/>
+		<div class="panel panel-info" >
+			<div class="panel-heading">
+				<h3 class="panel-title"><b>Settings</b></h4>
+			</div>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" id="show_seq">
+				Show sequences overlay
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" id="show_area_pred" disabled>
+				Show reactivity prediction
+			</label>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" id="show_color_seq">
+				Show nucleotides in color:
+				<span id="seqA">A</span>,
+				<span id="seqU">U</span>,
+				<span id="seqG">G</span>,
+				<span id="seqC">C</span>.
+			</label>
+		</div>
+		<label>Adjust heatmap contrast:</label>
+		<div class="row">
+			<div class="col-md-8">
+				<input type="range" id="color_slide">
+			</div>
+			<div class="col-md-4">
+				<input type="number" class="form-control" id="color_text">
+			</div>
+		</div>
+		<br/>
+		<div class="panel panel-orange" >
+			<div class="panel-heading">
+				<h3 class="panel-title"><b>Help</b></h4>
+			</div>
+		</div>
+		<ul>
+			<li>Hover: Show data point information tooltip.</li>
+			<li>Click: Show data row barplot and annotation in panel.</li>
+			<br/>
+			<li>Left Panel: Stats, Annotations, and Structural Predictions.</li>
+			<li>Right Panel: Settings and Help.</li>
+		</ul>
+	</div>
+
+
+</div>
+
+<div id="img_panel" class="side_panel well">
+	<div role="tabpanel" class="tabbable tabs-right">
+		<ul class="nav nav_tabs side_tab" role="tablist" id="img-buttons">
+			<li class="left_close barplot_close">
+				<a class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+			</li>
+			<br/>
+			<li role="presentation" class="left_tab left_alone active">
+				<a href="#panel_svg" role="tab" data-toggle="tab">Bar Plot</a>
+			</li>
+			<br/>
+			<li class="left_close barplot_close">
+				<a class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+			</li>
+		</ul>
+		<br/>
+
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active fade in side_block" id="panel_svg">
+				<div class="row">
+					<div class="col-md-1" style="width:90px;">
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
+							<button id="svg_top" class="btn btn-default">
+								<span class="glyphicon glyphicon-fast-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+							<button id="svg_up" class="btn btn-default">
+								<span class="glyphicon glyphicon-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+						</p>
+						<p>
+							<input type="text" class="form-control" id="page_num" style="text-align: center;"/>
+						</p>
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
+							<button id="svg_down" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+							<button id="svg_bottom" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-fast-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+						</p>
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
+							<a id="svg_save" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+							</a>
+							<button id="svg_setting" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							</button>
+							<button id="svg_clear" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+							</button>
+						</p>
+					</div>
+					<div class="col-md-11" id="svg_parent"><svg class="chart"></svg></div>
+				</div>
+				<div class="row" id="tag_browse">
+					<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
+						<tr id="tag_barplot">
+							<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
+							<td></td>
+							<td></td>
+				        </tr>
+						<tr>
+							<th class="col-md-2"></th>
+							<th class="col-md-2"></th>
+							<th class="col-md-8"></th>
+						</tr>
+					</table>						
+				</div>
+			</div>
+		</div> 
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-10" id="panel_tit">
+			<h2 id="tag_name_main"></h2>
+			<div class="row">
+				<div class="col-md-5">
+					<h2 style="margin-top:0px;">
+						{% autoescape off %}
+					    <span class="label label-default">{{rmdb_id|color_rmdb_id}}</span>
+					    {% endautoescape %}
+					</h2>
+				</div>
+				<div class="col-md-7">
+					<div class="btn-group pull-right" role="group">
+						<div class="btn-group" id="tag_supercede"></div>
+
+						<div class="btn-group" id="hist_ver_btn">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="hist_dropdown">
+								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+								&nbsp;&nbsp;History&nbsp;&nbsp;
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu" id="hist_ver_list"></ul>
+						</div>
+
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="dl_dropdown">
+								<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+								&nbsp;&nbsp;Download&nbsp;&nbsp;
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
+								<li class="li-info"><a id="dl_rdat" download>
+									<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
+									&nbsp;&nbsp;RDAT
+								</a></li>
+								{% if not is_istab %} 
+								<li class="li-brown"><a id="dl_isatab" download>
+									<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+									&nbsp;&nbsp;ISATAB
+								</a></li>
+								{% endif %} 
+							</ul>
+						</div>
+
+						<button type="button" class="btn btn-default" aria-expanded="false" id="btn-set">
+							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							&nbsp;&nbsp;Settings&nbsp;&nbsp;
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2 well" id="panel_leg">
+	        <p class="center-block" style="text-align:center;">
+	        	<b>Color Scale:</b>
+	        	<br/>
+	        	<img src="/site_media/images/fg_gray_colormap.gif"/>
+	        	<br/>
+	        	<span class="pull-left" id="peak_max"></span>
+	        	<span class="pull-right" id="peak_min"></span>
+	        	<br/>
+	        </p>
+		</div>
+	</div>
+</div>
+
+{% if revision_status == "PUB" %}
+
+<div class="container">
+	<div class="col-md-8">
+		<div class="panel panel-violet">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<b>Construct</b>
+					<span class="pull-right">
+						<a id="show_preview">
+							<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+						</a>
+					</span>
+				</h3>
+			</div>
+			<div class="panel-body" id="panel_con">
+				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;margin-bottom:0px;">
+					<tr>
+						<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
+						<td><p><b><samp id="tag_sequence"></samp></b></p></td>
+			        </tr>
+					<tr>
+						<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
+						<td><p><b><samp id="tag_structure"></samp></b></p></td>
+			        </tr>
+								
+					<tr>
+						<th class="col-md-2"></th>
+						<th class="col-md-10"></th>
+					</tr>
+				</table>
+			</div>
+		</div>	
+	</div>
+
+	<div class="col-md-4">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h3 class="panel-title"><b>Citation</b></h3>
+			</div>
+			<div class="panel-body" id="panel_cit">
+				<p><span class="lead"><span class="label label-brown">Publication</span></span></p>
+				<p>
+					<i id="tag_author"></i>. 
+					<br/>
+					<b id="tag_title"></b>. 
+					<br/>
+					<a target="_blank" id="link_pubmed">
+						PMID: <span id="tag_pubmed"></span> 
+						<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+					</a>
+				</p>
+
+				<p><span class="lead"><span class="label label-brown">Description</span></span></p>
+				<p id="tag_description"></p>
+				<p style="padding-top:5px;">
+					<span class="lead"><span class="label label-default">PDB_ID</span></span>:
+					<span id="tag_pdb"></span>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" id="main" style="margin-left: 70px;"></div>
+
+<!--
+{% if entry.has_traces %}
+    <div>
+	<h3>Raw traces</h3>
+	<img class="detailsimg" src="/site_media/construct_img/{{c.id}}/trace.png"/>
+    </div>
+{% endif %}
+-->
+<div id="preview" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalPrv" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content panel-warning">
+			<div class="modal-header panel-heading">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="prv_label">
+					<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+					&nbsp;&nbsp;Entry Preview
+				</h4>
+			</div>
+			<div class="modal-body panel-body">
+				<div class="col-md-12">
+					<div class="row">
+						<img src="/site_data/construct_img/{{cid}}/reactivity_crisp.png" class="center-block"/>
+						<br/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% else %}
+<div class="container">
+	<h1>
+		{% if revision_status == "REV" %}
+		<span class="label label-warning">In Review</span>
+		{% endif %}
+		{% if revision_status == "REC" %}
+		<span class="label label-info">Received</span>
+		{% endif %}
+		{% if revision_status == "HOL" %}
+		<span class="label label-danger">On Hold</span>
+		{% endif %}
+	</h1>
+	<br/>
+	<p class="lead">This entry has been received and is currently under review by the RMDB team. Once approved by the admin, the entry will be released to the public. On average, the review process should take no longer than 2 days.</p>
+	<img src="/site_data/construct_img/{{cid}}/reactivity_crisp.png" class="center-block"/>
+	<p class="lead">For any questions, please feel free to <a href="/help/about#contact">contact</a> us.</p>
+
+	{% if user.is_superuser %}
+	<hr/>
+	<h3>Admin Options</h3>
+	<form enctype="multipart/form-data" method="post" action="/deposit/admin_rev_stat/">
+		{% csrf_token %}
+		<div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>&nbsp;&nbsp;
+                            Download
+                        </h2>
+                    </div>
+                    <div class="panel-body" id="col-1">
+						<ul class="nav nav-pills nav-stacked" role="menu">
+							<li class="li-info"><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}.rdat" id="dl_rdat" download>
+								<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
+								&nbsp;&nbsp;RDAT
+							</a></li>
+							{% if not is_istab %} 
+							<li class="li-brown"><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}_{{version}}.xls" id="dl_isatab" download>
+								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+								&nbsp;&nbsp;ISATAB
+							</a></li>
+							{% endif %} 
+						</ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            <span class="glyphicon glyphicon-tower" aria-hidden="true"></span>&nbsp;&nbsp;
+                            Change Status
+                        </h2>
+                    </div>
+                    <div class="panel-body" id="col-2">
+                    	<div class="col-md-3">
+	                    	<div class="radio">
+								<label>
+									<input type="radio" name="rev_stat" value="PUB">
+									<p class="lead"><span class="label label-success">Published</span></p>
+								</label>
+							</div>
+	                    	<div class="radio">
+								<label>
+									<input type="radio" name="rev_stat" value="REV" checked>
+									<p class="lead"><span class="label label-warning">In Review</span></p>
+								</label>
+							</div>
+                    	</div>
+                    	<div class="col-md-3">
+	                    	<div class="radio">
+								<label>
+									<input type="radio" name="rev_stat" value="REC">
+									<p class="lead"><span class="label label-info">Received</span></p>
+								</label>
+							</div>
+	                    	<div class="radio">
+								<label>
+									<input type="radio" name="rev_stat" value="HOL">
+									<p class="lead"><span class="label label-danger">On Hold</span></p>
+								</label>
+							</div>
+                    	</div>
+                    	<div class="col-md-6">
+                    		<p>Once submit, the revision status will be updated.</p>
+                    		<p>If switched to <span class="label label-success">Published</span>, json data files will be generated.</p>
+                    		<input id="btn_submit" type="submit" class="btn btn-inverse pull-right" value="&nbsp;Submit&nbsp;"/>
+                    		<br/>
+                    		<input type="text" name="cid" value="{{cid}}" style="display:none;" />
+                    		<input type="text" name="rmdb_id" value="{{rmdb_id}}" style="display:none;" />
+                    	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+	{% endif %}
+</div>
+{% endif %}
+
+<!-- <form class="hidden" id="structureviewform" target="popup"
+	onsubmit='popup = window.open("Secondary structure with bonuses","popup","width=450,height=450");' 
+	action="/repository/render_structure" method="post">
+	<input name="structure" type="text"/>
+	<input name="sequence" type="text"/>
+	<input name="title" type="text"/>
+	<input name="colormap" type="text"/>
+	<input name="seqpos" type="text"/>
+	<input name="offset" type="text"/>
+	<input type="submit" value="sumbit"/>
+</form>-->
+{% endblock %}
+
+
+{% block script %}
+	<script type="text/javascript">
+		var json, tags, idx = 0, tag_idx = 0, n_rows, color_scale = 1, flag = 0;
+	</script>
+	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
+	<script type="text/javascript" src="/site_media/js/main_tags.js"></script>
+	<script type="text/javascript" src="/site_media/js/main_heatmap.js"></script>
+	<script type="text/javascript" src="/site_media/js/main_barplot.js"></script>
+	<script type="text/javascript" src="/site_media/js/main_setting.js"></script>
+	<script type="text/javascript">
+		// $("#wait").ajaxStart(function() {$(this).fadeIn();})
+		// 	.ajaxStop(function() {$(this).fadeOut();});
+
+		{% if revision_status == "PUB" %}
+		$(document).ready(function () {
+			$.ajax({
+				url: '/site_data/files/{{rmdb_id}}/data_tags.json',
+				dataType: 'json',
+				async: true,
+				beforeSend: function(xhr) { 
+					init_panel_size();
+					$("#wait").fadeIn(); 
+				},
+				complete: function(xhr) { 
+					$("#wait").fadeOut(); 
+				},
+				success: function(data) {
+					tags = data;
+					fill_tags();
+
+					setTimeout(function() { 
+						if ((tags.data_nrow >= 300 | tags.data_ncol >= 300) & $(location).attr("href").indexOf("?full=1") == -1) {
+							$("#main").html('<p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap">Load</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large (<code>' + tags.data_nrow + '-by-' + tags.data_ncol + '</code>). Rendering may take a few seconds.)</i></p><img id="img_preview" src="/site_data/construct_img/{{cid}}/reactivity_equal.png" class="center-block well"/>');
+							if (parseInt($("#img_preview").css("width")) > 600) {
+								$("#img_preview").css("width", "600");
+							}
+						    $("#btn_load_heatmap").bind("click", function() {
+						    	$(location).attr("href",$(location).attr("href") + "?full=1");
+							});
+						} else {
+							$.ajax({
+								url: '/site_data/files/{{rmdb_id}}/data_heatmap.json',
+								dataType: 'json',
+								async: false,
+								success: function(data) {
+									json = data; 
+									n_rows = json.y_labels.length;
+									draw_heatmap(json); 
+								}
+							});
+						}
+						setTimeout(function() {
+							$("#svg_top").trigger("click");
+							setTimeout(function() {
+								$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
+								$(".left_close").removeClass("visible").hide();
+								$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
+								$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
+
+								$("#show_preview").on("click", function() {
+									$("#preview").modal("show");
+								});
+							}, 1);
+						}, 1);
+					}, 1);
+				}
+			});
+
+		});
+		{% else %}
+		$(document).ready(function () {
+			init_panel_size();
+			$("#hist_dropdown").addClass("disabled");
+			$("#dl_dropdown").addClass("disabled");
+			$("#tag_supercede").html('<button type="button" class="btn btn-warning disabled" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;In Review&nbsp;&nbsp;</button>');
+		    var col_h = Math.max(parseInt($("#col-1").css("height")), parseInt($("#col-2").css("height")));
+		    $("#col-1").css("height", col_h);
+		    $("#col-2").css("height", col_h);
+
+
+		});
+		{% endif %}
+	</script>
+{% endblock %}

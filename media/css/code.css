@@ -1,0 +1,88 @@
+mark { 
+	font-family: monospace; 
+	padding: 2px 5px;
+	border-radius: 0.25em;
+}
+code { 
+	font-weight: bold; 
+	padding: 2px 5px;
+}
+pre > code {
+	color: #c7254e;
+	background-color: #f9f2f4;
+	font-weight: normal;
+}
+
+.code {
+	font-family: monospace; 
+	border-radius: 0.25em;
+	padding: 2px 5px;
+}
+
+table.indent_1,
+table.indent_2,
+table.indent_3,
+table.indent_4 { margin-bottom: 0px; }
+
+.code_const {
+	font-variant: italic;
+	color: #d86f5c;
+	padding: 0px !important;
+}
+.code_none {
+	font-variant: italic;
+	color: #ff2c2b;
+}
+.code_type {
+	font-variant: italic;
+	font-weight: bold;
+	color: #c28fdd;
+	background-color: #f8f3fb;
+}
+.code_class {
+	font-weight: bold;
+	color: #29be92;
+	background-color: #e9f8f4;
+}
+.code_method {
+	font-weight: bold;
+	color: #3ed4e7;
+	background-color: #ebfafc;
+}
+.code_error {
+	font-weight: bold;
+	color: #ff912e;
+	background-color: #fff4ea;
+}
+.code_json {
+	color: #5496d7;
+	background-color: #edf4fb;
+}
+.code_desp {
+	color: #a19193;
+	background-color: #f5f4f4;
+}
+
+.indent_1 { border-left: 50px solid #fff; }
+p.indent_2,
+table.indent_2 {
+	border-left: 100px solid #fff;
+	border-right: 50px solid #fff;
+}
+pre.indent_2 { margin: 0px 50px 0px 100px; }
+.indent_3 {
+	border-left: 150px solid #fff;
+	border-right: 50px solid #fff;
+}
+.indent_4 {
+	border-left: 200px solid #fff;
+	border-right: 50px solid #fff;
+}
+
+
+.bash_key { color: #298e29; }
+.bash_const { color: #ff69bc; }
+.bash_cmd { color: #3d55d9; }
+.bash_ver { color: #d81f1c; }
+.bash_str { color: #c28fdd; }
+.bash_num { color: #ff912e; }
