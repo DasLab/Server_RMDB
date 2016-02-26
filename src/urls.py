@@ -94,7 +94,8 @@ else:
         url(r'^get_stats/?$', views.get_stats),
         url(r'^get_news/?$', views.get_news),
         url(r'^get_recent/?$', views.get_recent),
-        
+        url(r'^get_browse/(?P<keyword>\w+)/?$', views.get_browse),
+
         # url(r'^repository/(?P<path>.*)$', views.url_redirect),
 
         # url(r'^site_media/isatab_files/(?P<path>.*)$', api_redirect),

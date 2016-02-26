@@ -466,7 +466,7 @@ def get_stats(request):
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
 def get_news(request):
-    n_news = 20
+    n_news = 12
     news = NewsItem.objects.all().order_by('-date')[:n_news]
     json = {}
     for i, n in enumerate(news):
@@ -493,7 +493,14 @@ def get_recent(request):
             name = c['name']
         e_temp = {'cid':cid, 'name':name, 'rmdb_id':rmdb_id}
         entries_list.append(e_temp)
-    return HttpResponse(simplejson.dumps(entries_list, sort_keys=True, indent=' ' * 4), content_type='application/json')    
+    return HttpResponse(simplejson.dumps(entries_list, sort_keys=True, indent=' ' * 4), content_type='application/json')
+
+def get_browse(request, keyword):
+    if keyword in ('general', 'puzzle', 'eterna'):
+        json = simplejson.load(open('%s/cache/stat_browse_%s.json' % (MEDIA_ROOT, keyword), 'r'))
+        return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
+    else:
+        return error400(request)
 
 
 def ping_test(request):

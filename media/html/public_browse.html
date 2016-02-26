@@ -1,130 +1,133 @@
-{% extends "media/html/_framework.html" %}
+{% extends "media/html/_public.html" %}
 
 {% block content %}
-<div class="panel-group" id="categories">
+<div class="container-fluid" id="categories">
 	<div class="row">
-		<div class="col-md-3" >
-			<div id="sidebar">
-				<div class="panel panel-warning" data-spy="affix">
-					<div class="panel-heading">
-			            <h3 class="panel-title">
-			            	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-	              			&nbsp;&nbsp;Categories
-	              		</h3>
-					</div>
-					<div class="panel-body">
-						<div class="list-group">
-							<a class="list-group-item active alert-default nav-list-item" id="buttonAll">
-								<h4 class="list-group-item-heading">
-									<span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-	              					&nbsp;&nbsp;All
-	              				</h4>
-								<p class="list-group-item-text">
-									# Entries: 
-									<span class="badge" id="N_all"></span>
-								</p>
-							</a>
-							<a class="list-group-item alert-danger nav-list-item" id="buttonGeneral">
-								<h4 class="list-group-item-heading">
-									<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-	              					&nbsp;&nbsp;General
-	              				</h4>
-								<p class="list-group-item-text">
-									# Entries: 
-									<span class="badge" id="N_general"></span>
-								</p>
-							</a>
-							<a class="list-group-item alert-success nav-list-item" id="buttonPuzzle">
-								<h4 class="list-group-item-heading">
-									<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
-	              					&nbsp;&nbsp;RNA Puzzles
-	              				</h4>
-								<p class="list-group-item-text">
-									# Entries: 
-									<span class="badge" id="N_puzzle"></span>
-								</p>
-							</a>
-							<a class="list-group-item alert-info nav-list-item" id="buttonEteRNA">
-								<h4 class="list-group-item-heading">
-									<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-	              					&nbsp;&nbsp;EteRNA
-	              				</h4>
-								<p class="list-group-item-text">
-									# Entries: 
-									<span class="badge" id="N_eterna"></span>
-								</p>
-							</a>
-						</div>
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4" id="side">
+			<div class="panel panel-warning" id="side_bar" data-spy="affix">
+				<div class="panel-heading">
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+              			&nbsp;&nbsp;Categories
+              		</h3>
+				</div>
+				<div class="panel-body scroll_nav">
+					<div class="list-group">
+						<a class="list-group-item active alert-default nav-list-item" id="buttonAll">
+							<h4 class="list-group-item-heading">
+								<span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+              					&nbsp;&nbsp;All
+              				</h4>
+							<p class="list-group-item-text">
+								# Entries: 
+								<span class="badge" id="N_all"></span>
+							</p>
+						</a>
+						<a class="list-group-item alert-danger nav-list-item" id="buttonGeneral">
+							<h4 class="list-group-item-heading">
+								<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+              					&nbsp;&nbsp;General
+              				</h4>
+							<p class="list-group-item-text">
+								# Entries: 
+								<span class="badge" id="N_general"></span>
+							</p>
+						</a>
+						<a class="list-group-item alert-success nav-list-item" id="buttonPuzzle">
+							<h4 class="list-group-item-heading">
+								<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+              					&nbsp;&nbsp;RNA Puzzles
+              				</h4>
+							<p class="list-group-item-text">
+								# Entries: 
+								<span class="badge" id="N_puzzle"></span>
+							</p>
+						</a>
+						<a class="list-group-item alert-info nav-list-item" id="buttonEterna">
+							<h4 class="list-group-item-heading">
+								<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+              					&nbsp;&nbsp;Eterna
+              				</h4>
+							<p class="list-group-item-text">
+								# Entries: 
+								<span class="badge" id="N_eterna"></span>
+							</p>
+						</a>
 					</div>
 				</div>
-				<div class="panel panel-violet" data-spy="affix">
-					<div class="panel-heading">
-			            <h3 class="panel-title">
-			            	<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
-	              			&nbsp;&nbsp;View Options
-	              		</h3>
+			</div>
+
+			<div class="panel panel-violet">
+				<div class="panel-heading">
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+              			&nbsp;&nbsp;View Options
+              		</h3>
+				</div>
+				<div class="panel-body">
+					<div class="radio">
+						<label>
+							<input type="radio" name="view_opt" id="view_list" value="list" checked>
+							<span class="cr"><span class="cr-icon glyphicon glyphicon-remove"></span></span>
+							&nbsp;&nbsp;<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+							&nbsp;&nbsp;List View
+						</label>
 					</div>
-					<div class="panel-body">
-						<div class="radio">
-							<label>
-								<input type="radio" name="view_opt" id="view_list" value="list" checked>
-								<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-								&nbsp;&nbsp;List View
-							</label>
-						</div>
-						<div class="radio">
-							<label>
-								<input type="radio" name="view_opt" id="view_thumb" value="thumb" checked>
-								<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-								&nbsp;&nbsp;Thumbnail View
-							</label>
-						</div>
-						<hr/>
-						<button class="btn btn-warning" type="button" id="expand_all"> Expand All Panels</button>
-						<button class="btn btn-warning" type="button" id="collapse_all"> Collapse All Panels</button>
+					<div class="radio">
+						<label>
+							<input type="radio" name="view_opt" id="view_thumb" value="thumb" checked>
+							<span class="cr"><span class="cr-icon glyphicon glyphicon-remove"></span></span>
+							&nbsp;&nbsp;<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+							&nbsp;&nbsp;Thumbnail View
+						</label>
 					</div>
+					<hr/>
+					<button class="btn btn-warning" type="button" id="expand_all"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>&nbsp;&nbsp;Expand All</button>
+					<button class="btn btn-warning pull-right" type="button" id="collapse_all"><span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>&nbsp;&nbsp;Collapse All</button>
 				</div>
 			</div>
 		</div>
 
-		<div class="col-md-9" id="main">
-			<h2>
-				<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-              	&nbsp;&nbsp;Browse RMDB by category
-              </h2>
-			<br/>
+		<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8" id="main">
+			<div class="theme-showcase" style="padding-right:25px;" role="main">
+				<h2>
+					<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+	              	&nbsp;&nbsp;Browse RMDB by category
+	              </h2>
+				<br/>
 
-			<div class="panel panel-danger category" id="categoryGeneral" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-danger category" id="categoryGeneral" role="tablist" aria-multiselectable="true">
 
-				<div class="panel-heading">
-		            <h3 class="panel-title">
-		            	<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-              			&nbsp;&nbsp;General
-              		</h3>
+					<div class="panel-heading">
+			            <h3 class="panel-title">
+			            	<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+	              			&nbsp;&nbsp;General
+	              		</h3>
+					</div>
+					<div class="panel-body" id="panel_general"></div>
 				</div>
-				<div class="panel-body" id="panel_general"></div>
-			</div>
 
-			<div class="panel panel-success category" id="categoryPuzzle" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-success category" id="categoryPuzzle" role="tablist" aria-multiselectable="true">
 
-				<div class="panel-heading">
-		            <h3 class="panel-title">
-		            	<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
-              			&nbsp;&nbsp;RNA Puzzles
-              		</h3>
+					<div class="panel-heading">
+			            <h3 class="panel-title">
+			            	<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+	              			&nbsp;&nbsp;RNA Puzzles
+	              		</h3>
+					</div>
+					<div class="panel-body" id="panel_puzzle"></div>
 				</div>
-				<div class="panel-body" id="panel_puzzle"></div>
-			</div>
 
-			<div class="panel panel-info category" id="categoryEteRNA" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-info category" id="categoryEterna" role="tablist" aria-multiselectable="true">
 
-				<div class="panel-heading">
-		            <h3 class="panel-title">
-		            	<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-              			&nbsp;&nbsp;EteRNA
-              		</h3>
+					<div class="panel-heading">
+			            <h3 class="panel-title">
+			            	<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+	              			&nbsp;&nbsp;Eterna
+	              		</h3>
+					</div>
+					<div class="panel-body" id="panel_eterna"></div>
 				</div>
-				<div class="panel-body" id="panel_eterna"></div>
 			</div>
 		</div>
 	</div>
@@ -133,11 +136,6 @@
 
 
 {% block script %}
-  <script type="text/javascript">
-  	var json_general, json_puzzle, json_eterna;
-  </script>
-  <script type="text/javascript" src="/site_media/js/index_util.js"></script> 
-  <script type="text/javascript" src="/site_media/js/index_browse.js"></script>
-
+	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}browse{{DEBUG_STR}}.js"></script>  
 {% endblock %}
 

@@ -2,7 +2,6 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpRequest
 # from django.core.servers.basehttp import FileWrapper
 
 from src.models import *
-from src.helper.helper_stats import *
 from src.helper.helper_search import *
 
 from rdatkit import settings
@@ -14,15 +13,6 @@ import urllib
 # import subprocess
 
 
-
-
-def api_history(request):
-	return HttpResponse(get_history())
-
-
-def api_browse(request, keyword):
-	constructs = get_rmdb_category(keyword)
-	return HttpResponse(simplejson.dumps(constructs), content_type='application/json')
 
 
 def api_search(request, keyword, sstring):

@@ -86,7 +86,7 @@ class Command(BaseCommand):
 
             open('%s/cache/stat_browse_eterna.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('eterna'), indent=' ' * 4, sort_keys=True))
             open('%s/cache/stat_browse_puzzle.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('puzzle'), indent=' ' * 4, sort_keys=True))
-            open('%s/cache/stat_browse_normal.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('normal'), indent=' ' * 4, sort_keys=True))
+            open('%s/cache/stat_browse_general.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('general'), indent=' ' * 4, sort_keys=True))
 
         except Exception:
             self.stdout.write("    \033[41mERROR\033[0m: Failed to cache \033[94mRMDB Entry\033 statistics.")
