@@ -641,3 +641,7 @@ li.left_alone > a {
   border: #0f0 solid 2px;
 }
 
+.scroll_nav > ul > li.active > a,
+.scroll_nav > ul > li.active > ul > li.active > a {
+  background-color: #eee;
+}

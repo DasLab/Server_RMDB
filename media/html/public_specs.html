@@ -1,192 +1,199 @@
-{% extends "media/html/_framework.html" %}
+{% extends "media/html/_public.html" %}
 
 {% block content %}
-<div class="panel-group" id="categories">
+<div class="" id="categories">
 	<div class="row">
-		<div class="col-md-3">
-			<div class="panel panel-warning" id="sidebar" data-spy="affix">
-				<div class="panel-heading">
-	            	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-          			&nbsp;&nbsp;Sections
-				</div>
-				<div class="panel-body scroll_nav">
-					<ul class="nav" role="tablist" id="scroll_nav">
-						<li class="li-success">
-							<a id="sec-ovvw" href="#overview">
-								<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
-              					&nbsp;&nbsp;<b>Overview</b>
-              				</a>
-						</li>
-						<li class="li-green">
-							<ul><li>
-								<a id="sec-exmp" href="#example_RDAT">Example RDAT File</a>
-							</li></ul>
-						</li>
-						<li class="li-orange">
-							<a id="sec-term" href="#term">
-								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-              					&nbsp;&nbsp;<b>Terminalogy</b>
-              				</a>
-						</li>
-						<li class="li-primary">
-							<a id="sec-sec" href="#sections">
-								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-              					&nbsp;&nbsp;<b>Sections</b>
-              				</a>
-						</li>
-						<li class="li-violet">
-							<ul>
-								<li>
-									<a id="sec-gen" href="#general">General</a>
-								</li>
-								<li>
-									<a id="sec-con" href="#construct">Construct</a>
-								</li>
-								<li>
-									<a id="sec-dat" href="#data">Data</a>
-								</li>
-								<li>
-									<a id="sec-ann" href="#annotation">Annotation</a>
-								</li>
-							</ul>
-						</li>
-						<li class="li-danger">
-							<a id="sec-bstp" href="#best_practice">
-								<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-              					&nbsp;&nbsp;<b>Best Practices</b>
-              				</a>
-						</li>
-					</ul>
+		<div class="col-lg-2 col-lg-2 col-md-2 col-sm-3 col-xs-3 hidden-sm hidden-xs" id="side">
+			<div id="side_con">
+				<div class="panel panel-warning" id="sidebar" data-spy="affix">
+					<div class="panel-heading">
+						<h3 class="panel-title"><span class="glyphicon glyphicon-th-large"></span>&nbsp;&nbsp;Sections</h3>
+					</div>
+					<div class="panel-body scroll_nav">
+						<ul class="nav" role="tablist" id="scroll_nav">
+							<li class="li-success">
+								<a id="sec-ovvw" href="#overview">
+									<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+	              					&nbsp;&nbsp;<b>Overview</b>
+	              				</a>
+							</li>
+							<li class="li-green">
+								<ul><li>
+									<a id="sec-exmp" href="#example_RDAT">Example RDAT File</a>
+								</li></ul>
+							</li>
+							<li class="li-orange">
+								<a id="sec-term" href="#term">
+									<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+	              					&nbsp;&nbsp;<b>Terminalogy</b>
+	              				</a>
+							</li>
+							<li class="li-primary">
+								<a id="sec-sec" href="#sections">
+									<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+	              					&nbsp;&nbsp;<b>Sections</b>
+	              				</a>
+							</li>
+							<li class="li-violet">
+								<ul>
+									<li>
+										<a id="sec-gen" href="#general">General</a>
+									</li>
+									<li>
+										<a id="sec-con" href="#construct">Construct</a>
+									</li>
+									<li>
+										<a id="sec-dat" href="#data">Data</a>
+									</li>
+									<li>
+										<a id="sec-ann" href="#annotation">Annotation</a>
+									</li>
+								</ul>
+							</li>
+							<li class="li-danger">
+								<a id="sec-bstp" href="#best_practice">
+									<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+	              					&nbsp;&nbsp;<b>Best Practices</b>
+	              				</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="col-md-9" id="main">
-			<h2><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;&nbsp;
-				Specification: RDAT File Format
-			</h2>
-			<br/>
-			<div class="row">
-				<div class="col-md-11">
-					<p class="cap">
-						RNA Data (RDAT) text file format is an annotation-based specification for RNA structure mapping experiments that is both computer friendly and can be easily read by humans. The RMDB database schema closely follows the organization of RDAT files, making it easier to manage and expose each entry’s data.
-					</p>
+		<div class="pull-right" id="main">
+			<div class="container theme-showcase" style="padding-right:25px;" role="main">
+				<h2><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp;&nbsp;
+					Specification: RDAT File Format
+				</h2>
+				<br/>
+				<div class="row">
+					<div class="col-lg-11 col-md-11 col-sm-11 col-xs-12">
+						<p class="cap">
+							RNA Data (RDAT) text file format is an annotation-based specification for RNA structure mapping experiments that is both computer friendly and can be easily read by humans. The RMDB database schema closely follows the organization of RDAT files, making it easier to manage and expose each entry’s data.
+						</p>
+					</div>
 				</div>
+				<br/>
 			</div>
-			<br/>
 
-			<div class="well well-lg" style="background-color:#fff;">
-	            <div class="panel panel-success" id="overview">
+			<div class="container theme-showcase li-success" role="main" style="padding-right:25px;" id="overview">
+	            <div class="panel panel-success">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>&nbsp;&nbsp;<b>Overview</b></span>
 	            	</div>
 	            </div>
 	            <br/>
 	            <div class="row">
-	            	<div class="col-md-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<p class="cap">
 							RDAT files have a hierarchical structure and are comprised by three main sections: the <mark>general</mark> section, the <mark>construct</mark> section, and the <mark>data</mark> section. An RDAT file can contain multiple construct sections, each describing a specific construct (for example, an RNA molecule (<i>mutant</i>) of interest). Each construct section contains multiple data sections, which describe a particular electropherogram trace or set of read counts.
 						</p>
 						<p>
-							RDAT files depend heavily on annotations, as each section can have multiple annotations that further describe the experiments and the data contained. Such information includes, for instance, what chemical modifiers have been used, the construct concentrations, if the data has been background substracted or not. These annotations are also hierarchical, in a sense that a parent annotation is inherited to all constructs (for example, <code>modifier:CMCT</code> given as an annotation for the general section would indicate that all constructs have been modified by CMCT).
+							RDAT files depend heavily on annotations, as each section can have multiple annotations that further describe the experiments and the data contained. Such information includes, for instance, what chemical modifiers have been used, the construct concentrations, if the data has been background substracted or not. These annotations are also hierarchical, in a sense that a parent annotation is inherited to all constructs (for example, <span class="label label-danger">modifier</span>:<span class="label label-warning">CMCT</span> given as an annotation for the general section would indicate that all constructs have been modified by CMCT).
 						</p>
 						<p>
-							This hierarchy can be overridden by more section specific annotations (in the example above, if there is a construct that had no modification, we place an annotation <code>modifier:None</code> to its construct section). Whole attributes that can appear in multiple sections, such as <code>SEQPOS</code>, are also hierarchical and can be used to specify attributes for all the data contained in the file to avoid redundancy. 
+							This hierarchy can be overridden by more section specific annotations (in the example above, if there is a construct that had no modification, we place an annotation <span class="label label-danger">modifier</span>:<span class="label label-warning">None</span> to its construct section). Whole attributes that can appear in multiple sections, such as <span class="label label-primary">SEQPOS</span>, are also hierarchical and can be used to specify attributes for all the data contained in the file to avoid redundancy. 
 						</p>
 						<p>Attributes of each section, as well as annotation syntax and semantics are described throughout this document.</p>
 			        </div>
 		            <br/>
 		        </div>
+		    </div>
 
-	            <hr/>
-	            <div class="panel panel-green" id="example_RDAT">
+            <hr/>
+			<div class="container theme-showcase li-green" role="main" style="padding-right:25px;" id="example_RDAT">
+	            <div class="panel panel-green">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;<b>Example RDAT File</b></span>
 	            	</div>
 	            </div>
 	            <br/>
 	            <div class="row">
-	            	<div class="col-md-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<p>The following is an example of a small RDAT file for single replicate experiments with the data for the <a href="/detail/MDLOOP_STD_0000" target="_blank"><samp>MedLoop</samp>&nbsp;<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a> construct:</p>
 
 						<p><pre>
 RDAT_VERSION	0.32
-NAME	MedLoop
+NAME		MedLoop
 SEQUENCE	GGAACGACGAACCGAAAACCGAAGAAAUGAAGAAAGGUUUUCGGUACCGACCUGAAAACCAAAGAAACAACAACAACAAC
 STRUCTURE	..........((((((((((...............))))))))))...................................
-OFFSET	-10
-<div role="tablist" aria-multiselectable="true"><span role="tab" id="heading1">SEQPOS	G-9	G-8	A-7	A-6	C-5	G-4	A-3	C-2	G-1	A0 <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapseOne">...<span class="caret"></span></a></span><div id="collapse1" class="collapse" role="tabpanel" aria-labelledby="heading1">	A1	C2	C3	G4	A5	A6	A7	A8	C9	C10	G11
-A12	A13	G14	A15	A16	A17	U18	G19	A20	A21	G22
-A23	A24	A25	G26	G27	U28	U29	U30	U31	C32	G33
-G34	U35	A36	C37	C38	G39	A40	C41	C42	U43	G44
-A45	A46	A47	A48	C49	C50</div></div>MUTPOS	WT	WT
+OFFSET		-10
+<div role="tablist" aria-multiselectable="true" style="font-family:inherit;"><span role="tab" id="heading1" style="font-family:inherit;">SEQPOS		G-9	G-8	A-7	A-6	C-5	G-4	A-3	C-2	G-1	A0 <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapseOne">...<span class="caret"></span></a></span><div id="collapse1" class="collapse" role="tabpanel" aria-labelledby="heading1" style="font-family:inherit;">		A1	C2	C3	G4	A5	A6	A7	A8	C9	C10	G11
+		A12	A13	G14	A15	A16	A17	U18	G19	A20	A21	G22
+		A23	A24	A25	G26	G27	U28	U29	U30	U31	C32	G33
+		G34	U35	A36	C37	C38	G39	A40	C41	C42	U43	G44
+		A45	A46	A47	A48	C49	C50</div></div>MUTPOS		WT	WT
 ANNOTATION	experimentType:StandardState	chemical:Na-HEPES:50mM(pH8.0)	temperature:24C
 
-COMMENT	Example RDAT file with all fields filled: DMS and CMCT data for the MedLoop RNA.
+COMMENT		Example RDAT file with all fields filled: DMS and CMCT data for the MedLoop RNA.
 
 ANNOTATION_DATA:1	modifier:DMS
 ANNOTATION_DATA:2	modifier:CMCT
 
-<div role="tablist" aria-multiselectable="true"><span role="tab" id="heading2">REACTIVITY:1	161.1038   70.2383   75.5198   88.3231   59.1168   44.1307   14.3177 <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">...<span class="caret"></span></a></span><div id="collapse2" class="collapse" role="tabpanel" aria-labelledby="heading2">	15.7294   48.0327   27.8253   58.5714   22.2025   28.4068    9.0458   51.8737
-	6.6602   10.6241    0.0000  123.8299    5.9402    2.5001    3.3970    2.4758
-	10.8160    0.0000   60.2178   79.3310   72.5287    0.0362   57.8198   60.5596
-	7.6400    3.2410   62.5949   47.8698   43.7576    0.9151   49.9397   50.9380
-	6.8794   18.1433    7.1330   11.3588    5.7703    4.4164    6.8753    4.7442
-	24.0865    7.5582    8.6075   22.9732    2.5496    9.5329   26.6948    5.3731
-	11.8460   27.7534   44.8170  148.2240  169.3202
+<div role="tablist" aria-multiselectable="true" style="font-family:inherit;"><span role="tab" id="heading2" style="font-family:inherit;">REACTIVITY:1	161.1038   70.2383   75.5198   88.3231   59.1168   44.1307   14.3177 <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">...<span class="caret"></span></a></span><div id="collapse2" class="collapse" role="tabpanel" aria-labelledby="heading2" style="font-family:inherit;">		15.7294   48.0327   27.8253   58.5714   22.2025   28.4068    9.0458   51.8737
+		6.6602   10.6241    0.0000  123.8299    5.9402    2.5001    3.3970    2.4758
+		10.8160    0.0000   60.2178   79.3310   72.5287    0.0362   57.8198   60.5596
+		7.6400    3.2410   62.5949   47.8698   43.7576    0.9151   49.9397   50.9380
+		6.8794   18.1433    7.1330   11.3588    5.7703    4.4164    6.8753    4.7442
+		24.0865    7.5582    8.6075   22.9732    2.5496    9.5329   26.6948    5.3731
+		11.8460   27.7534   44.8170  148.2240  169.3202
 REACTIVITY:2 	326.7871   50.8572   13.5739   24.2813    7.4603    2.3846   45.6323  263.8077
-	38.4869   12.8314    1.4421   17.6450   26.5011    3.1060    2.4043   12.1818
-	5.0894    0.0000   38.8606    3.0631    3.5447    2.5682    2.9326   11.2679
-	0.3434    7.9297   10.2588    5.6163   51.8502   21.8487   20.5006  118.0059
-	278.5901   24.2993    8.9043    3.9261   54.7244   10.2562    8.7679   16.9593
-	24.8004    4.1159    5.4285    1.4056    0.9583    2.8067    5.2360   24.2889
-	5.8440    3.3078    4.0801   15.6673   16.6094    6.0948   18.4954    7.0075
-	2.6482  183.4449  308.4945  177.4841</div></div>
-<div role="tablist" aria-multiselectable="true"><span role="tab" id="heading3">REACTIVITY_ERROR:1 	34.2208   16.0477   17.1040   19.6646   13.8234   10.826   14.8635 <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">...<span class="caret"></span></a></span><div id="collapse3" class="collapse" role="tabpanel" aria-labelledby="heading3">	5.1459   11.6065    7.5651   13.7143    6.4405    7.6814    3.8092	12.3747
-	3.3320    4.1248    2.0000   26.7660    3.1880    2.5000    2.6794	2.4952
-	4.1632    2.0000   14.0436   17.8662   16.5057    2.0072   13.5640	14.1119
-	3.5280    2.6482   14.5190   11.5740   10.7515    2.1830   11.9879	12.1876
-	3.3759    5.6287    3.4266    4.2718    3.1541    2.8833    3.3751	2.9488
-	6.8173    3.5116    3.7215    6.5946    2.5099    3.9066    7.3390	3.0746
-	4.3692    7.5507   10.9634   31.6448   35.8640
+		38.4869   12.8314    1.4421   17.6450   26.5011    3.1060    2.4043   12.1818
+		5.0894    0.0000   38.8606    3.0631    3.5447    2.5682    2.9326   11.2679
+		0.3434    7.9297   10.2588    5.6163   51.8502   21.8487   20.5006  118.0059
+		278.5901   24.2993    8.9043    3.9261   54.7244   10.2562    8.7679   16.9593
+		24.8004    4.1159    5.4285    1.4056    0.9583    2.8067    5.2360   24.2889
+		5.8440    3.3078    4.0801   15.6673   16.6094    6.0948   18.4954    7.0075
+		2.6482  183.4449  308.4945  177.4841</div></div>
+<div role="tablist" aria-multiselectable="true" style="font-family:inherit;"><span role="tab" id="heading3" style="font-family:inherit;">REACTIVITY_ERROR:1 	34.2208   16.0477   17.1040   19.6646   13.8234   10.826   14.8635 <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">...<span class="caret"></span></a></span><div id="collapse3" class="collapse" role="tabpanel" aria-labelledby="heading3" style="font-family:inherit;">		5.1459   11.6065    7.5651   13.7143    6.4405    7.6814    3.8092	12.3747
+		3.3320    4.1248    2.0000   26.7660    3.1880    2.5000    2.6794	2.4952
+		4.1632    2.0000   14.0436   17.8662   16.5057    2.0072   13.5640	14.1119
+		3.5280    2.6482   14.5190   11.5740   10.7515    2.1830   11.9879	12.1876
+		3.3759    5.6287    3.4266    4.2718    3.1541    2.8833    3.3751	2.9488
+		6.8173    3.5116    3.7215    6.5946    2.5099    3.9066    7.3390	3.0746
+		4.3692    7.5507   10.9634   31.6448   35.8640
 REACTIVITY_ERROR:2 	67.3574   12.1714    4.7148    6.8563    3.4921    2.4769   11.1265
-	54.7615    9.6974    4.5663    2.2884    5.5290    7.3002    2.6212    2.4809
-	4.4364    3.0179    2.0000    9.7721    2.6126    2.7089    2.5136    2.5865
-	4.2536    2.0687    3.5859    4.0518    3.1233   12.3700    6.3697    6.1001
-	25.6012   57.7180    6.8599    3.7809    2.7852   12.9449    4.0512    3.7536
-	5.3919    6.9601    2.8232    3.0857    2.2811    2.1917    2.5613    3.0472
-	6.8578    3.1688    2.6616    2.8160    5.1335    5.3219    3.2190    5.6991
-	3.4015    2.5296   38.6890   63.6989   37.4968</div></div>
-<div role="tablist" aria-multiselectable="true"><span role="tab" id="heading4">XSEL 93.00   126.00   158.00   187.00   214.00   238.00   260.00   279.00   299.00   327.00 <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="true" aria-controls="collapse4">...<span class="caret"></span></a></span><div id="collapse4" class="collapse" role="tabpanel" aria-labelledby="heading4">	357.00   382.00   405.00   432.00   460.00   487.00   513.00   523.61   541.00   568.00
+		54.7615    9.6974    4.5663    2.2884    5.5290    7.3002    2.6212    2.4809
+		4.4364    3.0179    2.0000    9.7721    2.6126    2.7089    2.5136    2.5865
+		4.2536    2.0687    3.5859    4.0518    3.1233   12.3700    6.3697    6.1001
+		25.6012   57.7180    6.8599    3.7809    2.7852   12.9449    4.0512    3.7536
+		5.3919    6.9601    2.8232    3.0857    2.2811    2.1917    2.5613    3.0472
+		6.8578    3.1688    2.6616    2.8160    5.1335    5.3219    3.2190    5.6991
+		3.4015    2.5296   38.6890   63.6989   37.4968</div></div>
+<div role="tablist" aria-multiselectable="true" style="font-family:inherit;"><span role="tab" id="heading4" style="font-family:inherit;">XSEL 	93.00   126.00   158.00   187.00   214.00   238.00   260.00   279.00   299.00   327.00 <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="true" aria-controls="collapse4">...<span class="caret"></span></a></span><div id="collapse4" class="collapse" role="tabpanel" aria-labelledby="heading4" style="font-family:inherit;">	357.00   382.00   405.00   432.00   460.00   487.00   513.00   523.61   541.00   568.00
 	593.00   616.00   637.00   656.00   675.00   697.00   724.00   751.00   775.00   799.00
 	825.00   850.00   871.00   895.00   921.00   947.00   970.00   992.00  1017.00  1042.00
 	1066.00  1093.00  1121.00  1148.00  1173.00  1197.00  1220.00  1242.00  1268.00  1294.00
 	1320.00  1343.00  1365.00  1389.00  1412.00  1435.00  1461.00  1487.00  1519.00  1539.00</div></div>
-<div role="tablist" aria-multiselectable="true"><span role="tab" id="heading5">XSEL_REFINE:1 	93.00   126.00   158.00   187.00   214.00   238.00   260.00 <a data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="true" aria-controls="collapse5">...<span class="caret"></span></a></span><div id="collapse5" class="collapse" role="tabpanel" aria-labelledby="heading5">	279.00   299.00   327.00   357.00   382.00   405.00   432.00   460.00   487.00   513.00
-	523.61   541.00   568.00   593.00   616.00   637.00   656.00   675.00   697.00   724.00
-	751.00   775.00   799.00   825.00   850.00   871.00   895.00   921.00   947.00   970.00
-	992.00  1017.00  1042.00  1066.00  1093.00  1121.00  1148.00  1173.00  1197.00  1220.00
-	1242.00  1268.00  1294.00  1320.00  1343.00  1365.00  1389.00  1412.00  1435.00  1461.00
-	1487.00  1519.00  1539.00
+<div role="tablist" aria-multiselectable="true" style="font-family:inherit;"><span role="tab" id="heading5" style="font-family:inherit;">XSEL_REFINE:	1 	93.00   126.00   158.00   187.00   214.00   238.00   260.00 <a data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="true" aria-controls="collapse5">...<span class="caret"></span></a></span><div id="collapse5" class="collapse" role="tabpanel" aria-labelledby="heading5" style="font-family:inherit;">		279.00   299.00   327.00   357.00   382.00   405.00   432.00   460.00   487.00   513.00
+		523.61   541.00   568.00   593.00   616.00   637.00   656.00   675.00   697.00   724.00
+		751.00   775.00   799.00   825.00   850.00   871.00   895.00   921.00   947.00   970.00
+		992.00  1017.00  1042.00  1066.00  1093.00  1121.00  1148.00  1173.00  1197.00  1220.00
+		1242.00  1268.00  1294.00  1320.00  1343.00  1365.00  1389.00  1412.00  1435.00  1461.00
+		1487.00  1519.00  1539.00
 XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281.26   304.00
-	331.00   361.48   387.00   411.00   439.00   468.00   496.00   523.00   536.71   551.00
-	579.00   606.00   632.00   658.00   677.17   695.28   711.00   739.00   767.00   795.00
-	820.00   844.00   868.00   890.00   915.00   941.00   967.00   993.00  1016.00  1040.00
-	1065.00  1089.00  1116.00  1143.00  1170.00  1196.00  1220.00  1244.00  1268.00  1294.00
-	1320.00  1345.00  1370.00  1392.00  1416.00  1441.00  1463.00  1486.00  1509.00  1531.00
-	1548.91</div></div></pre></p>
+		331.00   361.48   387.00   411.00   439.00   468.00   496.00   523.00   536.71   551.00
+		579.00   606.00   632.00   658.00   677.17   695.28   711.00   739.00   767.00   795.00
+		820.00   844.00   868.00   890.00   915.00   941.00   967.00   993.00  1016.00  1040.00
+		1065.00  1089.00  1116.00  1143.00  1170.00  1196.00  1220.00  1244.00  1268.00  1294.00
+		1320.00  1345.00  1370.00  1392.00  1416.00  1441.00  1463.00  1486.00  1509.00  1531.00
+		1548.91</div></div></pre></p>
 					</div>
 				</div>
+			</div>
 
-	            <hr/>
-	            <div class="panel panel-orange" id="term">
+            <hr/>
+			<div class="container theme-showcase li-orange" role="main" style="padding-right:25px;" id="term">
+	            <div class="panel panel-orange">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;<b>Terminology</b></span>
 	            	</div>
 	            </div>
 	            <br/>
 	            <div class="row">
-	            	<div class="col-md-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	            		<ul>
 	            			<li><span class="lead"><span class="label label-brown">trace</span></span>:
 	            				<p>An electropherogram trace obtained from electrophoresis experiments.</p>
@@ -203,29 +210,32 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 					    </ul>
 				    </div>
 				</div>
+			</div>
 
-	            <hr/>
-	            <div class="panel panel-primary" id="sections">
+            <hr/>
+			<div class="container theme-showcase li-primary" role="main" style="padding-right:25px;" id="sections">
+	            <div class="panel panel-primary">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;&nbsp;<b>Sections</b></span>
 	            	</div>
 	            </div>
-	            <br/>
-	            <div class="panel panel-violet" id="general">
+	        </div>
+			<div class="container theme-showcase li-violet" role="main" style="padding-right:25px;" id="general">
+	            <div class="panel panel-violet">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;<b>General</b></span>
 	            	</div>
 	            </div>
 	            <br/>
 	            <div class="row">
-	            	<div class="col-md-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<p>The general section contains information about the RDAT specification version (<span class="label label-default">RDAT_VERSION</span>) used and serves as the root of the document. </p>
 						<p>The following table describes the attributes that are found in the general section:</p>
 						<table class="table table-hover table-striped">
 							<tr class="info">
-								<th class="col-md-2">Header</th>
-								<th class="col-md-8">Description</th>
-								<th class="col-md-2">Type</th>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Header</th>
+								<th class="col-lg-8 col-md-8 col-sm-6 col-xs-6">Description</th>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Type</th>
 							</tr>
 							<tr>
 								<td><h4><span class="label label-default">RDAT_VERSION</span></h4></td>
@@ -238,16 +248,18 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 						</table>
 				    </div>
 				</div>
+			</div>
 
-	            <hr/>
-	            <div class="panel panel-violet" id="construct">
+            <hr/>
+			<div class="container theme-showcase li-violet" role="main" style="padding-right:25px;" id="construct">
+	            <div class="panel panel-violet">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>&nbsp;&nbsp;<b>Construct</b></span>
 	            	</div>
 	            </div>
 	            <br/>
 	            <div class="row">
-	            	<div class="col-md-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<p>
 							The construct section describes the specific RNA molecule that was probed in the experiment (<span class="label label-primary">NAME</span>) and lists information about the construct, such as nucleotide sequence (<span class="label label-primary">SEQUENCE</span>), putative secondary structure (<span class="label label-primary">STRUCTURE</span>), annotation tags (<span class="label label-primary">ANNOTATION</span>) and additional free text comments (<span class="label label-primary">COMMENT</span>). 
 						</p>
@@ -257,9 +269,9 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 						<p>The following table describes the attributes that are found in the general section, in order of appearance:</p>
 						<table class="table table-hover table-striped">
 							<tr class="info">
-								<th class="col-md-2">Header</th>
-								<th class="col-md-8">Description</th>
-								<th class="col-md-2">Type</th>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Header</th>
+								<th class="col-lg-8 col-md-8 col-sm-6 col-xs-6">Description</th>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Type</th>
 							</tr>
 							<tr>
 								<td><h4><span class="label label-primary">NAME</span></h4></td>
@@ -343,16 +355,18 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 						</table>
 				    </div>
 				</div>
+			</div>
 
-	            <hr/>
-	            <div class="panel panel-violet" id="data">
+            <hr/>
+			<div class="container theme-showcase li-violet" role="main" style="padding-right:25px;" id="data">
+	            <div class="panel panel-violet">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp;&nbsp;<b>Data</b></span>
 	            	</div>
 	            </div>
 	            <br/>
 	            <div class="row">
-	            	<div class="col-md-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<p>
 							The final required section of the RDAT format includes the mapping data themselves. Data is described through several lists: simple raw data trace or read counts, the positions in the trace that were called as peaks (for electropherograms only), and the quantitated reactivity corresponding to these selections. Errors derived from analysis of multiple replicates can also be included. 
 						</p>
@@ -362,9 +376,9 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 						<p>The following table describes the attributes that are found in the general section, in order of appearance:</p>
 						<table class="table table-hover table-striped">
 							<tr class="info">
-								<th class="col-md-2">Header</th>
-								<th class="col-md-8">Description</th>
-								<th class="col-md-2">Type</th>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Header</th>
+								<th class="col-lg-8 col-md-8 col-sm-6 col-xs-6">Description</th>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Type</th>
 							</tr>
 							<tr>
 								<td><h4><span class="label label-success">ANNOTATION_DATA</span></h4></td>
@@ -411,16 +425,18 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 						</table>
 				    </div>
 				</div>
+			</div>
 
-				<hr/>
-	            <div class="panel panel-violet" id="annotation">
+			<hr/>
+			<div class="container theme-showcase li-violet" role="main" style="padding-right:25px;" id="annotation">
+	            <div class="panel panel-violet">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;<b>Annotation</b></span>
 	            	</div>
 	            </div>
 	            <br/>
 	            <div class="row">
-	            	<div class="col-md-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<p> 
 							The construct and data sections have <span class="label label-primary">ANNOTATION</span> or <span class="label label-success">ANNOTATION_DATA</span> attributes that contain annotation tags for the experimental data. Annotations are a central part of the RDAT file format as they give information about the biological and technical context in which the experiment was performed. Annotations are composed of a name and possibly multiple values, separated by a colon (e.g. <code>modifier:SHAPE:DMS</code>) and are listed as tab-separated values after the <span class="label label-primary">ANNOTATION</span> or <span class="label label-success">ANNOTATION_DATA</span> headers. Annotations are hierarchical: an annotation in the <span class="label label-primary">ANNOTATION</span> attribute in the construct section describes all data contained in that section unless an annotation with the same name in a particular <span class="label label-success">ANNOTATION_DATA</span> attribute overrides it.
 						</p>
@@ -428,9 +444,9 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 						<p>The following table describes the annotation syntax for the most common descriptors of an RNA structure mapping experiment.</p>
 						<table class="table table-hover table-striped">
 							<tr class="info">
-								<th class="col-md-2">RDAT syntax</th>
-								<th class="col-md-2">SNRNASM terms</th>
-								<th class="col-md-8">Description</th>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3">RDAT syntax</th>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3">SNRNASM terms</th>
+								<th class="col-lg-8 col-md-8 col-sm-6 col-xs-6">Description</th>
 							</tr>
 							<tr>
 								<td><h4><span class="label label-danger">modifier</span>:<span class="label label-warning">DMS</span></h4></td>
@@ -550,16 +566,18 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 						</table>
 				    </div>
 				</div>
-				<hr>
+			</div>
 
-	            <div class="panel panel-danger" id="best_practice">
+			<hr/>
+			<div class="container theme-showcase li-danger" role="main" style="padding-right:25px;" id="best_practice">
+	            <div class="panel panel-danger">
 	            	<div class="panel-heading">
 	            		<span class="lead"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>&nbsp;&nbsp;<b>Best Practices</b></span>
 	            	</div>
 	            </div>
 	            <br/>
 	            <div class="row">
-	            	<div class="col-md-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<p> Here we describe the recommended practices for representing RNA mapping data in RDAT format. Although they are not required, these practices make an RDAT file more readable, informative, and easier to parse. </p>
 						<ul>
 							<li>
@@ -584,22 +602,12 @@ XSEL_REFINE:2 	90.00   119.00   154.46   186.00   212.00   234.68   260.88   281
 
 
 {% block script %}
+	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}tutorial{{DEBUG_STR}}.js"></script>  
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.dropdown-toggle').removeClass("active");
 			$("#nav_deposit").addClass("active");
 	    	$("#nav_logo").css("text-decoration","none");
-
-	    	$("#sidebar").css("width", $("#sidebar").width());
-			$("#sidebar").affix({
-      			offset: {
-      		  	top: $("#main").position().top
-      			}
-			});	
-
-			$("[id^=sec-]").on("click", function () {
-			    $('html, body').stop().animate({scrollTop: $($(this).attr("href")).offset().top - 100}, 500);
-			});
 		});
 	</script>
 

@@ -66,8 +66,8 @@
 							</li>
 						</ul> -->
 					</li>
-					<li class="dropdown">
-						<a id="nav_deposit" href="/deposit/submit/" class="dropdown-toggle clickable disabled" data-toggle="dropdown" role="button" aria-expanded="false">
+					<li class="dropdown" id="nav_deposit">
+						<a href="/deposit/submit/" class="dropdown-toggle clickable disabled" data-toggle="dropdown" role="button" aria-expanded="false">
 							Deposit
 							<span class="caret"></span>
 						</a>
@@ -88,17 +88,17 @@
 						</ul>
 					</li>
 					<li class="dropdown" id="nav_analyze">
-						<a href="/analyze/predict/" class="dropdown-toggle disabled clickable" data-toggle="dropdown" role="button" aria-expanded="false">
+						<a href="/analyze/predict/" class="dropdown-toggle disabled" data-toggle="dropdown" role="button" aria-expanded="false" disabled onclick="return false;">
 							Analyze
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
-							<li class="li-danger"><a class="clickable" href="/analyze/predict/">
+							<li class="li-danger disabled"><a class="" href="/analyze/predict/" disabled onclick="return false;">
 								<span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>&nbsp;&nbsp;
 								Predict</a>
 							</li>
 							<li class="divider"></li>
-							<li class="li-warning disabled"><a class="clickable" href="/analyze/view/">
+							<li class="li-warning disabled"><a class="" href="/analyze/view/" disabled onclick="return false;">
 								<span class="glyphicon glyphicon-adjust" aria-hidden="true"></span>&nbsp;&nbsp;
 								Structure View</a>
 							</li>
@@ -115,10 +115,10 @@
 								Repository Packages&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 							</li>
 							<li class="divider"></li>
-							<li class="li-primary disabled"><a class="clickable" href="/tools/docs/predict/">
+							<li class="li-primary disabled"><a class="clickable" href="/tools/docs/predict/" disabled onclick="return false;">
 								<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>Structural Server</i></a>
 							</li>
-							<li class="li-primary disabled"><a class="clickable" href="/tools/docs/api/">
+							<li class="li-primary disabled"><a class="clickable" href="/tools/docs/api/" disabled onclick="return false;">
 								<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;<i>Website API</i></a>
 							</li>
 							<li class="li-primary"><a class="clickable" href="/tools/docs/rdatkit/">
@@ -320,7 +320,7 @@
 				</form>
 				<br/><br/><br/>
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="/advanced_search/" class="clickable">
+				<a href="/advanced_search/" class="disabled" style="text-decoration:line-through;" disabled onclick="return false;">
 					<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>&nbsp;
 					Advanced Search
 				</a>

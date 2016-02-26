@@ -36,6 +36,10 @@
 {% block script %}
   <script type="text/javascript">
     $(document).ready(function () {
+      $('.dropdown-toggle').removeClass("active");
+      $("#nav_tool").addClass("active");
+      $("#nav_logo").css("text-decoration","none");
+
       $("#license_content").load("/site_src/{{keyword}}_license.md", function (txt) {
         $(this).html(txt.split(/\n/).join("<br>") + "</strong>");
       });
