@@ -55,6 +55,7 @@ $(document).ready(function() {
       $("#wait").fadeIn(500);
     }
   });
+
 });
 
 $(window).on("beforeunload", function() {

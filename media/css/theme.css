@@ -147,6 +147,17 @@ body {
   background-size: 90%;
 }
 
+.place_holder {
+  height: 200px;
+  background-size: 48px;
+  opacity: 0.5;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-image: url("/site_media/images/fg_load.gif");  
+  background-position: center;
+}
+
+
 html { 
   overflow-y: scroll; 
 }

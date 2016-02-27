@@ -122,7 +122,7 @@ $(document).ready(function() {
         async: true,
         success: function(data) {
             json_general = data;
-            $("#panel_general").html(fill_category(json_general, 'General', 'thumb'));
+            $("#panel_general").removeClass('place_holder').html(fill_category(json_general, 'General', 'thumb'));
             $("#categoryGeneral").find(".panel-body > .subpanel:first > .panel-collapse").collapse("show");
             $("#categoryGeneral").find(".panel-body > .subpanel:first > .panel-collapse").siblings().find(".panel-title > .icon").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
         }
@@ -133,7 +133,7 @@ $(document).ready(function() {
         async: true,
         success: function(data) {
             json_puzzle = data;
-            $("#panel_puzzle").html(fill_category(json_puzzle, 'Puzzle', 'thumb'));
+            $("#panel_puzzle").removeClass('place_holder').html(fill_category(json_puzzle, 'Puzzle', 'thumb'));
             $("#categoryPuzzle").find(".panel-body > .subpanel:first > .panel-collapse").collapse("show");
             $("#categoryPuzzle").find(".panel-body > .subpanel:first > .panel-collapse").siblings().find(".panel-title > .icon").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
         }
@@ -144,7 +144,7 @@ $(document).ready(function() {
         async: true,
         success: function(data) {
             json_eterna = data;
-            $("#panel_eterna").html(fill_category(json_eterna, 'Eterna', 'thumb'));
+            $("#panel_eterna").removeClass('place_holder').html(fill_category(json_eterna, 'Eterna', 'thumb'));
             $("#categoryEterna").find(".panel-body > .subpanel:first > .panel-collapse").collapse("show");
             $("#categoryEterna").find(".panel-body > .subpanel:first > .panel-collapse").siblings().find(".panel-title > .icon").removeClass("glyphicon-chevron-right").addClass("glyphicon-chevron-down");
         }
@@ -179,21 +179,19 @@ $(document).ready(function() {
     });
 
     $("input:radio").on("change", function() {
-        $("#wait").fadeIn();
         if ($(this).val() == "thumb") {
-            $("#panel_general").html(fill_category(json_general, 'General', 'thumb'));
-            $("#panel_puzzle").html(fill_category(json_puzzle, 'Puzzle', 'thumb'));
-            $("#panel_eterna").html(fill_category(json_eterna, 'Eterna', 'thumb'));
+            $("#panel_general").addClass('place_holder').html(fill_category(json_general, 'General', 'thumb')).removeClass('place_holder');
+            $("#panel_puzzle").addClass('place_holder').html(fill_category(json_puzzle, 'Puzzle', 'thumb')).removeClass('place_holder');
+            $("#panel_eterna").addClass('place_holder').html(fill_category(json_eterna, 'Eterna', 'thumb')).removeClass('place_holder');
         } else {
-            $("#panel_general").html(fill_category(json_general, 'General', 'list'));
-            $("#panel_puzzle").html(fill_category(json_puzzle, 'Puzzle', 'list'));
-            $("#panel_eterna").html(fill_category(json_eterna, 'Eterna', 'list'));
+            $("#panel_general").addClass('place_holder').html(fill_category(json_general, 'General', 'list')).removeClass('place_holder');
+            $("#panel_puzzle").addClass('place_holder').html(fill_category(json_puzzle, 'Puzzle', 'list')).removeClass('place_holder');
+            $("#panel_eterna").addClass('place_holder').html(fill_category(json_eterna, 'Eterna', 'list')).removeClass('place_holder');
         }
 
         $(".category").each(function() {
             $(this).find(".panel-body > .subpanel:first > .panel-collapse").collapse("show");
         });
-        $("#wait").fadeOut();
         bind_panel_collapse();
     });
 

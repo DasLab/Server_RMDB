@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'filemanager',
     'adminplus',
     'suit',
+    'widget_tweaks',
     # 'django.contrib.admin',
     'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
@@ -175,6 +176,7 @@ TEMPLATES = [{
             "django.contrib.messages.context_processors.messages",
 
             "src.models.rmdb_user",
+            "src.models.search_form",
             "src.models.debug_flag",
             "src.models.ga_tracker",
         ]

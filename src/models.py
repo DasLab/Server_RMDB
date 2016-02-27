@@ -21,18 +21,6 @@ ENTRY_TYPE_CHOICES = (
     ('TT', 'Titration'),
 )
 
-MODIFIERS = (
-    ('SHP', 'SHAPE'),
-    ('DMS', 'DMS'),
-    ('CMC', 'CMCT'),
-    ('NMD', 'No modification'),
-)
-
-FORMAT_TYPE_CHOICES = (
-    ('rdat', 'RDAT'),
-    ('isatab', 'ISATAB'),
-)
-
 ENTRY_STATUS_CHOICES = (
     ('REC', 'Received'),
     ('REV', 'In Review'),
@@ -40,38 +28,11 @@ ENTRY_STATUS_CHOICES = (
     ('PUB', 'Published'),
 )
 
-SEC_STRUCT_ELEMS_CHOICES = (
-    ('dangles', 'Dangles'),
-    ('bulges', 'Bulges'),
-    ('hairpins', 'Hairpins'),
-    ('interiorloops', 'Interior Loops'),
-    ('helices', 'Helices'),
-    ('3wayjunctions', '3-way Junctions'),
-    ('4wayjunctions', '4-way Junctions'),
-)
-
-PRED_TYPE_CHOICES = (
-    ('1D', '  1-Dimensional (Traditional Chemical Mapping)  '),
-    ('2D', '  2-Dimensional (Mutate-and-Map)  '),
-    ('NN', '  None (No data)  '),
-)
-
-MOD_TYPE_CHOICES = (
-    ('SHAPE', 'SHAPE'),
-    ('DMS', 'DMS'),
-    ('CMCT', 'CMCT'),
-)
-
-EXEC_TYPE_CHOICES = (
-    ('Fold', 'Fold'),
-    ('Spkt', 'ShapeKnots')
-)
-
 DOWNLOAD_SRC_CHOICES = (
     ('reeffit', 'REEFFIT'),
     ('mapseeker', 'MAPSeeker')
 )
-    
+
 
 class NewsItem(models.Model):
     date = models.DateField(verbose_name='Display Date')
@@ -225,10 +186,52 @@ class SourceDownloader(models.Model):
 
 ############################################################################################################################################
 
+MODIFIERS = (
+    ('SHP', 'SHAPE'),
+    ('DMS', 'DMS'),
+    ('CMC', 'CMCT'),
+    ('NMD', 'No modification'),
+)
+
+FORMAT_TYPE_CHOICES = (
+    ('rdat', 'RDAT'),
+    ('isatab', 'ISATAB'),
+)
+
+
+SEC_STRUCT_ELEMS_CHOICES = (
+    ('dangles', 'Dangles'),
+    ('bulges', 'Bulges'),
+    ('hairpins', 'Hairpins'),
+    ('interiorloops', 'Interior Loops'),
+    ('helices', 'Helices'),
+    ('3wayjunctions', '3-way Junctions'),
+    ('4wayjunctions', '4-way Junctions'),
+)
+
+PRED_TYPE_CHOICES = (
+    ('1D', '  1-Dimensional (Traditional Chemical Mapping)  '),
+    ('2D', '  2-Dimensional (Mutate-and-Map)  '),
+    ('NN', '  None (No data)  '),
+)
+
+MOD_TYPE_CHOICES = (
+    ('SHAPE', 'SHAPE'),
+    ('DMS', 'DMS'),
+    ('CMCT', 'CMCT'),
+)
+
+EXEC_TYPE_CHOICES = (
+    ('Fold', 'Fold'),
+    ('Spkt', 'ShapeKnots')
+)
+
+
 class LoginForm(forms.Form):
     username = forms.CharField(required=True)
     password = forms.CharField(required=True, widget=forms.PasswordInput)
     flag = forms.CharField(required=True)
+
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(required=True, max_length=31)
@@ -239,6 +242,10 @@ class RegistrationForm(forms.Form):
     institution = forms.CharField(required=True, max_length=255)
     department = forms.CharField(required=True, max_length=255)
     email = forms.EmailField(required=True, max_length=255)
+
+
+class SearchForm(forms.Form):
+    sstring = forms.CharField(required=True, max_length=63)
 
 
 class UploadForm(forms.Form):
@@ -328,8 +335,6 @@ WEEKDAY_CHOICES = (
 )
 
 class BackupForm(forms.Form):
-    # is_backup = forms.BooleanField()
-    # is_upload = forms.BooleanField()
     time_backup = forms.TimeField(required=True)
     time_upload = forms.TimeField(required=True)
     day_backup = forms.ChoiceField(choices=WEEKDAY_CHOICES)
@@ -343,6 +348,9 @@ def rmdb_user(request):
     else:
         user = None
     return {'rmdb_user': user}
+
+def search_form(request):
+    return {'search_form': SearchForm()}
 
 def debug_flag(request):
     if DEBUG:

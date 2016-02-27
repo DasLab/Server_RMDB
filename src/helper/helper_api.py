@@ -2,7 +2,6 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpRequest
 # from django.core.servers.basehttp import FileWrapper
 
 from src.models import *
-from src.helper.helper_search import *
 
 from rdatkit import settings
 
@@ -12,12 +11,6 @@ import sys
 import urllib
 # import subprocess
 
-
-
-
-def api_search(request, keyword, sstring):
-	sstring = urllib.unquote(sstring.strip().replace('|', ' ').encode("utf8"))
-	return HttpResponse(simplejson.dumps(simple_search_list(sstring, keyword)), content_type='application/json')
 
 
 def api_redirect(request, path):

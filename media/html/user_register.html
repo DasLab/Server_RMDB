@@ -1,5 +1,5 @@
 {% extends "media/html/_public.html" %}
-{% load repository_extras %}
+{% load widget_tweaks %}
 
 {% block content %}
 <div class="container">
@@ -23,21 +23,21 @@
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;User Name:</span>
                                 </div>
-                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{{ reg_form.username }}</div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{% render_field reg_form.username class+="form-control" %}</div>
                             </div>
                             <br/>
                             <div class="row" data-toggle="popover" data-placement="bottom" title="Password" data-content="It must be at least 6 characters long. No limit on combinations.">
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Password:</span>
                                 </div>
-                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{{ reg_form.password }}</div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{% render_field reg_form.password class+="form-control" %}</div>
                             </div>
                             <br/>
                             <div class="row" data-toggle="popover" data-placement="bottom" title="Password" data-content="Type your password for a second time. Both times must match.">
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                                     <span class="text-right pull-right"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;Repeat Password:</span>
                                 </div>
-                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{{ reg_form.repeat_password }}</div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{% render_field reg_form.repeat_password class+="form-control" %}</div>
                             </div>
                             <br/>
                         </div>
@@ -55,14 +55,14 @@
                                     <span class="pull-right"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;First Name:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
-                                    {{reg_form.first_name}}
+                                    {% render_field reg_form.first_name class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Last Name:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
-                                    {{reg_form.last_name}}
+                                    {% render_field reg_form.last_name class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
                                 <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
@@ -73,14 +73,14 @@
                                 <span class="pull-right"><span class="glyphicon glyphicon-education"></span>&nbsp;&nbsp;Insititution:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
-                                    {{reg_form.institution}}
+                                    {% render_field reg_form.institution class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-tower"></span>&nbsp;&nbsp;Department:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
-                                    {{reg_form.department}}
+                                    {% render_field reg_form.department class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
                                 <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
@@ -90,7 +90,7 @@
                                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;E-mail Address:</span>
                                 </div>
-                                <div class="col-lg-8 col-md-8 col-sm-7 col-xs-7">{{reg_form.email}}</div>
+                                <div class="col-lg-8 col-md-8 col-sm-7 col-xs-7">{% render_field reg_form.email class+="form-control" %}</div>
                                 <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
                             </div>
                             <br/>
@@ -149,8 +149,6 @@
             $('.dropdown-toggle').removeClass("active");
             $("#nav_deposit").addClass("active");
             $("#nav_logo").css("text-decoration","none");
-
-            $("#id_username, #id_password, #id_repeat_password, #id_first_name, #id_last_name, #id_institution, #id_department, #id_email").addClass("form-control");
         });
     </script>
 

@@ -217,7 +217,15 @@ def str_view(request):
 
 
 def search(request):
-    return render_to_response(PATH.HTML_PATH['search_res'], {}, context_instance=RequestContext(request))
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            sstring = form.cleaned_data['sstring']
+            return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': sstring}, context_instance=RequestContext(request))
+        return error400(request)
+    else:
+        return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': ''}, context_instance=RequestContext(request))
+
 
 
 def advanced_search(request):

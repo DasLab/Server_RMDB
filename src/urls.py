@@ -9,6 +9,7 @@ from filemanager import path_end
 from src.settings import MEDIA_ROOT, STATIC_ROOT, STATIC_URL, DEBUG, IS_MAINTENANCE, env
 from src import user
 from src import views
+from src.util import api
 # from src.helper.helper_api import *
 
 admin.site = AdminSitePlus()
@@ -79,13 +80,8 @@ else:
         # url(r'^api/organism/all$', api_all_organisms),
         # url(r'^api/system/all$', api_all_systems),
 
-        # url(r'^api/index/stats/$', api_stats),
-        # url(r'^api/index/latest/$', api_latest),
-        # url(r'^api/index/news/$', api_news),
-        # url(r'^api/index/history/$', api_history), 
         # url(r'^api/index/rnastr_ver/$', api_rnastr_ver), 
-        # url(r'^api/index/browse/(?P<keyword>\w+)$', api_browse),
-        # url(r'^api/index/search/(?P<keyword>\w+)/(?P<sstring>.+)$', api_search),
+        url(r'^api/search/(?P<sstring>.+)$', api.search),
 
         url(r'^ping_test/?$', views.ping_test),
         url(r'^get_admin/?$', views.get_admin),
