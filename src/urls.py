@@ -6,7 +6,7 @@ from django.views.static import serve
 from adminplus.sites import AdminSitePlus
 from filemanager import path_end
 
-from src.settings import MEDIA_ROOT, STATIC_ROOT, STATIC_URL, DEBUG, IS_MAINTENANCE, env
+from src.settings import MEDIA_ROOT, DEBUG, IS_MAINTENANCE, env
 from src import user
 from src import views
 from src.util import api

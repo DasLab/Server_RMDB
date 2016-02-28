@@ -1,9 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect
-from django.template import RequestContext#, Template
+from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
-from django.shortcuts import render, render_to_response, redirect
+from django.shortcuts import render_to_response
 
 from rdatkit.datahandlers import RDATFile, RDATSection, ISATABFile
 from rdatkit.secondary_structure import SecondaryStructure
@@ -20,8 +18,6 @@ from src.helper.helper_predict import *
 
 import datetime
 import simplejson
-import sys
-import time
 import traceback
 # from sys import stderr
 
@@ -137,13 +133,13 @@ def validate(request):
 def detail(request, rmdb_id):
     try:
         entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
-        entry.cid = ConstructSection.objects.filter(entry=entry).values( 'id' )[ 0 ][ 'id' ]
+        entry.cid = ConstructSection.objects.filter(entry=entry).values('id')[0]['id']
         is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)) else False
     except (RMDBEntry.DoesNotExist, IndexError):
         return error404(request)
 
     # {'codebase':get_codebase(request)}
-    return render_to_response(PATH.HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'version':entry.version, 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
+    return render_to_response(PATH.HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'version':entry.version, 'status':entry.status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
 
 
 def predict(request):
@@ -218,13 +214,14 @@ def str_view(request):
 
 def search(request):
     if request.method == 'POST':
-        form = SearchForm(request.POST)
+        return error400(request)
+    else:
+        form = SearchForm(request.GET)
         if form.is_valid():
             sstring = form.cleaned_data['sstring']
             return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': sstring}, context_instance=RequestContext(request))
-        return error400(request)
-    else:
-        return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': ''}, context_instance=RequestContext(request))
+        else:
+            return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': ''}, context_instance=RequestContext(request))
 
 
 

@@ -307,8 +307,7 @@
 				<br class="hidden-lg hidden-md" />
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-				<form class="pull-right" action="/search/" method="post">
-					{% csrf_token %}
+				<form class="pull-right" action="/search/" method="get">
 					<div class="input-group">
 						{% render_field search_form.sstring class+="form-control input-lg" placeholder="Search by keyword" %}
 						<div class="input-group-btn">

@@ -1,15 +1,16 @@
 import os
 import shutil
 import sys
+import traceback
 
 from django.core.wsgi import get_wsgi_application
 sys.path.append(os.path.abspath('../../'))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings") 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.settings") 
 application = get_wsgi_application()
 
-from repository.settings import *
-from repository.models import *
-from repository.helper.helper_display import *
+from src.settings import *
+from src.models import *
+from src.helper.helper_display import *
 
 
 if len(sys.argv) > 3:
@@ -47,6 +48,7 @@ for i, rmdb_id in enumerate(all_rdats):
 			make_json_for_rdat(rmdb_id)
 			print "\033[92mSUCCESS\033[0m: ", (i+1), "/", len(all_rdats), " : \033[94m", rmdb_id, "\033[0m"
 		except:
+			print traceback.format_exc()
 			err_rdats.append(rmdb_id)
 			print "\033[41mFAILURE\033[0m: ", (i+1), "/", len(all_rdats), " : \033[94m", rmdb_id, "\033[0m"
 

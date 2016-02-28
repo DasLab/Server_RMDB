@@ -1,14 +1,13 @@
-{% extends "media/html/_framework.html" %}
+{% extends "media/html/_public.html" %}
 {% load repository_extras %}
 
 {% block head %}
-<link rel="stylesheet" href="/site_media/css/svg_barplot.css" />
-<link rel="stylesheet" href="/site_media/css/svg_heatmap.css" />
+<link rel="stylesheet" href="/site_media/css/{{DEBUG_DIR}}svg_barplot{{DEBUG_STR}}.css" />
+<link rel="stylesheet" href="/site_media/css/{{DEBUG_DIR}}svg_heatmap{{DEBUG_STR}}.css" />
 {% endblock %}
 
 
 {% block content %}
-
 <div id="left_panel" class="side_panel well">
 	<div role="tabpanel" class="tabbable tabs-right">
 		<ul class="nav nav_tabs side_tab" role="tablist" id="left-buttons">
@@ -42,106 +41,114 @@
 					<div role="tabpanel" class="tab-pane active tab-inner" id="gen">
 
 						<table class="table table-hover">
-							<tr>
-								<td class="lead text-right"><span class="label label-default" style="background:#000;">RMDB_ID</span></td>
-								<td class="lead">
-									{% autoescape off %}
-					                <span class="label label-default">{{rmdb_id|color_rmdb_id}}</span>
-					                {% endautoescape %}
-					            </td>
-					        </tr>
-							<tr>
-								<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
-								<td class="lead" id="tag_name_panel"></td>
-					        </tr>
-							<tr>
-								<td class="lead text-right"><span class="label label-primary">COMMENT</span></td>
-								<td id="tag_comments"></td>
-					        </tr>
+							<thead>
+								<tr>
+									<th class="col-lg-3 col-md-3 col-sm-4 col-xs-4"></th>
+									<th class="col-lg-9 col-md-9 col-sm-8 col-xs-8"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="lead text-right"><span class="label label-default" style="background:#000;">RMDB_ID</span></td>
+									<td class="lead">
+										{% autoescape off %}
+						                <span class="label label-default">{{rmdb_id|color_rmdb_id}}</span>
+						                {% endautoescape %}
+						            </td>
+						        </tr>
+								<tr>
+									<td class="lead text-right align-center"><span class="label label-primary">NAME</span></td>
+									<td class="lead" id="tag_name_panel"></td>
+						        </tr>
+								<tr>
+									<td class="lead text-right"><span class="label label-primary">COMMENT</span></td>
+									<td id="tag_comments"></td>
+						        </tr>
 
-							<tr>
-								<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
-								<td id="tag_sequence_len"></td>
-					        </tr>
-							<tr>
-								<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
-								<td id="tag_structure_len"></td>
-					        </tr>
-							<tr>
-								<td class="lead text-right"><span class="label label-primary">SEQPOS</span></td>
-								<td id="tag_seqpos"></td>
-					        </tr>
-							<tr>
-								<td class="lead text-right"><span class="label label-primary">OFFSET</span></td>
-								<td id="tag_offset"></td>
-					        </tr>
-							<tr>
-								<td class="lead text-right"><span class="label label-success">REACTIVITY</span></td>
-								<td id="tag_data"></td>
-					        </tr>
-							<tr>
-								<td class="lead text-right"><span class="label label-success">REACTIVITY_ERROR</span></td>
-								<td id="tag_data_err"></td>
-					        </tr>
-					        <tr>
-								<td class="lead text-right"><span class="label label-success">XSEL</span></td>
-								<td id="tag_xsel"></td>
-					        </tr>
+								<tr>
+									<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
+									<td id="tag_sequence_len"></td>
+						        </tr>
+								<tr>
+									<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
+									<td id="tag_structure_len"></td>
+						        </tr>
+								<tr>
+									<td class="lead text-right"><span class="label label-primary">SEQPOS</span></td>
+									<td id="tag_seqpos"></td>
+						        </tr>
+								<tr>
+									<td class="lead text-right"><span class="label label-primary">OFFSET</span></td>
+									<td id="tag_offset"></td>
+						        </tr>
+								<tr>
+									<td class="lead text-right"><span class="label label-success">REACTIVITY</span></td>
+									<td id="tag_data"></td>
+						        </tr>
+								<tr>
+									<td class="lead text-right"><span class="label label-success">REACTIVITY_ERROR</span></td>
+									<td id="tag_data_err"></td>
+						        </tr>
+						        <tr>
+									<td class="lead text-right"><span class="label label-success">XSEL</span></td>
+									<td id="tag_xsel"></td>
+						        </tr>
 
-							<tr>
-								<td class="lead text-right align-center"><span class="label label-default">RDAT_VERSION</span></td>
-								<td id="tag_rdat_ver"></td>
-					        </tr>
-					        
-							<tr>
-								<td class="lead text-right align-center"><span class="label label-violet">Stats</span></td>
-								<td>
-									<p>
-										<i>Version:</i> <mark id="tag_version"></mark>
-										<br/>
-										<i># of Construct:</i> <code id="tag_n_construct"></code>
-										<br/>
-										<i># of Data Point:</i> <code id="tag_n_data"></code>
-										<br/>
-										<i>Last Modified:</i> <mark id="tag_creation_date"></mark>
-										<br/>
-										<i>Revision Status:</i>
-										<span id="tag_rev_stat"></span>
-									</p>
-								</td>
-					        </tr>
-							<tr>
-								<td class="lead text-right align-center"><span class="label label-violet">Owner</span></td>
-								<td id="tag_owner"></td>
-					        </tr>
-										
-							<tr>
-								<th class="col-md-3"></th>
-								<th class="col-md-9"></th>
-							</tr>
+								<tr>
+									<td class="lead text-right align-center"><span class="label label-default">RDAT_VERSION</span></td>
+									<td id="tag_rdat_ver"></td>
+						        </tr>
+						        
+								<tr>
+									<td class="lead text-right align-center"><span class="label label-violet">Stats</span></td>
+									<td>
+										<p>
+											<i>Version:</i> <mark id="tag_version"></mark>
+											<br/>
+											<i># of Construct:</i> <code id="tag_n_construct"></code>
+											<br/>
+											<i># of Data Point:</i> <code id="tag_n_data"></code>
+											<br/>
+											<i>Last Modified:</i> <mark id="tag_creation_date"></mark>
+											<br/>
+											<i>Revision Status:</i>
+											<span id="tag_rev_stat"></span>
+										</p>
+									</td>
+						        </tr>
+								<tr>
+									<td class="lead text-right align-center"><span class="label label-violet">Owner</span></td>
+									<td id="tag_owner"></td>
+						        </tr>
+						        <tr><td colspan="2" style="padding:0px;"></td></tr>
+						    </tbody>
 						</table>
 					</div>
 
 					<div role="tabpanel" class="tab-pane tab-inner" id="ann">
 						<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
-							<tr id="tag_annotation">
-								<td class="lead text-right align-center"><span class="label label-primary">ANNOTATION</span></td>
-								<td class="lead text-right align-center"><span class="label label-danger">experimentType</span></td>
-								<td class="lead">
-									<span class="label label-success" id="tag_type"></span>
-								</td>
-					        </tr>
-							<tr id="tag_data_annotation">
-								<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
-								<td></td>
-								<td id="tag_data_switch"></td>
-					        </tr>
-
-							<tr>
-								<th class="col-md-3"></th>
-								<th class="col-md-3"></th>
-								<th class="col-md-6"></th>
-							</tr>
+							<thead>
+								<tr>
+									<th class="col-lg-3 col-md-3 col-sm-4 col-xs-4"></th>
+									<th class="col-lg-3 col-md-3 col-sm-4 col-xs-4"></th>
+									<th class="col-lg-6 col-md-6 col-sm-4 col-xs-4"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr id="tag_annotation">
+									<td class="lead text-right align-center"><span class="label label-primary">ANNOTATION</span></td>
+									<td class="lead text-right align-center"><span class="label label-danger">experimentType</span></td>
+									<td class="lead">
+										<span class="label label-success" id="tag_type"></span>
+									</td>
+						        </tr>
+								<tr id="tag_data_annotation">
+									<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
+									<td></td>
+									<td id="tag_data_switch"></td>
+						        </tr>
+						        <tr><td colspan="3" style="padding:0px;"></td></tr>
+							</tbody>
 						</table>						
 					</div>
 				</div>
@@ -155,7 +162,7 @@
 </div>
 
 <div id="set_panel" class="view_panel">
-	<div class="col-md-12">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<p>
 			<a class="text-center" id="close-set" style="color:#fff;">
 				<span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
@@ -170,19 +177,22 @@
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" id="show_seq">
-				Show sequences overlay
+                <span class="cr"><span class="cr-icon glyphicon glyphicon-ok"></span></span>
+                &nbsp;Show sequences overlay
 			</label>
 		</div>
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" id="show_area_pred" disabled>
-				Show reactivity prediction
+				<span class="cr"><span class="cr-icon glyphicon glyphicon-ok"></span></span>
+                &nbsp;Show reactivity prediction
 			</label>
 		</div>
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" id="show_color_seq">
-				Show nucleotides in color:
+				<span class="cr"><span class="cr-icon glyphicon glyphicon-ok"></span></span>
+                &nbsp;Show nucleotides in color:
 				<span id="seqA">A</span>,
 				<span id="seqU">U</span>,
 				<span id="seqG">G</span>,
@@ -191,10 +201,10 @@
 		</div>
 		<label>Adjust heatmap contrast:</label>
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-lg-8 col-md-8 col-sm-7 col-xs-6">
 				<input type="range" id="color_slide">
 			</div>
-			<div class="col-md-4">
+			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
 				<input type="number" class="form-control" id="color_text">
 			</div>
 		</div>
@@ -236,7 +246,7 @@
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane active fade in side_block" id="panel_svg">
 				<div class="row">
-					<div class="col-md-1" style="width:90px;">
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="width:90px;">
 						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
 							<button id="svg_top" class="btn btn-default">
 								<span class="glyphicon glyphicon-fast-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
@@ -268,7 +278,7 @@
 							</button>
 						</p>
 					</div>
-					<div class="col-md-11" id="svg_parent"><svg class="chart"></svg></div>
+					<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11" id="svg_parent"><svg class="chart"></svg></div>
 				</div>
 				<div class="row" id="tag_browse">
 					<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
@@ -278,9 +288,9 @@
 							<td></td>
 				        </tr>
 						<tr>
-							<th class="col-md-2"></th>
-							<th class="col-md-2"></th>
-							<th class="col-md-8"></th>
+							<th class="col-lg-2 col-md-2 col-sm-3 col-xs-4"></th>
+							<th class="col-lg-2 col-md-2 col-sm-3 col-xs-4"></th>
+							<th class="col-lg-8 col-md-8 col-sm-6 col-xs-4"></th>
 						</tr>
 					</table>						
 				</div>
@@ -292,17 +302,18 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-10" id="panel_tit">
+		<div class="col-lg-10 col-md-10 col-sm-9 col-xs-9" id="panel_tit">
 			<h2 id="tag_name_main"></h2>
 			<div class="row">
-				<div class="col-md-5">
+				<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
 					<h2 style="margin-top:0px;">
 						{% autoescape off %}
 					    <span class="label label-default">{{rmdb_id|color_rmdb_id}}</span>
 					    {% endautoescape %}
 					</h2>
+					<br class="hidden-lg hidden-md" />
 				</div>
-				<div class="col-md-7">
+				<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
 					<div class="btn-group pull-right" role="group">
 						<div class="btn-group" id="tag_supercede"></div>
 
@@ -343,8 +354,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-2 well" id="panel_leg">
-	        <p class="center-block" style="text-align:center;">
+		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+	        <p class="well center-block" style="text-align:center;" id="panel_leg">
 	        	<b>Color Scale:</b>
 	        	<br/>
 	        	<img src="/site_media/images/fg_gray_colormap.gif"/>
@@ -357,65 +368,73 @@
 	</div>
 </div>
 
-{% if revision_status == "PUB" %}
 
+{% if status == "PUB" %}
 <div class="container">
-	<div class="col-md-8">
-		<div class="panel panel-violet">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					<b>Construct</b>
-					<span class="pull-right">
-						<a id="show_preview">
-							<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+	<div class="row">
+		<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+			<br class="hidden-lg hidden-md" />
+
+			<div class="panel panel-violet">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<b>Construct</b>
+						<span class="pull-right">
+							<a id="show_preview">
+								<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+							</a>
+						</span>
+					</h3>
+				</div>
+				<div class="panel-body" id="panel_con">
+					<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
+						<thead>
+							<tr>
+								<th class="col-lg-2 col-md-2 col-sm-3 col-xs-3"></th>
+								<th class="col-lg-10 col-md-10 col-sm-9 col-xs-9"></th>
+							</tr>							
+						</thead>
+						<tbody>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
+								<td><p><b><samp id="tag_sequence"></samp></b></p></td>
+					        </tr>
+							<tr>
+								<td class="lead text-right"><span class="label label-primary" >STRUCTURE</span></td>
+								<td><p><b><samp id="tag_structure"></samp></b></p></td>
+					        </tr>
+					        <tr><td colspan="2" style="padding:0px;"></td></tr>
+						</tbody>
+					</table>
+				</div>
+			</div>	
+		</div>
+
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<h3 class="panel-title"><b>Citation</b></h3>
+				</div>
+				<div class="panel-body" id="panel_cit">
+					<p><span class="lead"><span class="label label-brown">Publication</span></span></p>
+					<p>
+						<i id="tag_author"></i>. 
+						<br/>
+						<b id="tag_title"></b>. 
+						<br/>
+						<a target="_blank" id="link_pubmed">
+							PMID: <span id="tag_pubmed"></span> 
+							<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
 						</a>
-					</span>
-				</h3>
-			</div>
-			<div class="panel-body" id="panel_con">
-				<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;margin-bottom:0px;">
-					<tr>
-						<td class="lead text-right"><span class="label label-primary">SEQUENCE</span></td>
-						<td><p><b><samp id="tag_sequence"></samp></b></p></td>
-			        </tr>
-					<tr>
-						<td class="lead text-right"><span class="label label-primary">STRUCTURE</span></td>
-						<td><p><b><samp id="tag_structure"></samp></b></p></td>
-			        </tr>
-								
-					<tr>
-						<th class="col-md-2"></th>
-						<th class="col-md-10"></th>
-					</tr>
-				</table>
-			</div>
-		</div>	
-	</div>
+					</p>
 
-	<div class="col-md-4">
-		<div class="panel panel-success">
-			<div class="panel-heading">
-				<h3 class="panel-title"><b>Citation</b></h3>
-			</div>
-			<div class="panel-body" id="panel_cit">
-				<p><span class="lead"><span class="label label-brown">Publication</span></span></p>
-				<p>
-					<i id="tag_author"></i>. 
-					<br/>
-					<b id="tag_title"></b>. 
-					<br/>
-					<a target="_blank" id="link_pubmed">
-						PMID: <span id="tag_pubmed"></span> 
-						<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
-					</a>
-				</p>
-
-				<p><span class="lead"><span class="label label-brown">Description</span></span></p>
-				<p id="tag_description"></p>
-				<p style="padding-top:5px;">
-					<span class="lead"><span class="label label-default">PDB_ID</span></span>:
-					<span id="tag_pdb"></span>
-				</p>
+					<p><span class="lead"><span class="label label-brown">Description</span></span></p>
+					<p id="tag_description"></p>
+					<p style="padding-top:5px;">
+						<span class="lead"><span class="label label-default">PDB_ID</span></span>:
+						<span id="tag_pdb"></span>
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -442,7 +461,7 @@
 				</h4>
 			</div>
 			<div class="modal-body panel-body">
-				<div class="col-md-12">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="row">
 						<img src="/site_data/construct_img/{{cid}}/reactivity_crisp.png" class="center-block"/>
 						<br/>
@@ -456,13 +475,13 @@
 {% else %}
 <div class="container">
 	<h1>
-		{% if revision_status == "REV" %}
+		{% if status == "REV" %}
 		<span class="label label-warning">In Review</span>
 		{% endif %}
-		{% if revision_status == "REC" %}
+		{% if status == "REC" %}
 		<span class="label label-info">Received</span>
 		{% endif %}
-		{% if revision_status == "HOL" %}
+		{% if status == "HOL" %}
 		<span class="label label-danger">On Hold</span>
 		{% endif %}
 	</h1>
@@ -477,7 +496,7 @@
 	<form enctype="multipart/form-data" method="post" action="/deposit/admin_rev_stat/">
 		{% csrf_token %}
 		<div class="row">
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="panel-title">
@@ -502,7 +521,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-7">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h2 class="panel-title">
@@ -511,7 +530,7 @@
                         </h2>
                     </div>
                     <div class="panel-body" id="col-2">
-                    	<div class="col-md-3">
+                    	<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
 	                    	<div class="radio">
 								<label>
 									<input type="radio" name="rev_stat" value="PUB">
@@ -525,7 +544,7 @@
 								</label>
 							</div>
                     	</div>
-                    	<div class="col-md-3">
+                    	<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
 	                    	<div class="radio">
 								<label>
 									<input type="radio" name="rev_stat" value="REC">
@@ -539,7 +558,7 @@
 								</label>
 							</div>
                     	</div>
-                    	<div class="col-md-6">
+                    	<div class="col-lg-6 col-md-6 col-sm-4 col-xs-4">
                     		<p>Once submit, the revision status will be updated.</p>
                     		<p>If switched to <span class="label label-success">Published</span>, json data files will be generated.</p>
                     		<input id="btn_submit" type="submit" class="btn btn-inverse pull-right" value="&nbsp;Submit&nbsp;"/>
@@ -574,85 +593,21 @@
 
 {% block script %}
 	<script type="text/javascript">
-		var json, tags, idx = 0, tag_idx = 0, n_rows, color_scale = 1, flag = 0;
+		if (isCDN) {
+			document.write('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/' + ver_d3 + '/d3.min.js"><\/script>');
+		} else {
+			document.write('<script type="text/javascript" src="/site_media/js/d3.min.js"><\/script>');
+		}
 	</script>
-	<script type="text/javascript" src="/site_media/js/main_util.js"></script>
-	<script type="text/javascript" src="/site_media/js/main_tags.js"></script>
-	<script type="text/javascript" src="/site_media/js/main_heatmap.js"></script>
-	<script type="text/javascript" src="/site_media/js/main_barplot.js"></script>
-	<script type="text/javascript" src="/site_media/js/main_setting.js"></script>
 	<script type="text/javascript">
-		// $("#wait").ajaxStart(function() {$(this).fadeIn();})
-		// 	.ajaxStop(function() {$(this).fadeOut();});
-
-		{% if revision_status == "PUB" %}
-		$(document).ready(function () {
-			$.ajax({
-				url: '/site_data/files/{{rmdb_id}}/data_tags.json',
-				dataType: 'json',
-				async: true,
-				beforeSend: function(xhr) { 
-					init_panel_size();
-					$("#wait").fadeIn(); 
-				},
-				complete: function(xhr) { 
-					$("#wait").fadeOut(); 
-				},
-				success: function(data) {
-					tags = data;
-					fill_tags();
-
-					setTimeout(function() { 
-						if ((tags.data_nrow >= 300 | tags.data_ncol >= 300) & $(location).attr("href").indexOf("?full=1") == -1) {
-							$("#main").html('<p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap">Load</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large (<code>' + tags.data_nrow + '-by-' + tags.data_ncol + '</code>). Rendering may take a few seconds.)</i></p><img id="img_preview" src="/site_data/construct_img/{{cid}}/reactivity_equal.png" class="center-block well"/>');
-							if (parseInt($("#img_preview").css("width")) > 600) {
-								$("#img_preview").css("width", "600");
-							}
-						    $("#btn_load_heatmap").bind("click", function() {
-						    	$(location).attr("href",$(location).attr("href") + "?full=1");
-							});
-						} else {
-							$.ajax({
-								url: '/site_data/files/{{rmdb_id}}/data_heatmap.json',
-								dataType: 'json',
-								async: false,
-								success: function(data) {
-									json = data; 
-									n_rows = json.y_labels.length;
-									draw_heatmap(json); 
-								}
-							});
-						}
-						setTimeout(function() {
-							$("#svg_top").trigger("click");
-							setTimeout(function() {
-								$("#left_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#left_panel").css("width")}, 1000);
-								$(".left_close").removeClass("visible").hide();
-								$("#img_panel").animate({"margin-left":"0px"},0).removeClass("visible").animate({"margin-left":"-"+$("#img_panel").css("width")}, 1000);
-								$("#set_panel").animate({"margin-right":"0px"},0).removeClass("visible").animate({"margin-right":"-"+$("#set_panel").css("width")}, 1000);
-
-								$("#show_preview").on("click", function() {
-									$("#preview").modal("show");
-								});
-							}, 1);
-						}, 1);
-					}, 1);
-				}
-			});
-
-		});
-		{% else %}
-		$(document).ready(function () {
-			init_panel_size();
-			$("#hist_dropdown").addClass("disabled");
-			$("#dl_dropdown").addClass("disabled");
-			$("#tag_supercede").html('<button type="button" class="btn btn-warning disabled" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;In Review&nbsp;&nbsp;</button>');
-		    var col_h = Math.max(parseInt($("#col-1").css("height")), parseInt($("#col-2").css("height")));
-		    $("#col-1").css("height", col_h);
-		    $("#col-2").css("height", col_h);
-
-
-		});
-		{% endif %}
+		var json, tags, idx = 0, tag_idx = 0, n_rows, color_scale = 1, flag = 0;
+		var rmdb_id = "{{rmdb_id}}", cid = "{{cid}}", status = "{{status}}";
 	</script>
+
+	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_util{{DEBUG_STR}}.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_tags{{DEBUG_STR}}.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_heatmap{{DEBUG_STR}}.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_barplot{{DEBUG_STR}}.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_setting{{DEBUG_STR}}.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view{{DEBUG_STR}}.js"></script>
 {% endblock %}
