@@ -46,6 +46,43 @@ function init_panel_size() {
 }
 
 
+function render_status(string) {
+    var span_class = 'default';
+    if (string == 'PUB') {
+        string = 'Published';
+        span_class = 'success';
+    } else if (string == 'HOL') {
+        string = 'On Hold';
+        span_class = 'danger';
+    } else if (string == 'REV') {
+        string = 'Under Review';
+        span_class = 'warning';
+    } else if (string == 'REC') {
+        string = 'Received';
+        span_class = 'info';
+    }
+    return '<span class="label label-' + span_class + '">' + string + '</span>';
+}
+
+function render_type(string) {
+    var span_class = 'default';
+    if (string == 'SS') {
+        string = 'Standard State';
+        span_class = 'primary';
+    } else if (string == 'MM') {
+        string = 'Mutate And Map';
+        span_class = 'success';
+    } else if (string == 'MA') {
+        string = 'MOHCA';
+        span_class = 'danger';
+    } else if (string == 'TT') {
+        string = 'Titration';
+        span_class = 'info';
+    }
+    return '<span class="label label-' + span_class + '">' + string + '</span>';
+}
+
+
 $(document).ready(function() {
     $(".dropdown-toggle").removeClass("active");
     $("#nav_browse").addClass("active");

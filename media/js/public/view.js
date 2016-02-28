@@ -49,13 +49,19 @@ $(document).ready(function () {
             }
         });
     } else {
+        $("#header_stat").html(render_status(status));
         $("#hist_dropdown").addClass("disabled");
         $("#dl_dropdown").addClass("disabled");
-        $("#tag_supercede").html('<button type="button" class="btn btn-warning disabled" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;In Review&nbsp;&nbsp;</button>');
+        $("#tag_supercede").html('<button type="button" class="btn btn-warning disabled" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;Under Review&nbsp;&nbsp;</button>');
+
+        $("#img_prv_rev").attr("src", "/site_data/construct_img/" + cid + "/reactivity_crisp.png");
+        $("#dl_isatab_rev").attr("href", "/site_data/files/" + rmdb_id + "/" + rmdb_id + "_" + version + ".xls");
+        $("#dl_rdat_rev").attr("href", "/site_data/files/" + rmdb_id + "/" + rmdb_id + ".rdat");
+
         var col_h = Math.max(parseInt($("#col-1").css("height")), parseInt($("#col-2").css("height")));
         $("#col-1").css("height", col_h);
         $("#col-2").css("height", col_h);
 
-        init_panel_size();
+        $("#left_panel, img_panel, set_panel").hide();
     }
 });

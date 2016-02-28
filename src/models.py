@@ -23,7 +23,7 @@ ENTRY_TYPE_CHOICES = (
 
 ENTRY_STATUS_CHOICES = (
     ('REC', 'Received'),
-    ('REV', 'In Review'),
+    ('REV', 'Under Review'),
     ('HOL', 'On Hold'),
     ('PUB', 'Published'),
 )
@@ -257,6 +257,12 @@ class UploadForm(forms.Form):
     rmdb_id = forms.CharField(required=True)
     type = forms.ChoiceField(choices=ENTRY_TYPE_CHOICES)
     filetype = forms.ChoiceField(choices=FORMAT_TYPE_CHOICES)
+
+
+class ReviewForm(forms.Form):
+    new_stat = forms.ChoiceField(required=True, choices=ENTRY_STATUS_CHOICES)
+    rmdb_id = forms.CharField(required=True)
+    cid = forms.CharField(required=True)
 
 
 class ValidateForm(forms.Form):

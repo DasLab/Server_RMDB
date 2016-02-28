@@ -61,7 +61,7 @@ function fill_tags() {
     $("#tag_n_construct").text(tags.construct_count);
     $("#tag_n_data").text(tags.data_count);
     $("#tag_creation_date").text(tags.creation_date);
-    $("#tag_rev_stat").html(tags.revision_status_label);
+    $("#tag_rev_stat").html(render_status(tags.status));
     $("#tag_owner").html("<b>" + tags.owner_name + "</b> <kbd>" + tags.owner + "</kbd>");
 
     $("#tag_sequence").text(tags.sequence);
@@ -72,6 +72,7 @@ function fill_tags() {
     $("#link_pubmed").attr("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + tags.pubmed_id);
     $("#tag_description").text(tags.description);
 
+    $("#img_prv").attr("src", "/site_data/construct_img/" + cid + "/reactivity_crisp.png");
     $("#dl_isatab").attr("href", "/site_data/files/" + tags.rmdb_id + "/" + tags.rmdb_id + "_" + tags.version + ".xls");
     $("#dl_rdat").attr("href", "/site_data/files/" + tags.rmdb_id + "/" + tags.rmdb_id + ".rdat");
     if (tags.version > 1) {
@@ -103,7 +104,7 @@ function fill_tags() {
     $("#panel_con").css("height", col_h);
     $("#panel_cit").css("height", col_h);
 
-    $("#tag_type").html(tags.type);
+    $("#tag_type").html(render_type(tags.type));
     var ann_html = '';
     for (var i in tags.annotation) {
         ann_html += '<tr><td></td><td class="lead text-right align-center"><span class="label label-danger">' + i + '</span></td><td class="lead">';
@@ -114,7 +115,7 @@ function fill_tags() {
                 ann_html += '<p style=\"padding-bottom:5px;\"><span class=\"label label-warning\">' + tags.annotation[i][j] + '</span></p>';
             }
         }
-        ann_html += '</td></tr>'
+        ann_html += '</td></tr>';
     }
     $(ann_html).insertAfter("#tag_annotation");
 
@@ -126,7 +127,7 @@ function fill_tags() {
             dat_ann_html = '';
             $(this).fadeOut();
             for (var i in tags.data_annotation) {
-                dat_ann_html += '<tr class="tag-temp"><td class="text-right"><b><i><u>' + (parseInt(i)+1) + '</u></i></b></td>';
+                dat_ann_html += '<tr class="tag-temp"><td class="text-right"><b><i><u>' + (parseInt(i) + 1) + '</u></i></b></td>';
 
                 var data_ann_idx = 0;
                 for (var j in tags.data_annotation[i]) {
@@ -137,7 +138,7 @@ function fill_tags() {
                     }
                     for (var k in tags.data_annotation[i][j]) {
                         if (k != tags.data_annotation[i][j].length - 1) { dat_ann_html += '<p style="padding-bottom:5px;">'; }
-                        if (j.toUpperCase() === 'SEQUENCE' | j.toUpperCase() === 'STRUCTURE') { 
+                        if (j.toUpperCase() === 'SEQUENCE' | j.toUpperCase() === 'STRUCTURE') {
                             var seq_tmp = wbr(tags.data_annotation[i][j][k]);
                             for (var l in seq_tmp) {
                                 dat_ann_html += '<p style="padding-bottom:5px;"><samp><span class="label label-warning">' + seq_tmp[l] + '</span></sa,p></p>';

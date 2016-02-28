@@ -29,7 +29,7 @@ def simple_search(sstring, keyword):
     for e in entry_all:
         if e.rmdb_id not in entry_ids:
             e.constructs = ConstructSection.objects.filter(entry=e).values('name').distinct()
-            e.cid = ConstructSection.objects.filter(entry=e).values('id')[0]['id']
+            e.cid = ConstructSection.objects.get(entry=e).id
 
             comment = e.comments.split()
             for i, m in enumerate(comment):

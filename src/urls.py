@@ -46,7 +46,7 @@ else:
         url(r'^deposit/specs/(?P<section>\w{,20})$', views.specs),
         url(r'^deposit/validate/?$', views.validate),
         url(r'^deposit/submit/?$', views.upload),
-        url(r'^deposit/admin_rev_stat/?$', views.admin_rev_stat),
+        url(r'^deposit/review/?$', views.review),
 
         url(r'^analyze/predict/?$', views.predict),
         url(r'^analyze/view/?$', views.str_view),

@@ -1,5 +1,6 @@
 {% extends "media/html/_public.html" %}
 {% load repository_extras %}
+{% load widget_tweaks %}
 
 {% block head %}
 <link rel="stylesheet" href="/site_media/css/{{DEBUG_DIR}}svg_barplot{{DEBUG_STR}}.css" />
@@ -138,9 +139,7 @@
 								<tr id="tag_annotation">
 									<td class="lead text-right align-center"><span class="label label-primary">ANNOTATION</span></td>
 									<td class="lead text-right align-center"><span class="label label-danger">experimentType</span></td>
-									<td class="lead">
-										<span class="label label-success" id="tag_type"></span>
-									</td>
+									<td class="lead" id="tag_type"></td>
 						        </tr>
 								<tr id="tag_data_annotation">
 									<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
@@ -337,7 +336,7 @@
 									<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
 									&nbsp;&nbsp;RDAT
 								</a></li>
-								{% if not is_istab %} 
+								{% if is_isatab %} 
 								<li class="li-brown"><a id="dl_isatab" download>
 									<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 									&nbsp;&nbsp;ISATAB
@@ -463,7 +462,7 @@
 			<div class="modal-body panel-body">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="row">
-						<img src="/site_data/construct_img/{{cid}}/reactivity_crisp.png" class="center-block"/>
+						<img id="img_prv" class="center-block"/>
 						<br/>
 					</div>
 				</div>
@@ -474,103 +473,68 @@
 
 {% else %}
 <div class="container">
-	<h1>
-		{% if status == "REV" %}
-		<span class="label label-warning">In Review</span>
-		{% endif %}
-		{% if status == "REC" %}
-		<span class="label label-info">Received</span>
-		{% endif %}
-		{% if status == "HOL" %}
-		<span class="label label-danger">On Hold</span>
-		{% endif %}
-	</h1>
+	<h1 id="header_stat"></h1>
 	<br/>
 	<p class="lead">This entry has been received and is currently under review by the RMDB team. Once approved by the admin, the entry will be released to the public. On average, the review process should take no longer than 2 days.</p>
-	<img src="/site_data/construct_img/{{cid}}/reactivity_crisp.png" class="center-block"/>
+	<p><img id="img_prv_rev" class="center-block"/></p>
 	<p class="lead">For any questions, please feel free to <a href="/help/about#contact">contact</a> us.</p>
 
 	{% if user.is_superuser %}
 	<hr/>
 	<h3>Admin Options</h3>
-	<form enctype="multipart/form-data" method="post" action="/deposit/admin_rev_stat/">
-		{% csrf_token %}
-		<div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>&nbsp;&nbsp;
-                            Download
-                        </h2>
-                    </div>
-                    <div class="panel-body" id="col-1">
-						<ul class="nav nav-pills nav-stacked" role="menu">
-							<li class="li-info"><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}.rdat" id="dl_rdat" download>
-								<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
-								&nbsp;&nbsp;RDAT
-							</a></li>
-							{% if not is_istab %} 
-							<li class="li-brown"><a href="/site_data/files/{{rmdb_id}}/{{rmdb_id}}_{{version}}.xls" id="dl_isatab" download>
-								<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-								&nbsp;&nbsp;ISATAB
-							</a></li>
-							{% endif %} 
-						</ul>
-
-                    </div>
+	<div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">
+                        <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>&nbsp;&nbsp;
+                        Download
+                    </h2>
                 </div>
-            </div>
-            <div class="col-lg-8 col-md-8 col-sm-7 col-xs-7">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <span class="glyphicon glyphicon-tower" aria-hidden="true"></span>&nbsp;&nbsp;
-                            Change Status
-                        </h2>
-                    </div>
-                    <div class="panel-body" id="col-2">
-                    	<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
-	                    	<div class="radio">
-								<label>
-									<input type="radio" name="rev_stat" value="PUB">
-									<p class="lead"><span class="label label-success">Published</span></p>
-								</label>
-							</div>
-	                    	<div class="radio">
-								<label>
-									<input type="radio" name="rev_stat" value="REV" checked>
-									<p class="lead"><span class="label label-warning">In Review</span></p>
-								</label>
-							</div>
-                    	</div>
-                    	<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
-	                    	<div class="radio">
-								<label>
-									<input type="radio" name="rev_stat" value="REC">
-									<p class="lead"><span class="label label-info">Received</span></p>
-								</label>
-							</div>
-	                    	<div class="radio">
-								<label>
-									<input type="radio" name="rev_stat" value="HOL">
-									<p class="lead"><span class="label label-danger">On Hold</span></p>
-								</label>
-							</div>
-                    	</div>
-                    	<div class="col-lg-6 col-md-6 col-sm-4 col-xs-4">
-                    		<p>Once submit, the revision status will be updated.</p>
-                    		<p>If switched to <span class="label label-success">Published</span>, json data files will be generated.</p>
-                    		<input id="btn_submit" type="submit" class="btn btn-inverse pull-right" value="&nbsp;Submit&nbsp;"/>
-                    		<br/>
-                    		<input type="text" name="cid" value="{{cid}}" style="display:none;" />
-                    		<input type="text" name="rmdb_id" value="{{rmdb_id}}" style="display:none;" />
-                    	</div>
-                    </div>
+                <div class="panel-body" id="col-1">
+					<ul class="nav nav-pills nav-stacked" role="menu">
+						<li class="li-info"><a href="" id="dl_rdat_rev" download>
+							<span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>
+							&nbsp;&nbsp;RDAT
+						</a></li>
+						{% if is_isatab %} 
+						<li class="li-brown"><a href="" id="dl_isatab_rev" download>
+							<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+							&nbsp;&nbsp;ISATAB
+						</a></li>
+						{% endif %} 
+					</ul>
+
                 </div>
             </div>
         </div>
-    </form>
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2 class="panel-title">
+                        <span class="glyphicon glyphicon-tower" aria-hidden="true"></span>&nbsp;&nbsp;
+                        Change Status
+                    </h2>
+                </div>
+                <div class="panel-body" id="col-2">
+					<form enctype="multipart/form-data" method="post" action="/deposit/review/">
+						{% csrf_token %}
+	                	<div class="col-lg-7 col-md-7 col-sm-6 col-xs-6">
+	                		<p>Once submit, the revision status will be updated.</p>
+	                		<p>If switched to <span class="label label-success">Published</span>, json data files will be generated.</p>
+	                	</div>
+	                	<div class="col-lg-5 col-md-5 col-sm-6 col-xs-6">
+	                		{% render_field rev_form.new_stat class+="form-control" %}
+	                		<br/>
+	                		<button id="btn_submit" type="submit" class="btn btn-inverse pull-right"><span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;Submit&nbsp;</button>
+	                		{% render_field rev_form.cid class+="hidden" %}
+	                		{% render_field rev_form.rmdb_id class+="hidden" %}
+	                	</div>
+				    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 	{% endif %}
@@ -601,7 +565,10 @@
 	</script>
 	<script type="text/javascript">
 		var json, tags, idx = 0, tag_idx = 0, n_rows, color_scale = 1, flag = 0;
-		var rmdb_id = "{{rmdb_id}}", cid = "{{cid}}", status = "{{status}}";
+		var rmdb_id = "{{rmdb_id}}", cid = "{{cid}}", status = "{{status}}", version;
+		if (status !== "PUB") {
+			version = "{{version}}";
+		}
 	</script>
 
 	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_util{{DEBUG_STR}}.js"></script>

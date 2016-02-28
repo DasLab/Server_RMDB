@@ -16,10 +16,12 @@ from src.helper.helper_deposit import *
 from src.helper.helper_display import *
 from src.helper.helper_predict import *
 
-import datetime
+from src.util.entry import *
+from src.util.misc import *
+
+from datetime import datetime
 import simplejson
 import traceback
-# from sys import stderr
 
 
 def index(request):
@@ -45,7 +47,7 @@ def tools_license(request, keyword):
 @login_required
 def tools_download(request, keyword):
     if keyword in ('mapseeker', 'reeffit'):
-        new = SourceDownloader(date=datetime.datetime.now(), package=keyword, rmdb_user=RMDBUser.objects.get(user=request.user))
+        new = SourceDownloader(date=datetime.now(), package=keyword, rmdb_user=RMDBUser.objects.get(user=request.user))
         new.save()
 
         if keyword == 'mapseeker':
@@ -69,41 +71,7 @@ def license(request):
     return render_to_response(PATH.HTML_PATH['license'], {}, context_instance=RequestContext(request))
 
 def history(request):
-    hist_list = []
-    hist = HistoryItem.objects.all()
-    for h in hist:
-        lines = h.content
-        lines = [line for line in lines.split('\r\n') if line.strip()]
-        ls_1_flag = 0
-        ls_2_flag = 0
-        for i in range(len(lines)):
-            lines[i] = lines[i].rstrip()
-            if lines[i][0] == "#":
-                lines[i] = "<span class=\"lead\"><b>" + lines[i][1:] + "</b></span><br/>"
-            elif lines[i][0] != '-':
-                if lines[i][0] == "!":
-                    lines[i] = "by <kbd><i>" + lines[i][1:] + "</i></kbd><br/><br/>"
-                else:
-                    lines[i] = "<p>" + lines[i] + "</p><p><ul>"
-                
-            else:
-                if lines[i][:2] != '-\\':
-                    lines[i] = "<li><u>" + lines[i][1:] + "</u></li>"
-                    if ls_1_flag:
-                        lines[i] = "</ul></p>" + lines[i]
-                    ls_1_flag = i
-
-                else:
-                    lines[i] = "<li>" + lines[i][2:] + "</li>"
-                    if ls_2_flag < ls_1_flag:
-                        lines[i] = "<ul><p>" + lines[i]
-                    ls_2_flag = i        
-        lines.append("</ul></ul><br/><hr/>")
-        date_string = h.date.strftime("%b %d, %Y (%a)")
-        lines.insert(0, "<i>%s</i><br/>" % date_string)
-        hist_list.insert(0, ''.join(lines))
-        
-    return render_to_response(PATH.HTML_PATH['history'], {'hist': hist_list}, context_instance=RequestContext(request))
+    return render_to_response(PATH.HTML_PATH['history'], {'hist': parse_history()}, context_instance=RequestContext(request))
 
 
 def validate(request):
@@ -133,13 +101,15 @@ def validate(request):
 def detail(request, rmdb_id):
     try:
         entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
-        entry.cid = ConstructSection.objects.filter(entry=entry).values('id')[0]['id']
-        is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)) else False
+        entry.cid = ConstructSection.objects.get(entry=entry).id
+        is_isatab = os.path.exists('%s%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version))
     except (RMDBEntry.DoesNotExist, IndexError):
         return error404(request)
 
-    # {'codebase':get_codebase(request)}
-    return render_to_response(PATH.HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'version':entry.version, 'status':entry.status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
+    json = {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'status':entry.status, 'is_isatab':is_isatab}
+    if entry.status != "PUB":
+        json.update({'version':entry.version, 'rev_form':ReviewForm(initial={'rmdb_id':entry.rmdb_id, 'cid':entry.cid})})
+    return render_to_response(PATH.HTML_PATH['detail'], json, context_instance=RequestContext(request))
 
 
 def predict(request):
@@ -410,34 +380,19 @@ def upload(request):
     return render_to_response(PATH.HTML_PATH['upload'], {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
 
 
-@login_required
 @user_passes_test(lambda u: u.is_superuser)
-def admin_rev_stat(request):
-    new_stat = request.POST['rev_stat']
-    rmdb_id = request.POST['rmdb_id']
-    cid = request.POST['cid']
-    construct = ConstructSection.objects.filter(id=cid)[0]
-    entry = RMDBEntry.objects.filter(id=construct.entry.id).order_by('-version')[0]
-    if new_stat == "PUB":
-        rdatfile = RDATFile()
-        file_name = '%s%s/%s_%s.rdat' %(PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id, rmdb_id, entry.version)
-        if not os.path.isfile(file_name):
-            file_name = '%s%s/%s.rdat' %(PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id, rmdb_id)
-        rf = open(file_name, 'r')
-        rdatfile.load(rf)
-        rf.close()
-        for k in rdatfile.constructs:
-            c = rdatfile.constructs[k]
-            entry.has_traces = generate_images(construct, c, entry.type, engine='matplotlib')
+def review(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            new_stat = form.cleaned_data['new_stat']
+            rmdb_id = form.cleaned_data['rmdb_id']
+            cid = form.cleaned_data['cid']
+            review_entry(new_stat, rmdb_id, cid)
 
-        generate_varna_thumbnails(entry)
-        make_json_for_rdat(entry.rmdb_id)
+            return HttpResponseRedirect('/detail/%s' % rmdb_id)
 
-    entry.revision_status = new_stat
-    entry.save()
-    is_isatab = True if os.path.exists('%s/files/%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)) else False
-
-    return render_to_response(PATH.HTML_PATH['detail'], {'rmdb_id':entry.rmdb_id, 'cid':cid, 'version':entry.version, 'codebase':get_codebase(request), 'revision_status':entry.revision_status, 'is_isatab':is_isatab}, context_instance=RequestContext(request))
+    return error400(request)
 
 
 def url_redirect(request, path):
@@ -492,7 +447,7 @@ def get_recent(request):
 
     entries_list = []
     for e in entries:
-        cid = ConstructSection.objects.filter(entry=e).values('id')[0]['id']
+        cid = ConstructSection.objects.get(entry=e).id
         rmdb_id = e.rmdb_id
         for c in ConstructSection.objects.filter(entry=e).values('name').distinct():
             name = c['name']

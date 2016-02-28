@@ -9,11 +9,11 @@ function render_status(string) {
     if (string == 'Published') {
         span_class = 'success';
     } else if (string == 'On Hold') {
-        span_class = 'warning';
-    } else if (string == 'In Review') {
-        span_class = 'info';
-    } else if (string == 'Received') {
         span_class = 'danger';
+    } else if (string == 'Under Review') {
+        span_class = 'warning';
+    } else if (string == 'Received') {
+        span_class = 'info';
     }
     return '<span class="label label-' + span_class + '">' + string + '</span>';
 }
