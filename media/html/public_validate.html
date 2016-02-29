@@ -1,128 +1,114 @@
 {% extends "media/html/_public.html" %}
 {% load repository_extras %}
+{% load widget_tweaks %}
 
 {% block content %}
 <div class="container">
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h2 class="panel-title">
-                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;
                 Format Validation
             </h2>
         </div>
         <div class="panel-body">
             <div class="col-md-12">
+                <h3 style="padding-left:20px;">Input</h3>
                 <ul>
-                    <li>
-                        <h3>Input</h3>
-                        <p>
-                            Use this form to validate that a file that describes RNA chemical footprinting experiments follows the <a href="/deposit/specs">standards</a> of the format.
-                        </p>
-                        <p>
-                            Other consistency checks such as sequence and data agreement are also made.
-                        </p>
-                        <br/>
-
-                        <form enctype="multipart/form-data" action="/deposit/validate/" method="post">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-<!--                                     {{ form.file.errors }}
-                                    {{ form.link.errors }}
-                                    {{ form.description.errors }}
- -->                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <label for="id_file" class="pull-right">Upload File:</label>
-                                        </div>
-                                        <div class="col-md-7 form-inline">
-                                            <input id="id_disp" class="form-control" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
-                                            &nbsp;&nbsp;
-                                            <div class="fileUpload btn btn-info">
-                                                <span>&nbsp;&nbsp;Browse&nbsp;&nbsp;</span>
-                                                {{ form.file }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <label for="id_link" class="pull-right">
-                                                <i style="color:gray;">OR</i>&nbsp;&nbsp;&nbsp;Specify an RMDB <i>#ID</i> or ISATAB <i>url</i>:
-                                            </label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            {{ form.link }}
-                                        </div>
-                                    </div>
-                                    <br/><br/>
-                                    <div class="form-inline">
-                                        <div class="col-md-5">
-                                            <label label for="id_type" class="pull-right">Format:</label>
-                                        </div>
-                                        <div class="col-md-7">
-                                            {{ form.type }}
-                                        </div>
-                                    </div>
-                                    <br/><br/><br/>
-                                    <div class="form-inline">
-                                        <div class="col-md-12">
-                                            <p class="pull-right">
-                                                <input type="submit" value="&nbsp;&nbsp;Submit&nbsp;&nbsp;" class="btn btn-inverse clickable"/>
-                                                &nbsp;&nbsp;
-                                                <a class="btn btn-default clickable" href="/deposit/validate">&nbsp;&nbsp;Clear&nbsp;&nbsp;</a>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </li>
-
-                    {% if flag %}
-                    <hr/>
-                    <li>
-                        <h3>Output</h3>
-                        <br/>
-
-                        {% if flag == 1 %}
-                            <div class="alert alert-danger" role="alert">
-                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                                <b>ERROR</b>: The following messages were produced:
-                                <br/>
-                                <ul>
-                                    {% for v in valerrors %}
-                                    <li>{{ v }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-
-                        {% if flag == 2 %}
-                            <div class="alert alert-success" role="alert">
-                                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                                <b>SUCCESS</b>: Your file has passed all tests.
-                            </div>
-                        {% endif %}
-
-                        {% if flag == 3 %}
-                            <div class="alert alert-warning" role="alert">
-                                <p>
-                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                                    <b>WARNING</b>: The following messages were produced:
-                                </p>
-                                <br/>
-                                <ul>
-                                    {% for m in valmsgs %}
-                                        <li>{{ m|warning_strip }} </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-
-                    </li>
-                    {% endif %}
+                    <li>Use this form to validate that a file that describes RNA chemical footprinting experiments follows the <a href="/deposit/specs/"><b>standards</b></a> of the format.</li>
+                    <li>Other consistency checks such as sequence and data agreement are also made.</li>
                 </ul>
+                <br/>
+
+                <form enctype="multipart/form-data" action="/deposit/validate/" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                            <label for="id_file" class="pull-right">Upload File:</label>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="id_disp" name="disp" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="button" id="id_browse">&nbsp;<span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Browse&nbsp;</button>
+                                </span>
+                            </div>
+                            {% render_field form.file class+="hidden" %}
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                            <label for="id_link" class="pull-right">
+                                <i style="color:gray;">OR</i>&nbsp;&nbsp;&nbsp;Specify an <span class="label label-inverse">RMDB_ID</span> or ISATAB <i>url</i>:
+                            </label>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                            {% render_field form.link class+="form-control" %}
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="form-inline">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                <label label for="id_type" class="pull-right">Format:</label>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                {% render_field form.file_type class+="form-control" %}
+                            </div>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p class="pull-right">
+                                <button type="submit" class="btn btn-success clickable">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Submit&nbsp;</button>
+                                &nbsp;&nbsp;
+                                <a class="btn btn-default clickable" href="/deposit/validate/">&nbsp;<span class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Clear&nbsp;</a>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+
+                {% if flag %}
+                <hr/>
+                <h3 style="padding-left:20px;">Output</h3>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        {% if flag == 1 %}
+                        <div class="alert alert-danger" role="alert">
+                            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                            <b>ERROR</b>: The following messages were produced:
+                            <br/>
+                            <ul>
+                                {% for v in valerrors %}
+                                <li>{{ v }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% elif flag == 2 %}
+                        <div class="alert alert-success" role="alert">
+                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                            <b>SUCCESS</b>: Your file has passed all tests.
+                        </div>
+                        {% elif flag == 3 %}
+                        <div class="alert alert-warning" role="alert">
+                            <p>
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                                <b>WARNING</b>: The following messages were produced:
+                            </p>
+                            <br/>
+                            <ul>
+                                {% for m in valmsgs %}
+                                <li>{{ m }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}                          
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -138,9 +124,10 @@
             $("#nav_deposit").addClass("active");
             $("#nav_logo").css("text-decoration","none");
 
-            $("#id_file").addClass("form-control");
-            $("#id_link").addClass("form-control");
-            $("#id_type").addClass("form-control");
+            $("#id_browse").on("click", function(event) {
+                event.preventDefault();
+                $("#id_file").trigger("click");
+            });
             $("#id_file").on("change", function () {
                 $("#id_disp").val($(this).val().replace("C:\\fakepath\\", ""));
             });

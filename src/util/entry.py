@@ -1,216 +1,247 @@
-import simplejson
+import os
 from pylab import *
+import shutil
+import subprocess
+import traceback
+
+from Tkinter import TclError
 
 from rdatkit.datahandlers import RDATFile, RDATSection, ISATABFile
 
 from src.models import *
+from src.settings import *
+from src.util.media import *
+from src.util.util import *
+from src.helper.helper_images import *
 
 
-def trim_combine_annotation(annotations):
-    a_trimmed = {}
-    for a in annotations:
-        if (a.name not in a_trimmed): 
-            a_trimmed[a.name] = [a.value]
+def get_spreadsheet(url):
+    url = subprocess.Popen("curl %s -L -I -s -o /dev/null -w %{url_effective}" % url, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().replace('%3D','=').replace('%26','&')
+    idx = url.find('key=')
+    print url, idx
+    if idx > 0:
+        key = ''
+        idx += 4
+        while url[idx] != '&' and idx < len(url):
+            key += url[idx]
+            idx += 1
+        authkey = subprocess.Popen("curl https://www.google.com/accounts/ClientLogin -d Email=%s -d Passwd=%s -d accountType=HOSTED_OR_GOOGLE -d source=Google-spreadsheet -d service=wise | grep Auth | cut -d\= -f2" % (EMAIL_HOST_USER, EMAIL_HOST_PASSWORD), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+        subprocess.check_call('curl -L --silent --header "Authorization: GoogleLogin auth=%s" "http://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=%s&hl&exportFormat=xls" > %s/%s.xls' % (authkey, key, PATH.DATA_DIR['FILE_DIR'], key), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        return '%s/%s.xls' % (PATH.DATA_DIR['TMP_DIR'], key)
+    else:
+        return ''
+
+
+def validate_file(file_path, link_path, input_type):
+    messages = []
+    errors = []
+    flag = 0
+
+    input_file = RDATFile() if (input_type == 'rdat') else ISATABFile()
+    is_continue = 1
+    if link_path:
+        if input_type == 'rdat':
+            path = '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], link_path, link_path)
+            is_continue = os.path.exists(path)
         else:
-            a_trimmed[a.name].append(a.value)
-    if a_trimmed.has_key("experimentType"):
-        a_trimmed.pop("experimentType")
-    return a_trimmed
+            is_continue = get_spreadsheet(link_path)
+
+        if not is_continue:
+            if input_type == 'rdat':
+                errors.append('Input RMDB_ID: %s is invalid.' % link_path)
+            else:
+                errors.append('Input ISATAB file link: %s is invalid.' % link_path)
+            return (errors, messages, 1)
+        else:
+            if input_type == 'rdat':
+                input_file.load(open(path, 'r'))
+            else:
+                input_file.load(is_continue)
+
+    else:
+        tmp_file = temp_file(file_path)
+        try:
+            input_file.load(tmp_file)
+            messages = input_file.validate()
+        except AttributeError, e:
+            flag = 1
+            errors.append('Invalid input file format: %s' % e)
+        tmp_file.close()
+        os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_path.name))
+
+    if not flag:
+        if (not messages):
+            flag = 2
+        else:
+            flag = 3
+            messages = [m[8:] for m in messages]
+
+    return (errors, messages, flag)
 
 
-def save_json_heatmap(entry):
-    (maxlen, maxlen_flag) = (256, False)
+def process_upload(form, upload_file, user):
+    (error_msg, flag, entry) = ([], 0, '')
 
-    construct = ConstructSection.objects.get(entry=entry)
-    construct.datas = DataSection.objects.filter(construct_section=construct).order_by('id')
-    construct.data_count = range(len(construct.datas))
-    if len(construct.datas) > maxlen:
-        maxlen_flag = True
-    for d in construct.datas:
-        d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
-
-    precalc_structures = '['
-    accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos', 'MAPseq', 'EteRNA']
     try:
-        datas = construct.datas
-        seqpos = [int(x) for x in construct.seqpos.strip('][').split(',')]
-        offset = construct.offset
-        sequence = construct.sequence
+        if not check_rmdb_id(form.cleaned_data['rmdb_id']):
+            error_msg.append('RMDB ID invalid. Hover mouse over the field to see instructions.')
+            flag = 1
+        else:
+            (rdatfile, isatabfile) = (RDATFile(), ISATABFile())
+            isatabfile.loaded = False
+            rdatfile.loaded = False
 
-        x_labels = ['%s%s' % (sequence[x - 1 - offset], x) for x in seqpos]
-        y_labels = []
-        row_limits = []
-        (data_matrix, data_max, data_min, data_mean, data_sd) = ([], 0., 0., [], 0.)
-
-        for i, data in enumerate(datas):
-            annotations = data.annotations
-            if 'structure' in annotations:
-                precalc_structures += '"%s",' % annotations['structure']
-                del(annotations['structure'])
+            rf = temp_file(upload_file)
+            txt = rf.readlines()
+            txt = filter(lambda x:'experimentType:' in x, txt)
+            if txt:
+                txt = txt[0]
+                txt = txt[txt.find('experimentType:'):]
+                txt = txt[txt.find(':')+1 : txt.find('\t')]
+                exp_type = [x[1] for i, x in enumerate(ENTRY_TYPE_CHOICES) if x[0] == form.cleaned_data['exp_type']][0].replace(' ', '')
+                if txt != exp_type:
+                    error_msg.append('experimentType mismatch between selected file and web page form; please check and resubmit.')
+                    error_msg.append('File indicates experimentType of %s , while form selected %s.' % (txt, exp_type))
+                    flag = 1
             else:
-                precalc_structures += '"%s",' % data.structure
+                flag = 1
+                error_msg.append('Missing experimentType.')
 
-            is_eterna = ("EteRNA" in construct.name) or ("Eterna" in construct.name) or ("EteRNA" in annotations) or ("EteRNA" in annotations)
-            if entry.type == 'MM':
-                if 'mutation' in annotations:
-                    field = 'mutation'
-                elif 'chemical' in annotations:
-                    field = 'chemical'
-                elif 'partner' in annotations:
-                    field = 'partner'
-                else:
-                    field = ''
-                if field:
-                    y_label_tmp = annotations[field][0]
-                else:
-                    annotations_flatten = [y for x in annotations.values() for y in x]
-                    y_label_tmp = '%s' % (','.join(annotations_flatten))
-            elif entry.type == "MA":
-                if annotations.has_key("lig_pos"):
-                    y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"][0]
-                if annotations.has_key("ligpos"):
-                    y_label_tmp = 'lig_pos:%s' % annotations["ligpos"][0]
-            elif entry.type == "SS" and is_eterna:
-                if annotations:
-                    if annotations.has_key("MAPseq"):
-                        y_label_tmp = annotations["MAPseq"]
-                        for j in range(len(y_label_tmp)):
-                            if y_label_tmp[j].find("ID:") == 0:
-                                y_label_tmp = y_label_tmp[j]
-                                break
-                    else:
-                        y_label_tmp = annotations["EteRNA"]
-                        for j in range(len(y_label_tmp)):
-                            if y_label_tmp[j].find("ID:") == 0:
-                                y_label_tmp = y_label_tmp[j]
-                                break
 
-                else:
-                    y_label_tmp = "Error_in_row"
+            rf.seek(0)
+            if form.cleaned_data['file_type'] == 'isatab':
+                try:
+                    isatabfile.load(rf.name)
+                    isatabfile.loaded = True
+                    rdatfile = isatabfile.toRDAT()
+                except Exception:
+                    error_msg.append('Invalid ISATAB file; please check and resubmit.')
+                    flag = 1
             else:
-                annotations_flatten = [y for x in annotations.values() for y in x]
-                y_label_tmp = '%s' % (','.join(annotations_flatten))
-            y_labels.append(y_label_tmp)
-            
-            peaks_row = array([float(x) for x in data.values.split(',')])
-            peaks_row[isnan(peaks_row)] = 0
-            peaks_row[isinf(peaks_row)] = 0
-            data_max = max(max(peaks_row), data_max)
-            data_min = max(min(peaks_row), data_min)
+                try:
+                    rdatfile.load(rf)
+                    rdatfile.loaded = True
+                    isatabfile = rdatfile.toISATAB()
+                except Exception:
+                    error_msg.append('Unknown error. Please contact admin.')
+                    flag = 1
 
-            row_limits.append({'y_min':0, 'y_max':max(peaks_row) + 0.5, 'x_min':min(seqpos), 'x_max':max(seqpos)})
+        if not flag:
+            (error_msg, entry) = submit_entry(form, user, upload_file, rdatfile, isatabfile)
+            flag = 2
 
-            if data.errors.strip():
-                errors_row = array([float(x) for x in data.errors.split(',')])
-                errors_row[isnan(errors_row)] = 0
-                errors_row[isinf(errors_row)] = 0
-            else:
-                errors_row = [0.] * len(seqpos)
-
-            for j in range(len(peaks_row)):
-                if entry.type == "SS" and is_eterna:
-                    if annotations.has_key("sequence"):
-                        if len(annotations["sequence"][0]) <= j:
-                            seq = 'X'
-                        else:
-                            seq = annotations["sequence"][0][j]
-                    else:
-                        print "ERROR parsing annotation row:", i+1, ": ", annotations
-                        seq = 'X'   
-                else:
-                    seq = sequence[j]
-                mut_flag = 0
-
-                if 'mutation' in annotations:
-                    mutpos = annotations['mutation']
-                    for mut in mutpos:
-                        mut = mut.strip()
-                        if ':' in mut:
-                            if "(" in mut and ")" in mut:
-                                mut_start = int(mut[mut.find('(')+1 : mut.find(':')])
-                                mut_end = int(mut[mut.find(':')+1 : mut.find(')')])
-                                if (j + offset + 1) >= mut_start and (j + offset + 1) <= mut_end:
-                                    idx = j+offset+1-mut_start
-                                    muts = mut[mut.find(')')+1:]
-                                    seq= muts[idx]
-                                    mut_flag = 1
-                            else:
-                                muts = mut.split(":")
-                                for mut_split in muts:
-                                    if seq == mut_split[0] and int(mut_split[1:-1]) == (j + offset + 1):
-                                        seq = mut_split[-1]
-                                        mut_flag = 1
-                        else:
-                            if seq == mut[0] and int(mut[1:-1]) == (j + offset + 1):
-                                seq = mut[-1]
-                                mut_flag = 1
-
-                if mut_flag:
-                    data_matrix.append({'x':i, 'y':j, 'val':round(peaks_row[j], 3), 'err':round(errors_row[j], 3), 'seq':seq, 'mut':mut_flag})
-                else:
-                    data_matrix.append({'x':i, 'y':j, 'val':round(peaks_row[j], 3), 'err':round(errors_row[j], 3), 'seq':seq})
-                data_mean.append(peaks_row[j])
-
-        precalc_structures = precalc_structures.strip(',') + ']'
-        data_mean = array(data_mean)
-        data_sd = std(data_mean)
-        data_mean = mean(data_mean)
-
-        json = {'data':data_matrix, 'peak_max':data_max, 'peak_min':round(data_min, 3), 'peak_mean':round(data_mean, 3), 'peak_sd':round(data_sd, 3), 'row_lim':row_limits, 'x_labels':x_labels, 'y_labels':y_labels, 'precalc_structures':precalc_structures}
-        open(PATH.DATA_DIR['RDAT_FILE_DIR'] + '/' + entry.rmdb_id + '/data_heatmap.json', 'w').write(simplejson.dumps(json, sort_keys=True, indent=' ' * 4))
-    except ConstructSection.DoesNotExist:
-        return None
+    except Exception:
+        flag = 1
+        print traceback.format_exc()
+        error_msg.append('Internal Server Error; please check and resubmit.')
+    return (error_msg, flag, entry)
 
 
-def save_json_tags(entry):
-    rdat_ver = open(PATH.DATA_DIR['RDAT_FILE_DIR'] + '/' + entry.rmdb_id + '/' + entry.rmdb_id + '.rdat', 'r').readline().strip().split('\t')[-1]
+def submit_entry(form, user, upload_file, rdatfile, isatabfile):
+    error_msg = []
+    rmdb_id = form.cleaned_data['rmdb_id'].upper()
 
-    tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'construct_count':entry.construct_count, 'data_count':entry.data_count,  'status':entry.status, 'type':entry.type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x'), 'owner_name':entry.owner.first_name+' '+entry.owner.last_name,'owner':entry.owner.username, 'latest':entry.supercede_by}
-    tags_annotation = {'annotation':entry.annotations}
+    publication = Publication(title=form.cleaned_data['publication'], authors=form.cleaned_data['authors'], pubmed_id=form.cleaned_data['pubmed_id'])
+    publication.save()
 
-    c = ConstructSection.objects.get(entry=entry)
-    c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
-    tags_data_annotation = {}
-    for i,d in enumerate(c.datas):
-        d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
-        tags_data_annotation[i] = d.annotations
-    tags_annotation['data_annotation'] = tags_data_annotation
+    entries = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')
+    if len(entries) > 0:
+        prev_entry = entries[0]
+        current_version = prev_entry.version
+        owner = prev_entry.owner
 
-    c.err_ncol = c.datas[0].errors.split(',')
-    if len(c.err_ncol) == 1 and (not len(c.err_ncol[0])): 
-        c.err_ncol = 0
+        if owner != user and (not user.is_staff):
+            error_msg.append('RMDB entry %s exists and you cannot update it since you are not the owner.' % rmdb_id)
+            return (error_msg, '')
     else:
-        c.err_ncol = len(c.err_ncol)
-    xsel_str = c.xsel.split(',')
-    if len(xsel_str):
-        c.xsel_len = len(c.xsel)
-    else:
-        c.xsel_len = 0
-    seqpos_str = c.seqpos.split(',')
-    if (int(seqpos_str[-1]) - int(seqpos_str[0]) + 1 != len(seqpos_str)):
-        c.seqpos = '</code>,</span> <span style="display:inline-block; width:75px;"><code>'.join(seqpos_str)
-        c.seqpos = '<span style="display:inline-block; width:75px;"><code>' + c.seqpos + '</code></span>'
-    else:
-        c.seqpos = '<code>' + seqpos_str[0] + '</code><b>:</b><code>' + seqpos_str[-1] + '</code>'
-    c.seqpos_len = len(seqpos_str)
+        current_version = 0
+        owner = None
 
-    tags_construct = {'sequence':c.sequence, 'structure':c.structure, 'offset':c.offset, 'sequence_len':len(c.sequence), 'structure_len':len(c.structure), 'data_nrow':len(c.datas), 'data_ncol':len(c.datas[0].values.split(',')), 'err_ncol':c.err_ncol, 'xsel_len':c.xsel_len, 'seqpos_len':c.seqpos_len, 'seqpos':c.seqpos, 'name':c.name}
+    entry = RMDBEntry(type=form.cleaned_data['exp_type'], rmdb_id=rmdb_id, authors=form.cleaned_data['authors'], publication=publication, comments=rdatfile.comments, description=form.cleaned_data['description'], data_count=0, construct_count=0, version=current_version + 1, owner=user)
+    entry.status = 'PUB' if user.is_staff else 'REV'
+    # rmdb_id_series = entry.rmdb_id[:entry.rmdb_id.rfind('_')]
+    # current_id = int(entry.rmdb_id[entry.rmdb_id.rfind('_')+1:])
+    # entry.latest = -1
+    # current_max = False
+    # entries = RMDBEntry.objects.filter(rmdb_id__startswith=rmdb_id_series)
+    # for e in entries:
+    #   max_id = int(e.rmdb_id[e.rmdb_id.rfind('_')+1:])
+    #   if max_id <= current_id:
+    #       current_max = True
+    #   else:
+    #       current_max = False
+    #       break
 
-    tags_all = dict(tags_basic.items() + tags_construct.items() + tags_annotation.items())
-    open(PATH.DATA_DIR['RDAT_FILE_DIR'] + '/' + entry.rmdb_id + '/data_tags.json', 'w').write(simplejson.dumps(tags_all, sort_keys=True, indent=' ' * 4))
+    # if current_version == 0 or current_max:
+    #   entry.latest = True 
+    #   for e in entries:
+    #       e.latest = False
+    #       e.save()
+    entry.save()
+
+    (error_msg, entry) = save_rdat(entry, upload_file, rdatfile, isatabfile, error_msg)
+    if not DEBUG: send_notify_emails(entry, request)
+    return (error_msg, entry)
 
 
-def save_json(rmdb_id):
-    entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
+def write_annotations(dictionary, section, annotation_model):
+    count = 0
+    for d in dictionary:
+        for value in dictionary[d]:
+            a = annotation_model(name=d.strip(), value=str(value.decode('ascii', 'ignore')), section=section)
+            a.save()
+            if d.strip() in ('mutation', 'sequence'):
+                count += 1
+    return count
 
-    if (entry.pdb is not None) and len(entry.pdb.strip()) > 0:
-        entry.pdb_ids = [x.strip() for x in entry.pdb.split(',')]
-    else:
-        entry.pdb_ids = []
-    entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
 
-    save_json_tags(entry)
-    save_json_heatmap(entry)
+def save_rdat(entry, upload_file, rdatfile, isatabfile, error_msg=[]):
+    if not os.path.exists('%s%s' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id)):
+        os.mkdir('%s%s' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id))
+    if not os.path.exists('%s%s' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id)):
+        os.mkdir('%s%s' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id))
+
+    rdat_name = '%s%s/%s_%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)
+    shutil.move('%s%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name), rdat_name)
+    shutil.copyfile(rdat_name, '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id))
+    shutil.copyfile(rdat_name, '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id))
+
+    # Breaks Excel compatibility if data/columns are > 256
+    if len(rdatfile.values.values()[0]) < 256:
+        isatabfile.save('%s%s/%s_%s.xls' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version))
+    write_annotations(rdatfile.annotations, entry, EntryAnnotation)
+
+    data_count = 0
+    construct_count = 0
+
+    for k in rdatfile.constructs:
+        construct_count += 1
+        c = rdatfile.constructs[k]
+
+        construct = ConstructSection(entry=entry, name=c.name, sequence=c.sequence, offset=c.offset, structure=c.structure, seqpos=','.join([str(x) for x in c.seqpos]), xsel=','.join([str(x) for x in c.xsel]))
+        construct.save()
+
+        for d in c.data:
+            data = DataSection(xsel=','.join([str(x) for x in d.xsel]), values=','.join([str(x) for x in d.values]), errors=','.join([str(x) for x in d.errors]), trace=','.join([str(x) for x in d.trace]), reads=','.join([str(x) for x in d.reads]), seqpos=','.join([str(x) for x in d.seqpos]), construct_section=construct)
+            data.save()
+            data_count += len(d.values)
+
+            construct_count += write_annotations(d.annotations, data, DataAnnotation)
+        entry.data_count = data_count
+        entry.construct_count = construct_count
+
+        try:
+            entry.is_trace = generate_images(construct, c, entry.type, engine='matplotlib')
+        except TclError:
+            error_msg.append('Problem generating the images. This is a server-side problem, please try again.')
+            # proceed = False
+        entry.save()
+    
+        generate_varna_thumbnails(entry)
+        #precalculate_structures(entry)
+
+    save_json(entry.rmdb_id)
+    return (error_msg, entry)
 
 
 def review_entry(new_stat, rmdb_id, cid):
@@ -218,15 +249,13 @@ def review_entry(new_stat, rmdb_id, cid):
     entry = RMDBEntry.objects.filter(id=construct.entry.id).order_by('-version')[0]
     if new_stat == "PUB":
         rdatfile = RDATFile()
-        file_name = '%s%s/%s_%s.rdat' % (PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id, rmdb_id, entry.version)
+        file_name = '%s%s/%s_%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], rmdb_id, rmdb_id, entry.version)
         if not os.path.isfile(file_name):
-            file_name = '%s%s/%s.rdat' % (PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id, rmdb_id)
-        rf = open(file_name, 'r')
-        rdatfile.load(rf)
-        rf.close()
+            file_name = '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], rmdb_id, rmdb_id)
+        rdatfile.load(open(file_name, 'r'))
         # for k in rdatfile.constructs:
         #     c = rdatfile.constructs[k]
-        #     entry.has_traces = generate_images(construct, c, entry.type, engine='matplotlib')
+        #     entry.is_trace = generate_images(construct, c, entry.type, engine='matplotlib')
 
         # generate_varna_thumbnails(entry)
         save_json(entry.rmdb_id)

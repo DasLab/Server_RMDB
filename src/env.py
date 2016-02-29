@@ -74,12 +74,12 @@ class SYS_PATH(object):
        }
 
         self.DATA_DIR = {
-            'CONSTRUCT_IMG_DIR': MEDIA_ROOT + '/data/construct_img/',
-            'CONSTRUCT_THMB_DIR': MEDIA_ROOT + '/data/thumbs/',
-            'RDAT_FILE_DIR': MEDIA_ROOT + '/data/files/',
-            'ISATAB_FILE_DIR': MEDIA_ROOT + '/data/files/',
+            'IMG_DIR': MEDIA_ROOT + '/data/image/',
+            'THUMB_DIR': MEDIA_ROOT + '/data/thumbnail/',
+            'FILE_DIR': MEDIA_ROOT + '/data/file/',
+            'JSON_DIR': MEDIA_ROOT + '/data/json/',
 
-            'TMPDIR': MEDIA_ROOT + '/temp/',
+            'TMP_DIR': MEDIA_ROOT + '/data/tmp/',
         }
 
 

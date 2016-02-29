@@ -9,7 +9,7 @@ import os
 
 
 def get_rdat_file(instance, filename):
-    dir = PATH.DATA_DIR['RDAT_FILE_DIR'] + '%s/' % instance.id
+    dir = PATH.DATA_DIR['FILE_DIR'] + '%s/' % instance.id
     if not os.path.exists(dir): os.mkdir(dir)
     return dir + '%s.rdat' % instance.id
 
@@ -94,7 +94,7 @@ class RMDBEntry(models.Model):
 
     data_count = models.IntegerField(verbose_name='Data Count')
     construct_count = models.IntegerField(verbose_name='Construct Count')
-    is_trace = models.BooleanField(default=True, verbose_name='Contans TRACE Field?', help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry has data in TRACE field.')
+    is_trace = models.BooleanField(default=False, verbose_name='Contans TRACE Field?', help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry has data in TRACE field.')
     is_eterna = models.BooleanField(default=False, verbose_name='Is Eterna Dataset?', help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry is from Eterna.')
 
     def short_desp(self):
@@ -233,7 +233,7 @@ class LoginForm(forms.Form):
     flag = forms.CharField(required=True)
 
 
-class RegistrationForm(forms.Form):
+class RegisterForm(forms.Form):
     username = forms.CharField(required=True, max_length=31)
     password = forms.CharField(widget=forms.PasswordInput, max_length=63)
     repeat_password = forms.CharField(widget=forms.PasswordInput, max_length=63)
@@ -249,14 +249,15 @@ class SearchForm(forms.Form):
 
 
 class UploadForm(forms.Form):
-    file = forms.FileField()
+    exp_type = forms.ChoiceField(required=True, choices=ENTRY_TYPE_CHOICES)
+    file_type = forms.ChoiceField(required=True, choices=FORMAT_TYPE_CHOICES)
+    file = forms.FileField(required=True)
+
+    rmdb_id = forms.CharField(required=True)
     publication = forms.CharField(required=False)
     pubmed_id = forms.CharField(required=False)
     authors = forms.CharField(required=True)
     description = forms.CharField(widget=forms.Textarea, required=False)
-    rmdb_id = forms.CharField(required=True)
-    type = forms.ChoiceField(choices=ENTRY_TYPE_CHOICES)
-    filetype = forms.ChoiceField(choices=FORMAT_TYPE_CHOICES)
 
 
 class ReviewForm(forms.Form):
@@ -266,9 +267,9 @@ class ReviewForm(forms.Form):
 
 
 class ValidateForm(forms.Form):
+    file_type = forms.ChoiceField(required=True, choices=FORMAT_TYPE_CHOICES)
     file = forms.FileField(required=False)
-    link = forms.CharField()
-    type = forms.ChoiceField(choices=FORMAT_TYPE_CHOICES)
+    link = forms.CharField(required=False)
 
 
 # class AdvancedSearchForm(forms.Form):

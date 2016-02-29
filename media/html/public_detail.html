@@ -319,7 +319,7 @@
 						<div class="btn-group" id="hist_ver_btn">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="hist_dropdown">
 								<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-								&nbsp;&nbsp;History&nbsp;&nbsp;
+								&nbsp;&nbsp;History&nbsp;
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu" id="hist_ver_list"></ul>
@@ -328,7 +328,7 @@
 						<div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="dl_dropdown">
 								<span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-								&nbsp;&nbsp;Download&nbsp;&nbsp;
+								&nbsp;&nbsp;Download&nbsp;
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu nav nav-pills nav-stacked" role="menu">
@@ -347,7 +347,7 @@
 
 						<button type="button" class="btn btn-default" aria-expanded="false" id="btn-set">
 							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-							&nbsp;&nbsp;Settings&nbsp;&nbsp;
+							&nbsp;&nbsp;Settings&nbsp;
 						</button>
 					</div>
 				</div>
@@ -477,7 +477,7 @@
 	<br/>
 	<p class="lead">This entry has been received and is currently under review by the RMDB team. Once approved by the admin, the entry will be released to the public. On average, the review process should take no longer than 2 days.</p>
 	<p><img id="img_prv_rev" class="center-block"/></p>
-	<p class="lead">For any questions, please feel free to <a href="/help/about#contact">contact</a> us.</p>
+	<p class="lead">For any questions, please feel free to <a href="/help/about/#contact">contact</a> us.</p>
 
 	{% if user.is_superuser %}
 	<hr/>
@@ -526,7 +526,7 @@
 	                	<div class="col-lg-5 col-md-5 col-sm-6 col-xs-6">
 	                		{% render_field rev_form.new_stat class+="form-control" %}
 	                		<br/>
-	                		<button id="btn_submit" type="submit" class="btn btn-inverse pull-right"><span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;Submit&nbsp;</button>
+	                		<button id="btn_submit" type="submit" class="btn btn-inverse pull-right">&nbsp;<span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;Submit&nbsp;</button>
 	                		{% render_field rev_form.cid class+="hidden" %}
 	                		{% render_field rev_form.rmdb_id class+="hidden" %}
 	                	</div>

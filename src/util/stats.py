@@ -38,3 +38,4 @@ def parse_history():
         hist_list.insert(0, ''.join(lines))
 
         return hist_list
+

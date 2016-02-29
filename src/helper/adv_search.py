@@ -15,44 +15,6 @@ from pylab import *
 #from mlabwrap import mlab
 
 
-def structure_is_valid(struct):
-    if '(' not in struct:
-        return False
-    stack = []
-    for s in struct:
-        if s == '(':
-            stack.append(s)
-        if s == ')':
-            stack.pop()
-        if s not in ['.',')','(']:
-            return False
-    return len(stack) == 0
-
-
-def check_balance(structure):
-    stack = []
-    for s in structure:
-        if s == '(':
-            stack.append(s)
-        if s == ')':
-            if len(stack) == 0:
-                return False
-            stack.pop()
-    return len(stack) == 0
-
-
-def get_area_peaks():
-    pass
-
-
-# def get_codebase(request):
-#   if request.META.has_key('HTTP_USER_AGENT') and ('mac' in request.META['HTTP_USER_AGENT']):
-#       codebase = 'http://rmdb.stanford.edu/site_media/bin/mac'
-#   else:
-#       codebase = 'http://rmdb.stanford.edu/site_media/bin'
-#   return codebase
-
-
 def render_structure(request):
     sequence = request.POST['sequence']
     structure =  request.POST['structure']
@@ -72,7 +34,111 @@ def render_structure(request):
     return render_to_response('render_structure.html', {'panel':v.render(), 'title':request.POST['title']})
 
 
+def advanced_search(): 
+    other_errors = []
+    check_structure_balance = False
+    valid = True
+    if request.method == 'POST':
+        try:
+            form = AdvancedSearchForm(request.POST)
+            constructs_byquery = {}
+            rdat_paths = {}
+            rdats = {}
+            query_data = {}
+            construct_secstructelemdicts = {}
+            searchid = randint(1, 10000)
+            if 'structure' in request.POST and 'sequence' in request.POST:
+                if len(request.POST['structure']) != len(request.POST['sequence']) and len(request.POST['structure']) > 0 and len(request.POST['sequence']) > 0:
+                    other_errors.append('Structure and sequence motifs searched must have equal length')
+                    valid =  False
+            try:
+                numresults = int(request.POST['numresults'])
+            except:
+                valid =  False
 
+            if valid:
+                for field in ('structure', 'sequence'):
+                    if field in request.POST and request.POST[field]:
+                        if field == 'structure':
+                            if ' ' in request.POST[field]:
+                                check_structure_balance = True
+                            query_field = request.POST[field]
+                            for ec in '.(){}':
+                                query_field = query_field.replace(ec,'\\'+ec).replace('\\\\'+ec,ec)
+                            if check_structure_balance:
+                                query_field = query_field.replace(' ', '.*')
+                            constructs_byquery[field] = ConstructSection.objects.filter(structure__regex=query_field)
+                        if field =='sequence':
+                            query_field = ''.join([toIUPACregex(s.upper()) for s in request.POST[field]])
+                            constructs_byquery[field] = ConstructSection.objects.filter(sequence__regex=query_field)
+                        query_data[field] = query_field
+                if 'secstructelems' in request.POST:
+                    query_data['secstructelems'] = request.POST.getlist('secstructelems')
+                    all_constructs = ConstructSection.objects.all()
+                    constructs_byquery['secstructelems'] = []
+                    cids = []
+                    for construct in all_constructs:
+                        if structure_is_valid(construct.structure):
+                            sstruct = SecondaryStructure(dbn=construct.structure)
+                            ssdict = sstruct.explode()
+                            for elem in query_data['secstructelems']:
+                                if elem in ssdict and ssdict[elem]:
+                                    cids.append(construct.id)
+                                    construct_secstructelemdicts[construct.id] = ssdict
+                                    break
+                            constructs_byquery['secstructelems'] = ConstructSection.objects.filter(id__in=cids)
+                if len(query_data) == 0: # No search criteria was chosen, get all constructs
+                    constructs_byquery['all'] = ConstructSection.objects.all()
+                    query_data['all'] = True
+
+                if 'background_processed' in request.POST:
+                    bp_entry_ids = [d.section.rmdb_id for d in EntryAnnotation.objects.filter(name='processing', value='backgroundSubtraction')]
+                for field in constructs_byquery:
+                    entry_types = request.POST.getlist('entry_type')
+                    modifiers = request.POST.getlist('modifiers')
+                    constructs_byquery[field].exclude(entry__latest=False)
+                    for t, name in ENTRY_TYPE_CHOICES:
+                        if t not in entry_types:
+                            constructs_byquery[field] = constructs_byquery[field].exclude(entry__type=t)
+                    for t, name in MODIFIERS:
+                        if t not in modifiers:
+                            constructs_byquery[field] = constructs_byquery[field].exclude(entry__rmdb_id__contains='_%s_' % t)
+                    if 'include_eterna' not in request.POST:
+                        constructs_byquery[field] = constructs_byquery[field].exclude(entry__from_eterna=True)
+                    if 'background_processed' in request.POST:
+                        constructs_byquery[field] = constructs_byquery[field].filter(entry__rmdb_id__in=bp_entry_ids)
+
+                constructs = constructs_byquery.values()[0]
+                for k, v in constructs_byquery.iteritems():
+                    constructs = [c for c in constructs if c in v]
+
+                entries_visited = []
+                unique_constructs = []
+                for c in constructs:
+                    if c.entry.rmdb_id not in entries_visited:
+                        unique_constructs.append(c)
+                        entries_visited.append(c.entry.rmdb_id)
+                rdat, all_values, cell_labels, values_min, values_max, values_min_heatmap, values_max_heatmap, unpaired_bins, paired_bins, unpaired_bin_anchors, paired_bin_anchors, rmdb_ids, messages, numallresults, render = get_restricted_RDATFile_and_plot_data(unique_constructs, numresults, query_data, searchid, construct_secstructelemdicts, check_structure_balance)
+                
+                rdat_path = 'search/%s.rdat' % searchid
+                rdat.save(MEDIA_ROOT + '/data/' + rdat_path, version=0.24)
+
+                return render_to_response(PATH.HTML_PATH['adv_search_res'], \
+                        {'rdat_path':rdat_path, 'all_values':simplejson.dumps(all_values), 'values_min':values_min, 'values_max':values_max, \
+                        'values_min_heatmap':values_min_heatmap, 'values_max_heatmap':values_max_heatmap, \
+                        'rmdb_ids':simplejson.dumps(rmdb_ids), 'messages':messages, \
+                        'unpaired_bins':simplejson.dumps(unpaired_bins), 'paired_bins':simplejson.dumps(paired_bins), \
+                        'unpaired_bin_anchors':simplejson.dumps(unpaired_bin_anchors), 'paired_bin_anchors':simplejson.dumps(paired_bin_anchors), \
+                        'render':render, 'render_paired_histogram':len(paired_bins) > 0, 'render_unpaired_histogram':len(unpaired_bins) > 0,\
+                        'form':form, 'numresults':numallresults, 'cell_labels':simplejson.dumps(cell_labels), 'all_results_rendered':numallresults <= numresults},\
+                        context_instance=RequestContext(request) )
+
+        except ValueError as e:
+            return render_to_response(PATH.HTML_PATH['adv_search_res'], {'render':False}, context_instance=RequestContext(request))
+
+    else:
+        form = AdvancedSearchForm()
+    return render_to_response(PATH.HTML_PATH['adv_search'], {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
 
 
 def get_restricted_RDATFile_and_plot_data(constructs, numresults, qdata, searchid, ssdict, check_structure_balance):
@@ -254,37 +320,27 @@ def toIUPACregex(s):
     return s
 
 
-def get_font_size( labels ):
-    font_size = 'small'
-    if len( labels ) > 40: font_size = 'x-small'
-    if len( labels ) > 80: font_size = 'xx-small'
-    return font_size
+def check_balance(structure):
+    stack = []
+    for s in structure:
+        if s == '(':
+            stack.append(s)
+        if s == ')':
+            if len(stack) == 0:
+                return False
+            stack.pop()
+    return len(stack) == 0
 
 
-def get_labels( construct_section ):
-    labels = []
-    for d in construct_section.data:
-        label = ''
-        for value_set in d.annotations.values():
-            label = label + ' ' + ' '.join( value_set )
-        if len( label ) > 40: label = label[:40]
-        labels.append( label )
-    return labels
-
-
-def apply_ylabels( construct_section ):
-    labels  = get_labels( construct_section )
-    font_size = get_font_size( labels )
-    yticks(range(len(labels)), labels, fontsize=font_size )
-
-
-def apply_xlabels( construct_section ):
-    seq = ''
-    for i in construct_section.seqpos:
-        seq += construct_section.sequence[i - construct_section.offset - 1]
-        labels = ['%s%s' % (s,construct_section.seqpos[i]) for i, s in enumerate(seq)]
-    font_size = get_font_size( labels )
-    xticks(range(len(labels)), labels, rotation=90,fontsize=font_size)
-
-
-
+def structure_is_valid(struct):
+    if '(' not in struct:
+        return False
+    stack = []
+    for s in struct:
+        if s == '(':
+            stack.append(s)
+        if s == ')':
+            stack.pop()
+        if s not in ['.',')','(']:
+            return False
+    return len(stack) == 0

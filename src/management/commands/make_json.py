@@ -8,7 +8,7 @@ from django.core.management import call_command
 
 from src.settings import *
 from src.models import *
-from src.util.entry import *
+from src.util.media import *
 
 
 class Command(BaseCommand):
@@ -29,8 +29,8 @@ class Command(BaseCommand):
 
         if options['is_all']:
             call_command('cleanup')
-            all_rdats = os.listdir(PATH.DATA_DIR['RDAT_FILE_DIR'])
-            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['RDAT_FILE_DIR']) if (i[0] != '.' and i != "search")]
+            all_rdats = os.listdir(PATH.DATA_DIR['FILE_DIR'])
+            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (i[0] != '.' and i != "search")]
         elif options['rmdb_id']:
             all_rdats = options['rmdb_id']
         else:

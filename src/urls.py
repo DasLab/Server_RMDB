@@ -41,9 +41,9 @@ else:
         url(r'^help/history/?$', views.history),
 
         url(r'^detail/(?P<rmdb_id>\w{,20})$', views.detail),
-        url(r'^get_area_peaks/?$', views.get_area_peaks),
+        # url(r'^get_area_peaks/?$', views.get_area_peaks),
 
-        url(r'^deposit/specs/(?P<section>\w{,20})$', views.specs),
+        url(r'^deposit/specs/?$', views.specs),
         url(r'^deposit/validate/?$', views.validate),
         url(r'^deposit/submit/?$', views.upload),
         url(r'^deposit/review/?$', views.review),
@@ -52,9 +52,8 @@ else:
         url(r'^analyze/view/?$', views.str_view),
 
         url(r'^tools/?$', views.tools),
-        url(r'^tools/(?P<keyword>\w+)/license/?$', views.tools_license),
-        url(r'^tools/(?P<keyword>\w+)/download/?$', views.tools_download),
-
+        url(r'^tools/license/?(?P<keyword>\w+)/$', views.tools_license),
+        url(r'^tools/download/(?P<keyword>\w+)/?$', views.tools_download),
         url(r'^tools/docs/(?P<keyword>\w+)/?$', views.tutorial),
         url(r'^rdatkit/?$', views.tutorial, {'keyword':'rdatkit'}),
         url(r'^hitrace/?$', views.tutorial, {'keyword':'hitrace'}),
@@ -68,7 +67,7 @@ else:
         url(r'^register/?$', user.register),
         url(r'^logout/?$', user.user_logout),
 
-        url(r'^render_structure/?$', views.render_structure),
+        # url(r'^render_structure/?$', views.render_structure),
 
         # url(r'^api/entry/fetch/(?P<rmdb_id>\w+)$', api_fetch_entry),
         # url(r'^api/entry/all$', api_all_entries),

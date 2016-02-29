@@ -13,11 +13,11 @@ from src.settings import *
 from src.helper.helpers import *
 from src.helper.helper_api import *
 from src.helper.helper_deposit import *
-from src.helper.helper_display import *
 from src.helper.helper_predict import *
 
 from src.util.entry import *
-from src.util.misc import *
+from src.util.media import *
+from src.util.stats import *
 
 from datetime import datetime
 import simplejson
@@ -30,9 +30,7 @@ def index(request):
 def browse(request):
     return render_to_response(PATH.HTML_PATH['browse'], {}, context_instance=RequestContext(request))
 
-def specs(request, section):
-    if len(section) > 0:
-        return HttpResponseRedirect('/specs/' + section)
+def specs(request):
     return render_to_response(PATH.HTML_PATH['specs'], {}, context_instance=RequestContext(request))
 
 def tools(request):
@@ -40,10 +38,7 @@ def tools(request):
 
 def tools_license(request, keyword):
     if keyword in ('mapseeker', 'reeffit'):
-        if keyword == 'mapseeker':
-            title = "MAPSeeker"
-        elif keyword == 'reeffit':
-            title = "REEFFIT"
+        title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
         return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword':keyword, 'title':title}, context_instance=RequestContext(request))
     else:
         return error404(request)
@@ -56,10 +51,7 @@ def tools_download(request, keyword):
 
         result = simplejson.load(open('%s/cache/stat_dist.json' % MEDIA_ROOT, 'r'))
         result = result[keyword]
-        if keyword == 'mapseeker':
-            title = "MAPSeeker"
-        elif keyword == 'reeffit':
-            title = "REEFFIT"
+        title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
         return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword':keyword, 'title':title, 'dist':result}, context_instance=RequestContext(request))
     else:
         return error404(request)
@@ -80,35 +72,11 @@ def history(request):
     return render_to_response(PATH.HTML_PATH['history'], {'hist': parse_history()}, context_instance=RequestContext(request))
 
 
-def validate(request):
-    flag = -1
-    if request.method == 'POST':
-        form = ValidateForm(request.POST, request.FILES)
-        link = request.POST['link']
-        uploadfile = ''
-        if not link:
-            try:
-                uploadfile = request.FILES['file']
-                (errors, messages, flag) = validate_file(uploadfile, link, request.POST['type'])
-            except:
-                pass
-        else:
-            (errors, messages, flag) = validate_file(uploadfile, link, request.POST['type'])
-
-    if flag == -1:
-        messages = []
-        errors = []
-        form = ValidateForm()
-        flag = 0
-
-    return render_to_response(PATH.HTML_PATH['validate'], {'form':form, 'valerrors':errors, 'valmsgs':messages, 'flag':flag}, context_instance=RequestContext(request))
-
-
 def detail(request, rmdb_id):
     try:
         entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
         entry.cid = ConstructSection.objects.get(entry=entry).id
-        is_isatab = os.path.exists('%s%s/%s_%s.xls' % (PATH.DATA_DIR['ISATAB_FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version))
+        is_isatab = os.path.exists('%s%s/%s_%s.xls' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version))
     except (RMDBEntry.DoesNotExist, IndexError):
         return error404(request)
 
@@ -200,189 +168,43 @@ def search(request):
             return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': ''}, context_instance=RequestContext(request))
 
 
-
 def advanced_search(request):
-    other_errors = []
-    check_structure_balance = False
-    valid = True
+    return error503(request)
+
+
+def validate(request):
+    flag = -1
     if request.method == 'POST':
-        try:
-            form = AdvancedSearchForm(request.POST)
-            constructs_byquery = {}
-            rdat_paths = {}
-            rdats = {}
-            query_data = {}
-            construct_secstructelemdicts = {}
-            searchid = randint(1, 10000)
-            if 'structure' in request.POST and 'sequence' in request.POST:
-                if len(request.POST['structure']) != len(request.POST['sequence']) and len(request.POST['structure']) > 0 and len(request.POST['sequence']) > 0:
-                    other_errors.append('Structure and sequence motifs searched must have equal length')
-                    valid =  False
-            try:
-                numresults = int(request.POST['numresults'])
-            except:
-                valid =  False
+        form = ValidateForm(request.POST, request.FILES)
+        if form.is_valid():
+            link = form.cleaned_data['link']
+            uploadfile = ''
+            if not link: uploadfile = request.FILES['file']
+            (errors, messages, flag) = validate_file(uploadfile, link, form.cleaned_data['file_type'])
 
-            if valid:
-                for field in ('structure', 'sequence'):
-                    if field in request.POST and request.POST[field]:
-                        if field == 'structure':
-                            if ' ' in request.POST[field]:
-                                check_structure_balance = True
-                            query_field = request.POST[field]
-                            for ec in '.(){}':
-                                query_field = query_field.replace(ec,'\\'+ec).replace('\\\\'+ec,ec)
-                            if check_structure_balance:
-                                query_field = query_field.replace(' ', '.*')
-                            constructs_byquery[field] = ConstructSection.objects.filter(structure__regex=query_field)
-                        if field =='sequence':
-                            query_field = ''.join([toIUPACregex(s.upper()) for s in request.POST[field]])
-                            constructs_byquery[field] = ConstructSection.objects.filter(sequence__regex=query_field)
-                        query_data[field] = query_field
-                if 'secstructelems' in request.POST:
-                    query_data['secstructelems'] = request.POST.getlist('secstructelems')
-                    all_constructs = ConstructSection.objects.all()
-                    constructs_byquery['secstructelems'] = []
-                    cids = []
-                    for construct in all_constructs:
-                        if structure_is_valid(construct.structure):
-                            sstruct = SecondaryStructure(dbn=construct.structure)
-                            ssdict = sstruct.explode()
-                            for elem in query_data['secstructelems']:
-                                if elem in ssdict and ssdict[elem]:
-                                    cids.append(construct.id)
-                                    construct_secstructelemdicts[construct.id] = ssdict
-                                    break
-                            constructs_byquery['secstructelems'] = ConstructSection.objects.filter(id__in=cids)
-                if len(query_data) == 0: # No search criteria was chosen, get all constructs
-                    constructs_byquery['all'] = ConstructSection.objects.all()
-                    query_data['all'] = True
-
-                if 'background_processed' in request.POST:
-                    bp_entry_ids = [d.section.rmdb_id for d in EntryAnnotation.objects.filter(name='processing', value='backgroundSubtraction')]
-                for field in constructs_byquery:
-                    entry_types = request.POST.getlist('entry_type')
-                    modifiers = request.POST.getlist('modifiers')
-                    constructs_byquery[field].exclude(entry__latest=False)
-                    for t, name in ENTRY_TYPE_CHOICES:
-                        if t not in entry_types:
-                            constructs_byquery[field] = constructs_byquery[field].exclude(entry__type=t)
-                    for t, name in MODIFIERS:
-                        if t not in modifiers:
-                            constructs_byquery[field] = constructs_byquery[field].exclude(entry__rmdb_id__contains='_%s_' % t)
-                    if 'include_eterna' not in request.POST:
-                        constructs_byquery[field] = constructs_byquery[field].exclude(entry__from_eterna=True)
-                    if 'background_processed' in request.POST:
-                        constructs_byquery[field] = constructs_byquery[field].filter(entry__rmdb_id__in=bp_entry_ids)
-
-                constructs = constructs_byquery.values()[0]
-                for k, v in constructs_byquery.iteritems():
-                    constructs = [c for c in constructs if c in v]
-
-                entries_visited = []
-                unique_constructs = []
-                for c in constructs:
-                    if c.entry.rmdb_id not in entries_visited:
-                        unique_constructs.append(c)
-                        entries_visited.append(c.entry.rmdb_id)
-                rdat, all_values, cell_labels, values_min, values_max, values_min_heatmap, values_max_heatmap, unpaired_bins, paired_bins, unpaired_bin_anchors, paired_bin_anchors, rmdb_ids, messages, numallresults, render = get_restricted_RDATFile_and_plot_data(unique_constructs, numresults, query_data, searchid, construct_secstructelemdicts, check_structure_balance)
-                
-                rdat_path = 'search/%s.rdat' % searchid
-                rdat.save(MEDIA_ROOT + '/data/' + rdat_path, version=0.24)
-
-                return render_to_response(PATH.HTML_PATH['adv_search_res'], \
-                        {'rdat_path':rdat_path, 'all_values':simplejson.dumps(all_values), 'values_min':values_min, 'values_max':values_max, \
-                        'values_min_heatmap':values_min_heatmap, 'values_max_heatmap':values_max_heatmap, \
-                        'rmdb_ids':simplejson.dumps(rmdb_ids), 'messages':messages, \
-                        'unpaired_bins':simplejson.dumps(unpaired_bins), 'paired_bins':simplejson.dumps(paired_bins), \
-                        'unpaired_bin_anchors':simplejson.dumps(unpaired_bin_anchors), 'paired_bin_anchors':simplejson.dumps(paired_bin_anchors), \
-                        'render':render, 'render_paired_histogram':len(paired_bins) > 0, 'render_unpaired_histogram':len(unpaired_bins) > 0,\
-                        'form':form, 'numresults':numallresults, 'cell_labels':simplejson.dumps(cell_labels), 'all_results_rendered':numallresults <= numresults},\
-                        context_instance=RequestContext(request) )
-
-        except ValueError as e:
-            return render_to_response(PATH.HTML_PATH['adv_search_res'], {'render':False}, context_instance=RequestContext(request))
-
-    else:
-        form = AdvancedSearchForm()
-    return render_to_response(PATH.HTML_PATH['adv_search'], {'form':form, 'other_errors':other_errors}, context_instance=RequestContext(request))
+    if flag == -1:
+        (messages, errors, flag, form) = ([], [], 0, ValidateForm())
+    return render_to_response(PATH.HTML_PATH['validate'], {'form':form, 'valerrors':errors, 'valmsgs':messages, 'flag':flag}, context_instance=RequestContext(request))
 
 
 @login_required
 def upload(request):
-    error_msg = []
     flag = 0
-    entry = []
-
     if request.method == 'POST':
-        try:
-            form = UploadForm(request.POST, request.FILES)
-            if form.is_valid():
-                proceed = True
-                if not check_rmdb_id(form.cleaned_data['rmdb_id']):
-                    error_msg.append('RMDB ID invalid. Hover mouse over the field to see instructions.')
-                    flag = 1
-                    proceed = False
-                else:
-                    isatabfile = ISATABFile()
-                    isatabfile.loaded = False
-                    rdatfile = RDATFile()
-                    rdatfile.loaded = False
-
-                    uploadfile = request.FILES['file']
-                    rf = write_temp_file(uploadfile)
-                    txt = rf.readlines()
-                    txt = filter(lambda x:'experimentType:' in x, txt)
-                    if txt:
-                        txt = txt[0]
-                        idx = txt.find('experimentType:')
-                        txt = txt[idx:]
-                        txt = txt[txt.find(':')+1 : txt.find('\t')]
-                        expType = [x[1] for i, x in enumerate(ENTRY_TYPE_CHOICES) if x[0] == form.cleaned_data['type']][0]
-                        if txt != expType:
-                            error_msg.append('experimentType mismatch between selected file and web page form; please check and resubmit.')
-                            error_msg.append('File indicates experimentType of ' + txt + ', while form selected ' + expType + '.')
-                            flag = 1
-                            proceed = False
-                    else:
-                        error_msg.append('experimentType missing.')
-
-
-                    rf.seek(0)
-                    if form.cleaned_data['filetype'] == 'isatab':
-                        try:
-                            isatabfile.load(rf.name)
-                            isatabfile.loaded = True
-                            rdatfile = isatabfile.toRDAT()
-                        except Exception:
-                            error_msg.append('ISATAB file invalid; please check and resubmit.')
-                            flag = 1
-                            proceed = False
-                    else:
-                        try:
-                            rdatfile.load(rf)
-                            rdatfile.loaded = True
-                            isatabfile = rdatfile.toISATAB()
-                        except Exception:
-                            error_msg.append('RDAT file invalid; please check and resubmit.')
-                            flag = 1
-                            proceed = False
-
-                if proceed:
-                    (error_msg, entry) = submit_rmdb_entry(form, request, rdatfile, isatabfile)
-                    flag = 2
-            else:
-                flag = 1
-                if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
-                if 'file' in form.errors: error_msg.append('Input file field is required.')
-                if 'authors' in form.errors: error_msg.append('Authors field is required.')
-
-        except IndexError, e:
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            upload_file = request.FILES['file']
+            user = request.user
+            (error_msg, flag, entry) = process_upload(form, upload_file, user)
+        else:
             flag = 1
-            print traceback.format_exc()
-            error_msg.append('Input file invalid; please check and resubmit.')
-    else:
-        form = UploadForm()
+            (error_msg, entry) = ([], '')
+            if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
+            if 'file' in form.errors: error_msg.append('Input file field is required.')
+            if 'authors' in form.errors: error_msg.append('Authors field is required.')
+
+    if not flag:
+        (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
     return render_to_response(PATH.HTML_PATH['upload'], {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
 
 
@@ -475,7 +297,6 @@ def ping_test(request):
 
 def test(request):
     print request.META
-    return error400(request)
     raise ValueError
     # send_notify_emails('test', 'test')
     # send_mail('text', 'test', EMAIL_HOST_USER, [EMAIL_NOTIFY])

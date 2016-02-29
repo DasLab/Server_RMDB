@@ -120,8 +120,10 @@ def check_login_register(form):
 def register(request):
     error_msg = []
     flag = 0
+    form = RegisterForm()
+
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             error_msg = check_login_register(form)
 
@@ -141,7 +143,7 @@ def register(request):
                     rmdb_user.save()
 
                     flag = 1
-                    form = RegistrationForm()
+                    form = RegisterForm()
                 except IntegrityError as e:
                     error_msg.append('Username already exists. Try another.')
                 except Exception:
@@ -156,8 +158,6 @@ def register(request):
             if 'department' in form.errors: error_msg.append('Department field is required.')
             if 'email' in form.errors: error_msg.append('Email field is required.')
             error_msg.append('Form invalid: missing required field(s).')
-    else:
-        form = RegistrationForm()
 
     return render_to_response(PATH.HTML_PATH['register'], {'reg_form':form, 'error_msg':error_msg, 'flag':flag}, context_instance=RequestContext(request))
 

@@ -1,28 +1,31 @@
 sudo usermod -a -G www-data ubuntu
 
 sudo chgrp -R www-data *
-sudo chown -R ubuntu *.py *.md *.txt repository media misc
-sudo chown -R www-data data
+sudo chown -R ubuntu *.py *.md *.txt src media misc config .gitignore
+sudo chown -R www-data backup data cache
+sudo chmod 640 *.py* robots.txt .gitignore
+sudo chmod 600 *.md requirements.txt
 
-sudo chmod 640 *.py* *.md *.txt
-sudo chmod 640 repository/*.py* repository/helper/* repository/templatetags/*
-sudo chmod 750 repository repository/templatetags
-sudo chmod 640 media/css/* media/fonts/* media/html/* media/js/* media/images/*.*g* media/images/*.*p* media/images/docs/* media/rss/*
-sudo chmod 750 media/css media/fonts media/html media/js media/images media/images/docs media/rss media
-sudo chmod 700 media/images/src
-sudo chmod 600 media/images/src/*
-sudo chmod 640 media/admin/*.html media/admin/css/* media/admin/img/*.*g* media/admin/img/gis/* media/admin/img/admin/* media/admin/js/*.js media/admin/js/*.txt media/admin/js/*.py* media/admin/js/admin/* 
-sudo chmod 750 media/admin media/admin/css media/admin/img media/admin/img/gis media/admin/img/admin media/admin/js media/admin/js/admin 
+sudo chmod 640 $(find src -type f)
+sudo chmod 750 $(find src -type d)
+sudo chmod 640 $(find media -type f)
+sudo chmod 750 $(find media -type d)
+sudo chmod 640 $(find misc -type f)
+sudo chmod 750 $(find misc -type d)
 
-sudo chmod 640 misc/*.txt misc/V*.* misc/external/* misc/mapseeker/* misc/reeffit/*
-sudo chmod 750 misc misc/external misc/mapseeker misc/reeffit
-sudo chown www-data misc/mapseeker/mapseeker_user.csv misc/reeffit/reeffit_user.csv 
+sudo chmod 660 $(find cache -type f)
+sudo chmod 770 $(find cache -type d)
+sudo chmod 660 $(find backup -type f)
+sudo chmod 770 $(find backup -type d)
+sudo chmod 660 $(find data -type f)
+sudo chmod 770 $(find data -type d)
 
-sudo chmod -R 640 data/
-sudo chmod 750 data data/construct_img data/files data/thumbs
-sudo chmod 750 data/construct_img/* data/files/*
+sudo chmod 640 $(find config -type f)
+sudo chmod 750 $(find config -type d)
+sudo chown www-data config/cron.conf 
 
-sudo chgrp -R ubuntu *.sh
-sudo chown -R ubuntu *.sh
+sudo chown -R ubuntu:ubuntu *.sh
 sudo chmod -R 700 *.sh
 
+sudo chown ubuntu:www-data ../yuicompressor.jar
+sudo chmod 640 ../yuicompressor.jar

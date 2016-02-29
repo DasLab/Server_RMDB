@@ -14,7 +14,7 @@
         </div>
         <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <a class="btn btn-success btn-lg btn-block" href="/tools/{{keyword}}/download/" id="btn_accept" style="color: #ffffff;"><span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Accept&nbsp;&nbsp;&nbsp;</a>
+            <a class="btn btn-success btn-lg btn-block" href="/tools/download/{{keyword}}/" id="btn_accept" style="color: #ffffff;">&nbsp;<span class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Accept&nbsp;</a>
           </div>
           <div class="col-lg-4 col-md-4 hidden-sm hidden-xs">
             {% if not user.is_authenticated %}
@@ -22,7 +22,7 @@
             {% endif %}
           </div>
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <a class="btn btn-danger btn-lg btn-block" href="/" style="color: #ffffff;"><span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;Decline&nbsp;&nbsp;&nbsp;</a>
+            <a class="btn btn-danger btn-lg btn-block" href="/" style="color: #ffffff;">&nbsp;<span class="glyphicon glyphicon-remove-sign"></span>&nbsp;&nbsp;Decline&nbsp;</a>
           </div>
         </div>
 

@@ -23,12 +23,16 @@ class Command(BaseCommand):
 
         try:
             rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
-            all_rdats = os.listdir(PATH.DATA_DIR['RDAT_FILE_DIR'])
-            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['RDAT_FILE_DIR']) if (i[0] != '.' and i != "search")]
+            all_rdats = os.listdir(PATH.DATA_DIR['FILE_DIR'])
+            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (i[0] != '.' and i != "search")]
 
             dept_rdats = [i for i in all_rdats if i not in rmdb_ids]
             for rmdb_id in dept_rdats:
-                shutil.rmtree(os.path.join(PATH.DATA_DIR['RDAT_FILE_DIR'], rmdb_id))
+                shutil.rmtree(os.path.join(PATH.DATA_DIR['FILE_DIR'], rmdb_id))
+
+            tmp_file = os.listdir(PATH.DATA_DIR['TMP_DIR'])
+            for f in tmp_file:
+                os.remove(f)
 
         except Exception:
             self.stdout.write("    \033[41mERROR\033[0m: Failed to remove RMDB_ID \033[94m%s\033." % rmdb_id)
