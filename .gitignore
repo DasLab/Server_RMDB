@@ -1,8 +1,22 @@
-data/
-cache/
-backup/
+!.gitignore
+
+backup/*.*gz
+cache/*.txt
+cache/*.json
+cache/*.log
+
+data/*
+!data/**/.gitignore
+
 misc/
+
 *.pyc
+
+media/js/admin/min/*.js
+media/js/public/min/*.js
+media/js/suit/min/*.js
+media/css/min/*.css
 
 config/t47_dev.py
 config/*.conf
+config/sys/*

@@ -10,9 +10,7 @@
           To continue downloading source code, you must accept the agreement.
          </h3>
          <br/>
-         <div class="alert alert-info" id="license_content">
-          {{ license_txt }}
-         </div>
+         <div class="alert alert-info" id="license_content"></div>
         </div>
         <div class="row">
           <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -40,7 +38,7 @@
       $("#nav_tool").addClass("active");
       $("#nav_logo").css("text-decoration","none");
 
-      $("#license_content").load("/site_src/{{keyword}}_license.md", function (txt) {
+      $("#license_content").load("/site_src/{{title}}-license.md", function (txt) {
         $(this).html(txt.split(/\n/).join("<br>") + "</strong>");
       });
     });

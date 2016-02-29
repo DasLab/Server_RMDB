@@ -14,6 +14,7 @@
 		"ACCOUNT": "account_id",
 		"ID": "ids",
 		"TRACKING_ID": "tracking_id",
+		"LINK_URL": "ga_view_url",
 
 		"CLIENT_ID": "client_id",
 		"CLIENT_SECRET": "client_secret",
@@ -22,8 +23,6 @@
 	},
 
 	"DRIVE": {
-		"SPREADSHEET_ID": "spreadsheet_id",
-
 		"CLIENT_ID": "client_id",
 		"CLIENT_SECRET": "client_secret",
 
@@ -31,6 +30,11 @@
 	},
 
 	"GIT": {
+		"REPOSITORY": "org_name/repo_name",
+
+		"USERNAME": "login",
+		"PASSWORD": "password",
+
 		"CLIENT_ID": "client_id",
 		"CLIENT_SECRET": "client_secret",
 

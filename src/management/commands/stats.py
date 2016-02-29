@@ -47,7 +47,7 @@ class Command(BaseCommand):
             for e in entries:
                 if e.rmdb_id not in entry_ids:
                     entry_ids.append(e.rmdb_id)
-                    e.cid = ConstructSection.objects.filter(entry = e ).values('id')[0]['id']
+                    e.cid = ConstructSection.objects.get(entry=e).id
                     comment = e.comments.split()
                     for i, m in enumerate(comment):
                         if len(m) > 40:

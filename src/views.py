@@ -40,7 +40,11 @@ def tools(request):
 
 def tools_license(request, keyword):
     if keyword in ('mapseeker', 'reeffit'):
-        return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword':keyword}, context_instance=RequestContext(request))
+        if keyword == 'mapseeker':
+            title = "MAPSeeker"
+        elif keyword == 'reeffit':
+            title = "REEFFIT"
+        return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword':keyword, 'title':title}, context_instance=RequestContext(request))
     else:
         return error404(request)
 
@@ -50,11 +54,13 @@ def tools_download(request, keyword):
         new = SourceDownloader(date=datetime.now(), package=keyword, rmdb_user=RMDBUser.objects.get(user=request.user))
         new.save()
 
+        result = simplejson.load(open('%s/cache/stat_dist.json' % MEDIA_ROOT, 'r'))
+        result = result[keyword]
         if keyword == 'mapseeker':
-            title = "MAPseeker"
+            title = "MAPSeeker"
         elif keyword == 'reeffit':
             title = "REEFFIT"
-        return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword':keyword, 'title':title}, context_instance=RequestContext(request))
+        return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword':keyword, 'title':title, 'dist':result}, context_instance=RequestContext(request))
     else:
         return error404(request)
 
