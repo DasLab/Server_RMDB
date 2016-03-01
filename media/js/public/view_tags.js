@@ -77,8 +77,10 @@ function fill_tags() {
     $("#dl_rdat").attr("href", "/site_data/file/" + tags.rmdb_id + "/" + tags.rmdb_id + ".rdat");
     if (tags.version > 1) {
         var ver_html = '<li class="li-orange"><a href="/site_data/files/' + tags.rmdb_id + '/' + tags.rmdb_id + '_' + tags.version + '.rdat" download><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp;&nbsp;(Current) <i>Version:</i> <mark>' + tags.version + '</mark></a></li>';
-        for (var i = tags.version - 1; i > 0; i--) {
-            ver_html += '<li class="li-info"><a href="/site_data/file/' + tags.rmdb_id + '/' + tags.rmdb_id + '_' + i + '.rdat" download><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp;&nbsp;RDAT <i>Version:</i> <mark>' + i + '</mark></a></li>';
+        for (var i = tags.versions.length - 1; i >= 0; i--) {
+            if (tags.versions[i] !== tags.version) {
+                ver_html += '<li class="li-info"><a href="/site_data/file/' + tags.rmdb_id + '/' + tags.rmdb_id + '_' + i + '.rdat" download><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp;&nbsp;RDAT <i>Version:</i> <mark>' + i + '</mark></a></li>';
+            }
         }
         $("#hist_ver_list").html(ver_html);
     } else {

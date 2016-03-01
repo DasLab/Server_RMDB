@@ -15,6 +15,7 @@ def try_get_stats(rmdb_id=''):
     except Exception:
         return (None, 0)
 
+
 def do_get_stats(rmdb_id=''):
     (flag, i) = (0, 0)
     while flag == 0 and i < 5:
@@ -23,7 +24,15 @@ def do_get_stats(rmdb_id=''):
             i += 1
             time.sleep(1)
     return json
-       
+
+
+def get_entry_version(rmdb_id):
+    entry_list = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version').values('version')
+    ver_list = []
+    for e in entry_list:
+        ver_list.append(int(e['version']))
+    return sorted(ver_list, reverse=True)
+
 
 def temp_file(file_name):
     open('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_name.name), 'w').write(file_name.read())

@@ -9,6 +9,7 @@ from rdatkit.view import VARNA
 
 from src.models import *
 from src.settings import *
+from src.util.util import get_entry_version
 
 matplotlib.use('Agg')
 
@@ -173,11 +174,7 @@ def save_json_tags(entry):
     else:
         entry.pdb_ids = []
     entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
-    entry_list = RMDBEntry.objects.filter(rmdb_id=instance.rmdb_id).order_by('-version').values('version')
-    ver_list = []
-    for e in entry_list:
-        ver_list.append(int(e['version']))
-    ver_list.sort(reverse=True)
+    ver_list = get_entry_version(entry.rmdb_id)
 
     tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'versions':ver_list, 'construct_count':entry.construct_count, 'data_count':entry.data_count,  'status':entry.status, 'type':entry.type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x'), 'owner_name':entry.owner.first_name+' '+entry.owner.last_name,'owner':entry.owner.username, 'latest':entry.supercede_by}
     tags_annotation = {'annotation':entry.annotations}

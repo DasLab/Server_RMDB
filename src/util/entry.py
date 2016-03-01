@@ -86,9 +86,10 @@ def validate_file(file_path, link_path, input_type):
 
 def process_upload(form, upload_file, user):
     (error_msg, flag, entry) = ([], 0, '')
+    rmdb_id = form.cleaned_data['rmdb_id']
 
     try:
-        if not check_rmdb_id(form.cleaned_data['rmdb_id']):
+        if not check_rmdb_id(rmdb_id):
             error_msg.append('RMDB ID invalid. Hover mouse over the field to see instructions.')
             flag = 1
         else:
@@ -100,6 +101,7 @@ def process_upload(form, upload_file, user):
             exp_type = [x[1] for i, x in enumerate(ENTRY_TYPE_CHOICES) if x[0] == form.cleaned_data['exp_type']][0].replace(' ', '')
             txt = rf.readlines()
             txt = filter(lambda x:'experimentType:' in x, txt)
+            is_eterna = ("ETERNA" in rmdb_id)
             if txt:
                 txt = txt[0]
                 txt = txt[txt.find('experimentType:'):]
@@ -108,6 +110,10 @@ def process_upload(form, upload_file, user):
                     error_msg.append('experimentType mismatch between selected file and web page form; please check and resubmit.')
                     error_msg.append('File indicates experimentType of %s , while form selected %s.' % (txt, exp_type))
                     flag = 1
+            elif is_eterna:
+                if exp_type != 'StandardState':
+                    flag = 1
+                    error_msg.append('Use StandardState for Eterna entries.')
             elif exp_type != 'MOHCA':
                 flag = 1
                 error_msg.append('Missing experimentType.')
@@ -278,11 +284,14 @@ def on_entry_del(sender, instance, **kwargs):
     job2.start()
 
     ver = instance.version
-    entry_list = RMDBEntry.objects.filter(rmdb_id=instance.rmdb_id).order_by('-version').values('version')
-    ver_list = []
-    for e in entry_list:
-        ver_list.append(int(e['version']))
+    ver_list = get_entry_version(instance.rmdb_id)
     is_last = not any([x > ver for x in ver_list])
+
+    if os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
+        json = do_get_stats(instance.rmdb_id)
+        if json is None: return
+        json['versions'] = ver_list
+        open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w').write(simplejson.dumps(json, sort_keys=True, indent=' ' * 4))
 
     if not is_last: return
     if not ver_list:
