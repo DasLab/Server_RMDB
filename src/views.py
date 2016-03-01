@@ -17,6 +17,7 @@ from src.helper.helper_predict import *
 from src.util.entry import *
 from src.util.media import *
 from src.util.stats import *
+from src.util.util import *
 
 from datetime import datetime
 import simplejson
@@ -246,8 +247,11 @@ def get_js(request):
     json = {'jquery':stats['jquery'], 'bootstrap':stats['bootstrap'], 'd3':stats['d3'], 'zclip':stats['zclip']}
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
+
 def get_stats(request):
-    json = simplejson.load(open('%s/cache/stat_stats.json' % MEDIA_ROOT, 'r'))
+    json = do_get_stats()
+    if json is None: return error503(request)
+
     for key in json.keys():
         json[key] = '{:,}'.format(json[key])
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')

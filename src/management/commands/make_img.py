@@ -53,7 +53,7 @@ class Command(BaseCommand):
                 rdatfile.load(open(file_name, 'r'))
 
                 entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-id')[0]
-                construct = ConstructSection.objects.get(entry_id=entry.id)
+                construct = ConstructSection.objects.get(entry=entry)
 
                 for k in rdatfile.constructs:
                     c = rdatfile.constructs[k]
@@ -64,7 +64,6 @@ class Command(BaseCommand):
                 err_rdats.append(rmdb_id)
                 self.stdout.write("\033[41mFAILURE\033[0m: %d / %d : \033[94m%s\033[0m" % (i + 1, len(all_rdats), rmdb_id))
                 err = traceback.format_exc()
-                print err
                 ts = '%s\t\t%s\n' % (time.ctime(), ' '.join(sys.argv))
                 open('%s/cache/log_alert_admin.log' % MEDIA_ROOT, 'a').write(ts)
                 open('%s/cache/log_cron_img.log' % MEDIA_ROOT, 'a').write('%s\n%s\n' % (ts, err))

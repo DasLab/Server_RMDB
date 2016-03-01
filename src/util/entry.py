@@ -2,14 +2,19 @@ import os
 from pylab import *
 import shutil
 import subprocess
+import threading
 import traceback
 
 from Tkinter import TclError
+
+from django.dispatch import receiver
+from django.core.management import call_command
 
 from rdatkit.datahandlers import RDATFile, ISATABFile
 
 from src.models import *
 from src.settings import *
+from src.user import update_user_stats
 from src.util.media import *
 from src.util.util import *
 
@@ -92,18 +97,18 @@ def process_upload(form, upload_file, user):
             rdatfile.loaded = False
 
             rf = temp_file(upload_file)
+            exp_type = [x[1] for i, x in enumerate(ENTRY_TYPE_CHOICES) if x[0] == form.cleaned_data['exp_type']][0].replace(' ', '')
             txt = rf.readlines()
             txt = filter(lambda x:'experimentType:' in x, txt)
             if txt:
                 txt = txt[0]
                 txt = txt[txt.find('experimentType:'):]
                 txt = txt[txt.find(':')+1 : txt.find('\t')]
-                exp_type = [x[1] for i, x in enumerate(ENTRY_TYPE_CHOICES) if x[0] == form.cleaned_data['exp_type']][0].replace(' ', '')
                 if txt != exp_type:
                     error_msg.append('experimentType mismatch between selected file and web page form; please check and resubmit.')
                     error_msg.append('File indicates experimentType of %s , while form selected %s.' % (txt, exp_type))
                     flag = 1
-            else:
+            elif exp_type != 'MOHCA':
                 flag = 1
                 error_msg.append('Missing experimentType.')
 
@@ -204,7 +209,6 @@ def save_rdat(entry, upload_file, rdatfile, isatabfile, error_msg=[]):
     rdat_name = '%s%s/%s_%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version)
     shutil.move('%s%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name), rdat_name)
     shutil.copyfile(rdat_name, '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id))
-    shutil.copyfile(rdat_name, '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id))
 
     # Breaks Excel compatibility if data/columns are > 256
     if len(rdatfile.values.values()[0]) < 256:
@@ -246,18 +250,60 @@ def review_entry(new_stat, rmdb_id):
     entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-id')[0]
     construct = ConstructSection.objects.get(entry_id=entry.id)
     entry = RMDBEntry.objects.filter(id=construct.entry.id).order_by('-version')[0]
-    if new_stat == "PUB":
-        rdatfile = RDATFile()
-        file_name = '%s%s/%s_%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], rmdb_id, rmdb_id, entry.version)
-        if not os.path.isfile(file_name):
-            file_name = '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], rmdb_id, rmdb_id)
-        rdatfile.load(open(file_name, 'r'))
-        # for k in rdatfile.constructs:
-        #     c = rdatfile.constructs[k]
-        #     entry.is_trace = save_image(construct, c, entry.type, engine='matplotlib')
-
-        # generate_varna_thumbnails(entry)
-        save_json(entry.rmdb_id)
-
     entry.status = new_stat
     entry.save()
+
+
+@receiver(post_save, sender=RMDBEntry)
+def on_entry_save(sender, instance, **kwargs):
+    job1 = threading.Thread(target=call_command, args=('stats',))
+    job2 = threading.Thread(target=update_user_stats, args=(instance.owner,))
+    job1.start()
+    job2.start()
+
+    if os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
+        json = do_get_stats(instance.rmdb_id)
+        if json is None: return
+
+        if json['status'] != instance.status:
+            json['status'] = instance.status
+            open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w').write(simplejson.dumps(json, sort_keys=True, indent=' ' * 4))
+
+ 
+@receiver(post_delete, sender=RMDBEntry)
+def on_entry_del(sender, instance, **kwargs):
+    job1 = threading.Thread(target=call_command, args=('stats',))
+    job2 = threading.Thread(target=update_user_stats, args=(instance.owner,))
+    job1.start()
+    job2.start()
+
+    ver = instance.version
+    entry_list = RMDBEntry.objects.filter(rmdb_id=instance.rmdb_id).order_by('-version').values('version')
+    ver_list = []
+    for e in entry_list:
+        ver_list.append(int(e['version']))
+    is_last = not any([x > ver for x in ver_list])
+
+    if not is_last: return
+    if not ver_list:
+        if os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
+            os.remove('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id))
+        if os.path.exists('%s/%s-hmap.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
+            os.remove('%s/%s-hmap.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id))
+        if os.path.exists('%s/%s-rx.png' % (PATH.DATA_DIR['IMG_DIR'], instance.rmdb_id)):
+            os.remove('%s/%s-rx.png' % (PATH.DATA_DIR['IMG_DIR'], instance.rmdb_id))
+        if os.path.exists('%s/%s-tr.png' % (PATH.DATA_DIR['IMG_DIR'], instance.rmdb_id)):
+            os.remove('%s/%s-tr.png' % (PATH.DATA_DIR['IMG_DIR'], instance.rmdb_id))
+        if os.path.exists('%s/%s.gif' % (PATH.DATA_DIR['THUMB_DIR'], instance.rmdb_id)):
+            os.remove('%s/%s.gif' % (PATH.DATA_DIR['THUMB_DIR'], instance.rmdb_id))
+
+    next_ver = max([x for x in ver_list if x < ver])
+    shutil.copyfile('%s%s/%s_%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], instance.rmdb_id, instance.rmdb_id, next_ver), '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], instance.rmdb_id, instance.rmdb_id))
+    os.remove('%s%s/%s_%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], instance.rmdb_id, instance.rmdb_id, ver))
+    if os.path.exists('%s%s/%s_%s.xls' % (PATH.DATA_DIR['FILE_DIR'], instance.rmdb_id, instance.rmdb_id, ver)):
+        os.remove('%s%s/%s_%s.xls' % (PATH.DATA_DIR['FILE_DIR'], instance.rmdb_id, instance.rmdb_id, ver))
+
+    job3 = threading.Thread(target=call_command, args=('make_img', instance.rmdb_id))
+    job4 = threading.Thread(target=call_command, args=('make_json', instance.rmdb_id))
+    job3.start()
+    job4.start()

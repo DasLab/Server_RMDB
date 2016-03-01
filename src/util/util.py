@@ -1,9 +1,29 @@
 import re
+import simplejson
+import time
 
 from django.core.mail import send_mail
 
 from src.models import *
 
+
+def try_get_stats(rmdb_id=''):
+    file_name = '%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], rmdb_id) if rmdb_id else '%s/cache/stat_stats.json' % MEDIA_ROOT
+    try:
+        json = simplejson.load(open(file_name, 'r'))
+        return (json, 1)
+    except Exception:
+        return (None, 0)
+
+def do_get_stats(rmdb_id=''):
+    (flag, i) = (0, 0)
+    while flag == 0 and i < 5:
+        (json, flag) = try_get_stats(rmdb_id)
+        if json is None:
+            i += 1
+            time.sleep(1)
+    return json
+       
 
 def temp_file(file_name):
     open('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_name.name), 'w').write(file_name.read())

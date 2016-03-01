@@ -1,3 +1,4 @@
+import shutil
 import simplejson
 import sys
 import textwrap
@@ -35,7 +36,7 @@ class Command(BaseCommand):
                 e = entries[0]
             N_datapoints += e.data_count
             N_constructs += e.construct_count       
-        return {'N_all': N_all, 'N_RNA': N_RNA, 'N_puzzle': N_puzzle, 'N_eterna': N_eterna, 'N_constructs': N_constructs, 'N_datapoints' : N_datapoints}
+        return {'N_all': N_all, 'N_RNA': N_RNA, 'N_puzzle': N_puzzle, 'N_eterna': N_eterna, 'N_constructs': N_constructs, 'N_datapoints': N_datapoints}
 
     def browse_json_list(self, names_d):
         constructs = []
@@ -81,14 +82,18 @@ class Command(BaseCommand):
 
         flag = False
         try:
-            open('%s/cache/stat_stats.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_stats(), indent=' ' * 4, sort_keys=True))
+            open('%s/cache/stat_stats_tmp.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_stats(), indent=' ' * 4, sort_keys=True))
+            open('%s/cache/stat_browse_eterna_tmp.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('eterna'), indent=' ' * 4, sort_keys=True))
+            open('%s/cache/stat_browse_puzzle_tmp.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('puzzle'), indent=' ' * 4, sort_keys=True))
+            open('%s/cache/stat_browse_general_tmp.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('general'), indent=' ' * 4, sort_keys=True))
 
-            open('%s/cache/stat_browse_eterna.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('eterna'), indent=' ' * 4, sort_keys=True))
-            open('%s/cache/stat_browse_puzzle.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('puzzle'), indent=' ' * 4, sort_keys=True))
-            open('%s/cache/stat_browse_general.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(self.get_rmdb_category('general'), indent=' ' * 4, sort_keys=True))
+            shutil.move('%s/cache/stat_stats_tmp.json' % MEDIA_ROOT, '%s/cache/stat_stats.json' % MEDIA_ROOT)
+            shutil.move('%s/cache/stat_browse_eterna_tmp.json' % MEDIA_ROOT, '%s/cache/stat_browse_eterna.json' % MEDIA_ROOT)
+            shutil.move('%s/cache/stat_browse_puzzle_tmp.json' % MEDIA_ROOT, '%s/cache/stat_browse_puzzle.json' % MEDIA_ROOT)
+            shutil.move('%s/cache/stat_browse_general_tmp.json' % MEDIA_ROOT, '%s/cache/stat_browse_general.json' % MEDIA_ROOT)
 
         except Exception:
-            self.stdout.write("    \033[41mERROR\033[0m: Failed to cache \033[94mRMDB Entry\033 statistics.")
+            self.stdout.write("    \033[41mERROR\033[0m: Failed to cache \033[94mRMDB Entry\033[0m statistics.")
             err = traceback.format_exc()
             ts = '%s\t\t%s\n' % (time.ctime(), ' '.join(sys.argv))
             open('%s/cache/log_alert_admin.log' % MEDIA_ROOT, 'a').write(ts)

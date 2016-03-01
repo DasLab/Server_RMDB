@@ -31,6 +31,12 @@ def get_user_stats(user):
         return (N_entries, N_constructs, N_datapoints, None, None)
 
 
+def update_user_stats(user):
+    rmdb_user = RMDBUser.objects.get(user=user)
+    (rmdb_user.entry_count, rmdb_user.construct_count, rmdb_user.data_count, rmdb_user.last_entry, rmdb_user.last_date) = get_user_stats(user)
+    rmdb_user.save()
+
+
 def user_login(request):
     if request.user.is_authenticated():
         if request.GET.has_key('next') and 'admin' in request.GET['next']:
@@ -52,10 +58,7 @@ def user_login(request):
                     if flag == "Admin":
                         return HttpResponseRedirect('/admin/')
                     else:
-                        rmdb_user = RMDBUser.objects.get(user=user)
-                        (rmdb_user.entry_count, rmdb_user.construct_count, rmdb_user.data_count, rmdb_user.last_entry, rmdb_user.last_date) = get_user_stats(user)
-                        rmdb_user.save()
-
+                        update_user_stats(user)
                         return HttpResponseRedirect('/')
                 else:
                     messages = 'Inactive/disabled account. Please contact us.'

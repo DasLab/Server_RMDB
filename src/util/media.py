@@ -168,8 +168,18 @@ def save_json_heatmap(entry):
 
 def save_json_tags(entry):
     rdat_ver = open('%s/%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id), 'r').readline().strip().split('\t')[-1]
+    if (entry.pdb is not None) and len(entry.pdb.strip()) > 0:
+        entry.pdb_ids = [x.strip() for x in entry.pdb.split(',')]
+    else:
+        entry.pdb_ids = []
+    entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
+    entry_list = RMDBEntry.objects.filter(rmdb_id=instance.rmdb_id).order_by('-version').values('version')
+    ver_list = []
+    for e in entry_list:
+        ver_list.append(int(e['version']))
+    ver_list.sort(reverse=True)
 
-    tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'construct_count':entry.construct_count, 'data_count':entry.data_count,  'status':entry.status, 'type':entry.type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x'), 'owner_name':entry.owner.first_name+' '+entry.owner.last_name,'owner':entry.owner.username, 'latest':entry.supercede_by}
+    tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'versions':ver_list, 'construct_count':entry.construct_count, 'data_count':entry.data_count,  'status':entry.status, 'type':entry.type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x'), 'owner_name':entry.owner.first_name+' '+entry.owner.last_name,'owner':entry.owner.username, 'latest':entry.supercede_by}
     tags_annotation = {'annotation':entry.annotations}
 
     c = ConstructSection.objects.get(entry=entry)
@@ -200,13 +210,6 @@ def save_json_tags(entry):
 
 def save_json(rmdb_id):
     entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
-
-    if (entry.pdb is not None) and len(entry.pdb.strip()) > 0:
-        entry.pdb_ids = [x.strip() for x in entry.pdb.split(',')]
-    else:
-        entry.pdb_ids = []
-    entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
-
     save_json_tags(entry)
     save_json_heatmap(entry)
 
