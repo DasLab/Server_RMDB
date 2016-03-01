@@ -32,7 +32,7 @@ class EntryAdmin(admin.ModelAdmin):
     list_display = ('id', 'rmdb_id', 'version', 'status', 'type', 'short_desp', 'data_count', 'construct_count')
     ordering = ('-id',)
     fieldsets = [
-        (format_html('<span class="glyphicon glyphicon-book"></span>&nbsp;Entry Basics'), {'fields': ['rmdb_id', ('status', 'version', 'supercede_by'), ('owner', 'type'), 'authors', 'publication', 'description', 'comments', ('is_trace', 'is_eterna'), ('data_count', 'construct_count'), 'file', ('organism', 'pdb')]}),
+        (format_html('<span class="glyphicon glyphicon-book"></span>&nbsp;Entry Basics'), {'fields': ['rmdb_id', ('status', 'version', 'supercede_by'), ('owner', 'type'), 'authors', 'publication', 'description', 'comments', ('is_trace', 'is_eterna'), ('data_count', 'construct_count'), ('organism', 'pdb')]}),
     ]
 
 class PublicationAdmin(admin.ModelAdmin):

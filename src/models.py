@@ -1,19 +1,16 @@
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, post_delete
 from django.db import models
 from django import forms
 # from django.utils.html import format_html
 
 from src.settings import *
 
-import os
 import simplejson
 
-
-def get_rdat_file(instance, filename):
-    dir = PATH.DATA_DIR['FILE_DIR'] + '%s/' % instance.id
-    if not os.path.exists(dir): os.mkdir(dir)
-    return dir + '%s.rdat' % instance.id
+# def get_rdat_file(instance, filename):
+#     file_dir = '%s%s/' % (PATH.DATA_DIR['FILE_DIR'], instance.id)
+#     if not os.path.exists(file_dir): os.mkdir(file_dir)
+#     return '%s%s.rdat' % (file_dir, instance.id)
 
 
 ENTRY_TYPE_CHOICES = (
@@ -79,7 +76,7 @@ class Organism(models.Model):
 class RMDBEntry(models.Model):
     rmdb_id = models.CharField(max_length=25, null=True, verbose_name='RMDB ID')
     owner = models.ForeignKey(User, null=True)
-    file = models.FileField(upload_to=get_rdat_file, blank=True, null=True)
+    # file = models.FileField(upload_to=get_rdat_file, blank=True, null=True)
     creation_date = models.DateTimeField(auto_now=True, null=True)
 
     version = models.IntegerField(default=1, verbose_name='Revision')
