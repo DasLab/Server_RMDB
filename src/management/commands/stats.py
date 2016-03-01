@@ -47,12 +47,11 @@ class Command(BaseCommand):
             for e in entries:
                 if e.rmdb_id not in entry_ids:
                     entry_ids.append(e.rmdb_id)
-                    e.cid = ConstructSection.objects.get(entry=e).id
                     comment = e.comments.split()
                     for i, m in enumerate(comment):
                         if len(m) > 40:
                             comment[i] = ' '.join(textwrap.wrap(m, 40))
-                    entry = {'rmdb_id':e.rmdb_id, 'cid':e.cid, 'version':e.version, 'construct_count':e.construct_count, 'data_count':e.data_count, 'authors':e.authors, 'comments':' '.join(comment), 'title':e.publication.title, 'latest':e.supercede_by}
+                    entry = {'rmdb_id':e.rmdb_id, 'version':e.version, 'construct_count':e.construct_count, 'data_count':e.data_count, 'authors':e.authors, 'comments':' '.join(comment), 'title':e.publication.title, 'latest':e.supercede_by}
                     if e.type == "SS":
                         SS_entries.append(entry)
                     elif e.type == "MM":

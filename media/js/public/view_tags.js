@@ -72,7 +72,7 @@ function fill_tags() {
     $("#link_pubmed").attr("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + tags.pubmed_id);
     $("#tag_description").text(tags.description);
 
-    $("#img_prv").attr("src", "/site_data/image/" + cid + "/reactivity_crisp.png");
+    $("#img_prv").attr("src", "/site_data/image/" + rmdb_id + "-rx.png");
     $("#dl_isatab").attr("href", "/site_data/file/" + tags.rmdb_id + "/" + tags.rmdb_id + "_" + tags.version + ".xls");
     $("#dl_rdat").attr("href", "/site_data/file/" + tags.rmdb_id + "/" + tags.rmdb_id + ".rdat");
     if (tags.version > 1) {

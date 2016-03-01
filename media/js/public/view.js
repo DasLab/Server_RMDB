@@ -12,7 +12,7 @@ $(document).ready(function () {
 
                 setTimeout(function() {
                     if ((tags.data_nrow >= 300 | tags.data_ncol >= 300) & $(location).attr("href").indexOf("?full=1") == -1) {
-                        $("#main").html('<p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap"><span class="glyphicon glyphicon-hourglass"></span>&nbsp;&nbsp;Load&nbsp;</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large (<code>' + tags.data_nrow + '-by-' + tags.data_ncol + '</code>). Rendering may take a few seconds.)</i></p><img id="img_preview" src="/site_data/image/' + cid + '/reactivity_crisp.png" class="center-block well"/>');
+                        $("#main").html('<p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap"><span class="glyphicon glyphicon-hourglass"></span>&nbsp;&nbsp;Load&nbsp;</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large (<code>' + tags.data_nrow + '-by-' + tags.data_ncol + '</code>). Rendering may take a few seconds.)</i></p><img id="img_preview" src="/site_data/image/' + rmdb_id + '-rx.png" class="center-block well"/>');
                         if (parseInt($("#img_preview").css("width")) > 600) {
                             $("#img_preview").css("width", "600px");
                         }
@@ -65,7 +65,7 @@ $(document).ready(function () {
         $("#dl_dropdown").addClass("disabled");
         $("#tag_supercede").html('<button type="button" class="btn btn-warning disabled" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp;&nbsp;Under Review&nbsp;</button>');
 
-        $("#img_prv_rev").attr("src", "/site_data/image/" + cid + "/reactivity_crisp.png");
+        $("#img_prv_rev").attr("src", "/site_data/image/" + rmdb_id + "-rx.png");
         $("#dl_isatab_rev").attr("href", "/site_data/file/" + rmdb_id + "/" + rmdb_id + "_" + version + ".xls");
         $("#dl_rdat_rev").attr("href", "/site_data/file/" + rmdb_id + "/" + rmdb_id + ".rdat");
 

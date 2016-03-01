@@ -16,7 +16,7 @@ def precalculate_structures(entry):
         for c in constructs:
             datas = DataSection.objects.filter(construct_section=c)
             for d in datas:
-                bonuses = get_correct_mapping_bonuses(d, c)
+                bonuses = correct_rx_bonus(d, c)
                 for i, b in enumerate(bonuses):
                     if b == -1.0:
                         bonuses[i] = -999

@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
         flag = False
         t = time.time()
-        self.stdout.write("Cleaning up obsolete job results...")
+        self.stdout.write("Cleaning up obsolete RMDB_IDs...")
 
         try:
             rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
@@ -32,7 +32,7 @@ class Command(BaseCommand):
 
             tmp_file = os.listdir(PATH.DATA_DIR['TMP_DIR'])
             for f in tmp_file:
-                os.remove(f)
+                os.remove(PATH.DATA_DIR['TMP_DIR'] + f)
 
         except Exception:
             self.stdout.write("    \033[41mERROR\033[0m: Failed to remove RMDB_ID \033[94m%s\033." % rmdb_id)

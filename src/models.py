@@ -263,7 +263,6 @@ class UploadForm(forms.Form):
 class ReviewForm(forms.Form):
     new_stat = forms.ChoiceField(required=True, choices=ENTRY_STATUS_CHOICES)
     rmdb_id = forms.CharField(required=True)
-    cid = forms.CharField(required=True)
 
 
 class ValidateForm(forms.Form):

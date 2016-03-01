@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
 
-from rdatkit.datahandlers import RDATFile, RDATSection, ISATABFile
+from rdatkit.datahandlers import RDATFile, ISATABFile
 from rdatkit.secondary_structure import SecondaryStructure
 
 from src.env import error400, error401, error403, error404, error500, error503
@@ -12,7 +12,6 @@ from src.settings import *
 
 from src.helper.helpers import *
 from src.helper.helper_api import *
-from src.helper.helper_deposit import *
 from src.helper.helper_predict import *
 
 from src.util.entry import *
@@ -75,14 +74,13 @@ def history(request):
 def detail(request, rmdb_id):
     try:
         entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-version')[0]
-        entry.cid = ConstructSection.objects.get(entry=entry).id
         is_isatab = os.path.exists('%s%s/%s_%s.xls' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id, entry.rmdb_id, entry.version))
     except (RMDBEntry.DoesNotExist, IndexError):
         return error404(request)
 
-    json = {'rmdb_id':entry.rmdb_id, 'cid':entry.cid, 'status':entry.status, 'is_isatab':is_isatab}
+    json = {'rmdb_id':entry.rmdb_id, 'status':entry.status, 'is_isatab':is_isatab}
     if entry.status != "PUB":
-        json.update({'version':entry.version, 'rev_form':ReviewForm(initial={'rmdb_id':entry.rmdb_id, 'cid':entry.cid})})
+        json.update({'version':entry.version, 'rev_form':ReviewForm(initial={'rmdb_id':entry.rmdb_id})})
     return render_to_response(PATH.HTML_PATH['detail'], json, context_instance=RequestContext(request))
 
 
@@ -178,13 +176,12 @@ def validate(request):
         form = ValidateForm(request.POST, request.FILES)
         if form.is_valid():
             link = form.cleaned_data['link']
-            uploadfile = ''
-            if not link: uploadfile = request.FILES['file']
-            (errors, messages, flag) = validate_file(uploadfile, link, form.cleaned_data['file_type'])
+            upload_file = '' if link else request.FILES['file']
+            (errors, messages, flag) = validate_file(upload_file, link, form.cleaned_data['file_type'])
 
     if flag == -1:
         (messages, errors, flag, form) = ([], [], 0, ValidateForm())
-    return render_to_response(PATH.HTML_PATH['validate'], {'form':form, 'valerrors':errors, 'valmsgs':messages, 'flag':flag}, context_instance=RequestContext(request))
+    return render_to_response(PATH.HTML_PATH['validate'], {'form':form, 'val_errs':errors, 'val_msgs':messages, 'flag':flag}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -203,6 +200,9 @@ def upload(request):
             if 'file' in form.errors: error_msg.append('Input file field is required.')
             if 'authors' in form.errors: error_msg.append('Authors field is required.')
 
+        if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
+            os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
+
     if not flag:
         (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
     return render_to_response(PATH.HTML_PATH['upload'], {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
@@ -215,8 +215,7 @@ def review(request):
         if form.is_valid():
             new_stat = form.cleaned_data['new_stat']
             rmdb_id = form.cleaned_data['rmdb_id']
-            cid = form.cleaned_data['cid']
-            review_entry(new_stat, rmdb_id, cid)
+            review_entry(new_stat, rmdb_id)
 
             return HttpResponseRedirect('/detail/%s' % rmdb_id)
 

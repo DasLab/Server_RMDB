@@ -1,9 +1,16 @@
-import simplejson
+import glob
+import matplotlib
 from pylab import *
+import simplejson
+import subprocess
 
-from rdatkit.datahandlers import RDATFile, RDATSection, ISATABFile
+from rdatkit.datahandlers import RDATFile, ISATABFile
+from rdatkit.view import VARNA
 
 from src.models import *
+from src.settings import *
+
+matplotlib.use('Agg')
 
 
 def trim_combine_annotation(annotations):
@@ -202,4 +209,163 @@ def save_json(rmdb_id):
 
     save_json_tags(entry)
     save_json_heatmap(entry)
+
+
+def get_arrays(datas):
+    (values, traces, reads, xsels, errors) = ([], [], [], [], [])
+
+    for d in datas:
+        values.append(d.values)
+        traces.append(d.trace)
+        reads.append(d.reads)
+        xsels.append(d.xsel)
+        errors.append(d.errors)
+    return (array(values), array(traces), array(reads), array(xsels), array(errors))
+
+
+def correct_rx_bonus(data, construct):
+    vals = [float(x) for x in data.values.split(',')]
+    seqpos = [int(x) - construct.offset - 1 for x in construct.seqpos.strip('[]').split(',')]
+    bonuses = [-0.1] * len(construct.sequence)
+    val_mean = sum(vals) / len(vals)
+    for i, s in enumerate(seqpos):
+        if vals[i] < -0.01:
+            bonuses[s] = val_mean
+        else:
+            bonuses[s] = vals[i]
+    return bonuses
+
+
+def save_thumb(entry):
+    try:
+        c = ConstructSection.objects.get(entry=entry)
+        datas = DataSection.objects.filter(construct_section=c)
+        file_name = '%s%s' % (PATH.DATA_DIR['THUMB_DIR'], entry.rmdb_id)
+
+        is_eterna = 'ETERNA' in entry.rmdb_id
+        is_structure = (c.structure) and ('(' in c.structure)
+        is_large = len(datas) > 100
+        is_SS = entry.type in ('SS', 'TT')
+
+        if is_structure and is_SS and (not is_large) and (not is_eterna):
+            height = 200
+            for i, data in enumerate(datas[:min(6, len(datas))]):
+                bonuses = correct_rx_bonus(data, c)
+                cms = VARNA.get_colorMapStyle(bonuses)
+
+                VARNA.cmd('\" \"', c.structure, '%s-%s.png' % (file_name, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400, 'spaceBetweenBases':0.6, 'flat':False} )
+                subprocess.check_call('optipng %s-%s.png' % (file_name, i), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+            subprocess.check_call('convert -delay 100 -resize 300x300 -background none -gravity center -extent 300x300 -loop 0 %s-*.png %s.gif' % (file_name, file_name), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        else:
+            subprocess.check_call('convert %s%s-rx.png %s.gif' % (PATH.DATA_DIR['IMG_DIR'], entry.rmdb_id, file_name), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            if (not entry.data_count): entry.data_count = len(datas[0].values.split(','))
+            height = 200 * pow(len(datas), 2) / entry.data_count
+
+            if (len(datas) < 3): height = len(datas) * 10
+            height = min(height, 1000)
+            if not is_eterna: height = min(height, 250)
+
+        width = 200
+        subprocess.check_call('mogrify -format gif -thumbnail %sx%s! %s.gif' % (width, height, file_name), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        tmp_file = glob.glob('%s-*.png' % file_name)
+        for f in tmp_file:
+            os.remove(f)
+    except ConstructSection.DoesNotExist:
+        print 'FATAL! There are no constructs for entry %s' % entry.rmdb_id
+
+
+def save_image(rmdb_id, construct_model, construct_section, entry_type):
+    data = DataSection.objects.filter(construct_section=construct_model)
+    (values, traces, reads, xsels, errors) = ([], [], [], [], [])
+    for d in data:
+        values.append([float(x) for x in d.values.strip().split(',')])
+        if d.trace:
+            traces.append([float(x) for x in d.trace.strip().split(',')])
+        if d.reads:
+            reads.append([float(x) for x in d.reads.strip().split(',')])
+        if d.errors:
+            errors.append([float(x) for x in d.errors.strip().split(',')])
+        if d.xsel:
+            xsels.append([float(x) for x in d.xsel.strip().split(',')])
+    (values_array, trace_array, reads_array, xsel_array, errors_array) = get_arrays(construct_section.data)
+    
+    file_name = '%s/%s' % (PATH.DATA_DIR['IMG_DIR'], rmdb_id)
+    (values_dims, trace_dims, values_mean, values_std) = (shape(values_array), shape(trace_array), values_array.mean(axis=-1), values_array.std(axis=0))
+
+    if entry_type == 'MM':
+        order = []
+        order_offset = 0
+        for i, data in enumerate(construct_section.data):
+            if 'mutation' in data.annotations:
+                if data.annotations['mutation'][0].upper() == 'WT':
+                    order.append(order_offset)
+                    order_offset += 1
+                else:
+                    i_order = data.annotations['mutation'][0].replace('Lib1-', '').replace('Lib2-', '').replace('Bad Quality', '').replace('badQuality', '').replace('warning:', '').replace(',', '').strip()
+                    order.append(int(i_order[1:-1]))
+            else:
+                order.append(i)
+        order = [i[0] for i in sorted(enumerate(order), key=lambda x:x[1])] #[::-1]
+    else:
+        order = range(values_dims[0])
+    # if entry_type != 'MA':
+        # order = order[::-1]
+    
+
+    figure(1)
+    frame = gca()
+    frame.axes.get_xaxis().set_visible(False)
+    frame.axes.get_yaxis().set_visible(False)
+
+    is_trace = (size(trace_array) > 0) or (size(reads_array) > 0)
+    if size(trace_array) > 0:
+        aspect_ratio = shape(trace_array[order, :])[1] / float(shape(trace_array)[0]) if (entry_type == 'MM') else 'auto'
+        imshow(trace_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=trace_array.mean() + 0.4 * trace_array.std(), aspect=aspect_ratio, interpolation='nearest')
+    if size(reads_array) > 0:
+        aspect_ratio = shape(reads_array[order, :])[1] / float(shape(reads_array)[0]) if (entry_type == 'MM') else 'auto'
+        imshow(reads_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=reads_array.mean() + 0.4 * reads_array.std(), aspect=aspect_ratio, interpolation='nearest')
+
+    if is_trace:
+        savefig(file_name + '-tr.png', bbox_inches='tight')
+        subprocess.check_call('optipng %s%s-tr.png' % (PATH.DATA_DIR['IMG_DIR'], rmdb_id), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+    is_eterna = 'ETERNA' in construct_model.entry.rmdb_id
+    aspect_ratio = 'auto' if (is_eterna or shape(values_array)[0] < 3) else 'equal'
+    if entry_type == "MA":
+        sub_id = tril_indices(min(shape(values_array)))
+        if (values_array[sub_id].mean() > 10):
+            outliers = where(values_array > values_array[sub_id].mean() * 3)
+            values_array[outliers] = values_array[sub_id].mean() * 3
+        vmax_adjust = values_array[sub_id].mean() * 2 #+ values_array[sub_id].std()*0.35
+    else:
+        vmax_adjust = values_array.mean() * 1.5 #+ values_array.std()*0.35
+    vmax_adjust = max(0, values_array.mean() + values_array.std() * 0.5)
+
+    figure(2)
+    clf()
+    imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest')
+    frame = gca()
+    frame.axes.get_xaxis().set_visible(False)
+    frame.axes.get_yaxis().set_visible(False)
+    savefig(file_name + '-rx.png', bbox_inches='tight')
+    subprocess.check_call('optipng %s%s-rx.png' % (PATH.DATA_DIR['IMG_DIR'], rmdb_id), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+    # figure(3)
+    # clf()
+    # tight_layout()
+    # if is_eterna:
+    #     aspect_ratio = .025 #shape(values_array)[0]/shape(values_array)[1] / 5
+    #     dpi = 600
+    # else:
+    #     aspect_ratio = 'equal'
+    #     dpi = 120
+    # imshow(values_array[order, :], cmap=get_cmap('Greys'), vmin=0, vmax=vmax_adjust, aspect=aspect_ratio, interpolation='nearest')
+    # frame = gca()
+    # frame.axes.get_xaxis().set_visible(False)
+    # frame.axes.get_yaxis().set_visible(False)
+    # savefig(dir+'/reactivity_equal.png', bbox_inches='tight', pad_inches=1e-2, dpi=dpi)
+    close('all')
+
+    return is_trace
 

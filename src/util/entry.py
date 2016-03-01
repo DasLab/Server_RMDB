@@ -6,13 +6,12 @@ import traceback
 
 from Tkinter import TclError
 
-from rdatkit.datahandlers import RDATFile, RDATSection, ISATABFile
+from rdatkit.datahandlers import RDATFile, ISATABFile
 
 from src.models import *
 from src.settings import *
 from src.util.media import *
 from src.util.util import *
-from src.helper.helper_images import *
 
 
 def get_spreadsheet(url):
@@ -67,7 +66,8 @@ def validate_file(file_path, link_path, input_type):
             flag = 1
             errors.append('Invalid input file format: %s' % e)
         tmp_file.close()
-        os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_path.name))
+        if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
+            os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_path.name))
 
     if not flag:
         if (not messages):
@@ -123,7 +123,7 @@ def process_upload(form, upload_file, user):
                     rdatfile.loaded = True
                     isatabfile = rdatfile.toISATAB()
                 except Exception:
-                    error_msg.append('Unknown error. Please contact admin.')
+                    error_msg.append('Invaid RDAT file; please check and resubmit.')
                     flag = 1
 
         if not flag:
@@ -133,7 +133,7 @@ def process_upload(form, upload_file, user):
     except Exception:
         flag = 1
         print traceback.format_exc()
-        error_msg.append('Internal Server Error; please check and resubmit.')
+        error_msg.append('Unknown error. Please contact admin.')
     return (error_msg, flag, entry)
 
 
@@ -231,21 +231,20 @@ def save_rdat(entry, upload_file, rdatfile, isatabfile, error_msg=[]):
         entry.construct_count = construct_count
 
         try:
-            entry.is_trace = generate_images(construct, c, entry.type, engine='matplotlib')
+            entry.is_trace = save_image(entry.rmdb_id, construct, c, entry.type)
         except TclError:
             error_msg.append('Problem generating the images. This is a server-side problem, please try again.')
-            # proceed = False
         entry.save()
-    
-        generate_varna_thumbnails(entry)
         #precalculate_structures(entry)
-
+    
+    save_thumb(entry)
     save_json(entry.rmdb_id)
     return (error_msg, entry)
 
 
-def review_entry(new_stat, rmdb_id, cid):
-    construct = ConstructSection.objects.get(id=cid)
+def review_entry(new_stat, rmdb_id):
+    entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-id')[0]
+    construct = ConstructSection.objects.get(entry_id=entry.id)
     entry = RMDBEntry.objects.filter(id=construct.entry.id).order_by('-version')[0]
     if new_stat == "PUB":
         rdatfile = RDATFile()
@@ -255,7 +254,7 @@ def review_entry(new_stat, rmdb_id, cid):
         rdatfile.load(open(file_name, 'r'))
         # for k in rdatfile.constructs:
         #     c = rdatfile.constructs[k]
-        #     entry.is_trace = generate_images(construct, c, entry.type, engine='matplotlib')
+        #     entry.is_trace = save_image(construct, c, entry.type, engine='matplotlib')
 
         # generate_varna_thumbnails(entry)
         save_json(entry.rmdb_id)

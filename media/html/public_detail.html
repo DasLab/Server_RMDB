@@ -527,7 +527,6 @@
 	                		{% render_field rev_form.new_stat class+="form-control" %}
 	                		<br/>
 	                		<button id="btn_submit" type="submit" class="btn btn-inverse pull-right">&nbsp;<span class="glyphicon glyphicon-check"></span>&nbsp;&nbsp;Submit&nbsp;</button>
-	                		{% render_field rev_form.cid class+="hidden" %}
 	                		{% render_field rev_form.rmdb_id class+="hidden" %}
 	                	</div>
 				    </form>
@@ -565,7 +564,7 @@
 	</script>
 	<script type="text/javascript">
 		var json, tags, idx = 0, tag_idx = 0, n_rows, color_scale = 1, flag = 0;
-		var rmdb_id = "{{rmdb_id}}", cid = "{{cid}}", status = "{{status}}", version;
+		var rmdb_id = "{{rmdb_id}}", status = "{{status}}", version;
 		if (status !== "PUB") {
 			version = "{{version}}";
 		}
