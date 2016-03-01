@@ -41,7 +41,12 @@ class Command(BaseCommand):
         t = time.time()
         self.stdout.write("#2: Backing up static files...")
         try:
-            tarfile.open('%s/backup/backup_static.tgz' % MEDIA_ROOT, 'w:gz').add('%s/data' % MEDIA_ROOT, arcname='data')
+            tf = tarfile.open('%s/backup/backup_static.tgz' % MEDIA_ROOT, 'w:gz')
+            tf.add('%s/data/file' % MEDIA_ROOT, arcname='data/file')
+            tf.add('%s/data/image' % MEDIA_ROOT, arcname='data/image')
+            tf.add('%s/data/json' % MEDIA_ROOT, arcname='data/json')
+            tf.add('%s/data/thumbnail' % MEDIA_ROOT, arcname='data/thumbnail')
+            tf.close()
         except:
             self.stdout.write("    \033[41mERROR\033[0m: Failed to archive \033[94mstatic\033[0m files.")
             err = traceback.format_exc()

@@ -23,7 +23,6 @@ class Command(BaseCommand):
 
         try:
             rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
-            all_rdats = os.listdir(PATH.DATA_DIR['FILE_DIR'])
             all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (i[0] != '.' and i != "search")]
 
             dept_rdats = [i for i in all_rdats if i not in rmdb_ids]
@@ -35,7 +34,7 @@ class Command(BaseCommand):
                 os.remove(PATH.DATA_DIR['TMP_DIR'] + f)
 
         except Exception:
-            self.stdout.write("    \033[41mERROR\033[0m: Failed to remove RMDB_ID \033[94m%s\033." % rmdb_id)
+            self.stdout.write("    \033[41mERROR\033[0m: Failed to remove RMDB_ID \033[94m%s\033[0m." % rmdb_id)
             err = traceback.format_exc()
             ts = '%s\t\t%s\n' % (time.ctime(), ' '.join(sys.argv))
             open('%s/cache/log_alert_admin.log' % MEDIA_ROOT, 'a').write(ts)
