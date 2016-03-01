@@ -4,7 +4,6 @@ from pylab import *
 import simplejson
 import subprocess
 
-from rdatkit.datahandlers import RDATFile, ISATABFile
 from rdatkit.view import VARNA
 
 from src.models import *
@@ -106,7 +105,7 @@ def save_json_heatmap(entry):
             data_max = max(max(peaks_row), data_max)
             data_min = max(min(peaks_row), data_min)
 
-            row_limits.append({'y_min':0, 'y_max':max(peaks_row) + 0.5, 'x_min':min(seqpos), 'x_max':max(seqpos)})
+            row_limits.append({'y_min': 0, 'y_max': max(peaks_row) + 0.5, 'x_min': min(seqpos), 'x_max': max(seqpos)})
 
             if data.errors.strip():
                 errors_row = array([float(x) for x in data.errors.split(',')])
@@ -151,9 +150,9 @@ def save_json_heatmap(entry):
                                 mut_flag = 1
 
                 if mut_flag:
-                    data_matrix.append({'x':i, 'y':j, 'val':round(peaks_row[j], 3), 'err':round(errors_row[j], 3), 'seq':seq, 'mut':mut_flag})
+                    data_matrix.append({'x': i, 'y': j, 'val': round(peaks_row[j], 3), 'err': round(errors_row[j], 3), 'seq': seq, 'mut': mut_flag})
                 else:
-                    data_matrix.append({'x':i, 'y':j, 'val':round(peaks_row[j], 3), 'err':round(errors_row[j], 3), 'seq':seq})
+                    data_matrix.append({'x': i, 'y': j, 'val': round(peaks_row[j], 3), 'err': round(errors_row[j], 3), 'seq': seq})
                 data_mean.append(peaks_row[j])
 
         precalc_structures = precalc_structures.strip(',') + ']'
@@ -161,7 +160,7 @@ def save_json_heatmap(entry):
         data_sd = std(data_mean)
         data_mean = mean(data_mean)
 
-        json = {'data':data_matrix, 'peak_max':data_max, 'peak_min':round(data_min, 3), 'peak_mean':round(data_mean, 3), 'peak_sd':round(data_sd, 3), 'row_lim':row_limits, 'x_labels':x_labels, 'y_labels':y_labels, 'precalc_structures':precalc_structures}
+        json = {'data': data_matrix, 'peak_max': data_max, 'peak_min': round(data_min, 3), 'peak_mean': round(data_mean, 3), 'peak_sd': round(data_sd, 3), 'row_lim': row_limits, 'x_labels': x_labels, 'y_labels': y_labels, 'precalc_structures': precalc_structures}
         open('%s/%s-hmap.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w').write(simplejson.dumps(json, sort_keys=True, indent=' ' * 4))
     except ConstructSection.DoesNotExist:
         return None
@@ -176,8 +175,8 @@ def save_json_tags(entry):
     entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
     ver_list = get_entry_version(entry.rmdb_id)
 
-    tags_basic = {'rmdb_id':entry.rmdb_id, 'comments':entry.comments, 'version':entry.version, 'versions':ver_list, 'construct_count':entry.construct_count, 'data_count':entry.data_count,  'status':entry.status, 'type':entry.type, 'pdb_ids':entry.pdb_ids, 'description':entry.description, 'pubmed_id':entry.publication.pubmed_id, 'pub_title':entry.publication.title, 'authors':entry.publication.authors, 'rdat_ver':rdat_ver, 'creation_date':entry.creation_date.strftime('%x'), 'owner_name':entry.owner.first_name+' '+entry.owner.last_name,'owner':entry.owner.username, 'latest':entry.supercede_by}
-    tags_annotation = {'annotation':entry.annotations}
+    tags_basic = {'rmdb_id': entry.rmdb_id, 'comments': entry.comments, 'version': entry.version, 'versions': ver_list, 'construct_count': entry.construct_count, 'data_count': entry.data_count,  'status': entry.status, 'type': entry.type, 'pdb_ids': entry.pdb_ids, 'description': entry.description, 'pubmed_id': entry.publication.pubmed_id, 'pub_title': entry.publication.title, 'authors': entry.publication.authors, 'rdat_ver': rdat_ver, 'creation_date': entry.creation_date.strftime('%x'), 'owner_name': entry.owner.first_name+' '+entry.owner.last_name,'owner': entry.owner.username, 'latest': entry.supercede_by}
+    tags_annotation = {'annotation': entry.annotations}
 
     c = ConstructSection.objects.get(entry=entry)
     c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
@@ -199,7 +198,7 @@ def save_json_tags(entry):
         c.seqpos = '<code>' + seqpos_str[0] + '</code><b>:</b><code>' + seqpos_str[-1] + '</code>'
     c.seqpos_len = len(seqpos_str)
 
-    tags_construct = {'sequence':c.sequence, 'structure':c.structure, 'offset':c.offset, 'sequence_len':len(c.sequence), 'structure_len':len(c.structure), 'data_nrow':len(c.datas), 'data_ncol':len(c.datas[0].values.split(',')), 'err_ncol':c.err_ncol, 'xsel_len':c.xsel_len, 'seqpos_len':c.seqpos_len, 'seqpos':c.seqpos, 'name':c.name}
+    tags_construct = {'sequence': c.sequence, 'structure': c.structure, 'offset': c.offset, 'sequence_len': len(c.sequence), 'structure_len': len(c.structure), 'data_nrow': len(c.datas), 'data_ncol': len(c.datas[0].values.split(',')), 'err_ncol': c.err_ncol, 'xsel_len': c.xsel_len, 'seqpos_len': c.seqpos_len, 'seqpos': c.seqpos, 'name': c.name}
 
     tags_all = dict(tags_basic.items() + tags_construct.items() + tags_annotation.items())
     open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w').write(simplejson.dumps(tags_all, sort_keys=True, indent=' ' * 4))
@@ -253,7 +252,7 @@ def save_thumb(entry):
                 bonuses = correct_rx_bonus(data, c)
                 cms = VARNA.get_colorMapStyle(bonuses)
 
-                VARNA.cmd('\" \"', c.structure, '%s-%s.png' % (file_name, i), options={'colorMapStyle':cms, 'colorMap':bonuses, 'bpStyle':'simple', 'baseInner':'#FFFFFF', 'periodNum':400, 'spaceBetweenBases':0.6, 'flat':False} )
+                VARNA.cmd('\" \"', c.structure, '%s-%s.png' % (file_name, i), options={'colorMapStyle': cms, 'colorMap': bonuses, 'bpStyle': 'simple', 'baseInner': '#FFFFFF', 'periodNum': 400, 'spaceBetweenBases': 0.6, 'flat': False} )
                 subprocess.check_call('optipng %s-%s.png' % (file_name, i), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
             subprocess.check_call('convert -delay 100 -resize 300x300 -background none -gravity center -extent 300x300 -loop 0 %s-*.png %s.gif' % (file_name, file_name), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

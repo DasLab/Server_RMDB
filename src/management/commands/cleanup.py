@@ -18,12 +18,11 @@ class Command(BaseCommand):
         self.stdout.write('%s:\t%s' % (time.ctime(), ' '.join(sys.argv)))
 
         flag = False
-        t = time.time()
         self.stdout.write("Cleaning up obsolete RMDB_IDs...")
 
         try:
             rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
-            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (i[0] != '.' and i != "search")]
+            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (not i.startswith('.') and i != "search")]
 
             dept_rdats = [i for i in all_rdats if i not in rmdb_ids]
             for rmdb_id in dept_rdats:

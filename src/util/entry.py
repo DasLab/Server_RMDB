@@ -21,7 +21,7 @@ from src.util.util import *
 
 
 def get_spreadsheet(url):
-    url = subprocess.Popen("curl %s -L -I -s -o /dev/null -w %{url_effective}" % url, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().replace('%3D','=').replace('%26','&')
+    url = subprocess.Popen("curl %s -L -I -s -o /dev/null -w %{url_effective}" % url, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().replace('%3D', '=').replace('%26', '&')
     idx = url.find('key=')
     print url, idx
     if idx > 0:
@@ -288,13 +288,13 @@ def on_entry_del(sender, instance, **kwargs):
     ver_list = get_entry_version(instance.rmdb_id)
     is_last = not any([x > ver for x in ver_list])
 
-    if os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
+    if (not is_last) and os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
         json = do_get_stats(instance.rmdb_id)
         if json is None: return
         json['versions'] = ver_list
         open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w').write(simplejson.dumps(json, sort_keys=True, indent=' ' * 4))
+        return
 
-    if not is_last: return
     if not ver_list:
         if os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
             os.remove('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id))

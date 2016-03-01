@@ -32,7 +32,7 @@ def simple_search(sstring, keyword):
             for i, m in enumerate(comment):
                 if len(m) > 40:
                     comment[i] = ' '.join(textwrap.wrap(m, 40))
-            entry = {'name':e.constructs[0]['name'], 'rmdb_id':e.rmdb_id, 'cid':e.cid, 'version':e.version, 'construct_count':e.construct_count, 'data_count':e.data_count, 'authors':e.authors, 'comments':' '.join(comment), 'title':e.publication.title, 'latest':e.supercede_by}
+            entry = {'name': e.constructs[0]['name'], 'rmdb_id': e.rmdb_id, 'cid': e.cid, 'version': e.version, 'construct_count': e.construct_count, 'data_count': e.data_count, 'authors': e.authors, 'comments': ' '.join(comment), 'title': e.publication.title, 'latest': e.supercede_by}
 
             entry_ids.append(e.rmdb_id)
             entries.append(entry)

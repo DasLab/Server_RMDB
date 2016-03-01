@@ -23,7 +23,7 @@ class Command(BaseCommand):
         flag = False
         try:
             gh = Github(login_or_token=GIT["ACCESS_TOKEN"])
-            json = {'reeffit':[], 'mapseeker':[]}
+            json = {'reeffit': [], 'mapseeker': []}
 
             repo = 'DasLab/map_seeker'
             releases = gh.get_repo(repo).get_releases()
@@ -76,7 +76,6 @@ class Command(BaseCommand):
 
         except Exception:
             err = traceback.format_exc()
-            print err
             self.stdout.write("    \033[41mERROR\033[0m: Failed to download release \033[94m%s\033." % ver)
             err = traceback.format_exc()
             ts = '%s\t\t%s\n' % (time.ctime(), ' '.join(sys.argv))

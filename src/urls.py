@@ -35,13 +35,11 @@ else:
     urlpatterns = [
         url(r'^$', views.index),
         url(r'^browse/?$', views.browse),
+        url(r'^detail/(?P<rmdb_id>\w{,20})$', views.detail),
 
         url(r'^help/about/?$', views.about),
         url(r'^help/license/?$', views.license),
         url(r'^help/history/?$', views.history),
-
-        url(r'^detail/(?P<rmdb_id>\w{,20})$', views.detail),
-        # url(r'^get_area_peaks/?$', views.get_area_peaks),
 
         url(r'^deposit/specs/?$', views.specs),
         url(r'^deposit/validate/?$', views.validate),

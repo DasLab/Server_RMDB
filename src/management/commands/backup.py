@@ -26,7 +26,7 @@ class Command(BaseCommand):
             subprocess.check_call('mysqldump --quick %s -u %s -p%s > %s/backup/backup_mysql' % (env.db()['NAME'], env.db()['USER'], env.db()['PASSWORD'], MEDIA_ROOT), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             tarfile.open('%s/backup/backup_mysql.tgz' % MEDIA_ROOT, 'w:gz').add('%s/backup/backup_mysql' % MEDIA_ROOT, arcname='backup_mysql')
             os.remove('%s/backup/backup_mysql' % MEDIA_ROOT)
-        except:
+        except Exception:
             self.stdout.write("    \033[41mERROR\033[0m: Failed to dump \033[94mMySQL\033[0m database.")
             err = traceback.format_exc()
             ts = '%s\t\t%s\n' % (time.ctime(), ' '.join(sys.argv))
@@ -47,7 +47,7 @@ class Command(BaseCommand):
             tf.add('%s/data/json' % MEDIA_ROOT, arcname='data/json')
             tf.add('%s/data/thumbnail' % MEDIA_ROOT, arcname='data/thumbnail')
             tf.close()
-        except:
+        except Exception:
             self.stdout.write("    \033[41mERROR\033[0m: Failed to archive \033[94mstatic\033[0m files.")
             err = traceback.format_exc()
             ts = '%s\t\t%s\n' % (time.ctime(), ' '.join(sys.argv))
@@ -64,7 +64,7 @@ class Command(BaseCommand):
         try:
             pass
             # tarfile.open('%s/backup/backup_apache2.tgz' % MEDIA_ROOT, 'w:gz').add('/etc/apache2', arcname='apache2')
-        except:
+        except Exception:
             self.stdout.write("    \033[41mERROR\033[0m: Failed to archive \033[94mapache2\033[0m settings.")
             err = traceback.format_exc()
             ts = '%s\t\t%s\n' % (time.ctime(), ' '.join(sys.argv))
@@ -80,7 +80,7 @@ class Command(BaseCommand):
         self.stdout.write("#4: Backing up config settings...")
         try:
             tarfile.open('%s/backup/backup_config.tgz' % MEDIA_ROOT, 'w:gz').add('%s/config' % MEDIA_ROOT, arcname='config')
-        except:
+        except Exception:
             self.stdout.write("    \033[41mERROR\033[0m: Failed to archive \033[94mconfig\033[0m settings.")
             err = traceback.format_exc()
             ts = '%s\t\t%s\n' % (time.ctime(), ' '.join(sys.argv))

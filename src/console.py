@@ -141,7 +141,7 @@ def set_sys_crontab():
 def get_backup_form():
     refresh_settings()
     (set_backup, set_upload) = get_sys_crontab()
-    return {'day_backup':set_backup[1], 'day_upload':set_upload[1], 'time_backup':set_backup[0], 'time_upload':set_upload[0], 'keep_backup':settings._wrapped.KEEP_BACKUP, 'keep_job':settings._wrapped.KEEP_JOB}
+    return {'day_backup': set_backup[1], 'day_upload': set_upload[1], 'time_backup': set_backup[0], 'time_upload': set_upload[0], 'keep_backup': settings._wrapped.KEEP_BACKUP, 'keep_job': settings._wrapped.KEEP_JOB}
 
 
 def set_backup_form(request):
@@ -207,7 +207,7 @@ def restyle_apache():
     ssl_index = '%s of %s' % (ssl[5], ssl[4])
     port = response[len(response)-3].replace('</address>', '')[-3:]
 
-    json = {'title':title, 'ver_apache':ver[0], 'ver_wsgi':ver[2], 'ver_ssl':ver[1], 'mpm':mpm, 'time_build':time_build, 'time_current':time_current, 'time_restart':time_restart, 'time_up':time_up, 'server_load':server_load, 'total_access':total[0], 'total_traffic':'%s %s' % (total[1], total[2]), 'cpu_load':cpu_load, 'cpu_usage':cpu_usage, 'traffic':traffic, 'idle':workers[1], 'processing':workers[0], 'worker':worker, 'table':table, 'port':port, 'ssl_subcache':ssl_subcache, 'ssl_index':ssl_index, 'ssl_cache':ssl[0], 'ssl_mem': ssl[1], 'ssl_entry':ssl[2]}
+    json = {'title': title, 'ver_apache': ver[0], 'ver_wsgi': ver[2], 'ver_ssl': ver[1], 'mpm': mpm, 'time_build': time_build, 'time_current': time_current, 'time_restart': time_restart, 'time_up': time_up, 'server_load': server_load, 'total_access': total[0], 'total_traffic': '%s %s' % (total[1], total[2]), 'cpu_load': cpu_load, 'cpu_usage': cpu_usage, 'traffic': traffic, 'idle': workers[1], 'processing': workers[0], 'worker': worker, 'table': table, 'port': port, 'ssl_subcache': ssl_subcache, 'ssl_index': ssl_index, 'ssl_cache': ssl[0], 'ssl_mem': ssl[1], 'ssl_entry': ssl[2]}
     return simplejson.dumps(json, sort_keys=True, indent=' ' * 4)
     
 
@@ -234,7 +234,7 @@ def aws_result(results, args, req_id=None):
                 d[name] = val
                 if d.has_key(k): del d[k]
 
-    desp = {'Timestamp':('datetime', 'Timestamp'), 'Samples':('number', 'Samples'), 'Unit':('string', args['unit'])}
+    desp = {'Timestamp': ('datetime', 'Timestamp'), 'Samples': ('number', 'Samples'), 'Unit': ('string', args['unit'])}
     stats = ['Timestamp']
     for i, me in enumerate(args['metric']):
         if len(args['cols']) == len(args['metric']) and len(args['cols']) > 1:
@@ -272,7 +272,7 @@ def aws_call(conn, args, qs, req_id=None):
         for t in (args['start_time'] + timedelta(seconds=n) for n in period):
             t = t.replace(second=0, microsecond=0)
             if (not t in temp):
-                data.append({u'Timestamp':t, u'Unit':args['unit'], unicode(args['cols'][0]):0})
+                data.append({u'Timestamp': t, u'Unit': args['unit'], unicode(args['cols'][0]):0})
 
         if qs in ['lat', 'latency']:
             for d in data:
@@ -305,39 +305,39 @@ def aws_stats(request):
             stat3 = {k: stat[k] for k in ('dns_name', 'vpc_id', 'subnets', 'health_check')} 
             stat3['health_check'] = str(stat3['health_check']).replace('HealthCheck:', '')
 
-            return simplejson.dumps({'ec2':stat1, 'ebs':stat2, 'elb':stat3}, sort_keys=True, indent=' ' * 4)
+            return simplejson.dumps({'ec2': stat1, 'ebs': stat2, 'elb': stat3}, sort_keys=True, indent=' ' * 4)
 
         else:
             conn = boto.ec2.cloudwatch.connect_to_region(AWS['REGION'], aws_access_key_id=AWS['ACCESS_KEY_ID'], aws_secret_access_key=AWS['SECRET_ACCESS_KEY'], is_secure=True)
             if sp == '7d':
-                args = {'period':7200, 'start_time':datetime.utcnow() - timedelta(days=7), 'end_time':datetime.utcnow()}
+                args = {'period': 7200, 'start_time': datetime.utcnow() - timedelta(days=7), 'end_time': datetime.utcnow()}
             elif sp == '48h':
-                args = {'period':720, 'start_time':datetime.utcnow() - timedelta(hours=48), 'end_time':datetime.utcnow()}
+                args = {'period': 720, 'start_time': datetime.utcnow() - timedelta(hours=48), 'end_time': datetime.utcnow()}
             else:
                 return error400(request)
 
             if qs == 'latency':
-                args.update({'metric':['Latency'], 'namespace':'AWS/ELB', 'cols':['Maximum'], 'dims':{}, 'unit':'Seconds', 'calc_rate':False})
+                args.update({'metric': ['Latency'], 'namespace': 'AWS/ELB', 'cols': ['Maximum'], 'dims': {}, 'unit': 'Seconds', 'calc_rate': False})
             elif qs == 'request':
-                args.update({'metric':['RequestCount'], 'namespace':'AWS/ELB', 'cols':['Sum'], 'dims':{}, 'unit':'Count', 'calc_rate':False})
+                args.update({'metric': ['RequestCount'], 'namespace': 'AWS/ELB', 'cols': ['Sum'], 'dims': {}, 'unit': 'Count', 'calc_rate': False})
             elif qs == '23xx':
-                args.update({'metric':['HTTPCode_Backend_2XX', 'HTTPCode_Backend_3XX'], 'namespace':'AWS/ELB', 'cols':['Sum'], 'dims':{}, 'unit':'Count', 'calc_rate':False})
+                args.update({'metric': ['HTTPCode_Backend_2XX', 'HTTPCode_Backend_3XX'], 'namespace': 'AWS/ELB', 'cols': ['Sum'], 'dims': {}, 'unit': 'Count', 'calc_rate': False})
             elif qs == '45xx':
-                args.update({'metric':['HTTPCode_Backend_4XX', 'HTTPCode_Backend_5XX'], 'namespace':'AWS/ELB', 'cols':['Sum'], 'dims':{}, 'unit':'Count', 'calc_rate':False})
+                args.update({'metric': ['HTTPCode_Backend_4XX', 'HTTPCode_Backend_5XX'], 'namespace': 'AWS/ELB', 'cols': ['Sum'], 'dims': {}, 'unit': 'Count', 'calc_rate': False})
             elif qs == 'host':
-                args.update({'metric':['HealthyHostCount', 'UnHealthyHostCount'], 'namespace':'AWS/ELB', 'cols':['Minimum', 'Maximum'], 'dims':{}, 'unit':'Count', 'calc_rate':False})
+                args.update({'metric': ['HealthyHostCount', 'UnHealthyHostCount'], 'namespace': 'AWS/ELB', 'cols': ['Minimum', 'Maximum'], 'dims': {}, 'unit': 'Count', 'calc_rate': False})
             elif qs == 'status':
-                args.update({'metric':['BackendConnectionErrors', 'StatusCheckFailed_Instance', 'StatusCheckFailed_System'], 'namespace':'AWS/EC2', 'cols':['Sum'], 'dims':{}, 'unit':'Count', 'calc_rate':False})
+                args.update({'metric': ['BackendConnectionErrors', 'StatusCheckFailed_Instance', 'StatusCheckFailed_System'], 'namespace': 'AWS/EC2', 'cols': ['Sum'], 'dims': {}, 'unit': 'Count', 'calc_rate': False})
             elif qs == 'network':
-                args.update({'metric':['NetworkIn', 'NetworkOut'], 'namespace':'AWS/EC2', 'cols':['Sum'], 'dims':{}, 'unit':'Bytes', 'calc_rate':True})
+                args.update({'metric': ['NetworkIn', 'NetworkOut'], 'namespace': 'AWS/EC2', 'cols': ['Sum'], 'dims': {}, 'unit': 'Bytes', 'calc_rate': True})
             elif qs == 'cpu':
-                args.update({'metric':['CPUUtilization'], 'namespace':'AWS/EC2', 'cols':['Average'], 'dims':{}, 'unit':'Percent', 'calc_rate':False})
+                args.update({'metric': ['CPUUtilization'], 'namespace': 'AWS/EC2', 'cols': ['Average'], 'dims': {}, 'unit': 'Percent', 'calc_rate': False})
             elif qs == 'credit':
-                args.update({'metric':['CPUCreditUsage', 'CPUCreditBalance'], 'namespace':'AWS/EC2', 'cols':['Average'], 'dims':{}, 'unit':'Count', 'calc_rate':False})
+                args.update({'metric': ['CPUCreditUsage', 'CPUCreditBalance'], 'namespace': 'AWS/EC2', 'cols': ['Average'], 'dims': {}, 'unit': 'Count', 'calc_rate': False})
             elif qs == 'volops':
-                args.update({'metric':['VolumeWriteOps', 'VolumeReadOps'], 'namespace':'AWS/EBS', 'cols':['Sum'], 'dims':{}, 'unit':'Count', 'calc_rate':False})
+                args.update({'metric': ['VolumeWriteOps', 'VolumeReadOps'], 'namespace': 'AWS/EBS', 'cols': ['Sum'], 'dims': {}, 'unit': 'Count', 'calc_rate': False})
             elif qs == 'volbytes':
-                args.update({'metric':['VolumeWriteBytes', 'VolumeReadBytes'], 'namespace':'AWS/EBS', 'cols':['Sum'], 'dims':{}, 'unit':'Bytes', 'calc_rate':True})
+                args.update({'metric': ['VolumeWriteBytes', 'VolumeReadBytes'], 'namespace': 'AWS/EBS', 'cols': ['Sum'], 'dims': {}, 'unit': 'Bytes', 'calc_rate': True})
             else:
                 return error400(request)
     else:
@@ -379,7 +379,7 @@ def ga_stats(request):
                 else:
                     prev = '%d' % (int(temp[key]) - int(temp_prev[key]))
                     curr = '%d' % int(temp[key])
-                stats.update({ga_key:curr, (ga_key + '_prev'):prev})
+                stats.update({ga_key: curr, (ga_key + '_prev'): prev})
             return simplejson.dumps(stats, sort_keys=True, indent=' ' * 4)
         
         elif request.GET.has_key('sp'):
@@ -410,7 +410,7 @@ def ga_stats(request):
 
                 data = []
                 stats = ['Timestamp', 'Sessions']
-                desp = {'Timestamp':('datetime', 'Timestamp'), 'Samples':('number', 'Samples'), 'Unit':('string', 'Count'), 'Sessions':('number', 'Sessions')}
+                desp = {'Timestamp': ('datetime', 'Timestamp'), 'Samples': ('number', 'Samples'), 'Unit': ('string', 'Count'), 'Sessions': ('number', 'Sessions')}
 
                 for row in temp:
                     data.append({u'Timestamp': datetime.strptime(row[0], strpt), 'Sessions': float(row[1])})
@@ -443,7 +443,7 @@ def ga_stats(request):
 
                 data = []
                 stats = ['Category', field]
-                desp = {'Samples':('number', 'Samples'), 'Unit':('string', 'Count'), 'Category':('string', 'Category'), field:('number', field)}
+                desp = {'Samples': ('number', 'Samples'), 'Unit': ('string', 'Count'), 'Category': ('string', 'Category'), field: ('number', field)}
 
                 for row in temp:
                     data.append({'Category': row[0], field: float(row[1])})
@@ -469,7 +469,7 @@ def ga_stats(request):
 
             data = []
             stats = ['Country', 'Sessions']
-            desp = {'Samples':('number', 'Samples'), 'Unit':('string', 'Count'), 'Country':('string', 'Country'), 'Sessions':('number', 'Sessions')}
+            desp = {'Samples': ('number', 'Samples'), 'Unit': ('string', 'Count'), 'Country': ('string', 'Country'), 'Sessions': ('number', 'Sessions')}
 
             for row in temp:
                 data.append({'Country': row[0], 'Sessions': float(row[1])})
@@ -515,7 +515,7 @@ def git_stats(request):
                         au = '(None)'
                     data.append({u'Contributors': au, u'Commits': contrib.total, u'Additions': a, u'Deletions': d})
                 data = sorted(data, key=operator.itemgetter(u'Commits'))            
-                return simplejson.dumps({'contrib':data}, sort_keys=True, indent=' ' * 4)
+                return simplejson.dumps({'contrib': data}, sort_keys=True, indent=' ' * 4)
             else:
                 created_at = repo.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(TIME_ZONE)).strftime('%Y-%m-%d %H:%M:%S')
                 pushed_at = repo.pushed_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(TIME_ZONE)).strftime('%Y-%m-%d %H:%M:%S')
@@ -526,11 +526,11 @@ def git_stats(request):
                 num_branches = len(requests.get('https://api.github.com/repos/' + repo_name + '/branches?access_token=%s' % GIT['ACCESS_TOKEN']).json())
                 num_forks = len(requests.get('https://api.github.com/repos/' + repo_name + '/forks?access_token=%s' % GIT['ACCESS_TOKEN']).json())
                 num_downloads = len(requests.get('https://api.github.com/repos/' + repo_name + '/downloads?access_token=%s' % GIT['ACCESS_TOKEN']).json())
-                return simplejson.dumps({'created_at':created_at, 'pushed_at':pushed_at, 'num_watchers':num_watchers, 'num_pulls':num_pulls, 'num_issues':num_issues, 'num_branches':num_branches, 'num_forks':num_forks, 'num_downloads':num_downloads}, sort_keys=True, indent=' ' * 4)
+                return simplejson.dumps({'created_at': created_at, 'pushed_at': pushed_at, 'num_watchers': num_watchers, 'num_pulls': num_pulls, 'num_issues': num_issues, 'num_branches': num_branches, 'num_forks': num_forks, 'num_downloads': num_downloads}, sort_keys=True, indent=' ' * 4)
 
         else:
             data = []
-            desp = {'Timestamp':('datetime', 'Timestamp'), 'Samples':('number', 'Samples'), 'Unit':('string', 'Count')}
+            desp = {'Timestamp': ('datetime', 'Timestamp'), 'Samples': ('number', 'Samples'), 'Unit': ('string', 'Count')}
             stats = ['Timestamp']
 
             if qs == 'c':
@@ -608,5 +608,5 @@ def dash_ssl(request):
         raise Exception('Error with checking SSL certificate.')
 
     exp_date = datetime.strptime(exp_date.replace('notAfter=', ''), "%b %d %H:%M:%S %Y %Z").strftime('%Y-%m-%d %H:%M:%S')
-    return simplejson.dumps({'exp_date':exp_date}, sort_keys=True, indent=' ' * 4)
+    return simplejson.dumps({'exp_date': exp_date}, sort_keys=True, indent=' ' * 4)
 

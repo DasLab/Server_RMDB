@@ -39,7 +39,7 @@ def tools(request):
 def tools_license(request, keyword):
     if keyword in ('mapseeker', 'reeffit'):
         title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
-        return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword':keyword, 'title':title}, context_instance=RequestContext(request))
+        return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword': keyword, 'title': title}, context_instance=RequestContext(request))
     else:
         return error404(request)
 
@@ -52,7 +52,7 @@ def tools_download(request, keyword):
         result = simplejson.load(open('%s/cache/stat_dist.json' % MEDIA_ROOT, 'r'))
         result = result[keyword]
         title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
-        return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword':keyword, 'title':title, 'dist':result}, context_instance=RequestContext(request))
+        return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword': keyword, 'title': title, 'dist': result}, context_instance=RequestContext(request))
     else:
         return error404(request)
 
@@ -79,15 +79,15 @@ def detail(request, rmdb_id):
     except (RMDBEntry.DoesNotExist, IndexError):
         return error404(request)
 
-    json = {'rmdb_id':entry.rmdb_id, 'status':entry.status, 'is_isatab':is_isatab}
+    json = {'rmdb_id': entry.rmdb_id, 'status': entry.status, 'is_isatab': is_isatab}
     if entry.status != "PUB":
-        json.update({'version':entry.version, 'rev_form':ReviewForm(initial={'rmdb_id':entry.rmdb_id})})
+        json.update({'version': entry.version, 'rev_form': ReviewForm(initial={'rmdb_id': entry.rmdb_id})})
     return render_to_response(PATH.HTML_PATH['detail'], json, context_instance=RequestContext(request))
 
 
 def predict(request):
     if request.method != 'POST':
-        return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'messages':[], 'other_errors':[]}, context_instance=RequestContext(request))
+        return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'messages': [], 'other_errors': []}, context_instance=RequestContext(request))
     else:
         try:
             sequences, titles, structures, modifiers, mapping_data, base_annotations, messages, valerrors = ([],[],[],[],[],[],[],[])
@@ -97,9 +97,9 @@ def predict(request):
             if is_get_rmdb or is_get_file:
                 (messages, valerrors, bonuses_1d, bonuses_2d, titles, modifiers, offset_seqpos, temperature, sequences, refstruct) = parse_rdat_data(request, is_get_file)
                 form = fill_predict_form(request, sequences, structures, temperature, refstruct, bonuses_1d, bonuses_2d, modifiers, titles, offset_seqpos)
-                return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':form, 'rdatloaded':True, 'msg_y':messages, 'msg_r':valerrors}, context_instance=RequestContext(request))
+                return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': form, 'rdatloaded': True, 'msg_y': messages, 'msg_r': valerrors}, context_instance=RequestContext(request))
             elif not request.POST['sequences']:
-                return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':[], 'msg_r':[]}, context_instance=RequestContext(request))
+                return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': [], 'msg_r': []}, context_instance=RequestContext(request))
 
             other_options = ' -t %s ' % (float(request.POST['temperature']) + 273.15)
             refstruct = SecondaryStructure(dbn=request.POST['refstruct'])
@@ -111,10 +111,10 @@ def predict(request):
                         titles.append(l.replace('>',''))
                     else:
                         if l.strip():
-                            sequences.append(rna.RNA(l.strip())) 
+                            sequences.append(rna.RNA(l.strip()))
             if not sequences:
                 messages.append('ERROR: No SEQUENCE found. Due to either no input field, or no modification lanes in RDAT.')
-                return render_to_response(PATH.HTML_PATH['predict_res'], {'panels':[], 'messages':messages,'bppmimg':'', 'ncols':0, 'nrows':0}, context_instance=RequestContext(request))
+                return render_to_response(PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'bppmimg': '', 'ncols': 0, 'nrows': 0}, context_instance=RequestContext(request))
 
             if 'structures' in request.POST:
                 lines = request.POST['structures'].split('\n')
@@ -144,11 +144,11 @@ def predict(request):
             visform_params['base_annotations'] = '\n'.join([bpdict_to_str(ann) for ann in base_annotations])
             visform_params['refstruct'] = refstruct.dbn
             visform = VisualizerForm(visform_params)
-            return render_to_response(PATH.HTML_PATH['predict_res'], {'panels':[], 'messages':messages,'ncols':[], 'nrows':[], 'form':visform}, context_instance=RequestContext(request))
+            return render_to_response(PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'ncols': [], 'nrows': [], 'form': visform}, context_instance=RequestContext(request))
 
         except IndexError, err:
             print err
-            return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form':PredictionForm(), 'rdatloaded':False, 'msg_y':messages, 'msg_r':['Invalid input. Please check your inputs and try again.']}, context_instance=RequestContext(request))
+            return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': messages, 'msg_r': ['Invalid input. Please check your inputs and try again.']}, context_instance=RequestContext(request))
 
 
 def str_view(request):
@@ -182,7 +182,7 @@ def validate(request):
 
     if flag == -1:
         (messages, errors, flag, form) = ([], [], 0, ValidateForm())
-    return render_to_response(PATH.HTML_PATH['validate'], {'form':form, 'val_errs':errors, 'val_msgs':messages, 'flag':flag}, context_instance=RequestContext(request))
+    return render_to_response(PATH.HTML_PATH['validate'], {'form': form, 'val_errs': errors, 'val_msgs': messages, 'flag': flag}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -206,7 +206,7 @@ def upload(request):
 
     if not flag:
         (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
-    return render_to_response(PATH.HTML_PATH['upload'], {'form':form, 'error_msg':error_msg, 'flag':flag, 'entry':entry}, context_instance=RequestContext(request))
+    return render_to_response(PATH.HTML_PATH['upload'], {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry}, context_instance=RequestContext(request))
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -233,7 +233,7 @@ def url_redirect(request, path):
 
 
 def get_admin(request):
-    return HttpResponse(simplejson.dumps({'email':EMAIL_NOTIFY}, sort_keys=True, indent=' ' * 4), content_type='application/json')
+    return HttpResponse(simplejson.dumps({'email': EMAIL_NOTIFY}, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
 def get_user(request):
     if request.user.username: 
@@ -244,7 +244,7 @@ def get_user(request):
 
 def get_js(request):
     stats = simplejson.load(open('%s/cache/stat_sys.json' % MEDIA_ROOT, 'r'))
-    json = {'jquery':stats['jquery'], 'bootstrap':stats['bootstrap'], 'd3':stats['d3'], 'zclip':stats['zclip']}
+    json = {'jquery': stats['jquery'], 'bootstrap': stats['bootstrap'], 'd3': stats['d3']}
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
 
@@ -278,11 +278,9 @@ def get_recent(request):
 
     entries_list = []
     for e in entries:
-        cid = ConstructSection.objects.get(entry=e).id
-        rmdb_id = e.rmdb_id
         for c in ConstructSection.objects.filter(entry=e).values('name').distinct():
             name = c['name']
-        e_temp = {'cid':cid, 'name':name, 'rmdb_id':rmdb_id}
+        e_temp = {'name': name, 'rmdb_id': e.rmdb_id}
         entries_list.append(e_temp)
     return HttpResponse(simplejson.dumps(entries_list, sort_keys=True, indent=' ' * 4), content_type='application/json')
 

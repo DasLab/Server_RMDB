@@ -62,7 +62,7 @@ def user_login(request):
                         return HttpResponseRedirect('/')
                 else:
                     messages = 'Inactive/disabled account. Please contact us.'
-        return render_to_response(PATH.HTML_PATH['login'], {'form': form, 'messages':messages}, context_instance=RequestContext(request))
+        return render_to_response(PATH.HTML_PATH['login'], {'form': form, 'messages': messages}, context_instance=RequestContext(request))
     else:
         if request.GET.has_key('next') and 'admin' in request.GET['next']:
             flag = 'Admin'
@@ -162,7 +162,7 @@ def register(request):
             if 'email' in form.errors: error_msg.append('Email field is required.')
             error_msg.append('Form invalid: missing required field(s).')
 
-    return render_to_response(PATH.HTML_PATH['register'], {'reg_form':form, 'error_msg':error_msg, 'flag':flag}, context_instance=RequestContext(request))
+    return render_to_response(PATH.HTML_PATH['register'], {'reg_form': form, 'error_msg': error_msg, 'flag': flag}, context_instance=RequestContext(request))
 
 
 

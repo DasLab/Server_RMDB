@@ -22,14 +22,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         t0 = time.time()
         self.stdout.write('%s:\t%s' % (time.ctime(), ' '.join(sys.argv)))
-
         flag = False
-        t = time.time()
 
         if options['is_all']:
             call_command('cleanup')
-            all_rdats = os.listdir(PATH.DATA_DIR['FILE_DIR'])
-            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (i[0] != '.' and i != "search")]
+            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (not i.startswith('.') and i != "search")]
 
             tmp_file = os.listdir(PATH.DATA_DIR['JSON_DIR'])
             for f in tmp_file:

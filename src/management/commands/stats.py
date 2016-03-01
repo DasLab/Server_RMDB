@@ -52,7 +52,7 @@ class Command(BaseCommand):
                     for i, m in enumerate(comment):
                         if len(m) > 40:
                             comment[i] = ' '.join(textwrap.wrap(m, 40))
-                    entry = {'rmdb_id':e.rmdb_id, 'version':e.version, 'construct_count':e.construct_count, 'data_count':e.data_count, 'authors':e.authors, 'comments':' '.join(comment), 'title':e.publication.title, 'latest':e.supercede_by}
+                    entry = {'rmdb_id': e.rmdb_id, 'version': e.version, 'construct_count': e.construct_count, 'data_count': e.data_count, 'authors': e.authors, 'comments': ' '.join(comment), 'title': e.publication.title, 'latest': e.supercede_by}
                     if e.type == "SS":
                         SS_entries.append(entry)
                     elif e.type == "MM":
@@ -62,7 +62,7 @@ class Command(BaseCommand):
                     elif e.type == "TT":
                         TT_entries.append(entry)
 
-            constructs.append({'name':c['name'], 'SS_entry':SS_entries, 'MM_entry':MM_entries, 'MA_entry':MA_entries, 'TT_entry':TT_entries})
+            constructs.append({'name': c['name'], 'SS_entry': SS_entries, 'MM_entry': MM_entries, 'MA_entry': MA_entries, 'TT_entry': TT_entries})
         return constructs
  
     def get_rmdb_category(self, flag):

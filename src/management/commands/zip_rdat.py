@@ -16,10 +16,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         t0 = time.time()
         self.stdout.write('%s:\t%s' % (time.ctime(), ' '.join(sys.argv)))
-
         flag = False
+
         try:
-            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (i[0] != '.' and i != "search")]
+            all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (not i.startswith('.') and i != "search")]
             zf = zipfile.ZipFile('%s/data/all_rdat.zip' % MEDIA_ROOT, 'w', zipfile.ZIP_DEFLATED)
             for rdat_name in all_rdats:
                 if os.path.exists('%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], rdat_name, rdat_name)):
