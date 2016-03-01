@@ -177,6 +177,7 @@ TEMPLATES = [{
 
             "src.models.rmdb_user",
             "src.models.search_form",
+            "src.models.banner_stat",
             "src.models.debug_flag",
             "src.models.ga_tracker",
         ]

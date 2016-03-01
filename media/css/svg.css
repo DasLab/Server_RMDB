@@ -1,0 +1,59 @@
+.axis text {
+  font: 12px Arial;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+rect.bar.active {
+	stroke: #7d9fc9 !important;
+	stroke-width: 5px !important;
+}
+
+rect.tile.active {
+    stroke: #fec78a !important;
+    stroke-width: 2px !important;
+    z-index: 1000 !important;
+}
+rect.tile.side {
+    stroke: #c28fdd !important;
+    stroke-width: 1px !important;
+    z-index: 1000 !important;
+}
+
+text.num {
+    fill: #8ee4cf;
+    font-style: italic;
+}
+text.active {
+    fill: #ff5cab !important;
+    font-weight: bold;
+}
+text.side {
+    font-weight: bold;
+}
+text.highlight {
+    stroke: #ff0;
+    stroke-width: 5px;
+}
+
+div.tooltip {   
+    position: absolute;
+    text-align: left;
+    font: 16px Arial;
+    padding: 10px 15px;
+    background-color: #000000;
+    border: 1px solid #fbad24;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+g.overlay {
+    display: none;
+}
+g.overlay.shown {
+    display: inline;
+}

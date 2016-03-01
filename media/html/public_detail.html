@@ -3,8 +3,7 @@
 {% load widget_tweaks %}
 
 {% block head %}
-<link rel="stylesheet" href="/site_media/css/{{DEBUG_DIR}}svg_barplot{{DEBUG_STR}}.css" />
-<link rel="stylesheet" href="/site_media/css/{{DEBUG_DIR}}svg_heatmap{{DEBUG_STR}}.css" />
+<link rel="stylesheet" href="/site_media/css/{{DEBUG_DIR}}svg{{DEBUG_STR}}.css" />
 {% endblock %}
 
 
@@ -570,10 +569,15 @@
 		}
 	</script>
 
-	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_util{{DEBUG_STR}}.js"></script>
-	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_tags{{DEBUG_STR}}.js"></script>
-	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_heatmap{{DEBUG_STR}}.js"></script>
-	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_barplot{{DEBUG_STR}}.js"></script>
-	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view_setting{{DEBUG_STR}}.js"></script>
+	{% if not DEBUG_DIR %}
+	<script type="text/javascript" src="/site_media/js/public/view_util.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/view_tags.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/view_heatmap.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/view_barplot.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/view_setting.js"></script>
+	<script type="text/javascript" src="/site_media/js/public/view.js"></script>
+	{% else %}
 	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}view{{DEBUG_STR}}.js"></script>
+	{% endif %}
+
 {% endblock %}

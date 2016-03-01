@@ -6,6 +6,7 @@ from django import forms
 from src.settings import *
 
 import os
+import simplejson
 
 
 def get_rdat_file(instance, filename):
@@ -357,6 +358,10 @@ def rmdb_user(request):
 
 def search_form(request):
     return {'search_form': SearchForm()}
+
+def banner_stat(request):
+    json = simplejson.load(open('%s/cache/stat_stats.json' % MEDIA_ROOT, 'r'))
+    return {'N_constructs': '{:,}'.format(json['N_constructs'])}
 
 def debug_flag(request):
     if DEBUG:

@@ -6,14 +6,14 @@ function convertToSlug(Text) {
 function colorRmdbId(string) {
   string = string.split('_');
   s1 = '<span style="color: yellow;">' + string[1] + '</span>';
-  s2 = '<span style="color: skyblue;">' + string[2] + '</span>'; 
+  s2 = '<span style="color: skyblue;">' + string[2] + '</span>';
   return string[0] + '<span style="color: lightpink;">_</span>' + s1 + '<span style="color: lightpink;">_</span>' + s2;
 }
 
 function colorEternaId(string) {
   string = string.split('_');
   s1 = '<span style="color: yellowgreen;">' + string[1] + '</span>';
-  s2 = '<span style="color: skyblue;">' + string[2] + '</span>'; 
+  s2 = '<span style="color: skyblue;">' + string[2] + '</span>';
   return string[0] + '<span style="color: lightpink;">_</span>' + s1 + '<span style="color: lightpink;">_</span>' + s2;
 }
 
@@ -21,14 +21,6 @@ $(document).ready(function() {
   $("#wait").fadeOut(500);
   var today = new Date();
   $("#cp_year").text(today.getFullYear());
-  $.ajax({
-    url: '/get_stats/',
-    dataType: 'json',
-    async: true,
-    success: function(data) {
-      $("#header_count").text(data.N_constructs);
-    }
-  });
 
   $(".dropdown-toggle").dropdown();
   $(".dropdown").hover(
