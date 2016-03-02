@@ -6,7 +6,7 @@ import traceback
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 
-from rdatkit.datahandlers import RDATFile
+from rdatkit import RDATFile
 
 from src.settings import *
 from src.models import *
@@ -45,11 +45,20 @@ class Command(BaseCommand):
         err_rdats = []
         for i, rmdb_id in enumerate(all_rdats):
             try:
+                rmdb_id = rmdb_id.upper().strip()
                 file_name = '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], rmdb_id, rmdb_id)
+                if not os.path.exists(file_name):
+                    self.stdout.write("\033[41mERROR\033[0m: file does not exist: \033[94m%s\033[0m" % file_name)
+
                 rdatfile = RDATFile()
                 rdatfile.load(open(file_name, 'r'))
 
-                entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-id')[0]
+                entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-id')
+                if len(entry):
+                    entry = entry[0]
+                else:
+                    self.stdout.write("\033[41mERROR\033[0m: RMDBEntry does not exist: \033[94m%s\033[0m" % rmdb_id)
+
                 construct = ConstructSection.objects.get(entry=entry)
 
                 for k in rdatfile.constructs:

@@ -124,7 +124,7 @@ class Command(BaseCommand):
             ver['_cpu']= cpu.replace(' ', '').split('/')
 
             ver['_path'] = {
-                'root' : MEDIA_ROOT,
+                'root': MEDIA_ROOT,
                 'data': MEDIA_ROOT + '/data',
                 'media': MEDIA_ROOT + '/media',
                 'NA_Thermo': '',

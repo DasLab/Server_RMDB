@@ -4,7 +4,7 @@ from pylab import *
 import simplejson
 import subprocess
 
-from rdatkit.view import VARNA
+from rdatkit import VARNA
 
 from src.models import *
 from src.settings import *
@@ -250,9 +250,9 @@ def save_thumb(entry):
             height = 200
             for i, data in enumerate(datas[:min(6, len(datas))]):
                 bonuses = correct_rx_bonus(data, c)
-                cms = VARNA.get_colorMapStyle(bonuses)
+                cms = VARNA.get_colormap(bonuses)
 
-                VARNA.cmd('\" \"', c.structure, '%s-%s.png' % (file_name, i), options={'colorMapStyle': cms, 'colorMap': bonuses, 'bpStyle': 'simple', 'baseInner': '#FFFFFF', 'periodNum': 400, 'spaceBetweenBases': 0.6, 'flat': False} )
+                VARNA.run('\" \"', c.structure, '%s-%s.png' % (file_name, i), options={'colorMapStyle': cms, 'colorMap': bonuses, 'bpStyle': 'simple', 'baseInner': '#FFFFFF', 'periodNum': 400, 'spaceBetweenBases': 0.6, 'flat': False} )
                 subprocess.check_call('optipng %s-%s.png' % (file_name, i), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
             subprocess.check_call('convert -delay 100 -resize 300x300 -background none -gravity center -extent 300x300 -loop 0 %s-*.png %s.gif' % (file_name, file_name), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

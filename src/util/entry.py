@@ -11,7 +11,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from django.core.management import call_command
 
-from rdatkit.datahandlers import RDATFile, ISATABFile
+from rdatkit import RDATFile, ISATABFile
 
 from src.models import *
 from src.settings import *
@@ -72,7 +72,7 @@ def validate_file(file_path, link_path, input_type):
             flag = 1
             errors.append('Invalid input file format: %s' % e)
         tmp_file.close()
-        if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
+        if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_path.name)):
             os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_path.name))
 
     if not flag:
@@ -95,13 +95,11 @@ def process_upload(form, upload_file, user):
             flag = 1
         else:
             (rdatfile, isatabfile) = (RDATFile(), ISATABFile())
-            isatabfile.loaded = False
-            rdatfile.loaded = False
 
             rf = temp_file(upload_file)
             exp_type = [x[1] for i, x in enumerate(ENTRY_TYPE_CHOICES) if x[0] == form.cleaned_data['exp_type']][0].replace(' ', '')
             txt = rf.readlines()
-            txt = filter(lambda x:'experimentType:' in x, txt)
+            txt = filter(lambda x: 'experimentType:' in x, txt)
             is_eterna = ("ETERNA" in rmdb_id)
             if txt:
                 txt = txt[0]
@@ -124,7 +122,6 @@ def process_upload(form, upload_file, user):
             if form.cleaned_data['file_type'] == 'isatab':
                 try:
                     isatabfile.load(rf.name)
-                    isatabfile.loaded = True
                     rdatfile = isatabfile.toRDAT()
                 except Exception:
                     error_msg.append('Invalid ISATAB file; please check and resubmit.')
@@ -132,7 +129,6 @@ def process_upload(form, upload_file, user):
             else:
                 try:
                     rdatfile.load(rf)
-                    rdatfile.loaded = True
                     isatabfile = rdatfile.toISATAB()
                 except Exception:
                     error_msg.append('Invaid RDAT file; please check and resubmit.')

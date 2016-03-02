@@ -39,7 +39,14 @@ class Command(BaseCommand):
 
         err_rdats = []
         for i, rmdb_id in enumerate(all_rdats):
-            try: 
+            try:
+                rmdb_id = rmdb_id.upper().strip()
+                entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-id')
+                if len(entry):
+                    entry = entry[0]
+                else:
+                    self.stdout.write("\033[41mERROR\033[0m: RMDBEntry does not exist: \033[94m%s\033[0m" % rmdb_id)
+
                 save_json(rmdb_id)
                 self.stdout.write("\033[92mSUCCESS\033[0m: %d / %d : \033[94m%s\033[0m" % (i + 1, len(all_rdats), rmdb_id))
             except Exception:

@@ -3,8 +3,8 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
 
-from rdatkit.datahandlers import RDATFile, ISATABFile
-from rdatkit.secondary_structure import SecondaryStructure
+from rdatkit import RDATFile, ISATABFile
+from rdatkit import SecondaryStructure
 
 from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
