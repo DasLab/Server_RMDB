@@ -1,16 +1,18 @@
 import glob
-import matplotlib
-from pylab import *
 import simplejson
 import subprocess
+import sys
+
+if 'pylab' not in sys.modules:
+    import matplotlib
+    matplotlib.use('Agg')
+    from pylab import *
 
 from rdatkit import VARNA
 
 from src.models import *
 from src.settings import *
 from src.util.util import get_entry_version
-
-matplotlib.use('Agg')
 
 
 def trim_combine_annotation(annotations):
@@ -20,7 +22,7 @@ def trim_combine_annotation(annotations):
             a_trimmed[a.name] = [a.value]
         else:
             a_trimmed[a.name].append(a.value)
-    if a_trimmed.has_key("experimentType"):
+    if "experimentType" in a_trimmed:
         a_trimmed.pop("experimentType")
     return a_trimmed
 
@@ -73,13 +75,13 @@ def save_json_heatmap(entry):
                     annotations_flatten = [y for x in annotations.values() for y in x]
                     y_label_tmp = '%s' % (','.join(annotations_flatten))
             elif entry.type == "MA":
-                if annotations.has_key("lig_pos"):
+                if "lig_pos" in annotations:
                     y_label_tmp = 'lig_pos:%s' % annotations["lig_pos"][0]
-                if annotations.has_key("ligpos"):
+                if "ligpos" in annotations:
                     y_label_tmp = 'lig_pos:%s' % annotations["ligpos"][0]
             elif entry.type == "SS" and is_eterna:
                 if annotations:
-                    if annotations.has_key("MAPseq"):
+                    if "MAPseq" in annotations:
                         y_label_tmp = annotations["MAPseq"]
                         for j in range(len(y_label_tmp)):
                             if y_label_tmp[j].find("ID:") == 0:
@@ -98,7 +100,7 @@ def save_json_heatmap(entry):
                 annotations_flatten = [y for x in annotations.values() for y in x]
                 y_label_tmp = '%s' % (','.join(annotations_flatten))
             y_labels.append(y_label_tmp)
-            
+
             peaks_row = array([float(x) for x in data.values.split(',')])
             peaks_row[isnan(peaks_row)] = 0
             peaks_row[isinf(peaks_row)] = 0
@@ -116,11 +118,11 @@ def save_json_heatmap(entry):
 
             for j in range(len(peaks_row)):
                 if entry.type == "SS" and is_eterna:
-                    if annotations.has_key("sequence"):
+                    if "sequence" in annotations:
                         seq = 'X' if (len(annotations["sequence"][0]) <= j) else annotations["sequence"][0][j]
                     else:
                         print "ERROR parsing annotation row:", i+1, ": ", annotations
-                        seq = 'X'   
+                        seq = 'X'
                 else:
                     seq = sequence[j]
                 mut_flag = 0
@@ -136,7 +138,7 @@ def save_json_heatmap(entry):
                                 if (j + offset + 1) >= mut_start and (j + offset + 1) <= mut_end:
                                     idx = j+offset+1-mut_start
                                     muts = mut[mut.find(')')+1:]
-                                    seq= muts[idx]
+                                    seq = muts[idx]
                                     mut_flag = 1
                             else:
                                 muts = mut.split(":")
@@ -175,7 +177,7 @@ def save_json_tags(entry):
     entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
     ver_list = get_entry_version(entry.rmdb_id)
 
-    tags_basic = {'rmdb_id': entry.rmdb_id, 'comments': entry.comments, 'version': entry.version, 'versions': ver_list, 'construct_count': entry.construct_count, 'data_count': entry.data_count,  'status': entry.status, 'type': entry.type, 'pdb_ids': entry.pdb_ids, 'description': entry.description, 'pubmed_id': entry.publication.pubmed_id, 'pub_title': entry.publication.title, 'authors': entry.publication.authors, 'rdat_ver': rdat_ver, 'creation_date': entry.creation_date.strftime('%x'), 'owner_name': entry.owner.first_name+' '+entry.owner.last_name,'owner': entry.owner.username, 'latest': entry.supercede_by}
+    tags_basic = {'rmdb_id': entry.rmdb_id, 'comments': entry.comments, 'version': entry.version, 'versions': ver_list, 'construct_count': entry.construct_count, 'data_count': entry.data_count,  'status': entry.status, 'type': entry.type, 'pdb_ids': entry.pdb_ids, 'description': entry.description, 'pubmed_id': entry.publication.pubmed_id, 'pub_title': entry.publication.title, 'authors': entry.publication.authors, 'rdat_ver': rdat_ver, 'creation_date': entry.creation_date.strftime('%x'), 'owner_name': entry.owner.full_name, 'owner': entry.owner.username, 'latest': entry.supercede_by}
     tags_annotation = {'annotation': entry.annotations}
 
     c = ConstructSection.objects.get(entry=entry)
@@ -288,7 +290,7 @@ def save_image(rmdb_id, construct_model, construct_section, entry_type):
         if d.xsel:
             xsels.append([float(x) for x in d.xsel.strip().split(',')])
     (values_array, trace_array, reads_array, xsel_array, errors_array) = get_arrays(construct_section.data)
-    
+
     file_name = '%s/%s' % (PATH.DATA_DIR['IMG_DIR'], rmdb_id)
     (values_dims, trace_dims, values_mean, values_std) = (shape(values_array), shape(trace_array), values_array.mean(axis=-1), values_array.std(axis=0))
 
@@ -310,7 +312,7 @@ def save_image(rmdb_id, construct_model, construct_section, entry_type):
         order = range(values_dims[0])
     # if entry_type != 'MA':
         # order = order[::-1]
-    
+
 
     figure(1)
     frame = gca()

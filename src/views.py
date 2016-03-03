@@ -3,16 +3,15 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
 
-from rdatkit import RDATFile, ISATABFile
 from rdatkit import SecondaryStructure
 
 from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
 from src.settings import *
 
-from src.helper.helpers import *
-from src.helper.helper_api import *
-from src.helper.helper_predict import *
+# from src.helper.helpers import *
+# from src.helper.helper_api import *
+# from src.helper.helper_predict import *
 
 from src.util.entry import *
 from src.util.media import *
@@ -21,7 +20,7 @@ from src.util.util import *
 
 from datetime import datetime
 import simplejson
-import traceback
+# import traceback
 
 
 def index(request):
@@ -86,69 +85,69 @@ def detail(request, rmdb_id):
 
 
 def predict(request):
-    if request.method != 'POST':
-        return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'messages': [], 'other_errors': []}, context_instance=RequestContext(request))
-    else:
-        try:
-            sequences, titles, structures, modifiers, mapping_data, base_annotations, messages, valerrors = ([],[],[],[],[],[],[],[])
+    # if request.method != 'POST':
+    return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'messages': [], 'other_errors': []}, context_instance=RequestContext(request))
+    # else:
+    #     try:
+    #         sequences, titles, structures, modifiers, mapping_data, base_annotations, messages, valerrors = ([],[],[],[],[],[],[],[])
 
-            is_get_rmdb = (len(request.POST['rmdbid']) > 0)
-            is_get_file = (len(request.POST['rdatfile']) > 0)
-            if is_get_rmdb or is_get_file:
-                (messages, valerrors, bonuses_1d, bonuses_2d, titles, modifiers, offset_seqpos, temperature, sequences, refstruct) = parse_rdat_data(request, is_get_file)
-                form = fill_predict_form(request, sequences, structures, temperature, refstruct, bonuses_1d, bonuses_2d, modifiers, titles, offset_seqpos)
-                return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': form, 'rdatloaded': True, 'msg_y': messages, 'msg_r': valerrors}, context_instance=RequestContext(request))
-            elif not request.POST['sequences']:
-                return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': [], 'msg_r': []}, context_instance=RequestContext(request))
+    #         is_get_rmdb = (len(request.POST['rmdbid']) > 0)
+    #         is_get_file = (len(request.POST['rdatfile']) > 0)
+    #         if is_get_rmdb or is_get_file:
+    #             (messages, valerrors, bonuses_1d, bonuses_2d, titles, modifiers, offset_seqpos, temperature, sequences, refstruct) = parse_rdat_data(request, is_get_file)
+    #             form = fill_predict_form(request, sequences, structures, temperature, refstruct, bonuses_1d, bonuses_2d, modifiers, titles, offset_seqpos)
+    #             return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': form, 'rdatloaded': True, 'msg_y': messages, 'msg_r': valerrors}, context_instance=RequestContext(request))
+    #         elif not request.POST['sequences']:
+    #             return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': [], 'msg_r': []}, context_instance=RequestContext(request))
 
-            other_options = ' -t %s ' % (float(request.POST['temperature']) + 273.15)
-            refstruct = SecondaryStructure(dbn=request.POST['refstruct'])
+    #         other_options = ' -t %s ' % (float(request.POST['temperature']) + 273.15)
+    #         refstruct = SecondaryStructure(dbn=request.POST['refstruct'])
 
-            lines = request.POST['sequences'].split('\n')
-            for l in lines:
-                if l:
-                    if l[0] == '>':
-                        titles.append(l.replace('>',''))
-                    else:
-                        if l.strip():
-                            sequences.append(rna.RNA(l.strip()))
-            if not sequences:
-                messages.append('ERROR: No SEQUENCE found. Due to either no input field, or no modification lanes in RDAT.')
-                return render_to_response(PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'bppmimg': '', 'ncols': 0, 'nrows': 0}, context_instance=RequestContext(request))
+    #         lines = request.POST['sequences'].split('\n')
+    #         for l in lines:
+    #             if l:
+    #                 if l[0] == '>':
+    #                     titles.append(l.replace('>',''))
+    #                 else:
+    #                     if l.strip():
+    #                         sequences.append(rna.RNA(l.strip()))
+    #         if not sequences:
+    #             messages.append('ERROR: No SEQUENCE found. Due to either no input field, or no modification lanes in RDAT.')
+    #             return render_to_response(PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'bppmimg': '', 'ncols': 0, 'nrows': 0}, context_instance=RequestContext(request))
 
-            if 'structures' in request.POST:
-                lines = request.POST['structures'].split('\n')
-                for l in lines:
-                    if l.strip():
-                        structures.append(l)
+    #         if 'structures' in request.POST:
+    #             lines = request.POST['structures'].split('\n')
+    #             for l in lines:
+    #                 if l.strip():
+    #                     structures.append(l)
 
-            if request.POST['predtype'] in ('NN', '1D'):
-                (base_annotations, structures, mapping_data, messages) = predict_run_1D_NN(request, sequences, mapping_data, structures, other_options, messages)
+    #         if request.POST['predtype'] in ('NN', '1D'):
+    #             (base_annotations, structures, mapping_data, messages) = predict_run_1D_NN(request, sequences, mapping_data, structures, other_options, messages)
 
-            if request.POST['predtype'] == '2D':
-                (sequences, structures, messages, base_annotations) = predict_run_2D(request, sequences, titles, structures, other_options, messages)
-                modifiers = ['']
+    #         if request.POST['predtype'] == '2D':
+    #             (sequences, structures, messages, base_annotations) = predict_run_2D(request, sequences, titles, structures, other_options, messages)
+    #             modifiers = ['']
 
 
-            panels, ncols, nrows = render_to_varna([s.sequence for s in sequences], structures, modifiers, titles, mapping_data, base_annotations, refstruct)
-            visform_params = {}
-            visform_params['sequences'] = '\n'.join([s.sequence for s in sequences])
-            visform_params['structures'] = '\n'.join([s.dbn for s in structures])
-            if 'raw_bonuses' in request.POST:
-                print [str(slope*log(1 + d) + intercept) for d in mapping_data[0].data()]
-                visform_params['md_datas'] = '\n'.join([','.join([str(slope*log(1 + d) + intercept) for d in m.data()]) for m in mapping_data])
-            else:
-                visform_params['md_datas'] = '\n'.join([','.join([str(d) for d in m.data()]) for m in mapping_data])
-            visform_params['md_seqposes'] = '\n'.join([','.join([str(pos) for pos in m.seqpos]) for m in mapping_data])
-            visform_params['modifiers'] = modifiers
-            visform_params['base_annotations'] = '\n'.join([bpdict_to_str(ann) for ann in base_annotations])
-            visform_params['refstruct'] = refstruct.dbn
-            visform = VisualizerForm(visform_params)
-            return render_to_response(PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'ncols': [], 'nrows': [], 'form': visform}, context_instance=RequestContext(request))
+    #         panels, ncols, nrows = render_to_varna([s.sequence for s in sequences], structures, modifiers, titles, mapping_data, base_annotations, refstruct)
+    #         visform_params = {}
+    #         visform_params['sequences'] = '\n'.join([s.sequence for s in sequences])
+    #         visform_params['structures'] = '\n'.join([s.dbn for s in structures])
+    #         if 'raw_bonuses' in request.POST:
+    #             print [str(slope*log(1 + d) + intercept) for d in mapping_data[0].data()]
+    #             visform_params['md_datas'] = '\n'.join([','.join([str(slope*log(1 + d) + intercept) for d in m.data()]) for m in mapping_data])
+    #         else:
+    #             visform_params['md_datas'] = '\n'.join([','.join([str(d) for d in m.data()]) for m in mapping_data])
+    #         visform_params['md_seqposes'] = '\n'.join([','.join([str(pos) for pos in m.seqpos]) for m in mapping_data])
+    #         visform_params['modifiers'] = modifiers
+    #         visform_params['base_annotations'] = '\n'.join([bpdict_to_str(ann) for ann in base_annotations])
+    #         visform_params['refstruct'] = refstruct.dbn
+    #         visform = VisualizerForm(visform_params)
+    #         return render_to_response(PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'ncols': [], 'nrows': [], 'form': visform}, context_instance=RequestContext(request))
 
-        except IndexError, err:
-            print err
-            return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': messages, 'msg_r': ['Invalid input. Please check your inputs and try again.']}, context_instance=RequestContext(request))
+    #     except IndexError, err:
+    #         print err
+            # return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': messages, 'msg_r': ['Invalid input. Please check your inputs and try again.']}, context_instance=RequestContext(request))
 
 
 def str_view(request):

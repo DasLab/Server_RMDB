@@ -40,7 +40,7 @@ function fill_tags() {
     $("#tag_name_panel").text(tags.name);
     $("#tag_name_main").text(tags.name);
 
-    $("#tag_comments").text(tags.comments);
+    $("#tag_comments").html('<p class="excerpt">' + tags.comments.replace(/\n/g, '<br/>') + '</p>');
     $("#tag_sequence_len").html("<code>1-by-" + tags.sequence_len + "</code> <i>vector</i>");
     $("#tag_structure_len").html("<code>1-by-" + tags.structure_len + "</code> <i>vector</i>");
     $("#tag_seqpos").html("<p>" + tags.seqpos + "</p><code>1-by-" + tags.seqpos_len + "</code> <i>vector</i>");
@@ -76,7 +76,7 @@ function fill_tags() {
     $("#dl_isatab").attr("href", "/site_data/file/" + tags.rmdb_id + "/" + tags.rmdb_id + "_" + tags.version + ".xls");
     $("#dl_rdat").attr("href", "/site_data/file/" + tags.rmdb_id + "/" + tags.rmdb_id + ".rdat");
     if (tags.version > 1) {
-        var ver_html = '<li class="li-orange"><a href="/site_data/files/' + tags.rmdb_id + '/' + tags.rmdb_id + '_' + tags.version + '.rdat" download><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp;&nbsp;(Current) <i>Version:</i> <mark>' + tags.version + '</mark></a></li>';
+        var ver_html = '<li class="li-orange"><a href="/site_data/file/' + tags.rmdb_id + '/' + tags.rmdb_id + '_' + tags.version + '.rdat" download><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp;&nbsp;(Current) <i>Version:</i> <mark>' + tags.version + '</mark></a></li>';
         for (var i = tags.versions.length - 1; i >= 0; i--) {
             if (tags.versions[i] !== tags.version) {
                 ver_html += '<li class="li-info"><a href="/site_data/file/' + tags.rmdb_id + '/' + tags.rmdb_id + '_' + i + '.rdat" download><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp;&nbsp;RDAT <i>Version:</i> <mark>' + i + '</mark></a></li>';
@@ -111,11 +111,9 @@ function fill_tags() {
     for (var i in tags.annotation) {
         ann_html += '<tr><td></td><td class="lead text-right align-center"><span class="label label-danger">' + i + '</span></td><td class="lead">';
         for (var j in tags.annotation[i]) {
-            if (j == tags.annotation[i].length - 1) {
-                ann_html += '<span class=\"label label-warning\">' + tags.annotation[i][j] + '</span>';
-            } else {
-                ann_html += '<p style=\"padding-bottom:5px;\"><span class=\"label label-warning\">' + tags.annotation[i][j] + '</span></p>';
-            }
+            var prefix = (j != tags.annotation[i].length - 1 ? '<p style="padding-bottom:5px;">' : ''),
+                suffix = (j != tags.annotation[i].length - 1 ? '</p>' : '');
+            ann_html += prefix + '<span class="label label-warning">' + tags.annotation[i][j] + '</span>' + suffix;
         }
         ann_html += '</td></tr>';
     }
@@ -140,13 +138,15 @@ function fill_tags() {
                     }
                     for (var k in tags.data_annotation[i][j]) {
                         if (k != tags.data_annotation[i][j].length - 1) { dat_ann_html += '<p style="padding-bottom:5px;">'; }
+                        var label_class = (j === 'datatype' ? 'success' : 'warning');
+
                         if (j.toUpperCase() === 'SEQUENCE' | j.toUpperCase() === 'STRUCTURE') {
                             var seq_tmp = wbr(tags.data_annotation[i][j][k]);
                             for (var l in seq_tmp) {
-                                dat_ann_html += '<p style="padding-bottom:5px;"><samp><span class="label label-warning">' + seq_tmp[l] + '</span></sa,p></p>';
+                                dat_ann_html += '<p style="padding-bottom:5px;"><samp><span class="label label-' + label_class + '">' + seq_tmp[l] + '</span></samp></p>';
                             }
                         } else {
-                            dat_ann_html += '<span class="label label-warning">' + tags.data_annotation[i][j][k] + '</span>';
+                            dat_ann_html += '<span class="label label-' + label_class + '">' + tags.data_annotation[i][j][k] + '</span>';
                         }
                         if (k != tags.data_annotation[i][j].length - 1) { dat_ann_html += '</p>'; }
                     }
@@ -169,10 +169,11 @@ function fill_tags() {
                     dat_ann_html += '<tr><td></td><td class="lead text-right align-center"><span class="label label-danger">' + j + '</span></td><td class="lead">';
                 }
                 for (var k in tags.data_annotation[i][j]) {
+                    var label_class = (j === 'datatype' ? 'success' : 'warning');
                     if (k == tags.data_annotation[i][j].length - 1) {
-                        dat_ann_html += '<span class="label label-warning">' + tags.data_annotation[i][j][k] + '</span>';
+                        dat_ann_html += '<span class="label label-' + label_class + '">' + tags.data_annotation[i][j][k] + '</span>';
                     } else {
-                        dat_ann_html += '<p style="padding-bottom:5px;"><span class="label label-warning">' + tags.data_annotation[i][j][k] + '</span></p>';
+                        dat_ann_html += '<p style="padding-bottom:5px;"><span class="label label-' + label_class + '">' + tags.data_annotation[i][j][k] + '</span></p>';
                     }
                 }
                 dat_ann_html += '</td></tr>';

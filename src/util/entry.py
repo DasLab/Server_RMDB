@@ -1,9 +1,15 @@
 import os
-from pylab import *
 import shutil
 import subprocess
+import sys
 import threading
 import traceback
+
+if 'pylab' not in sys.modules:
+    import matplotlib
+    matplotlib.use('Agg')
+    from pylab import *
+
 
 from Tkinter import TclError
 
@@ -181,7 +187,7 @@ def submit_entry(form, user, upload_file, rdatfile, isatabfile):
     #       break
 
     # if current_version == 0 or current_max:
-    #   entry.latest = True 
+    #   entry.latest = True
     #   for e in entries:
     #       e.latest = False
     #       e.save()
@@ -221,29 +227,35 @@ def save_rdat(entry, upload_file, rdatfile, isatabfile, error_msg=[]):
     data_count = 0
     construct_count = 0
 
-    for k in rdatfile.constructs:
-        construct_count += 1
-        c = rdatfile.constructs[k]
+    k = rdatfile.constructs.keys()[0]
+    construct_count += 1
+    c = rdatfile.constructs[k]
 
-        construct = ConstructSection(entry=entry, name=c.name, sequence=c.sequence, offset=c.offset, structure=c.structure, seqpos=','.join([str(x) for x in c.seqpos]), xsel=','.join([str(x) for x in c.xsel]))
-        construct.save()
+    construct = ConstructSection(entry=entry, name=c.name, sequence=c.sequence, offset=c.offset, structure=c.structure, seqpos=','.join([str(x) for x in c.seqpos]), xsel=','.join([str(x) for x in c.xsel]))
+    construct.save()
 
-        for d in c.data:
+    for d in c.data:
+        if rdatfile.version >= 0.4:
+            if 'REACTIVITY' in ''.join(d.annotations['datatype']) and 'REACTIVITY_ERROR' not in ''.join(d.annotations['datatype']):
+                data = DataSection(xsel=','.join([str(x) for x in d.xsel]), values=','.join([str(x) for x in d.values]), errors='', trace='', reads='', seqpos=','.join([str(x) for x in d.seqpos]), construct_section=construct)
+            else:
+                continue
+        else:
             data = DataSection(xsel=','.join([str(x) for x in d.xsel]), values=','.join([str(x) for x in d.values]), errors=','.join([str(x) for x in d.errors]), trace=','.join([str(x) for x in d.trace]), reads=','.join([str(x) for x in d.reads]), seqpos=','.join([str(x) for x in d.seqpos]), construct_section=construct)
-            data.save()
-            data_count += len(d.values)
+        data.save()
+        data_count += len(d.values)
+        construct_count += write_annotations(d.annotations, data, DataAnnotation)
 
-            construct_count += write_annotations(d.annotations, data, DataAnnotation)
-        entry.data_count = data_count
-        entry.construct_count = construct_count
+    entry.data_count = data_count
+    entry.construct_count = construct_count
 
-        try:
-            entry.is_trace = save_image(entry.rmdb_id, construct, c, entry.type)
-        except TclError:
-            error_msg.append('Problem generating the images. This is a server-side problem, please try again.')
-        entry.save()
-        #precalculate_structures(entry)
-    
+    try:
+        entry.is_trace = save_image(entry.rmdb_id, construct, c, entry.type)
+    except TclError:
+        error_msg.append('Problem generating the images. This is a server-side problem, please try again.')
+    entry.save()
+    #precalculate_structures(entry)
+
     save_thumb(entry)
     save_json(entry.rmdb_id)
     return (error_msg, entry)
