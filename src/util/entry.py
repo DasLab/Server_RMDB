@@ -8,7 +8,7 @@ import traceback
 if 'pylab' not in sys.modules:
     import matplotlib
     matplotlib.use('Agg')
-    from pylab import *
+from pylab import *
 
 
 from Tkinter import TclError
@@ -147,7 +147,7 @@ def process_upload(form, upload_file, user):
     except Exception:
         flag = 1
         print traceback.format_exc()
-        error_msg.append('Unknown error. Please contact admin.')
+        error_msg.append('500: Internal server error. Please contact admin.')
     return (error_msg, flag, entry)
 
 
