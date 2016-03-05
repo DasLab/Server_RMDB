@@ -14,6 +14,7 @@ $(document).ready(function() {
         dataType: "json",
         success : function (data) {
             $("#id_linux").html(data.linux);
+            $("#id_java").html(data.java);
             $("#id_python").html(data.python);
             $("#id_django").html(data.django);
             $("#id_django_crontab").html(data.django_crontab);
@@ -29,20 +30,20 @@ $(document).ready(function() {
             $("#id_django_adminplus").html(data.django_adminplus);
             $("#id_django_filemanager").html(data.django_filemanager);
             $("#id_d3").html(data.d3);
-            $("#id_zclip").html(data.zclip);
             $("#id_gvizapi").html(data.gviz_api);
 
             $("#id_ssh").html(data.ssh);
             $("#id_git").html(data.git);
-            $("#id_llvm").html(data.llvm);
             $("#id_nano").html(data.nano);
             $("#id_gdrive").html(data.gdrive);
-            $("#id_zip").html(data.zip);
+            $("#id_imagemagick").html(data.imagemagick);
+            $("#id_optipng").html(data.optipng);
             $("#id_curl").html(data.curl);
             $("#id_boto").html(data.boto);
             $("#id_pygit").html(data.pygithub);
 
             $("#id_xlwt").html(data.xlwt);
+            $("#id_xlrd").html(data.xlrd);
             $("#id_request").html(data.requests);
             $("#id_simplejson").html(data.simplejson);
             $("#id_virtualenv").html(data.virtualenv);
@@ -51,11 +52,11 @@ $(document).ready(function() {
             $("#id_numpy").html(data.numpy);
             $("#id_scipy").html(data.scipy);
             $("#id_matplotlib").html(data.matplotlib);
-            $("#id_numba").html(data.numba);
 
             $("#id_yui").html(data.yuicompressor);
             $("#id_rdatkit").html(data.RDAT_Kit);
-            $("#id_primerize").html(data.NA_Thermo);
+            $("#id_varna").html(data.VARNA);
+            $("#id_rnastructure").html(data.RNA_Structure);
 
             var drive_used = parseFloat(data._drive[0]), drive_free = parseFloat(data._drive[1]), drive_total = parseFloat(data._drive[2]);
             $("#id_drive_space > div > div.progress-bar-success").css("width", (drive_free / drive_total * 100).toString() + '%' ).html(drive_free + ' G');
@@ -69,7 +70,7 @@ $(document).ready(function() {
             $("#id_base_dir").html('<code>' + data._path.root + '</code>');
             $("#id_media_root").html('<code>' + data._path.media + '</code>');
             $("#id_static_root").html('<code>' + data._path.data + '</code>');
-            $("#id_primerize_path").html('<code>' + data._path.NA_Thermo + '</code>');
+            $("#id_rnastructure_path").html('<code>' + data._path.RNA_Structure + '</code>');
             $("#id_rdatkit_path").html('<code>' + data._path.RDAT_Kit + '</code>');
         }
     });

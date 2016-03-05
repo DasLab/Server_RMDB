@@ -7,6 +7,8 @@ import traceback
 
 from django.core.management.base import BaseCommand
 
+import rdatkit
+
 from src.console import get_backup_stat
 from src.settings import *
 
@@ -60,25 +62,25 @@ class Command(BaseCommand):
             ver_d3 = ''.join(ver_d3)
             ver_d3 = ver_d3[ver_d3.find('version:'):]
             ver['d3'] = ver_d3[9:ver_d3.find('"}')].strip()
-            ver_zclip = open(os.path.join(MEDIA_ROOT, 'media/js/ZeroClipboard.min.js'), 'r').readlines()
-            ver_zclip = ver_zclip[6]
-            ver['zclip'] = ver_zclip[ver_zclip.find('v')+1:].strip()
             ver['gviz_api'] = '1.8.2'
 
+            open(os.path.join(MEDIA_ROOT, 'data/temp.txt'), 'w').write(subprocess.Popen('javac -version', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip())
+            ver['java'] = subprocess.Popen("sed 's/.*javac//g' %s | sed 's/_/./g'" % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             open(os.path.join(MEDIA_ROOT, 'data/temp.txt'), 'w').write(subprocess.Popen('ssh -V', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip())
             ver['ssh'] = subprocess.Popen("sed 's/^OpenSSH\_//g' %s | sed 's/U.*//' | sed 's/,.*//g' | sed 's/[a-z]/./g'" % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['git'] = subprocess.Popen("git --version | sed 's/.*version //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['llvm'] = subprocess.Popen("llvm-config --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['nano'] = subprocess.Popen("nano --version | head -1 | sed 's/.*version //g' | sed 's/(.*//g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
             ver['gdrive'] = subprocess.Popen("drive -v | sed 's/.*v//g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['zip'] = subprocess.Popen("zip -v | head -2 | tail -1 | sed 's/.*Zip //g' | sed 's/ (.*//g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['curl'] = subprocess.Popen("curl --version | head -1 | sed 's/.*curl //g' | sed 's/ (.*//g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['imagemagick'] = subprocess.Popen("mogrify -version | head -1 | sed 's/\-.*//g' | sed 's/.*ImageMagick //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['optipng'] = subprocess.Popen("optipng -version | head -1 | sed 's/.*version //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
             ver['boto'] = subprocess.Popen('python -c "import boto; print boto.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             open(os.path.join(MEDIA_ROOT, 'data/temp.txt'), 'w').write(subprocess.Popen('pip show pygithub', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip())
             ver['pygithub'] = subprocess.Popen("head -4 %s | tail -1 | sed 's/.*: //g'" % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['xlwt'] = subprocess.Popen('python -c "import xlwt; print xlwt.__VERSION__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['xlrd'] = subprocess.Popen('python -c "import xlrd; print xlrd.__VERSION__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['requests'] = subprocess.Popen('python -c "import requests; print requests.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['simplejson'] = subprocess.Popen('python -c "import simplejson; print simplejson.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['virtualenv'] = subprocess.Popen('python -c "import virtualenv; print virtualenv.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
@@ -86,12 +88,11 @@ class Command(BaseCommand):
             ver['numpy'] = subprocess.Popen('python -c "import numpy; print numpy.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['scipy'] = subprocess.Popen('python -c "import scipy; print scipy.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['matplotlib'] = subprocess.Popen('python -c "import matplotlib; print matplotlib.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['numba'] = subprocess.Popen('python -c "import numba; print numba.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
             ver['yuicompressor'] = subprocess.Popen("java -jar %s/../yuicompressor.jar -V" % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-
-            ver['RDAT_Kit'] = subprocess.Popen('python -c "from rdatkit import settings; print settings.VERSION"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['NA_Thermo'] = subprocess.Popen('python -c "import primerize; print primerize.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['RDAT_Kit'] = rdatkit.__version__
+            ver['RNA_Structure'] = subprocess.Popen("%s --version | head -1 | sed 's/.*Version //g' | sed 's/\.$//g'" % rdatkit.util.PATH_RNA_STRUCTURE_FOLD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['VARNA'] = subprocess.Popen("cd %s/misc/ && ls VARNAv*.jar | sed 's/VARNAv//g' | sed 's/\.jar//g' | sed 's/\-/\./g'" % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
             disk_sp = subprocess.Popen('df -h | grep "/dev/"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].split()
             ver['_disk'] = [disk_sp[3][:-1] + ' G', disk_sp[2][:-1] + ' G']
@@ -127,14 +128,14 @@ class Command(BaseCommand):
                 'root': MEDIA_ROOT,
                 'data': MEDIA_ROOT + '/data',
                 'media': MEDIA_ROOT + '/media',
-                'NA_Thermo': '',
+                'RNA_Structure': '',
                 'RDAT_Kit': ''
             }
             if DEBUG:
-                ver['_path']['NA_Thermo'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../../MATLAB_Code/NA_Thermo'))
+                ver['_path']['RNA_Structure'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../../MATLAB_Code/RNA_Structure'))
                 ver['_path']['RDAT_Kit'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../../MATLAB_Code/RDAT_Kit'))
             else:
-                ver['_path']['NA_Thermo'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../NA_Thermo'))
+                ver['_path']['RNA_Structure'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../RNA_Structure'))
                 ver['_path']['RDAT_Kit'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../RDAT_Kit'))
 
             gdrive_dir = 'echo' if DEBUG else 'cd %s' % APACHE_ROOT
@@ -153,14 +154,11 @@ class Command(BaseCommand):
             ver['make'] = subprocess.Popen("make --version | head -1 | sed 's/.*Make//g' | sed 's/ //g' | head -1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['cmake'] = subprocess.Popen("cmake --version | head -1 | sed 's/.*version//g' | sed 's/ //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['ninja'] = subprocess.Popen("ninja --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            open(os.path.join(MEDIA_ROOT, 'data/temp.txt'), 'w').write(subprocess.Popen('javac -version', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip())
-            ver['java'] = subprocess.Popen("sed 's/.*javac//g' %s | sed 's/_/./g'" % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['coreutils'] = subprocess.Popen("tty --version | head -1 | sed 's/.*) //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['wget'] = subprocess.Popen("wget --version | head -1 | sed 's/.*Wget//g' | sed 's/built.*//g' | sed 's/ //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['tar'] = subprocess.Popen("tar --version | head -1 | sed 's/.*)//g' | sed 's/-.*//g' | sed 's/ //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['setuptools'] = subprocess.Popen('python -c "import setuptools; print setuptools.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['tkinter'] = subprocess.Popen('python -c "import Tkinter; print Tkinter.Tcl().eval(\'info patchlevel\')"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['imagemagick'] = subprocess.Popen("mogrify -version | head -1 | sed 's/\-.*//g' | sed 's/.*ImageMagick //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
 
             simplejson.dump(ver, open(os.path.join(MEDIA_ROOT, 'cache/stat_sys.json'), 'w'), indent=' ' * 4, sort_keys=True)
@@ -168,7 +166,7 @@ class Command(BaseCommand):
             get_backup_stat()
 
             if not DEBUG:
-                ver_txt = "$(tput setab 1) ubuntu %s | linux %s | screen %s | bash %s | ssh %s $(tput sgr 0)\n$(tput setab 172) gcc %s | make %s | cmake %s | ninja %s | llvm %s | numba %s $(tput sgr 0)\n$(tput setab 11)$(tput setaf 16) python %s | java %s | mysql %s |$(tput sgr 0)$(tput setab 2) apache %s | wsgi %s | openssl %s $(tput sgr 0)\n$(tput setab 22) coreutils %s | wget %s | tar %s | curl %s | gdrive %s | yuicompressor %s $(tput sgr 0)\n$(tput setab 39) tkinter %s | virtualenv %s | setuptools %s | requests %s | simplejson %s $(tput sgr 0)\n$(tput setab 20) django %s | crontab %s | environ %s | suit %s | adminplus %s | filemanager %s $(tput sgr 0)\n$(tput setab 55) numpy %s | scipy %s | matplotlib %s | boto %s | pygithub %s | gviz %s $(tput sgr 0)\n$(tput setab 171) jquery %s | bootstrap %s | d3 %s | zeroclipboard %s |$(tput sgr 0)$(tput setab 15)$(tput setaf 16) rdatkit %s | primerize %s $(tput sgr 0)\n$(tput setab 8) git %s | pip %s | nano %s | imagemagick %s | htop %s | awscli %s $(tput sgr 0)\n\n\n$(tput setab 15)$(tput setaf 16) Primerize PCR Assembly Design Server $(tput sgr 0)\n$(tput setab 15)$(tput setaf 16) primerize.stanford.edu / $(tput setaf 1)52$(tput setaf 16).$(tput setaf 2)33$(tput setaf 16).$(tput setaf 172)204$(tput setaf 16).$(tput setaf 4)5 $(tput sgr 0)\n" % (ver['ubuntu'], ver['linux'], ver['screen'], ver['bash'], ver['ssh'], ver['gcc'], ver['make'], ver['cmake'], ver['ninja'], ver['llvm'], ver['numba'], ver['python'], ver['java'], ver['mysql'], ver['apache'], ver['mod_wsgi'], ver['openssl'], ver['coreutils'], ver['wget'], ver['tar'], ver['curl'], ver['gdrive'], ver['yuicompressor'], ver['tkinter'], ver['virtualenv'], ver['setuptools'], ver['requests'], ver['simplejson'], ver['django'], ver['django_crontab'], ver['django_environ'], ver['django_suit'], ver['django_adminplus'], ver['django_filemanager'], ver['numpy'], ver['scipy'], ver['matplotlib'], ver['boto'], ver['pygithub'], ver['gviz_api'], ver['jquery'], ver['bootstrap'], ver['d3'], ver['zclip'], ver['RDAT_Kit'], ver['NA_Thermo'], ver['git'], ver['pip'], ver['nano'], ver['imagemagick'], ver['htop'], ver['aws_cli'])
+                ver_txt = "$(tput setab 1) ubuntu %s | linux %s | screen %s | bash %s | ssh %s $(tput sgr 0)\n$(tput setab 172) gcc %s | make %s | cmake %s | ninja %s |$(tput sgr 0)$(tput setab 2) apache %s | wsgi %s | openssl %s $(tput sgr 0)\n$(tput setab 11)$(tput setaf 16) python %s | java %s | mysql %s |$(tput sgr 0)$(tput setab 15)$(tput setaf 16) rdatkit %s | varna %s | rnastructure %s $(tput sgr 0)\n$(tput setab 22) coreutils %s | wget %s | tar %s | curl %s | gdrive %s | yuicompressor %s $(tput sgr 0)\n$(tput setab 39) tkinter %s | virtualenv %s | setuptools %s | requests %s | simplejson %s $(tput sgr 0)\n$(tput setab 20) django %s | crontab %s | environ %s | suit %s | adminplus %s | filemanager %s $(tput sgr 0)\n$(tput setab 55) numpy %s | scipy %s | matplotlib %s | boto %s | pygithub %s | gviz %s $(tput sgr 0)\n$(tput setab 171) jquery %s | bootstrap %s | d3 %s | imagemagick %s | optipng %s $(tput sgr 0)\n$(tput setab 8) git %s | pip %s | nano %s | htop %s | awscli %s |$(tput sgr 0)$(tput setab 55) xlrd %s | xlwt %s $(tput sgr 0)\n\n\n$(tput setab 15)$(tput setaf 16) RNA Mapping DataBase (RMDB) $(tput sgr 0)\n$(tput setab 15)$(tput setaf 16) rmdb.stanford.edu / $(tput setaf 1)52$(tput setaf 16).$(tput setaf 2)25$(tput setaf 16).$(tput setaf 172)157$(tput setaf 16).$(tput setaf 4)172 $(tput sgr 0)\n" % (ver['ubuntu'], ver['linux'], ver['screen'], ver['bash'], ver['ssh'], ver['gcc'], ver['make'], ver['cmake'], ver['ninja'], ver['apache'], ver['mod_wsgi'], ver['openssl'], ver['python'], ver['java'], ver['mysql'], ver['RDAT_Kit'], ver['VARNA'], ver['RNA_Structure'], ver['coreutils'], ver['wget'], ver['tar'], ver['curl'], ver['gdrive'], ver['yuicompressor'], ver['tkinter'], ver['virtualenv'], ver['setuptools'], ver['requests'], ver['simplejson'], ver['django'], ver['django_crontab'], ver['django_environ'], ver['django_suit'], ver['django_adminplus'], ver['django_filemanager'], ver['numpy'], ver['scipy'], ver['matplotlib'], ver['boto'], ver['pygithub'], ver['gviz_api'], ver['jquery'], ver['bootstrap'], ver['d3'], ver['imagemagick'], ver['optipng'], ver['git'], ver['pip'], ver['nano'], ver['htop'], ver['aws_cli'], ver['xlrd'], ver['xlwt'])
                 subprocess.check_call('echo "%s" > %s/cache/sys_ver.txt' % (ver_txt, MEDIA_ROOT), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
         except Exception:
