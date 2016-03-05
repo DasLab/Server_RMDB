@@ -226,7 +226,7 @@ def get_admin(request):
     return HttpResponse(simplejson.dumps({'email': EMAIL_NOTIFY}, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
 def get_user(request):
-    if request.user.username: 
+    if request.user.username:
         user = request.user.username
     else:
         user = 'unknown'

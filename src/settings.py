@@ -18,7 +18,7 @@ MEDIA_URL = ''
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = '' # MEDIA_ROOT + '/media/'
+STATIC_ROOT = ''  # MEDIA_ROOT + '/media/'
 STATICFILES_DIRS = (root('data'), root('media'))
 
 

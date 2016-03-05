@@ -18,7 +18,7 @@ class Command(BaseCommand):
         t0 = time.time()
         self.stdout.write('%s:\t%s' % (time.ctime(), ' '.join(sys.argv)))
 
-        d = time.strftime('%Y%m%d') #datetime.datetime.now().strftime('%Y%m%d')
+        d = time.strftime('%Y%m%d')  # datetime.datetime.now().strftime('%Y%m%d')
         t = time.time()
         ver = {}
         self.stdout.write("Checking system versions...")
@@ -138,7 +138,6 @@ class Command(BaseCommand):
                 ver['_path']['RDAT_Kit'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../RDAT_Kit'))
 
             gdrive_dir = 'echo' if DEBUG else 'cd %s' % APACHE_ROOT
-            prefix = '_DEBUG' if DEBUG else ''
             ver['_drive'] = subprocess.Popen("%s && drive quota | awk '{ printf $2 \" G\t\"}'" % gdrive_dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().split('\t')
 
 
