@@ -53,10 +53,10 @@ else:
         url(r'^tools/license/?(?P<keyword>\w+)/$', views.tools_license),
         url(r'^tools/download/(?P<keyword>\w+)/?$', views.tools_download),
         url(r'^tools/docs/(?P<keyword>\w+)/?$', views.tutorial),
-        url(r'^rdatkit/?$', views.tutorial, {'keyword':'rdatkit'}),
-        url(r'^hitrace/?$', views.tutorial, {'keyword':'hitrace'}),
-        url(r'^mapseeker/?$', views.tutorial, {'keyword':'mapseeker'}),
-        url(r'^reeffit/?$', views.tutorial, {'keyword':'reeffit'}),
+        url(r'^rdatkit/?$', views.tutorial, {'keyword': 'rdatkit'}),
+        url(r'^hitrace/?$', views.tutorial, {'keyword': 'hitrace'}),
+        url(r'^mapseeker/?$', views.tutorial, {'keyword': 'mapseeker'}),
+        url(r'^reeffit/?$', views.tutorial, {'keyword': 'reeffit'}),
 
         url(r'^search/?$', views.search),
         url(r'^advanced_search/?$', views.advanced_search),
@@ -77,7 +77,7 @@ else:
         # url(r'^api/organism/all$', api_all_organisms),
         # url(r'^api/system/all$', api_all_systems),
 
-        # url(r'^api/index/rnastr_ver/$', api_rnastr_ver), 
+        # url(r'^api/index/rnastr_ver/$', api_rnastr_ver),
         url(r'^api/search/(?P<sstring>.+)$', api.search),
 
         url(r'^ping_test/?$', views.ping_test),
@@ -89,11 +89,18 @@ else:
         url(r'^get_recent/?$', views.get_recent),
         url(r'^get_browse/(?P<keyword>\w+)/?$', views.get_browse),
 
-        # url(r'^repository/(?P<path>.*)$', views.url_redirect),
+        url(r'^error/400/?$', views.error400),
+        url(r'^error/401/?$', views.error401),
+        url(r'^error/403/?$', views.error403),
+        url(r'^error/404/?$', views.error404),
+        url(r'^error/500/?$', views.error500),
+        url(r'^error/503/?$', views.error503),
 
-        # url(r'^site_media/isatab_files/(?P<path>.*)$', api_redirect),
-        # url(r'^site_media/rdat_files/(?P<path>.*)$', api_redirect),
+        url(r'^repository/(?P<path>.*)$', RedirectView.as_view(url='/%(path)s', permanent=True)),
+        url(r'^site_media/isatab_files/(?P<path>.*)$', RedirectView.as_view(url='/site_data/file/%(path)s', permanent=True)),
+        url(r'^site_media/rdat_files/(?P<path>.*)$', RedirectView.as_view(url='/site_data/file/%(path)s', permanent=True)),
         url(r'^site_media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT + '/media'}),
+        url(r'^site_data/tmp/(?P<path>.*)$', RedirectView.as_view(url='/error/403/', permanent=True)),
         url(r'^site_data/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT + '/data'}),
         url(r'^site_src/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT + '/misc'}),
 
@@ -102,7 +109,7 @@ else:
         url(r'^robots.txt$', serve, kwargs={'path': 'robots.txt', 'document_root': MEDIA_ROOT}),
     ]
 
-    if DEBUG: urlpatterns.append(url(r'^test/$', views.test))
+    if DEBUG: urlpatterns.append(url(r'^test/?$', views.test))
 
 handler400 = views.error400
 handler403 = views.error403

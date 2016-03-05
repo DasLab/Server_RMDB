@@ -33,13 +33,12 @@ User-agent: bingbot
 User-agent: Slurp
 User-agent: Yahoo-Blogs
 User-agent: Yahoo-MMCrawler
+User-agent: Applebot
+User-agent: Twitterbot
+User-agent: Yandexbot
+User-agent: FacebookExternalHit
 
 # Directories
-Disallow: /data/
-Disallow: /misc/
-Disallow: /media/admin/
-Disallow: /media/images/src/
-Disallow: /repository/
 
 # Files
 Disallow: /*.py
@@ -47,25 +46,30 @@ Disallow: /*.pyc
 Disallow: /*.md
 Disallow: /*.sh
 
+Disallow: /site_src/MAPSeeker*.*
+Disallow: /site_src/REEFFIT*.*
+
 # Paths (clean URLs)
-Disallow: /site_data/
-Disallow: /site_src/
-Disallow: /test/
+Disallow: /admin/
 Disallow: /login/
-Disallow: /register/
 Disallow: /logout/
-Disallow: /search/
-Disallow: /advanced_search/
+Disallow: /password/
+Disallow: /register/
+
+Disallow: /deposit/review/
 Disallow: /analyze/predict/
 Disallow: /api/
-Disallow: /deposit/admin_rev_stat/
-Disallow: /admin/
+
+Disallow: /site_media/images/src/
+Disallow: /site_data/json/
+Disallow: /site_data/search/
+Disallow: /site_data/tmp/
+
+Disallow: /ping_test/
+Disallow: /test/
 Disallow: /cgi-bin/
 
 # Paths (no clean URLs)
-Disallow: /site_media/rdat_files/
-Disallow: /site_media/isatab_files/
-Disallow: /search/?searchtext=*/
-Disallow: /repository/search?searchtext=*/
+Disallow: /search/?sstring=*
 
 Crawl-delay: 600

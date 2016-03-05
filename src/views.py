@@ -222,15 +222,6 @@ def review(request):
     return error400(request)
 
 
-def url_redirect(request, path):
-    if 'detail/' in path:
-        path = path.rstrip('/')
-    if request.GET.get('searchtext'):
-        path = path + '?searchtext=' + request.GET.get('searchtext')
-    return HttpResponsePermanentRedirect("/%s" % path)
-
-
-
 def get_admin(request):
     return HttpResponse(simplejson.dumps({'email': EMAIL_NOTIFY}, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
