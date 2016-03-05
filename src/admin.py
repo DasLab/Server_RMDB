@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.forms import ModelForm, widgets, DateField, DateInput
 from django.utils.html import format_html
 from django.shortcuts import render_to_response
 from django.template import RequestContext

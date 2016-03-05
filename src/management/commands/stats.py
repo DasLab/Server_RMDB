@@ -7,7 +7,6 @@ import traceback
 from django.core.management.base import BaseCommand
 
 from src.settings import *
-from src.models import RMDBEntry, ConstructSection
 from src.util.stats import *
 
 
@@ -20,10 +19,10 @@ class Command(BaseCommand):
 
         flag = False
         try:
-            open('%s/cache/stat_stats_tmp.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(get_rmdb_stats(), indent=' ' * 4, sort_keys=True))
-            open('%s/cache/stat_browse_eterna_tmp.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(get_rmdb_category('eterna'), indent=' ' * 4, sort_keys=True))
-            open('%s/cache/stat_browse_puzzle_tmp.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(get_rmdb_category('puzzle'), indent=' ' * 4, sort_keys=True))
-            open('%s/cache/stat_browse_general_tmp.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(get_rmdb_category('general'), indent=' ' * 4, sort_keys=True))
+            simplejson.dump(get_rmdb_stats(), open('%s/cache/stat_stats_tmp.json' % MEDIA_ROOT, 'w'), indent=' ' * 4, sort_keys=True)
+            simplejson.dump(get_rmdb_category('eterna'), open('%s/cache/stat_browse_eterna_tmp.json' % MEDIA_ROOT, 'w'), indent=' ' * 4, sort_keys=True)
+            simplejson.dump(get_rmdb_category('puzzle'), open('%s/cache/stat_browse_puzzle_tmp.json' % MEDIA_ROOT, 'w'), indent=' ' * 4, sort_keys=True)
+            simplejson.dump(get_rmdb_category('general'), open('%s/cache/stat_browse_general_tmp.json' % MEDIA_ROOT, 'w'), indent=' ' * 4, sort_keys=True)
 
             shutil.move('%s/cache/stat_stats_tmp.json' % MEDIA_ROOT, '%s/cache/stat_stats.json' % MEDIA_ROOT)
             shutil.move('%s/cache/stat_browse_eterna_tmp.json' % MEDIA_ROOT, '%s/cache/stat_browse_eterna.json' % MEDIA_ROOT)

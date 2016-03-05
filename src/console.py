@@ -69,6 +69,7 @@ def get_folder_size(path):
             total += get_folder_size(f + '/*')
     return total
 
+
 def get_folder_num(path):
     total = 0
     for f in glob.glob(path):
@@ -94,13 +95,12 @@ def get_backup_stat():
         'gdrive': []
     }
 
-    gdrive_dir = 'echo'
-    if not DEBUG: gdrive_dir = 'cd %s' % APACHE_ROOT
+    gdrive_dir = 'echo' if DEBUG else 'cd %s' % APACHE_ROOT
     gdrive = subprocess.Popen("%s && drive list -q \"title contains '%s_' and title contains '.tgz'\"" % (gdrive_dir, env('SERVER_NAME')), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().split()[4:]
     for i in range(0, len(gdrive), 6):
         ver['gdrive'].append([gdrive[i + 1], '%s %s' % (gdrive[i + 2], gdrive[i + 3]), '%s %s' % (gdrive[i + 4], gdrive[i + 5])])
 
-    open(os.path.join(MEDIA_ROOT, 'cache/stat_backup.json'), 'w').write(simplejson.dumps(ver, indent=' ' * 4, sort_keys=True))
+    simplejson.dump(ver, open(os.path.join(MEDIA_ROOT, 'cache/stat_backup.json'), 'w'), indent=' ' * 4, sort_keys=True)
     subprocess.Popen('rm %s' % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
 
@@ -162,7 +162,7 @@ def set_backup_form(request):
         cron_job[-1] = '>> %s/cache/log_cron.log 2>&1 # %s' % (MEDIA_ROOT, suffix[suffix.rfind(' # ') + 3:])
     env_cron['KEEP_BACKUP'] = form.cleaned_data['keep_backup']
     env_cron['KEEP_JOB'] = form.cleaned_data['keep_job']
-    open('%s/config/cron.conf' % MEDIA_ROOT, 'w').writelines(simplejson.dumps(env_cron, sort_keys=True, indent=' ' * 4))
+    simplejson.dump(env_cron, open('%s/config/cron.conf' % MEDIA_ROOT, 'w'), sort_keys=True, indent=' ' * 4)
     refresh_settings()
     set_sys_crontab()
     return 0
@@ -194,7 +194,7 @@ def restyle_apache():
     cpu_usage = '%.2f / %.2f / %.2f / %.2f' % (float(cpu[0][1:]), float(cpu[1][1:]), float(cpu[2][2:]), float(cpu[3][2:]))
     cpu_load = '%1.4f' % float(cpu[4])
     traffic = response[18].replace('<dt>', '').replace('B/request</dt>', '').replace('requests/sec -', '').replace('B/second -', '').split()
-    if traffic[-1] in ('k', 'M', 'G'): 
+    if traffic[-1] in ('k', 'M', 'G'):
         traffic = '%1.2f / %.1f / %s' % (float(traffic[0]), float(traffic[-2]), traffic[-1])
     else:
         traffic = '%1.2f / %.1f' % (float(traffic[0]), float(traffic[-1]))
@@ -209,7 +209,7 @@ def restyle_apache():
 
     json = {'title': title, 'ver_apache': ver[0], 'ver_wsgi': ver[2], 'ver_ssl': ver[1], 'mpm': mpm, 'time_build': time_build, 'time_current': time_current, 'time_restart': time_restart, 'time_up': time_up, 'server_load': server_load, 'total_access': total[0], 'total_traffic': '%s %s' % (total[1], total[2]), 'cpu_load': cpu_load, 'cpu_usage': cpu_usage, 'traffic': traffic, 'idle': workers[1], 'processing': workers[0], 'worker': worker, 'table': table, 'port': port, 'ssl_subcache': ssl_subcache, 'ssl_index': ssl_index, 'ssl_cache': ssl[0], 'ssl_mem': ssl[1], 'ssl_entry': ssl[2]}
     return simplejson.dumps(json, sort_keys=True, indent=' ' * 4)
-    
+
 
 def aws_result(results, args, req_id=None):
     data = []
@@ -220,7 +220,7 @@ def aws_result(results, args, req_id=None):
         if args['calc_rate'] and 'Sum' in args['cols']: 
             d.update({args['metric'][0] + u'Rate': d[u'Sum'] / args['period']})
         for j, r in enumerate(results):
-            if j == 0 and len(results) > 1 and args['calc_rate']: 
+            if j == 0 and len(results) > 1 and args['calc_rate']:
                 continue
             keys = r[i].keys()
             keys.remove(u'Timestamp')
@@ -228,11 +228,11 @@ def aws_result(results, args, req_id=None):
             for k in keys:
                 val = r[i][k]
                 name = args['metric'][j] + k
-                if args['calc_rate'] and k == u'Sum': 
+                if args['calc_rate'] and k == u'Sum':
                     val = val / args['period']
                     name = args['metric'][j] + u'Rate'
                 d[name] = val
-                if d.has_key(k): del d[k]
+                if k in d: del d[k]
 
     desp = {'Timestamp': ('datetime', 'Timestamp'), 'Samples': ('number', 'Samples'), 'Unit': ('string', args['unit'])}
     stats = ['Timestamp']
@@ -247,12 +247,12 @@ def aws_result(results, args, req_id=None):
                 if col == 'Sum' and args['calc_rate']: col = 'Rate'
                 desp[me + col] = ('number', me + col)
                 stats.append(me + col)
-    
+
     data = sorted(data, key=operator.itemgetter(u'Timestamp'))
     data_table = gviz_api.DataTable(desp)
     data_table.LoadData(data)
     if req_id:
-        results = data_table.ToJSonResponse(columns_order=stats,    order_by='Timestamp', req_id=req_id)
+        results = data_table.ToJSonResponse(columns_order=stats, order_by='Timestamp', req_id=req_id)
         return results
     else:
         return (data_table, stats)
@@ -272,7 +272,7 @@ def aws_call(conn, args, qs, req_id=None):
         for t in (args['start_time'] + timedelta(seconds=n) for n in period):
             t = t.replace(second=0, microsecond=0)
             if (not t in temp):
-                data.append({u'Timestamp': t, u'Unit': args['unit'], unicode(args['cols'][0]):0})
+                data.append({u'Timestamp': t, u'Unit': args['unit'], unicode(args['cols'][0]): 0})
 
         if qs in ['lat', 'latency']:
             for d in data:
@@ -285,7 +285,7 @@ def aws_call(conn, args, qs, req_id=None):
 
 
 def aws_stats(request):
-    if request.GET.has_key('qs') and request.GET.has_key('sp') and request.GET.has_key('tqx'):
+    if 'qs' in request.GET and 'sp' in request.GET and 'tqx' in request.GET:
         qs = request.GET.get('qs')
         sp = request.GET.get('sp')
         req_id = request.GET.get('tqx').replace('reqId:', '')
@@ -294,15 +294,15 @@ def aws_stats(request):
             conn = boto.ec2.connect_to_region(AWS['REGION'], aws_access_key_id=AWS['ACCESS_KEY_ID'], aws_secret_access_key=AWS['SECRET_ACCESS_KEY'], is_secure=True)
             resv = conn.get_only_instances(instance_ids=AWS['EC2_INSTANCE_ID'])
             stat = resv[0].__dict__
-            stat1 = {k: stat[k] for k in ('id', 'instance_type', 'private_dns_name', 'public_dns_name', 'vpc_id', 'subnet_id', 'image_id', 'architecture')} 
+            stat1 = {k: stat[k] for k in ('id', 'instance_type', 'private_dns_name', 'public_dns_name', 'vpc_id', 'subnet_id', 'image_id', 'architecture')}
             resv = conn.get_all_volumes(volume_ids=AWS['EBS_VOLUME_ID'])
             stat = resv[0].__dict__
-            stat2 = {k: stat[k] for k in ('id', 'type', 'size', 'zone', 'snapshot_id', 'encrypted')} 
+            stat2 = {k: stat[k] for k in ('id', 'type', 'size', 'zone', 'snapshot_id', 'encrypted')}
 
             conn = boto.ec2.elb.connect_to_region(AWS['REGION'], aws_access_key_id=AWS['ACCESS_KEY_ID'], aws_secret_access_key=AWS['SECRET_ACCESS_KEY'], is_secure=True)
             resv = conn.get_all_load_balancers(load_balancer_names=AWS['ELB_NAME'])
             stat = resv[0].__dict__
-            stat3 = {k: stat[k] for k in ('dns_name', 'vpc_id', 'subnets', 'health_check')} 
+            stat3 = {k: stat[k] for k in ('dns_name', 'vpc_id', 'subnets', 'health_check')}
             stat3['health_check'] = str(stat3['health_check']).replace('HealthCheck:', '')
 
             return simplejson.dumps({'ec2': stat1, 'ebs': stat2, 'elb': stat3}, sort_keys=True, indent=' ' * 4)
@@ -354,7 +354,7 @@ def aws_stats(request):
 
 
 def ga_stats(request):
-    if request.GET.has_key('qs') and request.GET.has_key('tqx'):
+    if 'qs' in request.GET and 'tqx' in request.GET:
         qs = request.GET.get('qs')
         req_id = request.GET.get('tqx').replace('reqId:', '')
         access_token = requests.post('https://www.googleapis.com/oauth2/v3/token?refresh_token=%s&client_id=%s&client_secret=%s&grant_type=refresh_token' % (GA['REFRESH_TOKEN'], GA['CLIENT_ID'], GA['CLIENT_SECRET'])).json()['access_token']
@@ -381,8 +381,8 @@ def ga_stats(request):
                     curr = '%d' % int(temp[key])
                 stats.update({ga_key: curr, (ga_key + '_prev'): prev})
             return simplejson.dumps(stats, sort_keys=True, indent=' ' * 4)
-        
-        elif request.GET.has_key('sp'):
+
+        elif 'sp' in request.GET:
             sp = request.GET.get('sp')
 
             if qs == 'chart':
@@ -401,7 +401,7 @@ def ga_stats(request):
                 i = 0
                 while True:
                     temp = requests.get('https://www.googleapis.com/analytics/v3/data/ga?ids=ga%s%s&start-date=%s&end-date=%s&metrics=ga%ssessions&dimensions=ga%s%s&access_token=%s' % (url_colon, GA['ID'], d1, d2, url_colon, url_colon, dm, access_token)).json()
-                    if temp.has_key('rows'):
+                    if 'rows' in temp:
                         temp = temp['rows']
                         break
                     time.sleep(2)
@@ -434,7 +434,7 @@ def ga_stats(request):
                 i = 0
                 while True:
                     temp = requests.get('https://www.googleapis.com/analytics/v3/data/ga?ids=ga%s%s&start-date=30daysAgo&end-date=yesterday&metrics=ga%s%s&dimensions=ga%s%s&access_token=%s' % (url_colon, GA['ID'], url_colon, me, url_colon, dm, access_token)).json()
-                    if temp.has_key('rows'):
+                    if 'rows' in temp:
                         temp = temp['rows']
                         break
                     time.sleep(2)
@@ -460,7 +460,7 @@ def ga_stats(request):
             i = 0
             while True:
                 temp = requests.get('https://www.googleapis.com/analytics/v3/data/ga?ids=ga%s%s&start-date=30daysAgo&end-date=yesterday&metrics=ga%ssessions&dimensions=ga%scountry&access_token=%s' % (url_colon, GA['ID'], url_colon, url_colon, access_token)).json()
-                if temp.has_key('rows'):
+                if 'rows' in temp:
                     temp = temp['rows']
                     break
                 time.sleep(2)
@@ -486,7 +486,7 @@ def ga_stats(request):
 
 
 def git_stats(request):
-    if request.GET.has_key('qs') and request.GET.has_key('tqx'):
+    if 'qs'in request.GET and 'tqx' in request.GET:
         qs = request.GET.get('qs')
         req_id = request.GET.get('tqx').replace('reqId:', '')
         gh = Github(login_or_token=GIT["ACCESS_TOKEN"])
@@ -509,17 +509,14 @@ def git_stats(request):
                     for w in contrib.weeks:
                         a += w.a
                         d += w.d
-                    if contrib.author:
-                        au = '<i>%s</i> <span style="color:#888">(%s)</span>' % (contrib.author.login, contrib.author.name)
-                    else:
-                        au = '(None)'
+                    au = '(None)' if not contrib.author else '<i>%s</i> <span style="color:#888">(%s)</span>' % (contrib.author.login, contrib.author.name)
                     data.append({u'Contributors': au, u'Commits': contrib.total, u'Additions': a, u'Deletions': d})
-                data = sorted(data, key=operator.itemgetter(u'Commits'))            
+                data = sorted(data, key=operator.itemgetter(u'Commits'))
                 return simplejson.dumps({'contrib': data}, sort_keys=True, indent=' ' * 4)
             else:
                 created_at = repo.created_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(TIME_ZONE)).strftime('%Y-%m-%d %H:%M:%S')
                 pushed_at = repo.pushed_at.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(TIME_ZONE)).strftime('%Y-%m-%d %H:%M:%S')
-                
+
                 num_issues = len(requests.get('https://api.github.com/repos/' + repo_name + '/issues?access_token=%s' % GIT['ACCESS_TOKEN']).json())
                 num_pulls = len(requests.get('https://api.github.com/repos/' + repo_name + '/pulls?access_token=%s' % GIT['ACCESS_TOKEN']).json())
                 num_watchers = len(requests.get('https://api.github.com/repos/' + repo_name + '/watchers?access_token=%s' % GIT['ACCESS_TOKEN']).json())
@@ -570,10 +567,7 @@ def git_stats(request):
                     for w in contrib.weeks:
                         a += w.a
                         d += w.d
-                    if contrib.author:
-                        au = contrib.author.login
-                    else:
-                        au = '(None)'
+                    au = contrib.author.login if contrib.author else '(None)'
                     data.append({u'Contributors': au, u'Commits': contrib.total, u'Additions': a, u'Deletions': d})
                 stats = ['Contributors']
                 desp['Contributors'] = ('string', 'Name')
@@ -584,7 +578,7 @@ def git_stats(request):
             for field in fields:
                 stats.append(field)
                 desp[field] = ('number', field)
-            
+
             data = sorted(data, key=operator.itemgetter(stats[0]))
             data_table = gviz_api.DataTable(desp)
             data_table.LoadData(data)

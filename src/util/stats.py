@@ -32,7 +32,7 @@ def parse_history():
                     lines[i] = "<li>" + lines[i][2:] + "</li>"
                     if ls_2_flag < ls_1_flag:
                         lines[i] = "<ul><p>" + lines[i]
-                    ls_2_flag = i        
+                    ls_2_flag = i
         lines.append("</ul></ul><br/><hr/>")
         date_string = h.date.strftime("%b %d, %Y (%a)")
         lines.insert(0, "<i>%s</i><br/>" % date_string)
@@ -62,7 +62,7 @@ def get_rmdb_stats():
                 N_eterna += 1
             e = entries[0]
         N_datapoints += e.data_count
-        N_constructs += e.construct_count       
+        N_constructs += e.construct_count
     return {'N_all': N_all, 'N_RNA': N_RNA, 'N_puzzle': N_puzzle, 'N_eterna': N_eterna, 'N_constructs': N_constructs, 'N_datapoints': N_datapoints}
 
 

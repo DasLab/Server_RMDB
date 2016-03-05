@@ -123,7 +123,6 @@ def process_upload(form, upload_file, user):
                 flag = 1
                 error_msg.append('Missing experimentType.')
 
-
             rf.seek(0)
             if form.cleaned_data['file_type'] == 'isatab':
                 try:
@@ -282,7 +281,7 @@ def on_entry_save(sender, instance, **kwargs):
 
         if json['status'] != instance.status:
             json['status'] = instance.status
-            open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w').write(simplejson.dumps(json, sort_keys=True, indent=' ' * 4))
+            simplejson.dump(json, open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
 
  
 @receiver(post_delete, sender=RMDBEntry)
@@ -300,7 +299,7 @@ def on_entry_del(sender, instance, **kwargs):
         json = do_get_stats(instance.rmdb_id)
         if json is None: return
         json['versions'] = ver_list
-        open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w').write(simplejson.dumps(json, sort_keys=True, indent=' ' * 4))
+        simplejson.dump(json, open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
         return
 
     if not ver_list:

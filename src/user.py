@@ -39,7 +39,7 @@ def update_user_stats(user):
 
 def user_login(request):
     if request.user.is_authenticated():
-        if request.GET.has_key('next') and 'admin' in request.GET['next']:
+        if 'next' in request.GET and 'admin' in request.GET.get('next'):
             return error403(request)
         return HttpResponseRedirect('/')
 
@@ -64,7 +64,7 @@ def user_login(request):
                     messages = 'Inactive/disabled account. Please contact us.'
         return render_to_response(PATH.HTML_PATH['login'], {'form': form, 'messages': messages}, context_instance=RequestContext(request))
     else:
-        if request.GET.has_key('next') and 'admin' in request.GET['next']:
+        if 'next' in request.GET and 'admin' in request.GET.get('next'):
             flag = 'Admin'
         else:
             flag = 'Member'
@@ -132,7 +132,7 @@ def register(request):
 
             if not error_msg:
                 try:
-                    user =  User.objects.create_user(username=form.cleaned_data['username'], email=form.cleaned_data['email'], password=form.cleaned_data['password'], last_login=datetime.datetime.now())
+                    user = User.objects.create_user(username=form.cleaned_data['username'], email=form.cleaned_data['email'], password=form.cleaned_data['password'], last_login=datetime.datetime.now())
                     user.first_name = form.cleaned_data['first_name']
                     user.last_name = form.cleaned_data['last_name']
                     user.set_password(form.cleaned_data['password'])
@@ -147,7 +147,7 @@ def register(request):
 
                     flag = 1
                     form = RegisterForm()
-                except IntegrityError as e:
+                except IntegrityError:
                     error_msg.append('Username already exists. Try another.')
                 except Exception:
                     print traceback.format_exc()

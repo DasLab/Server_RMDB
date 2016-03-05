@@ -1,7 +1,7 @@
 mkdir backup
 
 mkdir cache
-touch cache/log_alert_admin.log cache/log_cron.log cache/log_django.log cache/log_cron_cleanup.log cache/log_cron_dist.log cache/log_cron_backup.log cache/log_cron_gdrive.log cache/log_cron_version.log cache/log_cron_json.log cache/log_cron_img.log
+touch cache/log_alert_admin.log cache/log_cron.log cache/log_django.log cache/log_cron_cleanup.log cache/log_cron_dist.log cache/log_cron_backup.log cache/log_cron_gdrive.log cache/log_cron_version.log cache/log_cron_json.log cache/log_cron_img.log cache/log_cron_zip.log
 touch cache/stat_dist.json cache/stat_backup.json cache/stat_sys.json
 touch cache/stat_stats.json cache/stat_browse_general.json cache/stat_browse_eterna.json cache/stat_browse_puzzle.json
 

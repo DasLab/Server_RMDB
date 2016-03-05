@@ -17,7 +17,7 @@ class Command(BaseCommand):
         t0 = time.time()
         self.stdout.write('%s:\t%s' % (time.ctime(), ' '.join(sys.argv)))
 
-        d = time.strftime('%Y%m%d') #datetime.datetime.now().strftime('%Y%m%d')
+        d = time.strftime('%Y%m%d')  # datetime.datetime.now().strftime('%Y%m%d')
         gdrive_dir = 'echo' if DEBUG else 'cd %s' % APACHE_ROOT
         prefix = '_DEBUG' if DEBUG else ''
 

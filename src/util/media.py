@@ -28,18 +28,13 @@ def trim_combine_annotation(annotations):
 
 
 def save_json_heatmap(entry):
-    (maxlen, maxlen_flag) = (256, False)
-
     construct = ConstructSection.objects.get(entry=entry)
     construct.datas = DataSection.objects.filter(construct_section=construct).order_by('id')
     construct.data_count = range(len(construct.datas))
-    if len(construct.datas) > maxlen:
-        maxlen_flag = True
     for d in construct.datas:
         d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
 
     precalc_structures = '['
-    accepted_tags = ['modifier', 'chemical', 'mutation', 'structure', 'lig_pos', 'MAPseq', 'EteRNA']
     try:
         datas = construct.datas
         seqpos = [int(x) for x in construct.seqpos.strip('][').split(',')]
@@ -163,7 +158,7 @@ def save_json_heatmap(entry):
         data_mean = mean(data_mean)
 
         json = {'data': data_matrix, 'peak_max': data_max, 'peak_min': round(data_min, 3), 'peak_mean': round(data_mean, 3), 'peak_sd': round(data_sd, 3), 'row_lim': row_limits, 'x_labels': x_labels, 'y_labels': y_labels, 'precalc_structures': precalc_structures}
-        open('%s/%s-hmap.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w').write(simplejson.dumps(json, sort_keys=True, indent=' ' * 4))
+        simplejson.dump(json, open('%s/%s-hmap.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
     except ConstructSection.DoesNotExist:
         return None
 
@@ -204,7 +199,7 @@ def save_json_tags(entry):
     tags_construct = {'sequence': c.sequence, 'structure': c.structure, 'offset': c.offset, 'sequence_len': len(c.sequence), 'structure_len': len(c.structure), 'data_nrow': len(c.datas), 'data_ncol': len(c.datas[0].values.split(',')), 'err_ncol': c.err_ncol, 'xsel_len': c.xsel_len, 'seqpos_len': c.seqpos_len, 'seqpos': c.seqpos, 'name': c.name}
 
     tags_all = dict(tags_basic.items() + tags_construct.items() + tags_annotation.items())
-    open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w').write(simplejson.dumps(tags_all, sort_keys=True, indent=' ' * 4))
+    simplejson.dump(tags_all, open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
 
 
 def save_json(rmdb_id):
@@ -255,7 +250,7 @@ def save_thumb(entry):
                 bonuses = correct_rx_bonus(data, c)
                 cms = VARNA.get_colormap(bonuses)
 
-                VARNA.run('\" \"', c.structure, '%s-%s.png' % (file_name, i), options={'colorMapStyle': cms, 'colorMap': bonuses, 'bpStyle': 'simple', 'baseInner': '#FFFFFF', 'periodNum': 400, 'spaceBetweenBases': 0.6, 'flat': False} )
+                VARNA.run('\" \"', c.structure, '%s-%s.png' % (file_name, i), options={'colorMapStyle': cms, 'colorMap': bonuses, 'bpStyle': 'simple', 'baseInner': '#FFFFFF', 'periodNum': 400, 'spaceBetweenBases': 0.6, 'flat': False})
                 subprocess.check_call('optipng %s-%s.png' % (file_name, i), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
             subprocess.check_call('convert -delay 100 -resize 300x300 -background none -gravity center -extent 300x300 -loop 0 %s-*.png %s.gif' % (file_name, file_name), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -308,12 +303,11 @@ def save_image(rmdb_id, construct_model, construct_section, entry_type):
                     order.append(int(i_order[1:-1]))
             else:
                 order.append(i)
-        order = [i[0] for i in sorted(enumerate(order), key=lambda x:x[1])] #[::-1]
+        order = [i[0] for i in sorted(enumerate(order), key=lambda x:x[1])]  # [::-1]
     else:
         order = range(values_dims[0])
     # if entry_type != 'MA':
         # order = order[::-1]
-
 
     figure(1)
     frame = gca()
@@ -339,9 +333,9 @@ def save_image(rmdb_id, construct_model, construct_section, entry_type):
         if (values_array[sub_id].mean() > 10):
             outliers = where(values_array > values_array[sub_id].mean() * 3)
             values_array[outliers] = values_array[sub_id].mean() * 3
-        vmax_adjust = values_array[sub_id].mean() * 2 #+ values_array[sub_id].std()*0.35
+        vmax_adjust = values_array[sub_id].mean() * 2  # + values_array[sub_id].std()*0.35
     else:
-        vmax_adjust = values_array.mean() * 1.5 #+ values_array.std()*0.35
+        vmax_adjust = values_array.mean() * 1.5  # + values_array.std()*0.35
     vmax_adjust = max(0, values_array.mean() + values_array.std() * 0.5)
 
     figure(2)

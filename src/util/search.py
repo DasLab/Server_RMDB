@@ -20,7 +20,6 @@ def simple_search(sstring, keyword):
 
         entry_all = list(chain(entry_by_name, entry_by_id, entry_by_desp, entry_by_data_anno, entry_by_anno, entry_by_comment))
 
-
     entry_ids = []
     entries = []
     for e in entry_all:

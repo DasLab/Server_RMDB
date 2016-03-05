@@ -78,15 +78,15 @@ class Command(BaseCommand):
             ver['boto'] = subprocess.Popen('python -c "import boto; print boto.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             open(os.path.join(MEDIA_ROOT, 'data/temp.txt'), 'w').write(subprocess.Popen('pip show pygithub', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip())
             ver['pygithub'] = subprocess.Popen("head -4 %s | tail -1 | sed 's/.*: //g'" % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['xlwt']= subprocess.Popen('python -c "import xlwt; print xlwt.__VERSION__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['requests']= subprocess.Popen('python -c "import requests; print requests.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['simplejson']= subprocess.Popen('python -c "import simplejson; print simplejson.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['virtualenv']= subprocess.Popen('python -c "import virtualenv; print virtualenv.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['pip']= subprocess.Popen('python -c "import pip; print pip.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['numpy']= subprocess.Popen('python -c "import numpy; print numpy.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['scipy']= subprocess.Popen('python -c "import scipy; print scipy.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['matplotlib']= subprocess.Popen('python -c "import matplotlib; print matplotlib.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['numba']= subprocess.Popen('python -c "import numba; print numba.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['xlwt'] = subprocess.Popen('python -c "import xlwt; print xlwt.__VERSION__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['requests'] = subprocess.Popen('python -c "import requests; print requests.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['simplejson'] = subprocess.Popen('python -c "import simplejson; print simplejson.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['virtualenv'] = subprocess.Popen('python -c "import virtualenv; print virtualenv.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['pip'] = subprocess.Popen('python -c "import pip; print pip.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['numpy'] = subprocess.Popen('python -c "import numpy; print numpy.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['scipy'] = subprocess.Popen('python -c "import scipy; print scipy.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['matplotlib'] = subprocess.Popen('python -c "import matplotlib; print matplotlib.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['numba'] = subprocess.Popen('python -c "import numba; print numba.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
             ver['yuicompressor'] = subprocess.Popen("java -jar %s/../yuicompressor.jar -V" % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
@@ -98,12 +98,12 @@ class Command(BaseCommand):
             if DEBUG:
                 mem_str = subprocess.Popen('top -l 1 | head -n 10 | grep PhysMem', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
                 mem_avail = mem_str[mem_str.find(',')+1:mem_str.find('unused')].strip()
-                if 'M' in mem_avail: 
+                if 'M' in mem_avail:
                     mem_avail = '%.1f G' % (int(mem_avail[:-1]) / 1024.)
                 else:
                     mem_avail = mem_avail[:-1] + ' ' + mem_avail[-1]
                 mem_used = mem_str[mem_str.find(':')+1:mem_str.find('used')].strip()
-                if 'M' in mem_used: 
+                if 'M' in mem_used:
                     mem_used = '%.1f G' % (int(mem_used[:-1]) / 1024.)
                 else:
                     mem_used = mem_used[:-1] + ' ' + mem_used[-1]
@@ -111,17 +111,17 @@ class Command(BaseCommand):
                 mem_str = subprocess.Popen('free -h', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().split('\n')
                 mem_str = [x for x in mem_str[2].split(' ') if x]
                 mem_avail = mem_str[-1]
-                if mem_avail[-1] == 'G': 
+                if mem_avail[-1] == 'G':
                     mem_avail = str(float(mem_avail[:-1]) * 1024) + ' M'
                 else:
                     mem_avail = mem_avail[:-1] + ' M'
                 mem_used = mem_str[-2]
-                if mem_used[-1] == 'G': 
+                if mem_used[-1] == 'G':
                     mem_used = str(float(mem_used[:-1]) * 1024) + ' M'
                 else:
                     mem_used = mem_used[:-1] + ' M'
             ver['_mem'] = [mem_avail, mem_used]
-            ver['_cpu']= cpu.replace(' ', '').split('/')
+            ver['_cpu'] = cpu.replace(' ', '').split('/')
 
             ver['_path'] = {
                 'root': MEDIA_ROOT,
@@ -137,10 +137,8 @@ class Command(BaseCommand):
                 ver['_path']['NA_Thermo'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../NA_Thermo'))
                 ver['_path']['RDAT_Kit'] = os.path.abspath(os.path.join(MEDIA_ROOT, '../RDAT_Kit'))
 
-            gdrive_dir = 'echo'
-            if not DEBUG: gdrive_dir = 'cd %s' % APACHE_ROOT
-            prefix = ''
-            if DEBUG: prefix = '_DEBUG'
+            gdrive_dir = 'echo' if DEBUG else 'cd %s' % APACHE_ROOT
+            prefix = '_DEBUG' if DEBUG else ''
             ver['_drive'] = subprocess.Popen("%s && drive quota | awk '{ printf $2 \" G\t\"}'" % gdrive_dir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().split('\t')
 
 
@@ -153,7 +151,7 @@ class Command(BaseCommand):
             ver['screen'] = subprocess.Popen("screen --version | sed 's/.*version//g' | sed 's/(.*//g' | sed 's/[a-z ]//g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['bash'] = subprocess.Popen("bash --version | head -1 | sed 's/.*version//g' | sed 's/-release.*//g' | sed 's/[ ()]//g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['gcc'] = subprocess.Popen("gcc --version | head -1 | sed 's/.*) //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['make'] = subprocess.Popen("make --version | head -1 | sed 's/.*Make//g' | sed 's/ //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['make'] = subprocess.Popen("make --version | head -1 | sed 's/.*Make//g' | sed 's/ //g' | head -1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['cmake'] = subprocess.Popen("cmake --version | head -1 | sed 's/.*version//g' | sed 's/ //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['ninja'] = subprocess.Popen("ninja --version", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             open(os.path.join(MEDIA_ROOT, 'data/temp.txt'), 'w').write(subprocess.Popen('javac -version', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip())
@@ -161,12 +159,12 @@ class Command(BaseCommand):
             ver['coreutils'] = subprocess.Popen("tty --version | head -1 | sed 's/.*) //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['wget'] = subprocess.Popen("wget --version | head -1 | sed 's/.*Wget//g' | sed 's/built.*//g' | sed 's/ //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['tar'] = subprocess.Popen("tar --version | head -1 | sed 's/.*)//g' | sed 's/-.*//g' | sed 's/ //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['setuptools']= subprocess.Popen('python -c "import setuptools; print setuptools.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['tkinter']= subprocess.Popen('python -c "import Tkinter; print Tkinter.Tcl().eval(\'info patchlevel\')"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['setuptools'] = subprocess.Popen('python -c "import setuptools; print setuptools.__version__"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['tkinter'] = subprocess.Popen('python -c "import Tkinter; print Tkinter.Tcl().eval(\'info patchlevel\')"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['imagemagick'] = subprocess.Popen("mogrify -version | head -1 | sed 's/\-.*//g' | sed 's/.*ImageMagick //g'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
 
-            open(os.path.join(MEDIA_ROOT, 'cache/stat_sys.json'), 'w').write(simplejson.dumps(ver, indent=' ' * 4, sort_keys=True))
+            simplejson.dump(ver, open(os.path.join(MEDIA_ROOT, 'cache/stat_sys.json'), 'w'), indent=' ' * 4, sort_keys=True)
             subprocess.Popen('rm %s' % os.path.join(MEDIA_ROOT, 'data/temp.txt'), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             get_backup_stat()
 

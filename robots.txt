@@ -45,6 +45,7 @@ Disallow: /*.py
 Disallow: /*.pyc
 Disallow: /*.md
 Disallow: /*.sh
+Disallow: /.gitignore
 
 Disallow: /site_src/MAPSeeker*.*
 Disallow: /site_src/REEFFIT*.*
