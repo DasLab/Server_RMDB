@@ -172,7 +172,11 @@ def save_json_tags(entry):
     entry.annotations = trim_combine_annotation(EntryAnnotation.objects.filter(section=entry))
     ver_list = get_entry_version(entry.rmdb_id)
 
-    user = RMDBUser.objects.get(user=entry.owner)
+    try:
+        user = RMDBUser.objects.get(user=entry.owner)
+    except:
+        print "    \033[41mERROR\033[0m: Failed to find RMDB User \033[94m%s\033[0m." % entry.owner
+        return
     tags_basic = {'rmdb_id': entry.rmdb_id, 'comments': entry.comments, 'version': entry.version, 'versions': ver_list, 'construct_count': entry.construct_count, 'data_count': entry.data_count,  'status': entry.status, 'type': entry.type, 'pdb_ids': entry.pdb_ids, 'description': entry.description, 'pubmed_id': entry.publication.pubmed_id, 'pub_title': entry.publication.title, 'authors': entry.publication.authors, 'rdat_ver': rdat_ver, 'creation_date': entry.creation_date.strftime('%x'), 'owner_name': user.full_name(), 'owner': entry.owner.username, 'latest': entry.supercede_by}
     tags_annotation = {'annotation': entry.annotations}
 
