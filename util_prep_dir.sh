@@ -12,7 +12,7 @@ cp -n config/oauth.conf.example config/oauth.conf
 cp -n config/t47_dev.py.example config/t47_dev.py
 
 mkdir data
-mkdir data/1d data/2d data/3d
+mkdir data/file data/image data/thumbnail data/json data/search data/tmp
 
 mkdir media/css/min
 mkdir media/js/admin/min media/js/public/min media/js/suit/min
