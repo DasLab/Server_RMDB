@@ -666,9 +666,28 @@ li.left_alone > a {
 }
 .nav_top:hover { background-position: -60px 0; }
 
+.logo_footer_das, .logo_footer_stanford, .logo_footer_eterna {
+  background: url("/site_media/images/logo_footer.png") no-repeat;
+  height: 36px;
+  display: inline-block;
+}
+.logo_footer_das {
+  background-position: 0 0;
+  width: 65px;
+}
+.logo_footer_stanford {
+  background-position: -64px 0;
+  width: 132px;
+}
+.logo_footer_eterna {
+  background-position: -197px 0;
+  width: 117px;
+  margin: 5px;
+}
+
 
 .i_cc_by_64, .i_cc_sa_64, .i_cc_zero_64, .i_cc_64 {
-  background: url("/site_media/images/logo_cc_64.png") no-repeat;
+  background: url("/site_media/images/nav_cc_64.png") no-repeat;
   width: 64px;
   height: 64px;
   display: inline-block;

@@ -2,6 +2,7 @@
     "CRONJOBS": [
         ["cron_string", "call_command", ["backup_job"], {}, ">> path/log_cron.log # backup_weekly"],
         ["cron_string", "call_command", ["upload_job"], {}, ">> path/log_cron.log # gdrive_weekly"],
+        ["cron_string", "call_command", ["cleanup_job"], {}, ">> path/log_cron.log # cleanup_monthly"],
         ["cron_string", "call_command", ["stats_job"], {}, ">> path/log_cron.log # stats_daily"],
         ["cron_string", "call_command", ["zip_rdat_job"], {}, ">> path/log_cron.log # zip_rdat_daily"]
     ],
