@@ -344,7 +344,8 @@ class BackupForm(forms.Form):
     time_upload = forms.TimeField(required=True)
     day_backup = forms.ChoiceField(choices=WEEKDAY_CHOICES)
     day_upload = forms.ChoiceField(choices=WEEKDAY_CHOICES)
-    keep = forms.IntegerField()
+    keep_backup = forms.IntegerField(required=True)
+    keep_job = forms.IntegerField(required=True)
 
 
 def rmdb_user(request):
