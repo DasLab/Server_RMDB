@@ -1,4 +1,5 @@
 mkdir backup
+mkdir config/sys
 
 mkdir cache
 touch cache/log_alert_admin.log cache/log_cron.log cache/log_django.log cache/log_cron_cleanup.log cache/log_cron_dist.log cache/log_cron_backup.log cache/log_cron_gdrive.log cache/log_cron_version.log cache/log_cron_json.log cache/log_cron_img.log cache/log_cron_zip.log
