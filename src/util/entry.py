@@ -93,7 +93,7 @@ def validate_file(file_path, link_path, input_type):
 
 def process_upload(form, upload_file, user):
     (error_msg, flag, entry) = ([], 0, '')
-    rmdb_id = form.cleaned_data['rmdb_id']
+    rmdb_id = form.cleaned_data['rmdb_id'].upper()
 
     try:
         if not check_rmdb_id(rmdb_id):
