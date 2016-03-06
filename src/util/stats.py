@@ -8,7 +8,7 @@ def parse_history():
     hist = HistoryItem.objects.all()
     for h in hist:
         lines = h.content
-        lines = [line for line in lines.split('\r\n') if line.strip()]
+        lines = [line for line in lines.split('\n') if line.strip()]
         ls_1_flag = 0
         ls_2_flag = 0
         for i in range(len(lines)):
@@ -38,7 +38,7 @@ def parse_history():
         lines.insert(0, "<i>%s</i><br/>" % date_string)
         hist_list.insert(0, ''.join(lines))
 
-        return hist_list
+    return hist_list
 
 
 def get_rmdb_stats():
