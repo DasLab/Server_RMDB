@@ -656,3 +656,25 @@ li.left_alone > a {
 .scroll_nav > ul > li.active > ul > li.active > a {
   background-color: #eee;
 }
+
+
+.nav_top {
+  background: url("/site_media/images/nav_top.png") no-repeat;
+  width: 60px;
+  height: 60px;
+  background-position: 0 0;
+}
+.nav_top:hover { background-position: -60px 0; }
+
+
+.i_cc_by_64, .i_cc_sa_64, .i_cc_zero_64, .i_cc_64 {
+  background: url("/site_media/images/logo_cc_64.png") no-repeat;
+  width: 64px;
+  height: 64px;
+  display: inline-block;
+}
+.i_cc_by_64 {  background-position: -65px 0; }
+.i_cc_sa_64 { background-position: -130px 0; }
+.i_cc_zero_64 { background-position: -195px 0; }
+.i_cc_64 { background-position: 0 0; }
+
