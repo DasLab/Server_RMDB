@@ -105,7 +105,7 @@ def get_backup_stat():
 
 
 def refresh_settings():
-    (_, _, _, _, _, CRONJOBS, _, KEEP_BACKUP, KEEP_JOB) = reload_conf(DEBUG, MEDIA_ROOT)
+    (_, _, _, _, _, _, CRONJOBS, _, KEEP_BACKUP, KEEP_JOB) = reload_conf(DEBUG, MEDIA_ROOT)
     settings._wrapped.CRONJOBS = CRONJOBS
     settings._wrapped.KEEP_BACKUP = KEEP_BACKUP
     settings._wrapped.KEEP_JOB = KEEP_JOB
