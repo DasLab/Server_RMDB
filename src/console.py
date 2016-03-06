@@ -82,8 +82,8 @@ def get_folder_num(path):
 
 def get_backup_stat():
     ver = {
-        'rdat': [get_folder_num('%s/data/files/*' % MEDIA_ROOT), humansize(get_folder_size('%s/data/files/*' % MEDIA_ROOT))],
-        'image': [sum([get_folder_num('%s/data/construct_img/*' % MEDIA_ROOT), get_folder_num('%s/data/thumbs/*' % MEDIA_ROOT)]), humansize(sum([get_folder_size('%s/data/construct_img/*' % MEDIA_ROOT), get_folder_size('%s/data/thumbs/*' % MEDIA_ROOT)]))],
+        'rdat': [get_folder_num('%s/data/file/*' % MEDIA_ROOT), humansize(get_folder_size('%s/data/file/*' % MEDIA_ROOT))],
+        'image': [sum([get_folder_num('%s/data/image/*' % MEDIA_ROOT), get_folder_num('%s/data/thumbnail/*' % MEDIA_ROOT)]), humansize(sum([get_folder_size('%s/data/image/*' % MEDIA_ROOT), get_folder_size('%s/data/thumbnail/*' % MEDIA_ROOT)]))],
         'search': [get_folder_num('%s/data/search/*' % MEDIA_ROOT), humansize(get_folder_size('%s/data/search/*' % MEDIA_ROOT))],
         'backup': {
             'mysql': [os.path.join(MEDIA_ROOT, 'backup/backup_mysql.tgz'), humansize(os.path.getsize('%s/backup/backup_mysql.tgz' % MEDIA_ROOT))],

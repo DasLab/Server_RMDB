@@ -287,10 +287,10 @@ def ping_test(request):
 
 
 def test(request):
-    print request.META
+    # entry = RMDBEntry.objects.all()[0]
+    # send_notify_emails(entry, 'tinecidy627@gmail.com')
+
     raise ValueError
-    # send_notify_emails('test', 'test')
-    # send_mail('text', 'test', EMAIL_HOST_USER, [EMAIL_NOTIFY])
     return HttpResponse(content="", status=200)
 
 

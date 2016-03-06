@@ -193,7 +193,7 @@ def submit_entry(form, user, upload_file, rdatfile, isatabfile):
     entry.save()
 
     (error_msg, entry) = save_rdat(entry, upload_file, rdatfile, isatabfile, error_msg)
-    if not DEBUG: send_notify_emails(entry, request)
+    if not DEBUG: send_notify_emails(entry, request.user.email)
     return (error_msg, entry)
 
 
