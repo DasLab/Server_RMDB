@@ -193,7 +193,7 @@ def submit_entry(form, user, upload_file, rdatfile, isatabfile):
     entry.save()
 
     (error_msg, entry) = save_rdat(entry, upload_file, rdatfile, isatabfile, error_msg)
-    if not DEBUG: send_notify_emails(entry, request.user.email)
+    if not DEBUG: send_notify_emails(entry, user.email)
     return (error_msg, entry)
 
 
@@ -313,7 +313,10 @@ def on_entry_del(sender, instance, **kwargs):
             os.remove('%s/%s-tr.png' % (PATH.DATA_DIR['IMG_DIR'], instance.rmdb_id))
         if os.path.exists('%s/%s.gif' % (PATH.DATA_DIR['THUMB_DIR'], instance.rmdb_id)):
             os.remove('%s/%s.gif' % (PATH.DATA_DIR['THUMB_DIR'], instance.rmdb_id))
+        return
 
+    ver_list = [x for x in ver_list if x < ver]
+    if not ver_list: return
     next_ver = max([x for x in ver_list if x < ver])
     shutil.copyfile('%s%s/%s_%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], instance.rmdb_id, instance.rmdb_id, next_ver), '%s%s/%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], instance.rmdb_id, instance.rmdb_id))
     os.remove('%s%s/%s_%s.rdat' % (PATH.DATA_DIR['FILE_DIR'], instance.rmdb_id, instance.rmdb_id, ver))
