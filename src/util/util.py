@@ -1,9 +1,11 @@
 import re
 import simplejson
+import smtplib
 import time
 
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
 
+from src.settings import *
 from src.models import *
 
 
@@ -50,11 +52,21 @@ def get_choice_type(string, collection):
             return collection[i][1]
 
 
-def send_notify_emails(entry, request):
+def send_email(msg_subject, msg_content, msg_receipient):
+    smtpserver = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
+    smtpserver.starttls()
+    smtpserver.login(env('RMDB_GMAIL'), env('APACHE_PASSWORD'))
+    msg = 'Subject: %s\n\n%s' % (msg_subject, msg_content)
+    smtpserver.sendmail(env('RMDB_GMAIL'), msg_receipient, msg)
+    smtpserver.quit()
+
+
+def send_notify_emails(entry, user_email):
     msg_subject = 'RMDB: New entry submitted for review'
     msg_content = ('This is an email triggered by new RMDB entry submission automatically.\n\n' + 'Please review the following submission:\n' + 'RMDB_ID: %s\n' + 'Owner: %s\n' + 'Version: %s\n' + 'Status: %s\n\n' + 'Type: %s\n' + 'Construct(s): %s\n' + 'Data: %s\n' + 'Comments: %s\n' + 'Authors: %s\n' + 'Description: %s\n\n' + 'Please go to the admin page of this entry (http://rmdb.stanford.edu/admin/repository/rmdbentry/%s)\n and check its associated files in RDAT (http://rmdb.stanford.edu/site_data/files/%s/%s.rdat)\n and ISATAB (http://rmdb.stanford.edu/site_data/files/%s/%s_%s.xls) formats. \n\n - RMDB server') % (entry.rmdb_id, entry.owner, entry.version, get_choice_type(entry.status, ENTRY_STATUS_CHOICES), get_choice_type(entry.type, ENTRY_TYPE_CHOICES), entry.construct_count, entry.data_count, entry.comments, entry.authors, entry.description, entry.id, entry.rmdb_id, entry.rmdb_id, entry.rmdb_id, entry.rmdb_id, entry.version)
-    send_mail(msg_subject, msg_content, EMAIL_HOST_USER, [EMAIL_NOTIFY])
+    send_email(msg_subject, msg_content, EMAIL_NOTIFY)
+
     msg_subject = 'Your RMDB Entry %s has been submitted' % entry.rmdb_id
     msg_content = ('This is an automatic email confirmation regarding the following new RMDB entry submission:\n' + 'RMDB_ID: %s\n' + 'Owner: %s\n' + 'Version: %s\n' + 'Status: %s\n\n' + 'Type: %s\n' + 'Construct(s): %s\n' + 'Data: %s\n' + 'Comments: %s\n' + 'Authors: %s\n' + 'Description: %s\n\n' + 'Your submission has been acknowledged by the RMDB team. We will review your entry shortly.\n\n For any questions, please feel free to contact us. Site admin can be reached at: %s \n\n\n Thank you for your submission,\nRMDB server') % (entry.rmdb_id, entry.owner, entry.version, get_choice_type(entry.status, ENTRY_STATUS_CHOICES), get_choice_type(entry.type, ENTRY_TYPE_CHOICES), entry.construct_count, entry.data_count, entry.comments, entry.authors, entry.description, EMAIL_NOTIFY)
-    send_mail(msg_subject, msg_content, EMAIL_HOST_USER, [request.user.email])
+    send_email(msg_subject, msg_content, user_email)
 
