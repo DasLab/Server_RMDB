@@ -141,9 +141,6 @@ def git_stat(request):
     if isinstance(json, HttpResponse): return json
     return HttpResponse(json, content_type='application/json')
 
-def ssl_dash(request):
-    return HttpResponse(dash_ssl(request), content_type='application/json')
-
 
 def backup(request):
     flag = -1
@@ -161,6 +158,10 @@ def doc(request):
 
 
 def get_ver(request):
+    stats = simplejson.load(open('%s/cache/stat_ver.json' % MEDIA_ROOT, 'r'))
+    return HttpResponse(simplejson.dumps(stats, sort_keys=True, indent=' ' * 4), content_type='application/json')
+
+def get_sys(request):
     stats = simplejson.load(open('%s/cache/stat_sys.json' % MEDIA_ROOT, 'r'))
     return HttpResponse(simplejson.dumps(stats, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
@@ -187,10 +188,10 @@ admin.site.register_view('ga_stat/', view=ga_stat, visible=False)
 admin.site.register_view('git/', view=git, visible=False)
 admin.site.register_view('git_stat/', view=git_stat, visible=False)
 
-admin.site.register_view('sys_stat/', view=sys_stat, visible=False)
-admin.site.register_view('ssl_dash/', view=ssl_dash, visible=False)
 admin.site.register_view('dir/', view=dir, visible=False)
 admin.site.register_view('doc/', view=doc, visible=False)
 
+admin.site.register_view('sys_stat/', view=sys_stat, visible=False)
 admin.site.register_view('get_ver/', view=get_ver, visible=False)
+admin.site.register_view('get_sys/', view=get_sys, visible=False)
 admin.site.register_view('get_backup/', view=get_backup, visible=False)

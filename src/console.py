@@ -588,7 +588,7 @@ def git_stats(request):
         return error400(request)
 
 
-def dash_ssl(request):
+def dash_ssl():
     try:
         subprocess.check_call('echo | openssl s_client -connect %s:443 | openssl x509 -noout -enddate > %s' % (env('SSL_HOST'), os.path.join(MEDIA_ROOT, 'data/temp.txt')), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         exp_date = subprocess.Popen('sed %s %s' % ("'s/^notAfter\=//g'", os.path.join(MEDIA_ROOT, 'data/temp.txt')), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
@@ -602,5 +602,5 @@ def dash_ssl(request):
         raise Exception('Error with checking SSL certificate.')
 
     exp_date = datetime.strptime(exp_date.replace('notAfter=', ''), "%b %d %H:%M:%S %Y %Z").strftime('%Y-%m-%d %H:%M:%S')
-    return simplejson.dumps({'exp_date': exp_date}, sort_keys=True, indent=' ' * 4)
+    return exp_date
 

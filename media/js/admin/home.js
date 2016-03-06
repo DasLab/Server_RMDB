@@ -57,21 +57,28 @@ $(document).ready(function() {
             $("#id_rdatkit").html(data.RDAT_Kit);
             $("#id_varna").html(data.VARNA);
             $("#id_rnastructure").html(data.RNA_Structure);
-
-            var drive_used = parseFloat(data._drive[0]), drive_free = parseFloat(data._drive[1]), drive_total = parseFloat(data._drive[2]);
+        }
+    });
+      $.ajax({
+        url : "/admin/get_sys/",
+        dataType: "json",
+        success : function (data) {
+            var drive_used = parseFloat(data.drive[0]), drive_free = parseFloat(data.drive[1]), drive_total = parseFloat(data.drive[2]);
             $("#id_drive_space > div > div.progress-bar-success").css("width", (drive_free / drive_total * 100).toString() + '%' ).html(drive_free + ' G');
             $("#id_drive_space > div > div.progress-bar-danger").css("width", (100 - drive_free / drive_total * 100).toString() + '%' ).html(drive_used + ' G');
-            $("#id_disk_space > div > div.progress-bar-success").css("width", (parseFloat(data._disk[0]) / (parseFloat(data._disk[0]) + parseFloat(data._disk[1])) * 100).toString() + '%' ).html(data._disk[0]);
-            $("#id_disk_space > div > div.progress-bar-danger").css("width", (parseFloat(data._disk[1]) / (parseFloat(data._disk[0]) + parseFloat(data._disk[1])) * 100).toString() + '%' ).html(data._disk[1]);
-            $("#id_memory > div > div.progress-bar-success").css("width", (parseFloat(data._mem[0]) / (parseFloat(data._mem[0]) + parseFloat(data._mem[1])) * 100).toString() + '%' ).html(data._mem[0]);
-            $("#id_memory > div > div.progress-bar-danger").css("width", (parseFloat(data._mem[1]) / (parseFloat(data._mem[0]) + parseFloat(data._mem[1])) * 100).toString() + '%' ).html(data._mem[1]);
-            $("#id_cpu").html('<span style="color:#f00;">' + data._cpu[0] + '</span> | <span style="color:#080;">' + data._cpu[1] + '</span> | <span style="color:#00f;">' + data._cpu[2] + '</span>');
+            $("#id_disk_space > div > div.progress-bar-success").css("width", (parseFloat(data.disk[0]) / (parseFloat(data.disk[0]) + parseFloat(data.disk[1])) * 100).toString() + '%' ).html(data.disk[0]);
+            $("#id_disk_space > div > div.progress-bar-danger").css("width", (parseFloat(data.disk[1]) / (parseFloat(data.disk[0]) + parseFloat(data.disk[1])) * 100).toString() + '%' ).html(data.disk[1]);
+            $("#id_memory > div > div.progress-bar-success").css("width", (parseFloat(data.memory[0]) / (parseFloat(data.memory[0]) + parseFloat(data.memory[1])) * 100).toString() + '%' ).html(data.memory[0]);
+            $("#id_memory > div > div.progress-bar-danger").css("width", (parseFloat(data.memory[1]) / (parseFloat(data.memory[0]) + parseFloat(data.memory[1])) * 100).toString() + '%' ).html(data.memory[1]);
+            $("#id_cpu").html('<span style="color:#f00;">' + data.cpu[0] + '</span> | <span style="color:#080;">' + data.cpu[1] + '</span> | <span style="color:#00f;">' + data.cpu[2] + '</span>');
 
-            $("#id_base_dir").html('<code>' + data._path.root + '</code>');
-            $("#id_media_root").html('<code>' + data._path.media + '</code>');
-            $("#id_static_root").html('<code>' + data._path.data + '</code>');
-            $("#id_rnastructure_path").html('<code>' + data._path.RNA_Structure + '</code>');
-            $("#id_rdatkit_path").html('<code>' + data._path.RDAT_Kit + '</code>');
+            $("#id_base_dir").html('<code>' + data.path.root + '</code>');
+            $("#id_media_root").html('<code>' + data.path.media + '</code>');
+            $("#id_static_root").html('<code>' + data.path.data + '</code>');
+            $("#id_rnastructure_path").html('<code>' + data.path.RNA_Structure + '</code>');
+            $("#id_rdatkit_path").html('<code>' + data.path.RDAT_Kit + '</code>');
+
+            $("#id_ssl_exp").html('<span class="label label-inverse">' + data.ssl_cert + '</span> (UTC)');
         }
     });
     $.ajax({
@@ -86,7 +93,6 @@ $(document).ready(function() {
         url : "/admin/backup_form/",
         dataType: "json",
         success : function (data) {
-
             $("#id_week_backup").html($("#id_week_backup").html() + '<br/>On <span class="label label-primary">' + data.time_backup + '</span> every <span class="label label-inverse">' + weekdayNames[data.day_backup] + '</span> (UTC)');
             $("#id_week_upload").html($("#id_week_upload").html() + '<br/>On <span class="label label-primary">' + data.time_upload + '</span> every <span class="label label-inverse">' + weekdayNames[data.day_upload] + '</span> (UTC)');
 
@@ -100,14 +106,6 @@ $(document).ready(function() {
             } else {
                 $("#id_week_upload_stat").html('<p class="lead"><span class="label label-danger"><span class="glyphicon glyphicon-remove-sign"></span></span></p>');
             }
-        }
-    });
-
-   $.ajax({
-        url : "/admin/ssl_dash/",
-        dataType: "json",
-        success : function (data) {
-            $("#id_ssl_exp").html('<span class="label label-inverse">' + data.exp_date + '</span> (UTC)');
         }
     });
 
