@@ -103,7 +103,6 @@ else:
         url(r'^site_media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT + '/media'}),
         url(r'^site_data/tmp/(?P<path>.*)$', RedirectView.as_view(url='/error/403/', permanent=True)),
         url(r'^site_data/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT + '/data'}),
-        url(r'^site_src/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT + '/misc'}),
 
         url(r'^admin/browse/' + path_end, user.browse),
         url(r'^admin/', include(admin.site.urls)),
