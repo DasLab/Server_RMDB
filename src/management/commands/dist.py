@@ -50,7 +50,7 @@ class Command(BaseCommand):
             open('%s/dist/MAPSeeker-LICENSE.md' % MEDIA_ROOT, 'w').write(data)
 
 
-            repo = 'DasLab/map_seeker'
+            repo = 'DasLab/REEFFIT'
             releases = gh.get_repo(repo).get_releases()
             result = []
             for rel in releases:
@@ -89,6 +89,6 @@ class Command(BaseCommand):
             sys.exit(1)
         else:
             self.stdout.write("    \033[92mSUCCESS\033[0m: \033[94mDasLab/MAP_Seeker\033[0m releases downloaded.")
-            self.stdout.write("    \033[92mSUCCESS\033[0m: \033[94mDasLab/map_seeker\033[0m releases downloaded.")
+            self.stdout.write("    \033[92mSUCCESS\033[0m: \033[94mDasLab/REEFFIT\033[0m releases downloaded.")
             self.stdout.write("Time elapsed: %.1f s." % (time.time() - t0))
 
