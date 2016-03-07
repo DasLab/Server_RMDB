@@ -30,9 +30,9 @@ class Command(BaseCommand):
             result = []
             for rel in releases:
                 ver = rel.tag_name
-                if not os.path.exists('%s/misc/mapseeker-%s.zip' % (MEDIA_ROOT, ver)):
-                    subprocess.check_call('cd %s/misc && curl -O -J -L -u %s:%s https://github.com/%s/archive/%s.zip' % (MEDIA_ROOT, GIT["USERNAME"], GIT["PASSWORD"], repo, ver), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                    subprocess.check_call('cd %s/misc && mv map_seeker-%s.zip mapseeker-%s.zip' % (MEDIA_ROOT, ver, ver), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                if not os.path.exists('%s/dist/mapseeker-%s.zip' % (MEDIA_ROOT, ver)):
+                    subprocess.check_call('cd %s/dist && curl -O -J -L -u %s:%s https://github.com/%s/archive/%s.zip' % (MEDIA_ROOT, GIT["USERNAME"], GIT["PASSWORD"], repo, ver), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                    subprocess.check_call('cd %s/dist && mv map_seeker-%s.zip MAPSeeker-%s.zip' % (MEDIA_ROOT, ver, ver), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                     print "Release \033[94m%s\033[0m downloaded." % ver
                 else:
                     print "Release \033[94m%s\033[0m already exists and is ignored." % ver
@@ -40,14 +40,14 @@ class Command(BaseCommand):
                 result.append({'version': ver, 'title': rel.title, 'description': rel.body})
             json['mapseeker'] = result
 
-            if os.path.exists('%s/misc/MAPSeeker-master.zip' % MEDIA_ROOT):
-                os.remove('%s/misc/MAPSeeker-master.zip' % MEDIA_ROOT)
-            subprocess.check_call('cd %s/misc && curl -O -J -L -u %s:%s https://github.com/%s/archive/master.zip' % (MEDIA_ROOT, GIT["USERNAME"], GIT["PASSWORD"], repo), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            subprocess.check_call('cd %s/misc && mv map_seeker-master.zip MAPSeeker-master.zip' % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            if os.path.exists('%s/dist/MAPSeeker-master.zip' % MEDIA_ROOT):
+                os.remove('%s/dist/MAPSeeker-master.zip' % MEDIA_ROOT)
+            subprocess.check_call('cd %s/dist && curl -O -J -L -u %s:%s https://github.com/%s/archive/master.zip' % (MEDIA_ROOT, GIT["USERNAME"], GIT["PASSWORD"], repo), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            subprocess.check_call('cd %s/dist && mv map_seeker-master.zip MAPSeeker-master.zip' % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print "Release \033[94mlatest master\033[0m downloaded."
-            zf = zipfile.ZipFile('%s/misc/MAPSeeker-master.zip' % MEDIA_ROOT, 'r')
+            zf = zipfile.ZipFile('%s/dist/MAPSeeker-master.zip' % MEDIA_ROOT, 'r')
             data = zf.read('map_seeker-master/LICENSE.md')
-            open('%s/misc/MAPSeeker-license.md' % MEDIA_ROOT, 'w').write(data)
+            open('%s/dist/MAPSeeker-LICENSE.md' % MEDIA_ROOT, 'w').write(data)
 
 
             repo = 'DasLab/REEFFIT'
@@ -55,8 +55,8 @@ class Command(BaseCommand):
             result = []
             for rel in releases:
                 ver = rel.tag_name
-                if not os.path.exists('%s/misc/reeffit-%s.zip' % (MEDIA_ROOT, ver)):
-                    subprocess.check_call('cd %s/misc && curl -O -J -L -u %s:%s https://github.com/%s/archive/%s.zip' % (MEDIA_ROOT, GIT["USERNAME"], GIT["PASSWORD"], repo, ver), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                if not os.path.exists('%s/dist/reeffit-%s.zip' % (MEDIA_ROOT, ver)):
+                    subprocess.check_call('cd %s/dist && curl -O -J -L -u %s:%s https://github.com/%s/archive/%s.zip' % (MEDIA_ROOT, GIT["USERNAME"], GIT["PASSWORD"], repo, ver), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                     print "Release \033[94m%s\033[0m downloaded." % ver
                 else:
                     print "Release \033[94m%s\033[0m already exists and is ignored." % ver
@@ -66,13 +66,13 @@ class Command(BaseCommand):
 
             open('%s/cache/stat_dist.json' % MEDIA_ROOT, 'w').write(simplejson.dumps(json, indent=' ' * 4, sort_keys=True))
 
-            if os.path.exists('%s/misc/REEFFIT-master.zip' % MEDIA_ROOT):
-                os.remove('%s/misc/REEFFIT-master.zip' % MEDIA_ROOT)
-            subprocess.check_call('cd %s/misc && curl -O -J -L -u %s:%s https://github.com/%s/archive/master.zip' % (MEDIA_ROOT, GIT["USERNAME"], GIT["PASSWORD"], repo), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            if os.path.exists('%s/dist/REEFFIT-master.zip' % MEDIA_ROOT):
+                os.remove('%s/dist/REEFFIT-master.zip' % MEDIA_ROOT)
+            subprocess.check_call('cd %s/dist && curl -O -J -L -u %s:%s https://github.com/%s/archive/master.zip' % (MEDIA_ROOT, GIT["USERNAME"], GIT["PASSWORD"], repo), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             print "Release \033[94mlatest master\033[0m downloaded."
-            zf = zipfile.ZipFile('%s/misc/REEFFIT-master.zip' % MEDIA_ROOT, 'r')
+            zf = zipfile.ZipFile('%s/dist/REEFFIT-master.zip' % MEDIA_ROOT, 'r')
             data = zf.read('REEFFIT-master/LICENSE.md')
-            open('%s/misc/REEFFIT-license.md' % MEDIA_ROOT, 'w').write(data)
+            open('%s/dist/REEFFIT-LICENSE.md' % MEDIA_ROOT, 'w').write(data)
 
         except Exception:
             err = traceback.format_exc()

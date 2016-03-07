@@ -11,7 +11,7 @@
         </p>
         <p>
           Your request for {{title}} was successfully processed. Your download should start automatically. If not, please use this
-          <a href="/site_src/{{title}}-master.zip" class="btn btn-primary" id="dl_zip" download>&nbsp;Link&nbsp;&nbsp;<span class="glyphicon glyphicon-new-window"></span></a>.
+          <a href="/tools/download/{{keyword}}/master/" class="btn btn-primary" id="dl_zip">&nbsp;Link&nbsp;&nbsp;<span class="glyphicon glyphicon-new-window"></span></a>.
         </p>
         <p>
           For tutorial and documentation of the {{title}}, see
@@ -37,7 +37,7 @@
           <tr>
             <td>
               <span class="glyphicon glyphicon-heart-empty"></span>&nbsp;&nbsp;<b class="lead" style="color:#ff912e;">latest</b>
-              &nbsp;&nbsp;<a href="/site_src/{{title}}-master.zip" target="_blank" download><span class="glyphicon glyphicon-floppy-save"></span></a>
+              &nbsp;&nbsp;<a href="/tools/download/{{keyword}}/master/" target="_blank"><span class="glyphicon glyphicon-floppy-save"></span></a>
             </td>
             <td><b>Development</b> from <i>master</i> with latest features as preview for next release.</td>
           </tr>
@@ -46,7 +46,7 @@
           <tr>
             <td>
               <span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;<b class="lead" style="color:#5496d7;">{{d.version}}</b>
-              &nbsp;&nbsp;<a href="/site_src/{{title}}-{{d.version}}.zip" target="_blank" download><span class="glyphicon glyphicon-download-alt"></span></a>
+              &nbsp;&nbsp;<a href="/tools/download/{{keyword}}/{{d.version}}/" target="_blank"><span class="glyphicon glyphicon-download-alt"></span></a>
             </td>
             <td>
               <b>{{d.title}}</b>

@@ -1,4 +1,4 @@
-mkdir backup
+mkdir backup dist
 mkdir config/sys
 
 mkdir cache

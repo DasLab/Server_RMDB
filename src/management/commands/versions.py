@@ -92,7 +92,7 @@ class Command(BaseCommand):
             ver['yuicompressor'] = subprocess.Popen("java -jar %s/../yuicompressor.jar -V" % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
             ver['RDAT_Kit'] = rdatkit.__version__
             ver['RNA_Structure'] = subprocess.Popen("%s --version | head -1 | sed 's/.*Version //g' | sed 's/\.$//g'" % rdatkit.util.PATH_RNA_STRUCTURE_FOLD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
-            ver['VARNA'] = subprocess.Popen("cd %s/misc/ && ls VARNAv*.jar | sed 's/VARNAv//g' | sed 's/\.jar//g' | sed 's/\-/\./g'" % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
+            ver['VARNA'] = subprocess.Popen("cd %s/dist/ && ls VARNAv*.jar | sed 's/VARNAv//g' | sed 's/\.jar//g' | sed 's/\-/\./g'" % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip()
 
             disk_sp = subprocess.Popen('df -h | grep "/dev/"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].split()
             syst['disk'] = [disk_sp[3][:-1] + ' G', disk_sp[2][:-1] + ' G']

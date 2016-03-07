@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanen
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render_to_response
+from django.utils.encoding import smart_str
 
 from rdatkit import SecondaryStructure
 
@@ -38,7 +39,13 @@ def tools(request):
 def tools_license(request, keyword):
     if keyword in ('mapseeker', 'reeffit'):
         title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
-        return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword': keyword, 'title': title}, context_instance=RequestContext(request))
+        file_name = '%s/dist/%s-LICENSE.md' % (MEDIA_ROOT, title)
+        license_md = '404 Not Found'
+        if os.path.exists(file_name):
+            license_md = ''.join(open(file_name, 'r').readlines())
+            license_md = license_md.replace('\n', '<br/>') + '</strong>'
+
+        return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword': keyword, 'title': title, 'license_md': license_md}, context_instance=RequestContext(request))
     else:
         return error404(request)
 
@@ -54,6 +61,22 @@ def tools_download(request, keyword):
         return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword': keyword, 'title': title, 'dist': result}, context_instance=RequestContext(request))
     else:
         return error404(request)
+
+@login_required
+def tools_link(request, keyword, tag):
+    records = SourceDownloader.objects.filter(package=keyword, rmdb_user=RMDBUser.objects.get(user=request.user))
+    if len(records):
+        title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
+        tag = tag.replace('/', '')
+        file_name = '%s/dist/%s-%s.zip' % (MEDIA_ROOT, title, tag)
+        if os.path.exists(file_name):
+            response = HttpResponse(content_type='application/zip')
+            response['Content-Disposition'] = 'attachment; filename=%s-%s.zip' % (title, tag)
+            response['X-Sendfile'] = smart_str(file_name)
+            return response
+        else:
+            return error404(request)
+    return error401(request)
 
 def tutorial(request, keyword):
     if keyword in ('predict', 'api', 'rdatkit', 'hitrace', 'mapseeker', 'reeffit'):
