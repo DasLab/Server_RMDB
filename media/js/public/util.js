@@ -32,7 +32,7 @@ $(document).ready(function() {
 
   $("#top").on("click", function () {
     event.preventDefault();
-    $('#top > div').animate({'left':'-5%', 'opacity':'0'}, 125);
+    $('#top > div').animate({'right':'-5%', 'opacity':'0'}, 125);
     $("html, body").stop().animate({scrollTop: 0}, 250);
   });
 

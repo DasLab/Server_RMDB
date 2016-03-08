@@ -611,64 +611,78 @@ ul.breadcrumb > li.active {
 }*/
 
 
-
-.i_aws_14_o, .i_aws_14, .i_bot_14_o, .i_bot_14, .i_bot2_14_o, .i_bot2_14, .i_dropbox_14_o, .i_dropbox_14, .i_ga_14_o, .i_ga_14, .i_gdrive_14_o, .i_gdrive_14, .i_git_14_o, .i_git_14, .i_linkedin_14_o, .i_linkedin_14, .i_slack_14_o, .i_slack_14 {
-  background: url("/site_media/images/nav_icon_14.png") no-repeat;
-  width: 14px;
+.i_14 {
   height: 14px;
-  display: inline-block;
+  width: 14px;
 }
-.i_aws_14_o { background-position: -14px 0; }
-.i_aws_14 { background-position: 0 0; }
-.i_bot_14_o { background-position: -42px 0; }
-.i_bot_14 { background-position: -28px 0; }
-.i_bot2_14_o { background-position: 0 -14px; }
-.i_bot2_14 { background-position: -14px -14px; }
-.i_dropbox_14_o { background-position: -28px -14px; }
-.i_dropbox_14 { background-position: -42px -14px; }
-.i_ga_14_o { background-position: -14px -28px; }
-.i_ga_14 { background-position: 0 -28px; }
-.i_gdrive_14_o { background-position: -42px -28px; }
-.i_gdrive_14 { background-position: -28px -28px; }
-.i_git_14_o { background-position: -70px 0; }
-.i_git_14 { background-position: -56px 0; }
-.i_linkedin_14_o { background-position: -70px -28px; }
-.i_linkedin_14 { background-position: -56px -28px; }
-.i_slack_14_o { background-position: -56px -14px; }
-.i_slack_14 { background-position: -70px -14px; }
-
-.i_aws_21_o, .i_aws_21, .i_bot_21_o, .i_bot_21, .i_bot2_21_o, .i_bot2_21, .i_dropbox_21_o, .i_dropbox_21, .i_ga_21_o, .i_ga_21, .i_gdrive_21_o, .i_gdrive_21, .i_git_21_o, .i_git_21, .i_linkedin_21_o, .i_linkedin_21, .i_slack_21_o, .i_slack_21 {
-  background: url("/site_media/images/nav_icon_21.png") no-repeat;
-  width: 21px;
+.i_21 {
   height: 21px;
-  display: inline-block;
+  width: 21px;
 }
-.i_aws_21_o { background-position: -21px 0; }
-.i_aws_21 { background-position: 0 0; }
-.i_bot_21_o { background-position: -63px 0; }
-.i_bot_21 { background-position: -42px 0; }
-.i_bot2_21_o { background-position: 0 -21px; }
-.i_bot2_21 { background-position: -21px -21px; }
-.i_dropbox_21_o { background-position: -42px -21px; }
-.i_dropbox_21 { background-position: -63px -21px; }
-.i_ga_21_o { background-position: -21px -42px; }
-.i_ga_21 { background-position: 0 -42px; }
-.i_gdrive_21_o { background-position: -63px -42px; }
-.i_gdrive_21 { background-position: -42px -42px; }
-.i_git_21_o { background-position: -105px 0; }
-.i_git_21 { background-position: -84px 0; }
-.i_linkedin_21_o { background-position: -105px -42px; }
-.i_linkedin_21 { background-position: -84px -42px; }
-.i_slack_21_o { background-position: -84px -21px; }
-.i_slack_21 { background-position: -105px -21px; }
 
-
-.nav_top {
-  background: url("/site_media/images/nav_top.png") no-repeat;
-  width: 60px;
-  height: 60px;
-  background-position: 0 0;
+.i_aws,
+.i_bot,
+.i_bot2,
+.i_dropbox,
+.i_ga,
+.i_gdrive,
+.i_git,
+.i_linkedin,
+.i_slack,
+.i_aws_o,
+.i_bot_o,
+.i_bot2_o,
+.i_dropbox_o,
+.i_ga_o,
+.i_gdrive_o,
+.i_git_o,
+.i_linkedin_o,
+.i_slack_o {
+  max-width: 128px; 
+  max-height: 128px;
 }
-.nav_top:hover { background-position: -60px 0; }
-
-
+.i_aws::after, 
+.i_bot::after, 
+.i_bot2::after, 
+.i_dropbox::after, 
+.i_ga::after, 
+.i_gdrive::after, 
+.i_git::after, 
+.i_linkedin::after, 
+.i_slack::after,
+.i_aws_o::after, 
+.i_bot_o::after, 
+.i_bot2_o::after, 
+.i_dropbox_o::after, 
+.i_ga_o::after, 
+.i_gdrive_o::after, 
+.i_git_o::after, 
+.i_linkedin_o::after, 
+.i_slack_o::after { 
+  content: ' '; 
+  display: inline-block; 
+  max-width: 100%;
+  background-size: 200% auto; 
+  background-image: url("/site_media/images/nav_icons.png");
+  height: 0; 
+  width: 100%; 
+  padding-bottom: 100%;
+}
+.i_aws::after { background-position: 100% 0%; }
+.i_bot::after { background-position: 100% 12.5%; }
+.i_bot2::after { background-position: 100% 25%; }
+.i_dropbox::after { background-position: 100% 37.5%; }
+.i_ga::after { background-position: 100% 50%; }
+.i_gdrive::after { background-position: 100% 62.5%; }
+.i_git::after { background-position: 100% 75%; }
+.i_linkedin::after { background-position: 100% 87.5%; }
+.i_slack::after { background-position: 100% 100%; }
+.i_aws_o::after { background-position: 0 0%; }
+.i_bot_o::after { background-position: 0 12.5%; }
+.i_bot2_o::after { background-position: 0 25%; }
+.i_dropbox_o::after { background-position: 0 37.5%; }
+.i_ga_o::after { background-position: 0 50%; }
+.i_gdrive_o::after { background-position: 0 62.5%; }
+.i_git_o::after { background-position: 0 75%; }
+.i_linkedin_o::after { background-position: 0 87.5%; }
+.i_slack_o::after { background-position: 0 100%; }

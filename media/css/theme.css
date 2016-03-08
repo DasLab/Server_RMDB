@@ -659,30 +659,66 @@ li.left_alone > a {
 
 
 .nav_top {
-  background: url("/site_media/images/nav_top.png") no-repeat;
-  width: 60px;
-  height: 60px;
-  background-position: 0 0;
+  max-width: 197px; 
+  max-height: 197px;
 }
-.nav_top:hover { background-position: -60px 0; }
+.nav_top::after {
+  content: ' '; 
+  display: inline-block; 
+  max-width: 100%;
+  background-image: url('/site_media/images/nav_top.png');
+  width: 100%; 
+  height: 0; 
+  padding-bottom: 100%;
+  background-position: 0 100%; 
+  background-size: 100% auto;
+}
+.nav_top:hover::after { background-position: 0 0; }
 
-.logo_footer_das, .logo_footer_stanford, .logo_footer_eterna {
-  background: url("/site_media/images/logo_footer.png") no-repeat;
-  height: 36px;
+
+.sprite { display: inline-block; }
+
+.logo_footer_das::after,
+.logo_footer_eterna::after,
+.logo_footer_stanford::after {
+  content: ' ';
   display: inline-block;
+  max-width: 100%;
+  background-size: 100%;
+  background-image: url('/site_media/images/logo_footer.png');
 }
 .logo_footer_das {
-  background-position: 0 0;
-  width: 65px;
+  max-width: 141px; 
+  max-height: 82px;
 }
-.logo_footer_stanford {
-  background-position: -64px 0;
-  width: 132px;
+.logo_footer_das::after {
+  width: 321.28%; 
+  height: 0; 
+  padding-bottom: 58.16%;
+  background-position: 0 0%; 
+  background-size: 321.28% auto; 
 }
 .logo_footer_eterna {
-  background-position: -197px 0;
-  width: 117px;
-  margin: 5px;
+  max-width: 310px; 
+  max-height: 105px;
+}
+.logo_footer_eterna::after {
+  width: 146.13%; 
+  height: 0; 
+  padding-bottom: 33.87%;
+  background-position: 0 35.19%; 
+  background-size: 146.13% auto;
+}
+.logo_footer_stanford {
+  max-width: 453px; 
+  max-height: 151px;
+}
+.logo_footer_stanford::after {
+  width: 100%; 
+  height: 0; 
+  padding-bottom: 33.33%;
+  background-position: 0 100%; 
+  background-size: 100% auto; 
 }
 
 
