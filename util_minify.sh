@@ -20,8 +20,8 @@ cat media/js/public/min/view_util.min.js media/js/public/min/view_tags.min.js me
 rm media/js/public/min/view*.min.js
 mv media/js/public/min/view.js media/js/public/min/view.min.js
 
-cat media/js/suit/min/core.min.js media/js/suit/min/RelatedObjectLookups.min.js media/js/suit/min/jquery.init.min.js media/js/suit/min/actions.min.js media/js/suit/min/DateTimeShortcuts.min.js > media/js/suit/min/core.js
-rm media/js/suit/min/core.min.js media/js/suit/min/RelatedObjectLookups.min.js media/js/suit/min/jquery.init.min.js media/js/suit/min/actions.min.js media/js/suit/min/DateTimeShortcuts.min.js
+cat media/js/suit/min/core.min.js media/js/suit/min/RelatedObjectLookups.min.js media/js/suit/min/jquery.init.min.js media/js/suit/min/actions.min.js media/js/suit/min/jquery.formset.min.js media/js/suit/min/DateTimeShortcuts.min.js > media/js/suit/min/core.js
+rm media/js/suit/min/core.min.js media/js/suit/min/RelatedObjectLookups.min.js media/js/suit/min/jquery.init.min.js media/js/suit/min/actions.min.js media/js/suit/min/jquery.formset.min.js media/js/suit/min/DateTimeShortcuts.min.js
 mv media/js/suit/min/core.js media/js/suit/min/core.min.js
 
 cat media/js/admin/min/_suit.min.js media/js/admin/min/table.min.js media/js/admin/min/clock.min.js media/js/admin/min/menu.min.js > media/js/admin/min/menu.js
