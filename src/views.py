@@ -216,15 +216,15 @@ def upload(request):
             upload_file = request.FILES['file']
             user = request.user
             (error_msg, flag, entry) = process_upload(form, upload_file, user)
+
+            if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
+                os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
         else:
             flag = 1
             (error_msg, entry) = ([], '')
             if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
             if 'file' in form.errors: error_msg.append('Input file field is required.')
             if 'authors' in form.errors: error_msg.append('Authors field is required.')
-
-        if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
-            os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
 
     if not flag:
         (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
