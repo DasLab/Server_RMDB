@@ -46,8 +46,8 @@ else:
         url(r'^deposit/submit/?$', views.upload),
         url(r'^deposit/review/?$', views.review),
 
-        url(r'^analyze/predict/?$', views.predict),
-        url(r'^analyze/view/?$', views.str_view),
+        # url(r'^analyze/predict/?$', views.predict),
+        # url(r'^analyze/view/?$', views.str_view),
 
         url(r'^tools/?$', views.tools),
         url(r'^tools/license/?(?P<keyword>\w+)/$', views.tools_license),
@@ -60,7 +60,7 @@ else:
         url(r'^reeffit/?$', views.tutorial, {'keyword': 'reeffit'}),
 
         url(r'^search/?$', views.search),
-        url(r'^advanced_search/?$', views.advanced_search),
+        # url(r'^advanced_search/?$', views.advanced_search),
 
         url(r'^login/?$', user.user_login),
         url(r'^register/?$', user.register),
