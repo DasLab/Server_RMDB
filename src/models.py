@@ -252,10 +252,10 @@ class UploadForm(forms.Form):
     file_type = forms.ChoiceField(required=True, choices=FORMAT_TYPE_CHOICES)
     file = forms.FileField(required=True)
 
-    rmdb_id = forms.CharField(required=True)
-    publication = forms.CharField(required=False)
-    pubmed_id = forms.CharField(required=False)
-    authors = forms.CharField(required=True)
+    rmdb_id = forms.CharField(required=True, max_length=25)
+    publication = forms.CharField(required=False, max_length=255)
+    pubmed_id = forms.CharField(required=False, max_length=31)
+    authors = forms.CharField(required=True, max_length=255)
     description = forms.CharField(widget=forms.Textarea, required=False)
 
 
