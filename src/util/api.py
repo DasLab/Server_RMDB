@@ -15,6 +15,7 @@ import simplejson
 
 
 def search(request, sstring):
+    sstring = sstring.encode('ascii', 'ignore')
     if 'type' in request.GET:
         keyword = request.GET.get('type')
         return HttpResponse(simplejson.dumps(simple_search(sstring, keyword), sort_keys=True, indent=' ' * 4), content_type='application/json')

@@ -183,7 +183,7 @@ def search(request):
     else:
         form = SearchForm(request.GET)
         if form.is_valid():
-            sstring = form.cleaned_data['sstring']
+            sstring = form.cleaned_data['sstring'].encode('utf-8', 'ignore')
             return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': sstring}, context_instance=RequestContext(request))
         else:
             return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': ''}, context_instance=RequestContext(request))
