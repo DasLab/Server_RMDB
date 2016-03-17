@@ -54,24 +54,27 @@ $(document).ready(function() {
                 if (data.length) {
                     $("#N_search").html('<a id="buttonGeneral" href="#categoryGeneral" style="color:inherit"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;General # Entries</a>: <span class="badge" >' + data.length + '</span><br/>');
                 }
-            }
-        });
-        $.ajax({
-            url: '/api/search/' + search_word + '?type=eterna',
-            dataType: 'json',
-            async: true,
-            success: function(data) {
-                $("#panel_eterna").removeClass('place_holder').html(fill_category(data, 'Eterna'));
-                if (data.length) {
-                    $("#N_search").html($("#N_search").html() + '<a id="buttonEterna" href="#categoryEterna" style="color:inherit"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>&nbsp;Eterna # Entries</a>: <span class="badge" >' + data.length + '</span><br/>');
-                }
             },
             complete: function(xhr) {
-                if(!$("#N_search").html().length) {
-                    render_nomatch();
-                }
-            }
+                $.ajax({
+                    url: '/api/search/' + search_word + '?type=eterna',
+                    dataType: 'json',
+                    async: true,
+                    success: function(data) {
+                        $("#panel_eterna").removeClass('place_holder').html(fill_category(data, 'Eterna'));
+                        if (data.length) {
+                            $("#N_search").html($("#N_search").html() + '<a id="buttonEterna" href="#categoryEterna" style="color:inherit"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>&nbsp;Eterna # Entries</a>: <span class="badge" >' + data.length + '</span><br/>');
+                        }
+                    },
+                    complete: function(xhr) {
+                        if(!$("#N_search").html().length) {
+                            render_nomatch();
+                        }
+                    }
+                });                
+            } 
         });
+
     } else {
         render_nomatch();
     }
