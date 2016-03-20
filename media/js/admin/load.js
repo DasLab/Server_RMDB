@@ -1,5 +1,5 @@
 var xmlhttp = new XMLHttpRequest(), isCDN = false;
-var ver_jquery, ver_bootstrap, ver_d3, ver_zclip;
+var ver_jquery, ver_bootstrap, ver_d3;
 xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {
         if (xmlhttp.status == 200) {
@@ -7,7 +7,6 @@ xmlhttp.onreadystatechange = function() {
             ver_jquery = xmlDoc.jquery;
             ver_bootstrap = xmlDoc.bootstrap;
             ver_d3 = xmlDoc.d3;
-            ver_zclip = xmlDoc.zclip;
 
             document.write('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/' + ver_jquery + '/jquery.min.js"><\/script>');
             document.write('\
