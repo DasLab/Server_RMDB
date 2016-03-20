@@ -38,6 +38,10 @@ function render_package(string) {
         span_class = 'primary';
     } else if (string == 'REEFFIT') {
         span_class = 'danger';
+    } else if (string == 'HiTRACE') {
+        span_class = 'violet';
+    } else if (string == 'RDATKit') {
+        span_class = 'success';
     }
     return '<span class="label label-' + span_class + '">' + string + '</span>';
 }

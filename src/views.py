@@ -23,6 +23,8 @@ from datetime import datetime
 import simplejson
 # import traceback
 
+dist_dict = {'mapseeker': 'MAPSeeker', 'reeffit': 'REEFFIT', 'hitrace': 'HiTRACE', 'rdatkit': 'RDATKit'}
+
 
 def index(request):
     return render_to_response(PATH.HTML_PATH['index'], {}, context_instance=RequestContext(request))
@@ -37,8 +39,8 @@ def tools(request):
     return render_to_response(PATH.HTML_PATH['repos'], {}, context_instance=RequestContext(request))
 
 def tools_license(request, keyword):
-    if keyword in ('mapseeker', 'reeffit'):
-        title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
+    if keyword in ('mapseeker', 'reeffit', 'hitrace', 'rdatkit'):
+        title = dist_dict[keyword]
         file_name = '%s/dist/%s-LICENSE.md' % (MEDIA_ROOT, title)
         license_md = '404 Not Found'
         if os.path.exists(file_name):
@@ -51,13 +53,13 @@ def tools_license(request, keyword):
 
 @login_required
 def tools_download(request, keyword):
-    if keyword in ('mapseeker', 'reeffit'):
+    if keyword in ('mapseeker', 'reeffit', 'hitrace', 'rdatkit'):
         new = SourceDownloader(date=datetime.now(), package=keyword, rmdb_user=RMDBUser.objects.get(user=request.user))
         new.save()
 
         result = simplejson.load(open('%s/cache/stat_dist.json' % MEDIA_ROOT, 'r'))
         result = result[keyword]
-        title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
+        title = dist_dict[keyword]
         return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword': keyword, 'title': title, 'dist': result}, context_instance=RequestContext(request))
     else:
         return error404(request)
@@ -66,7 +68,7 @@ def tools_download(request, keyword):
 def tools_link(request, keyword, tag):
     records = SourceDownloader.objects.filter(package=keyword, rmdb_user=RMDBUser.objects.get(user=request.user))
     if len(records):
-        title = 'MAPSeeker' if (keyword == 'mapseeker') else 'REEFFIT'
+        title = dist_dict[keyword]
         tag = tag.replace('/', '')
         file_name = '%s/dist/%s-%s.zip' % (MEDIA_ROOT, title, tag)
         if os.path.exists(file_name):
