@@ -1,40 +1,5 @@
-@charset "UTF-8";
-/* CSS Document */
-@font-face {
-    font-family: "Helvetica";
-    src: local("Helvetica"), url("/site_media/fonts/Helvetica/Helvetica.ttf");
-    font-weight: normal; font-style: normal;
-}
-@font-face {
-    font-family: "Helvetica";
-    src: local("Helvetica Bold"), local("Helvetica-Bold"), url("/site_media/fonts/Helvetica/Helvetica-Bold.ttf");
-    font-weight: bold; font-style: normal;
-}
-@font-face {
-    font-family: "Helvetica";
-    src: local("Helvetica Oblique"), local("Helvetica-Oblique"), url("/site_media/fonts/Helvetica/Helvetica-Oblique.ttf");
-    font-weight: normal; font-style: italic;
-}
-@font-face {
-    font-family: "Helvetica";
-    src: local("Helvetica Oblique"), local("Helvetica-Oblique"), url("/site_media/fonts/Helvetica/Helvetica-Oblique.ttf");
-    font-weight: normal; font-style: oblique;
-}
-@font-face {
-    font-family: "Helvetica";
-    src: local("Helvetica Bold Oblique"), local("Helvetica-BoldOblique"), url("/site_media/fonts/Helvetica/Helvetica-BoldOblique.ttf");
-    font-weight: bold; font-style: italic;
-}
-@font-face {
-    font-family: "Helvetica";
-    src: local("Helvetica Bold Oblique"), local("Helvetica-BoldOblique"), url("/site_media/fonts/Helvetica/Helvetica-BoldOblique.ttf");
-    font-weight: bold; font-style: oblique;
-}
-
-* { font-family: "Helvetica", Arial, sans-serif; }
-
 textarea.form-control, input.form-control, select.form-control {
-  font-family: "Helvetica";
+  font-family: "Helvetica", Arial, sans-serif;
 }
 
 body {
