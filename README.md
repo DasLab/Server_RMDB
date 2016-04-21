@@ -49,7 +49,9 @@ python manage.py runserver
 
 ## Documentation
 
-Documentation is available at https://rmdb.stanford.edu/admin/doc/.
+- Documentation is available at admin [manual](https://rmdb.stanford.edu/admin/man/) and [reference](https://rmdb.stanford.edu/admin/ref/).
+
+- Alternatively, read the repository [**Wiki**](https://github.com/DasLab/Server_RMDB/wiki/).
 
 ## License
 
