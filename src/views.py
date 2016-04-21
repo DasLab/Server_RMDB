@@ -23,7 +23,7 @@ from datetime import datetime
 import simplejson
 # import traceback
 
-dist_dict = {'mapseeker': 'MAPSeeker', 'reeffit': 'REEFFIT', 'hitrace': 'HiTRACE', 'rdatkit': 'RDATKit'}
+dist_dict = {'mapseeker': 'MAPSeeker', 'reeffit': 'REEFFIT', 'hitrace': 'HiTRACE', 'rdatkit': 'RDATKit', 'biers': 'Biers'}
 
 
 def index(request):
@@ -39,7 +39,7 @@ def tools(request):
     return render_to_response(PATH.HTML_PATH['repos'], {}, context_instance=RequestContext(request))
 
 def tools_license(request, keyword):
-    if keyword in ('mapseeker', 'reeffit', 'hitrace', 'rdatkit'):
+    if keyword in dist_dict:
         title = dist_dict[keyword]
         file_name = '%s/dist/%s-LICENSE.md' % (MEDIA_ROOT, title)
         license_md = '404 Not Found'
@@ -53,7 +53,7 @@ def tools_license(request, keyword):
 
 @login_required
 def tools_download(request, keyword):
-    if keyword in ('mapseeker', 'reeffit', 'hitrace', 'rdatkit'):
+    if keyword in dist_dict:
         new = SourceDownloader(date=datetime.now(), package=keyword, rmdb_user=RMDBUser.objects.get(user=request.user))
         new.save()
 
@@ -81,7 +81,9 @@ def tools_link(request, keyword, tag):
     return error401(request)
 
 def tutorial(request, keyword):
-    if keyword in ('predict', 'api', 'rdatkit', 'hitrace', 'mapseeker', 'reeffit'):
+    if keyword in dist_dict:
+        return HttpResponsePermanentRedirect('https://ribokit.github.io/' + keyword)
+    elif keyword in ('predict', 'api'):
         return render_to_response(PATH.HTML_PATH['tutorial'].replace('xxx', keyword), {}, context_instance=RequestContext(request))
     else:
         return error404(request)

@@ -58,6 +58,7 @@ else:
         url(r'^hitrace/?$', views.tutorial, {'keyword': 'hitrace'}),
         url(r'^mapseeker/?$', views.tutorial, {'keyword': 'mapseeker'}),
         url(r'^reeffit/?$', views.tutorial, {'keyword': 'reeffit'}),
+        url(r'^biers/?$', views.tutorial, {'keyword': 'biers'}),
 
         url(r'^search/?$', views.search),
         # url(r'^advanced_search/?$', views.advanced_search),

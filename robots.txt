@@ -61,6 +61,7 @@ Disallow: /deposit/review/
 Disallow: /analyze/predict/
 Disallow: /api/
 
+Disallow: /site_media/_old/
 Disallow: /site_media/images/src/
 Disallow: /site_data/json/
 Disallow: /site_data/search/
