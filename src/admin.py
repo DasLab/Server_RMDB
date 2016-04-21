@@ -153,8 +153,11 @@ def backup(request):
 def dir(request):
     return render_to_response(PATH.HTML_PATH['admin_dir'], {}, context_instance=RequestContext(request))
 
-def doc(request):
-    return render_to_response(PATH.HTML_PATH['admin_doc'], {}, context_instance=RequestContext(request))
+def man(request):
+    return render_to_response(PATH.HTML_PATH['admin_man'], {}, context_instance=RequestContext(request))
+
+def ref(request):
+    return render_to_response(PATH.HTML_PATH['admin_ref'], {}, context_instance=RequestContext(request))
 
 
 def get_ver(request):
@@ -189,7 +192,8 @@ admin.site.register_view('git/', view=git, visible=False)
 admin.site.register_view('git_stat/', view=git_stat, visible=False)
 
 admin.site.register_view('dir/', view=dir, visible=False)
-admin.site.register_view('doc/', view=doc, visible=False)
+admin.site.register_view('man/', view=man, visible=False)
+admin.site.register_view('ref/', view=ref, visible=False)
 
 admin.site.register_view('sys_stat/', view=sys_stat, visible=False)
 admin.site.register_view('get_ver/', view=get_ver, visible=False)

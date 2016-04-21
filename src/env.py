@@ -65,7 +65,8 @@ class SYS_PATH(object):
             'admin_git': MEDIA_ROOT + '/media/html/admin_git.html',
             'admin_backup': MEDIA_ROOT + '/media/html/admin_backup.html',
             'admin_dir': MEDIA_ROOT + '/media/html/admin_dir.html',
-            'admin_doc': MEDIA_ROOT + '/media/html/admin_doc.html',
+            'admin_man': MEDIA_ROOT + '/media/html/admin_man.html',
+            'admin_ref': MEDIA_ROOT + '/media/html/admin_ref.html',
 
             '400': MEDIA_ROOT + '/media/html/error_400.html',
             '401': MEDIA_ROOT + '/media/html/error_401.html',
