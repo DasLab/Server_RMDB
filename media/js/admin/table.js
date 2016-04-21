@@ -42,6 +42,8 @@ function render_package(string) {
         span_class = 'violet';
     } else if (string == 'RDATKit') {
         span_class = 'success';
+    } else if (string == 'Biers') {
+        span_class = 'orange';
     }
     return '<span class="label label-' + span_class + '">' + string + '</span>';
 }

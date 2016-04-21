@@ -32,6 +32,7 @@ DOWNLOAD_SRC_CHOICES = (
     ('mapseeker', 'MAPSeeker'),
     ('hitrace', 'HiTRACE'),
     ('rdatkit', 'RDATKit'),
+    ('biers', 'Biers'),
 )
 
 
