@@ -29,7 +29,7 @@ ENTRY_STATUS_CHOICES = (
 
 DOWNLOAD_SRC_CHOICES = (
     ('reeffit', 'REEFFIT'),
-    ('mapseeker', 'MAPSeeker'),
+    ('mapseeker', 'MAPseeker'),
     ('hitrace', 'HiTRACE'),
     ('rdatkit', 'RDATKit'),
     ('biers', 'Biers'),

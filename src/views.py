@@ -23,7 +23,7 @@ from datetime import datetime
 import simplejson
 # import traceback
 
-dist_dict = {'mapseeker': 'MAPSeeker', 'reeffit': 'REEFFIT', 'hitrace': 'HiTRACE', 'rdatkit': 'RDATKit', 'biers': 'Biers'}
+dist_dict = {'mapseeker': 'MAPseeker', 'reeffit': 'REEFFIT', 'hitrace': 'HiTRACE', 'rdatkit': 'RDATKit', 'biers': 'Biers'}
 
 
 def index(request):
@@ -81,8 +81,10 @@ def tools_link(request, keyword, tag):
     return error401(request)
 
 def tutorial(request, keyword):
-    if keyword in dist_dict:
-        return HttpResponsePermanentRedirect('https://ribokit.github.io/' + keyword)
+    if keyword in ('hitrace', 'rdakit'):
+        return HttpResponsePermanentRedirect('https://hitrace.github.io/' + dist_dict[keyword])
+    elif keyword in dist_dict:
+        return HttpResponsePermanentRedirect('https://daslab.github.io/' + dist_dict[keyword])
     elif keyword in ('predict', 'api'):
         return render_to_response(PATH.HTML_PATH['tutorial'].replace('xxx', keyword), {}, context_instance=RequestContext(request))
     else:

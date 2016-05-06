@@ -34,7 +34,7 @@ function render_type(string) {
 
 function render_package(string) {
     var span_class = 'default';
-    if (string == 'MAPSeeker') {
+    if (string == 'MAPseeker') {
         span_class = 'primary';
     } else if (string == 'REEFFIT') {
         span_class = 'danger';
