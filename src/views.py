@@ -81,7 +81,7 @@ def tools_link(request, keyword, tag):
     return error401(request)
 
 def tutorial(request, keyword):
-    if keyword in ('hitrace', 'rdakit'):
+    if keyword in ('hitrace', 'rdatkit'):
         return HttpResponsePermanentRedirect('https://hitrace.github.io/' + dist_dict[keyword])
     elif keyword in dist_dict:
         return HttpResponsePermanentRedirect('https://daslab.github.io/' + dist_dict[keyword])
