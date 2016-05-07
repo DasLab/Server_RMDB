@@ -21,7 +21,7 @@ class Command(BaseCommand):
         self.stdout.write('%s:\t%s' % (time.ctime(), ' '.join(sys.argv)))
 
         flag = False
-        dist_names = ['DasLab/MAPseeker', 'DasLab/REEFFIT', 'DasLab/Biers', 'hitrace/rdatkit', 'hitrace/hitrace']
+        dist_names = ['DasLab/MAPseeker', 'DasLab/REEFFIT', 'DasLab/Biers', 'hitrace/RDATKit', 'hitrace/HiTRACE']
         try:
             gh = Github(login_or_token=GIT["ACCESS_TOKEN"])
             json = {}
