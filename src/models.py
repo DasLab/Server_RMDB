@@ -158,9 +158,10 @@ class RMDBUser(models.Model):
     last_date = models.DateField(null=True, verbose_name='Last Submission Date')
 
     def __unicode__(self):
-        if not self.user:
+        try:
+            return self.user.username
+        except Exception:
             return '__(None)__'
-        return self.user.username
 
     class Meta():
         verbose_name = 'RMDB User'
