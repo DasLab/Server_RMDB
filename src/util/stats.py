@@ -11,7 +11,7 @@ def parse_history():
         lines = [line for line in lines.split('\n') if line.strip()]
         ls_1_flag = 0
         ls_2_flag = 0
-        for i in range(len(lines)):
+        for i in xrange(len(lines)):
             lines[i] = lines[i].rstrip()
             if lines[i][0] == "#":
                 lines[i] = "<span class=\"lead\"><b>" + lines[i][1:] + "</b></span><br/>"

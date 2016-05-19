@@ -23,8 +23,7 @@ class Command(BaseCommand):
         try:
             rmdb_ids = [d.values()[0] for d in RMDBEntry.objects.values('rmdb_id').distinct()]
             all_rdats = [i for i in os.listdir(PATH.DATA_DIR['FILE_DIR']) if (not i.startswith('.') and i != "search")]
-
-            dept_rdats = [i for i in all_rdats if i not in rmdb_ids]
+            dept_rdats = filter(lambda x: (x not in rmdb_ids), all_rdats)
             for rmdb_id in dept_rdats:
                 shutil.rmtree(os.path.join(PATH.DATA_DIR['FILE_DIR'], rmdb_id))
 

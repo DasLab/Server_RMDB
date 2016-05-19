@@ -78,13 +78,13 @@ def save_json_heatmap(entry):
                 if annotations:
                     if "MAPseq" in annotations:
                         y_label_tmp = annotations["MAPseq"]
-                        for j in range(len(y_label_tmp)):
+                        for j in xrange(len(y_label_tmp)):
                             if y_label_tmp[j].find("ID:") == 0:
                                 y_label_tmp = y_label_tmp[j]
                                 break
                     else:
                         y_label_tmp = annotations["EteRNA"]
-                        for j in range(len(y_label_tmp)):
+                        for j in xrange(len(y_label_tmp)):
                             if y_label_tmp[j].find("ID:") == 0:
                                 y_label_tmp = y_label_tmp[j]
                                 break
@@ -111,12 +111,12 @@ def save_json_heatmap(entry):
             else:
                 errors_row = [0.] * len(seqpos)
 
-            for j in range(len(peaks_row)):
+            for j in xrange(len(peaks_row)):
                 if entry.type == "SS" and is_eterna:
                     if "sequence" in annotations:
                         seq = 'X' if (len(annotations["sequence"][0]) <= j) else annotations["sequence"][0][j]
                     else:
-                        print "ERROR parsing annotation row:", i+1, ": ", annotations
+                        print "ERROR parsing annotation row:", i + 1, ": ", annotations
                         seq = 'X'
                 else:
                     seq = sequence[j]
@@ -131,7 +131,7 @@ def save_json_heatmap(entry):
                                 mut_start = int(mut[mut.find('(')+1 : mut.find(':')])
                                 mut_end = int(mut[mut.find(':')+1 : mut.find(')')])
                                 if (j + offset + 1) >= mut_start and (j + offset + 1) <= mut_end:
-                                    idx = j+offset+1-mut_start
+                                    idx = j + offset + 1 - mut_start
                                     muts = mut[mut.find(')')+1:]
                                     seq = muts[idx]
                                     mut_flag = 1

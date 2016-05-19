@@ -102,8 +102,8 @@ class Command(BaseCommand):
                 (t_cron, d_cron, t_now) = get_date_time('backup')
                 local_list = subprocess.Popen('ls -gh %s/backup/*.*gz' % MEDIA_ROOT, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().split()
                 html = 'File\t\t\t\tTime\t\t\t\tSize\n\n'
-                for i in range(0, len(local_list), 8):
-                    html += '%s\t\t%s %s, %s\t\t%s\n' % (local_list[i+7], local_list[i+4], local_list[i+5], local_list[i+6], local_list[i+3])
+                for i in xrange(0, len(local_list), 8):
+                    html += '%s\t\t%s %s, %s\t\t%s\n' % (local_list[i + 7], local_list[i + 4], local_list[i + 5], local_list[i + 6], local_list[i + 3])
                 send_notify_emails('{%s} SYSTEM: Weekly Backup Notice' % env('SERVER_NAME'), 'This is an automatic email notification for the success of scheduled weekly backup of the %s Server database and static contents.\n\nThe crontab job is scheduled at %s (UTC) on every %sday.\n\nThe last system backup was performed at %s (PDT).\n\n%s\n\n%s Admin\n' % (env('SERVER_NAME'), t_cron, d_cron, t_now, html, env('SERVER_NAME')))
                 self.stdout.write("Admin email (Weekly Backup Notice) sent.")
             get_backup_stat()

@@ -97,7 +97,7 @@ def get_backup_stat():
 
     gdrive_dir = 'echo' if DEBUG else 'cd %s' % APACHE_ROOT
     gdrive = subprocess.Popen("%s && drive list -q \"title contains '%s_' and title contains '.tgz'\"" % (gdrive_dir, env('SERVER_NAME')), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().split()[4:]
-    for i in range(0, len(gdrive), 6):
+    for i in xrange(0, len(gdrive), 6):
         ver['gdrive'].append([gdrive[i + 1], '%s %s' % (gdrive[i + 2], gdrive[i + 3]), '%s %s' % (gdrive[i + 4], gdrive[i + 5])])
 
     simplejson.dump(ver, open(os.path.join(MEDIA_ROOT, 'cache/stat_backup.json'), 'w'), indent=' ' * 4, sort_keys=True)
@@ -114,8 +114,7 @@ def refresh_settings():
 def get_sys_crontab():
     cron = subprocess.Popen('crontab -l', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].split('\n')
     (set_backup, set_upload) = (('', ''), ('', ''))
-    for i in xrange(len(cron)):
-        cron_job = cron[i]
+    for cron_job in cron:
         array = cron_job.split()
         if 'backup_weekly' in cron_job:
             set_backup = ('%s:%s' % (array[1], array[0]), array[4])
@@ -152,8 +151,7 @@ def set_backup_form(request):
     cron_upload = '%s * * %s' % (form.cleaned_data['time_upload'].strftime('%M %H'), form.cleaned_data['day_upload'])
 
     env_cron = simplejson.load(open('%s/config/cron.conf' % MEDIA_ROOT))
-    for i in xrange(len(env_cron['CRONJOBS'])):
-        cron_job = env_cron['CRONJOBS'][i]
+    for cron_job in env_cron['CRONJOBS']:
         if 'backup_weekly' in cron_job[-1]:
             cron_job[0] = cron_backup
         elif 'gdrive_weekly' in cron_job[-1]:

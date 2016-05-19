@@ -126,8 +126,8 @@ class Command(BaseCommand):
                 (t_cron, d_cron, t_now) = get_date_time('gdrive')
                 gdrive_list = subprocess.Popen("%s && drive list -q \"title contains '%s_'\"" % (gdrive_dir, env('SERVER_NAME')), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].strip().split()[4:]
                 html = 'File\t\t\t\tTime\t\t\t\tSize\n\n'
-                for i in range(0, len(gdrive_list), 6):
-                    html += '%s\t\t%s %s\t\t%s %s\n' % (gdrive_list[i+1], gdrive_list[i+4], gdrive_list[i+5], gdrive_list[i+2], gdrive_list[i+3])
+                for i in xrange(0, len(gdrive_list), 6):
+                    html += '%s\t\t%s %s\t\t%s %s\n' % (gdrive_list[i + 1], gdrive_list[i + 4], gdrive_list[i + 5], gdrive_list[i + 2], gdrive_list[i + 3])
                 send_notify_emails('{%s} SYSTEM: Weekly Sync Notice' % env('SERVER_NAME'), 'This is an automatic email notification for the success of scheduled weekly sync of the %s Server backup contents to Google Drive account.\n\nThe crontab job is scheduled at %s (UTC) on every %sday.\n\nThe last system backup was performed at %s (PDT).\n\n%s\n\n%s Admin\n' % (env('SERVER_NAME'), t_cron, d_cron, t_now, html, env('SERVER_NAME')))
                 self.stdout.write("Admin email (Weekly Sync Notice) sent.")
             get_backup_stat()

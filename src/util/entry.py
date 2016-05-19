@@ -10,7 +10,6 @@ if 'pylab' not in sys.modules:
     matplotlib.use('Agg')
 from pylab import *
 
-
 from Tkinter import TclError
 
 from django.dispatch import receiver

@@ -47,7 +47,7 @@ def check_rmdb_id(id):
 
 
 def get_choice_type(string, collection):
-    for i in range(len(collection)):
+    for i in xrange(len(collection)):
         if string in collection[i]:
             return collection[i][1]
 

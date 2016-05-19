@@ -4,7 +4,7 @@ import pdb
 import numpy
 import os
 from rdatkit import rna, secondary_structure, mapping, view
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings") 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repository.settings")
 
 from src.settings import *
 from src.models import *
@@ -117,7 +117,7 @@ def viewstructures(request):
         for annotations in bpa:
             if len(annotations) > 0:
                 try:
-                    base_annotations.append(str_to_bpdict(annotations)) 
+                    base_annotations.append(str_to_bpdict(annotations))
                 except ValueError:
                     messages.append('An error occurred when annotating helices, please contact tsuname [at] stanford [dot] edu to report this bug')
         if len(request.POST['modifiers']):
