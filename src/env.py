@@ -30,7 +30,19 @@ def reload_conf(DEBUG, MEDIA_ROOT):
     return (env, AWS, GA, DRIVE, GIT, APACHE_ROOT, CRONJOBS, CRONTAB_LOCK_JOBS, KEEP_BACKUP, KEEP_JOB)
 
 
-class SYS_PATH(object):
+class Singleton(object):
+    """Base class for singleton pattern
+    """
+
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not isinstance(cls._instance, cls):
+            cls._instance = object.__new__(cls, *args, **kwargs)
+        return cls._instance
+
+
+class SYS_PATH(Singleton):
     def __init__(self, MEDIA_ROOT):
         self.HTML_PATH = {
             'index': MEDIA_ROOT + '/media/html/public_index.html',
