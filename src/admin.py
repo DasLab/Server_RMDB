@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.admin import UserAdmin
@@ -114,11 +114,11 @@ def apache_stat(request):
     return HttpResponse(restyle_apache(), content_type='application/json')
 
 def apache(request):
-    return render_to_response(PATH.HTML_PATH['admin_apache'], {'host_name': env('SSL_HOST')}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['admin_apache'], {'host_name': env('SSL_HOST')})
 
 
 def aws(request):
-    return render_to_response(PATH.HTML_PATH['admin_aws'], {'timezone': TIME_ZONE}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['admin_aws'], {'timezone': TIME_ZONE})
 
 def aws_stat(request):
     json = aws_stats(request)
@@ -126,7 +126,7 @@ def aws_stat(request):
     return HttpResponse(json, content_type='application/json')
 
 def ga(request):
-    return render_to_response(PATH.HTML_PATH['admin_ga'], {'ga_url': GA['LINK_URL']}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['admin_ga'], {'ga_url': GA['LINK_URL']})
 
 def ga_stat(request):
     json = ga_stats(request)
@@ -134,7 +134,7 @@ def ga_stat(request):
     return HttpResponse(json, content_type='application/json')
 
 def git(request):
-    return render_to_response(PATH.HTML_PATH['admin_git'], {'timezone': TIME_ZONE, 'git_repo': GIT['REPOSITORY']}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['admin_git'], {'timezone': TIME_ZONE, 'git_repo': GIT['REPOSITORY']})
 
 def git_stat(request):
     json = git_stats(request)
@@ -148,16 +148,16 @@ def backup(request):
         flag = set_backup_form(request)
 
     form = BackupForm(initial=get_backup_form())
-    return render_to_response(PATH.HTML_PATH['admin_backup'], {'form': form, 'flag': flag, 'email': EMAIL_HOST_USER}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['admin_backup'], {'form': form, 'flag': flag, 'email': EMAIL_HOST_USER})
 
 def dir(request):
-    return render_to_response(PATH.HTML_PATH['admin_dir'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['admin_dir'])
 
 def man(request):
-    return render_to_response(PATH.HTML_PATH['admin_man'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['admin_man'])
 
 def ref(request):
-    return render_to_response(PATH.HTML_PATH['admin_ref'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['admin_ref'])
 
 
 def get_ver(request):

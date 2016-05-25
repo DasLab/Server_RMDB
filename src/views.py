@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.utils.encoding import smart_str
 
 from rdatkit import SecondaryStructure
@@ -27,16 +27,16 @@ dist_dict = {'mapseeker': 'MAPseeker', 'reeffit': 'REEFFIT', 'hitrace': 'HiTRACE
 
 
 def index(request):
-    return render_to_response(PATH.HTML_PATH['index'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['index'])
 
 def browse(request):
-    return render_to_response(PATH.HTML_PATH['browse'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['browse'])
 
 def specs(request):
-    return render_to_response(PATH.HTML_PATH['specs'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['specs'])
 
 def tools(request):
-    return render_to_response(PATH.HTML_PATH['repos'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['repos'])
 
 def tools_license(request, keyword):
     if keyword in dist_dict:
@@ -47,7 +47,7 @@ def tools_license(request, keyword):
             license_md = ''.join(open(file_name, 'r').readlines())
             license_md = license_md.replace('\n', '<br/>') + '</strong>'
 
-        return render_to_response(PATH.HTML_PATH['tools_license'], {'keyword': keyword, 'title': title, 'license_md': license_md}, context_instance=RequestContext(request))
+        return render(request, PATH.HTML_PATH['tools_license'], {'keyword': keyword, 'title': title, 'license_md': license_md})
     else:
         return error404(request)
 
@@ -60,7 +60,7 @@ def tools_download(request, keyword):
         result = simplejson.load(open('%s/cache/stat_dist.json' % MEDIA_ROOT, 'r'))
         result = result[keyword]
         title = dist_dict[keyword]
-        return render_to_response(PATH.HTML_PATH['tools_download'], {'keyword': keyword, 'title': title, 'dist': result}, context_instance=RequestContext(request))
+        return render(request, PATH.HTML_PATH['tools_download'], {'keyword': keyword, 'title': title, 'dist': result})
     else:
         return error404(request)
 
@@ -86,18 +86,18 @@ def tutorial(request, keyword):
     elif keyword in dist_dict:
         return HttpResponsePermanentRedirect('https://daslab.github.io/' + dist_dict[keyword])
     elif keyword in ('predict', 'api'):
-        return render_to_response(PATH.HTML_PATH['tutorial'].replace('xxx', keyword), {}, context_instance=RequestContext(request))
+        return render(request, PATH.HTML_PATH['tutorial'].replace('xxx', keyword), {})
     else:
         return error404(request)
 
 def about(request):
-    return render_to_response(PATH.HTML_PATH['about'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['about'])
 
 def license(request):
-    return render_to_response(PATH.HTML_PATH['license'], {}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['license'])
 
 def history(request):
-    return render_to_response(PATH.HTML_PATH['history'], {'hist': parse_history()}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['history'], {'hist': parse_history()})
 
 
 def detail(request, rmdb_id):
@@ -110,12 +110,12 @@ def detail(request, rmdb_id):
     json = {'rmdb_id': entry.rmdb_id, 'status': entry.status, 'is_isatab': is_isatab}
     if entry.status != "PUB":
         json.update({'version': entry.version, 'rev_form': ReviewForm(initial={'rmdb_id': entry.rmdb_id})})
-    return render_to_response(PATH.HTML_PATH['detail'], json, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['detail'], json)
 
 
 def predict(request):
     # if request.method != 'POST':
-    return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'messages': [], 'other_errors': []}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'messages': [], 'other_errors': []})
     # else:
     #     try:
     #         sequences, titles, structures, modifiers, mapping_data, base_annotations, messages, valerrors = ([],[],[],[],[],[],[],[])
@@ -125,9 +125,9 @@ def predict(request):
     #         if is_get_rmdb or is_get_file:
     #             (messages, valerrors, bonuses_1d, bonuses_2d, titles, modifiers, offset_seqpos, temperature, sequences, refstruct) = parse_rdat_data(request, is_get_file)
     #             form = fill_predict_form(request, sequences, structures, temperature, refstruct, bonuses_1d, bonuses_2d, modifiers, titles, offset_seqpos)
-    #             return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': form, 'rdatloaded': True, 'msg_y': messages, 'msg_r': valerrors}, context_instance=RequestContext(request))
+    #             return render(request, PATH.HTML_PATH['predict'], {'secstr_form': form, 'rdatloaded': True, 'msg_y': messages, 'msg_r': valerrors})
     #         elif not request.POST['sequences']:
-    #             return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': [], 'msg_r': []}, context_instance=RequestContext(request))
+    #             return render(request, PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': [], 'msg_r': []})
 
     #         other_options = ' -t %s ' % (float(request.POST['temperature']) + 273.15)
     #         refstruct = SecondaryStructure(dbn=request.POST['refstruct'])
@@ -142,7 +142,7 @@ def predict(request):
     #                         sequences.append(rna.RNA(l.strip()))
     #         if not sequences:
     #             messages.append('ERROR: No SEQUENCE found. Due to either no input field, or no modification lanes in RDAT.')
-    #             return render_to_response(PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'bppmimg': '', 'ncols': 0, 'nrows': 0}, context_instance=RequestContext(request))
+    #             return render(request, PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'bppmimg': '', 'ncols': 0, 'nrows': 0})
 
     #         if 'structures' in request.POST:
     #             lines = request.POST['structures'].split('\n')
@@ -172,15 +172,15 @@ def predict(request):
     #         visform_params['base_annotations'] = '\n'.join([bpdict_to_str(ann) for ann in base_annotations])
     #         visform_params['refstruct'] = refstruct.dbn
     #         visform = VisualizerForm(visform_params)
-    #         return render_to_response(PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'ncols': [], 'nrows': [], 'form': visform}, context_instance=RequestContext(request))
+    #         return render(request, PATH.HTML_PATH['predict_res'], {'panels': [], 'messages': messages,'ncols': [], 'nrows': [], 'form': visform})
 
     #     except IndexError, err:
     #         print err
-            # return render_to_response(PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': messages, 'msg_r': ['Invalid input. Please check your inputs and try again.']}, context_instance=RequestContext(request))
+            # return render(request, PATH.HTML_PATH['predict'], {'secstr_form': PredictionForm(), 'rdatloaded': False, 'msg_y': messages, 'msg_r': ['Invalid input. Please check your inputs and try again.']})
 
 
 def str_view(request):
-    return render_to_response(PATH.HTML_PATH['index'], context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['index'])
 
 
 def search(request):
@@ -190,9 +190,9 @@ def search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             sstring = form.cleaned_data['sstring'].encode('utf-8', 'ignore')
-            return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': sstring}, context_instance=RequestContext(request))
+            return render(request, PATH.HTML_PATH['search_res'], {'sstring': sstring})
         else:
-            return render_to_response(PATH.HTML_PATH['search_res'], {'sstring': ''}, context_instance=RequestContext(request))
+            return render(request, PATH.HTML_PATH['search_res'], {'sstring': ''})
 
 
 def advanced_search(request):
@@ -210,7 +210,7 @@ def validate(request):
 
     if flag == -1:
         (messages, errors, flag, form) = ([], [], 0, ValidateForm())
-    return render_to_response(PATH.HTML_PATH['validate'], {'form': form, 'val_errs': errors, 'val_msgs': messages, 'flag': flag}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['validate'], {'form': form, 'val_errs': errors, 'val_msgs': messages, 'flag': flag})
 
 
 @login_required
@@ -234,7 +234,7 @@ def upload(request):
 
     if not flag:
         (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
-    return render_to_response(PATH.HTML_PATH['upload'], {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['upload'], {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry})
 
 
 @user_passes_test(lambda u: u.is_superuser)

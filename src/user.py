@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.db import IntegrityError
 
 import datetime
@@ -62,14 +62,14 @@ def user_login(request):
                         return HttpResponseRedirect('/')
                 else:
                     messages = 'Inactive/disabled account. Please contact us.'
-        return render_to_response(PATH.HTML_PATH['login'], {'form': form, 'messages': messages}, context_instance=RequestContext(request))
+        return render(request, PATH.HTML_PATH['login'], {'form': form, 'messages': messages})
     else:
         if 'next' in request.GET and 'admin' in request.GET.get('next'):
             flag = 'Admin'
         else:
             flag = 'Member'
         form = LoginForm(initial={'flag': flag})
-        return render_to_response(PATH.HTML_PATH['login'], {'form': form}, context_instance=RequestContext(request))
+        return render(request, PATH.HTML_PATH['login'], {'form': form})
 
 
 def is_valid_name(input, char_allow, length):
@@ -162,7 +162,7 @@ def register(request):
             if 'email' in form.errors: error_msg.append('Email field is required.')
             error_msg.append('Form invalid: missing required field(s).')
 
-    return render_to_response(PATH.HTML_PATH['register'], {'reg_form': form, 'error_msg': error_msg, 'flag': flag}, context_instance=RequestContext(request))
+    return render(request, PATH.HTML_PATH['register'], {'reg_form': form, 'error_msg': error_msg, 'flag': flag})
 
 
 
