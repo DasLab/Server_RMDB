@@ -24,8 +24,10 @@ find config -type f | sudo xargs chmod 640
 find config -type d | sudo xargs chmod 750
 sudo chown www-data config/cron.conf
 
-sudo chown -R ubuntu:ubuntu *.sh
+sudo chown -R ubuntu:ubuntu *.sh .git
 sudo chmod -R 700 *.sh
+find .git -type f | sudo xargs chmod 640
+find .git -type d | sudo xargs chmod 750
 
 sudo chown ubuntu:www-data ../yuicompressor.jar
 sudo chmod 640 ../yuicompressor.jar
