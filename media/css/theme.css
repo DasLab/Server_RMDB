@@ -1,52 +1,52 @@
 @charset "UTF-8";
 /* CSS Document */
-@import url(https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic);
 
 @font-face {
-  font-family: 'Quattrocento Sans Local';
-  src: url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bold-webfont.eot");
-  src: url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bold-webfont.eot?#iefix") format("embedded-opentype"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bold-webfont.woff2") format("woff2"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bold-webfont.woff") format("woff"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bold-webfont.ttf") format("truetype"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bold-webfont.svg#QuattrocentoSansBold") format("svg");
+  font-family: 'Lato Local';
+  src: url("/site_media/fonts/Lato/lato-bold-webfont.eot");
+  src: url("/site_media/fonts/Lato/lato-bold-webfont.eot?#iefix") format("embedded-opentype"),
+       url("/site_media/fonts/Lato/lato-bold-webfont.woff2") format("woff2"),
+       url("/site_media/fonts/Lato/lato-bold-webfont.woff") format("woff"),
+       url("/site_media/fonts/Lato/lato-bold-webfont.ttf") format("truetype"),
+       url("/site_media/fonts/Lato/lato-bold-webfont.svg#LatoBold") format("svg");
   font-weight: bold; font-style: normal;
 }
 
 @font-face {
-  font-family: 'Quattrocento Sans Local';
-  src: url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bolditalic-webfont.eot");
-  src: url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bolditalic-webfont.eot?#iefix") format("embedded-opentype"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bolditalic-webfont.woff2") format("woff2"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bolditalic-webfont.woff") format("woff"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bolditalic-webfont.ttf") format("truetype"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-bolditalic-webfont.svg#QuattrocentoSansBoldItalic") format("svg");
+  font-family: 'Lato Local';
+  src: url("/site_media/fonts/Lato/lato-bolditalic-webfont.eot");
+  src: url("/site_media/fonts/Lato/lato-bolditalic-webfont.eot?#iefix") format("embedded-opentype"),
+       url("/site_media/fonts/Lato/lato-bolditalic-webfont.woff2") format("woff2"),
+       url("/site_media/fonts/Lato/lato-bolditalic-webfont.woff") format("woff"),
+       url("/site_media/fonts/Lato/lato-bolditalic-webfont.ttf") format("truetype"),
+       url("/site_media/fonts/Lato/lato-bolditalic-webfont.svg#LatoBoldItalic") format("svg");
   font-weight: bold; font-style: italic;
 }
 
 @font-face {
-  font-family: 'Quattrocento Sans Local';
-  src: url("/site_media/fonts/QuattrocentoSans/quattrocentosans-italic-webfont.eot");
-  src: url("/site_media/fonts/QuattrocentoSans/quattrocentosans-italic-webfont.eot?#iefix") format("embedded-opentype"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-italic-webfont.woff2") format("woff2"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-italic-webfont.woff") format("woff"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-italic-webfont.ttf") format("truetype"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-italic-webfont.svg#QuattrocentoSansItalic") format("svg");
+  font-family: 'Lato Local';
+  src: url("/site_media/fonts/Lato/lato-italic-webfont.eot");
+  src: url("/site_media/fonts/Lato/lato-italic-webfont.eot?#iefix") format("embedded-opentype"),
+       url("/site_media/fonts/Lato/lato-italic-webfont.woff2") format("woff2"),
+       url("/site_media/fonts/Lato/lato-italic-webfont.woff") format("woff"),
+       url("/site_media/fonts/Lato/lato-italic-webfont.ttf") format("truetype"),
+       url("/site_media/fonts/Lato/lato-italic-webfont.svg#LatoItalic") format("svg");
   font-weight: normal; font-style: italic;
 }
 
 @font-face {
-  font-family: 'Quattrocento Sans Local';
-  src: url("/site_media/fonts/QuattrocentoSans/quattrocentosans-regular-webfont.eot");
-  src: url("/site_media/fonts/QuattrocentoSans/quattrocentosans-regular-webfont.eot?#iefix") format("embedded-opentype"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-regular-webfont.woff2") format("woff2"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-regular-webfont.woff") format("woff"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-regular-webfont.ttf") format("truetype"),
-       url("/site_media/fonts/QuattrocentoSans/quattrocentosans-regular-webfont.svg#QuattrocentoSansRegular") format("svg");
+  font-family: 'Lato Local';
+  src: url("/site_media/fonts/Lato/lato-regular-webfont.eot");
+  src: url("/site_media/fonts/Lato/lato-regular-webfont.eot?#iefix") format("embedded-opentype"),
+       url("/site_media/fonts/Lato/lato-regular-webfont.woff2") format("woff2"),
+       url("/site_media/fonts/Lato/lato-regular-webfont.woff") format("woff"),
+       url("/site_media/fonts/Lato/lato-regular-webfont.ttf") format("truetype"),
+       url("/site_media/fonts/Lato/lato-regular-webfont.svg#LatoRegular") format("svg");
   font-weight: normal; font-style: normal;
 }
 
-* { font-family: "Quattrocento Sans", "Quattrocento Sans Local", Arial, sans-serif; }
+* { font-family: "Lato", "Lato Local", Arial, sans-serif; }
 
 .checkbox > label {
   padding-left: 0px;
