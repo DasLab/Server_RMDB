@@ -3,8 +3,6 @@ sudo usermod -a -G www-data ubuntu
 sudo chgrp -R www-data *
 sudo chown -R ubuntu *.py *.md *.txt src media config dist .gitignore
 sudo chown -R www-data backup data cache
-sudo chmod 640 *.py* robots.txt .gitignore
-sudo chmod 600 *.md requirements.txt
 
 find src -type f | sudo xargs chmod 640
 find src -type d | sudo xargs chmod 750
@@ -26,6 +24,10 @@ sudo chown www-data config/cron.conf
 
 sudo chown -R ubuntu:ubuntu *.sh .git
 sudo chmod -R 700 *.sh
+sudo chmod 640 robots.txt
+sudo chown ubuntu:ubuntu *.py* *.md requirements.txt
+sudo chmod 600 *.py* *.md requirements.txt .gitignore
+
 find .git -type f | sudo xargs chmod 640
 find .git -type d | sudo xargs chmod 750
 
