@@ -24,9 +24,9 @@ sudo chown www-data config/cron.conf
 
 sudo chown -R ubuntu:ubuntu *.sh .git
 sudo chmod -R 700 *.sh
-sudo chmod 640 robots.txt
-sudo chown ubuntu:ubuntu *.py* *.md requirements.txt
-sudo chmod 600 *.py* *.md requirements.txt .gitignore
+sudo chmod 640 robots.txt *.py*
+sudo chown ubuntu:ubuntu *.md requirements.txt
+sudo chmod 600 *.md requirements.txt .gitignore
 
 find .git -type f | sudo xargs chmod 640
 find .git -type d | sudo xargs chmod 750
