@@ -55,7 +55,7 @@ def get_choice_type(string, collection):
 def send_email(msg_subject, msg_content, msg_receipient):
     smtpserver = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
     smtpserver.starttls()
-    smtpserver.login(env('RMDB_GMAIL'), env('APACHE_PASSWORD'))
+    smtpserver.login(env('RMDB_GMAIL'), env('DJANGO_PASSWORD'))
     msg = 'Subject: %s\n\n%s' % (msg_subject, msg_content)
     smtpserver.sendmail(env('RMDB_GMAIL'), msg_receipient, msg)
     smtpserver.quit()

@@ -134,7 +134,7 @@ def error500(request, status=True):
     status = (request.GET['status'].lower() != 'false') if 'status' in request.GET else status
     status = 500 if status else 200
     return render(request, PATH.HTML_PATH['500'], status=status)
-    
+
 def error503(request, status=True):
     status = (request.GET['status'].lower() != 'false') if 'status' in request.GET else status
     status = 503 if status else 200
