@@ -221,6 +221,20 @@ def get_arrays(datas):
         reads.append(d.reads)
         xsels.append(d.xsel)
         errors.append(d.errors)
+
+    len_values = max(map(len, values))
+    for val in values:
+        if len(val) < len_values:
+            val.extend([0] * (len_values - len(val)))
+    len_traces = max(map(len, traces))
+    for tr in traces:
+        if len(tr) < len_traces:
+            tr.extend([0] * (len_traces - len(tr)))
+    len_reads = max(map(len, reads))
+    for rd in reads:
+        if len(rd) < len_reads:
+            rd.extend([0] * (len_reads - len(rd)))
+
     return (array(values), array(traces), array(reads), array(xsels), array(errors))
 
 
