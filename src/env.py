@@ -120,7 +120,7 @@ def error401(request, status=True):
     status = 401 if status else 200
     return render(request, PATH.HTML_PATH['401'], status=status)
 
-def error403(request, status=True):
+def error403(request, status=True, reason=""):
     status = (request.GET['status'].lower() != 'false') if 'status' in request.GET else status
     status = 403 if status else 200
     return render(request, PATH.HTML_PATH['403'], status=status)

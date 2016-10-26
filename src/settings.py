@@ -135,19 +135,17 @@ class ExceptionUserInfoMiddleware(object):
 
 
 MIDDLEWARE_CLASSES = [
+    'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.gzip.GZipMiddleware',
 
     'src.settings.ExceptionUserInfoMiddleware',
 ]
-if not DEBUG: MIDDLEWARE_CLASSES.append('django.middleware.security.SecurityMiddleware')
+if not DEBUG: MIDDLEWARE_CLASSES.insert(0, 'django.middleware.security.SecurityMiddleware')
 
 
 TEMPLATES = [{
@@ -217,3 +215,4 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE = (not DEBUG)
 CSRF_COOKIE_HTTPONLY = True
 # X_FRAME_OPTIONS = 'DENY'
+CSRF_FAILURE_VIEW = error403
