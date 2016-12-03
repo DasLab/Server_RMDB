@@ -63,12 +63,13 @@ def send_email(msg_subject, msg_content, msg_receipient):
 
 
 def send_notify_emails(entry, user_email):
-    msg_subject = 'RMDB: New entry submitted for review'
-    msg_content = ('This is an email triggered by new RMDB entry submission automatically.\n\n' + 'Please review the following submission:\n' + 'RMDB_ID: %s\n' + 'Owner: %s\n' + 'Version: %s\n' + 'Status: %s\n\n' + 'Type: %s\n' + 'Construct(s): %s\n' + 'Data: %s\n' + 'Comments: %s\n' + 'Authors: %s\n' + 'Description: %s\n\n' + 'Please go to the admin page of this entry (http://rmdb.stanford.edu/admin/repository/rmdbentry/%s)\n and check its associated files in RDAT (http://rmdb.stanford.edu/site_data/file/%s/%s.rdat)\n and ISATAB (http://rmdb.stanford.edu/site_data/file/%s/%s_%s.xls) formats. \n\n - RMDB server') % (entry.rmdb_id, entry.owner, entry.version, get_choice_type(entry.status, ENTRY_STATUS_CHOICES), get_choice_type(entry.type, ENTRY_TYPE_CHOICES), entry.construct_count, entry.data_count, entry.comments, entry.authors, entry.description, entry.id, entry.rmdb_id, entry.rmdb_id, entry.rmdb_id, entry.rmdb_id, entry.version)
-    try:
-        send_email(msg_subject, msg_content, EMAIL_NOTIFY)
-    except Exception:
-        send_email_backup(msg_subject, '!! FAILURE on stanfordrmdb@stanford.edu Email account !!\n\n' + msg_content)
+    if entry.status != 'PUB':
+        msg_subject = 'RMDB: New entry submitted for review'
+        msg_content = ('This is an email triggered by new RMDB entry submission automatically.\n\n' + 'Please review the following submission:\n' + 'RMDB_ID: %s\n' + 'Owner: %s\n' + 'Version: %s\n' + 'Status: %s\n\n' + 'Type: %s\n' + 'Construct(s): %s\n' + 'Data: %s\n' + 'Comments: %s\n' + 'Authors: %s\n' + 'Description: %s\n\n' + 'Please go to the admin page of this entry (http://rmdb.stanford.edu/admin/repository/rmdbentry/%s)\n and check its associated files in RDAT (http://rmdb.stanford.edu/site_data/file/%s/%s.rdat)\n and ISATAB (http://rmdb.stanford.edu/site_data/file/%s/%s_%s.xls) formats. \n\n - RMDB server') % (entry.rmdb_id, entry.owner, entry.version, get_choice_type(entry.status, ENTRY_STATUS_CHOICES), get_choice_type(entry.type, ENTRY_TYPE_CHOICES), entry.construct_count, entry.data_count, entry.comments, entry.authors, entry.description, entry.id, entry.rmdb_id, entry.rmdb_id, entry.rmdb_id, entry.rmdb_id, entry.version)
+        try:
+            send_email(msg_subject, msg_content, EMAIL_NOTIFY)
+        except Exception:
+            send_email_backup(msg_subject, '!! FAILURE on stanfordrmdb@stanford.edu Email account !!\n\n' + msg_content)
 
 
     msg_subject = 'Your RMDB Entry %s has been submitted' % entry.rmdb_id
