@@ -81,6 +81,7 @@ else:
 
         # url(r'^api/index/rnastr_ver/$', api_rnastr_ver),
         url(r'^api/search/(?P<sstring>.+)$', api.search),
+        url(r'^api/git_hook/?$', api.git_hook),
 
         url(r'^ping_test/?$', views.ping_test),
         url(r'^get_admin/?$', views.get_admin),
