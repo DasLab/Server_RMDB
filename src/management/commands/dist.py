@@ -16,12 +16,26 @@ from src.settings import *
 class Command(BaseCommand):
     help = 'Retrieves all code releases from Github as zip archives.'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--repo', nargs='+', type=str, help="List of repositories, choose from ('DasLab/MAPseeker', 'DasLab/REEFFIT', 'DasLab/Biers', 'hitrace/RDATKit', 'hitrace/HiTRACE).")
+
+
     def handle(self, *args, **options):
         t0 = time.time()
         self.stdout.write('%s:\t%s' % (time.ctime(), ' '.join(sys.argv)))
 
         flag = False
-        dist_names = ['DasLab/MAPseeker', 'DasLab/REEFFIT', 'DasLab/Biers', 'hitrace/RDATKit', 'hitrace/HiTRACE']
+        dist_names_std = ['DasLab/MAPseeker', 'DasLab/REEFFIT', 'DasLab/Biers', 'hitrace/RDATKit', 'hitrace/HiTRACE']
+        if options['repo']:
+            dist_names = []
+            repos = [repo.lower() for repo in options['repo']]
+            for repo in dist_names_std:
+                if repo.lower() in repos:
+                    dist_names.append(repo)
+        else:
+            dist_names = dist_names_std
+
+
         try:
             gh = Github(login_or_token=GIT["ACCESS_TOKEN"])
             json = {}
