@@ -2,7 +2,7 @@ sudo usermod -a -G www-data ubuntu
 
 sudo chgrp -R www-data *
 sudo chown -R ubuntu *.py *.md *.txt src media config dist .gitignore
-sudo chown -R www-data backup data cache
+sudo chown -R www-data backup data cache dist
 
 find src -type f | sudo xargs chmod 640
 find src -type d | sudo xargs chmod 750
