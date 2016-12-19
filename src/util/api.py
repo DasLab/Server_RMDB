@@ -42,6 +42,7 @@ def git_hook(request):
     try:
         call_command('dist', repo=[json['repository']['full_name']])
     except Exception:
+        print traceback.format_exc()
         return error500(request)
     return HttpResponse(content="", status=201)
 
