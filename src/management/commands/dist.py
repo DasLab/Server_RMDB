@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
         try:
             gh = Github(login_or_token=GIT["ACCESS_TOKEN"])
-            json = {}
+            json = simplejson.load(open('%s/cache/stat_dist.json' % MEDIA_ROOT, 'r'))
 
             for repo in dist_names:
                 dist = repo.split('/')[-1]
