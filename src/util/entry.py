@@ -278,9 +278,8 @@ def on_entry_save(sender, instance, **kwargs):
         json = do_get_stats(instance.rmdb_id)
         if json is None: return
 
-        if json['status'] != instance.status:
-            json['status'] = instance.status
-            simplejson.dump(json, open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
+        json['status'] = instance.status
+        simplejson.dump(json, open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
 
 
 @receiver(post_delete, sender=RMDBEntry)
