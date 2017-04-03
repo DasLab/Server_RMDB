@@ -81,16 +81,16 @@ def browse_json_list(names_d):
                     if len(m) > 40:
                         comment[i] = ' '.join(textwrap.wrap(m, 40))
                 entry = {'rmdb_id': e.rmdb_id, 'version': e.version, 'construct_count': e.construct_count, 'data_count': e.data_count, 'authors': e.authors, 'comments': ' '.join(comment), 'title': e.publication.title, 'latest': e.supercede_by}
-                if e.type == "SS":
+                if e.type == "SS" or e.type == "TT" or e.type == "DC":
                     SS_entries.append(entry)
                 elif e.type == "MM":
                     MM_entries.append(entry)
+                elif e.type == "MR":
+                    MR_entries.append(entry)
                 elif e.type == "MA":
                     MA_entries.append(entry)
-                elif e.type == "TT":
-                    TT_entries.append(entry)
 
-        constructs.append({'name': c['name'], 'SS_entry': SS_entries, 'MM_entry': MM_entries, 'MA_entry': MA_entries, 'TT_entry': TT_entries})
+        constructs.append({'name': c['name'], 'SS_entry': SS_entries, 'MM_entry': MM_entries, 'MA_entry': MA_entries, 'MR_entry': MR_entries})
     return constructs
 
 

@@ -55,7 +55,7 @@ def save_json_heatmap(entry):
                 precalc_structures += '"%s",' % data.structure
 
             is_eterna = ("EteRNA" in construct.name) or ("Eterna" in construct.name) or ("EteRNA" in annotations) or ("EteRNA" in annotations)
-            if entry.type == 'MM':
+            if entry.type == "MM" or entry.type == "MR":
                 if 'mutation' in annotations:
                     field = 'mutation'
                 elif 'chemical' in annotations:
@@ -260,7 +260,7 @@ def save_thumb(entry):
         is_eterna = 'ETERNA' in entry.rmdb_id
         is_structure = (c.structure) and ('(' in c.structure)
         is_large = len(datas) > 100
-        is_SS = entry.type in ('SS', 'TT')
+        is_SS = entry.type in ('SS', 'TT', 'DC')
 
         if is_structure and is_SS and (not is_large) and (not is_eterna):
             height = 200

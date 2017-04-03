@@ -16,8 +16,10 @@ import simplejson
 ENTRY_TYPE_CHOICES = (
     ('SS', 'Standard State'),
     ('MM', 'Mutate And Map'),
+    ('MR', 'Mutation Rescue'),
     ('MA', 'MOHCA'),
     ('TT', 'Titration'),
+    ('DC', 'Deep Chemical Mapping'),
 )
 
 ENTRY_STATUS_CHOICES = (
