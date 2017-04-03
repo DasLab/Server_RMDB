@@ -43,7 +43,7 @@ function fill_category(data, tag, view) {
                         pan_html += '<tr><td class="text-right"><p class="lead"><span class="label label-default" style="background:#000;">RMDB_ID</span></p><p class="lead"><span class="label label-danger">experimentType</span></p><p class="lead"><span class="label label-violet">Stats</span></p></td><td><p class="lead"><a href="/detail/' + data[c].TT_entry[e].rmdb_id + '"><span class="label label-default">' + colorRmdbId(data[c].TT_entry[e].rmdb_id) + '</span></a></p><p class="lead"><span class="label label-success">Titration</span></p><i>Version:</i> <mark>' + data[c].TT_entry[e].version + '</mark><br/><i># of Construct:</i> <code>' + data[c].TT_entry[e].construct_count + '</code><br/><i># of Data point:</i> <code>' + data[c].TT_entry[e].data_count + '</code></p></td><td class="hidden-sm hidden-xs"><p><span class="lead"><span class="label label-brown">Publication</span></span></p><p><i>' + data[c].TT_entry[e].authors + '</i>. <b>' + data[c].TT_entry[e].title + '</b>.</p><p><span class="lead"><span class="label label-primary">COMMENT</span></span></p><p class="excerpt">' + data[c].TT_entry[e].comments + '</p></td><td><a href="/detail/' + data[c].TT_entry[e].rmdb_id + '" class="row thumbnail pull-left"><img src="/site_data/thumbnail/' + data[c].TT_entry[e].rmdb_id + '.gif"/></a><br/></td></tr>';
                     }
                 } else {
-                    pan_html += '<li><h3><span class="label label-info">Titration</span></h3></li><div class="row">';
+                    pan_html += '<li><h3><span class="label label-warning">Titration</span></h3></li><div class="row">';
                     for (var e in data[c].TT_entry) {
                         pan_html += '<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 entry-list"><a href="/detail/' + data[c].TT_entry[e].rmdb_id + '" class="thumbnail"><p class="lead" style="padding-top:10px;"><span class="label label-default">' + colorRmdbId(data[c].TT_entry[e].rmdb_id) + '</span></p><img src="/site_data/thumbnail/' + data[c].TT_entry[e].rmdb_id + '.gif" width="100%"/><br/></a></div>';
                     }
@@ -59,6 +59,19 @@ function fill_category(data, tag, view) {
                     pan_html += '<li><h3><span class="label label-success">Mutate and Map</span></h3></li><div class="row">';
                     for (var e in data[c].MM_entry) {
                         pan_html += '<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 entry-list"><a href="/detail/' + data[c].MM_entry[e].rmdb_id + '" class="thumbnail"><p class="lead" style="padding-top:10px;"><span class="label label-default">' + colorRmdbId(data[c].MM_entry[e].rmdb_id) + '</span></p><img src="/site_data/thumbnail/' + data[c].MM_entry[e].rmdb_id + '.gif"/><br/></a></div>';
+                    }
+                    pan_html += '</div>';
+                }
+            }
+            if (data[c].MR_entry.length) {
+                if (view == 'list') {
+                    for (var e in data[c].MR_entry) {
+                        pan_html += '<tr><td class="text-right"><p class="lead"><span class="label label-default" style="background:#000;">RMDB_ID</span></p><p class="lead"><span class="label label-danger">experimentType</span></p><p class="lead"><span class="label label-violet">Stats</span></p></td><td><p class="lead"><a href="/detail/' + data[c].MR_entry[e].rmdb_id + '"><span class="label label-default">' + colorRmdbId(data[c].MR_entry[e].rmdb_id) + '</span></a></p><p class="lead"><span class="label label-success">Mutate and Map</span></p><i>Version:</i> <mark>' + data[c].MR_entry[e].version + '</mark><br/><i># of Construct:</i> <code>' + data[c].MR_entry[e].construct_count + '</code><br/><i># of Data point:</i> <code>' + data[c].MR_entry[e].data_count + '</code></p></td><td class="hidden-sm hidden-xs"><p><span class="lead"><span class="label label-brown">Publication</span></span></p><p><i>' + data[c].MR_entry[e].authors + '</i>. <b>' + data[c].MR_entry[e].title + '</b>.</p><p><span class="lead"><span class="label label-primary">COMMENT</span></span></p><p class="excerpt">' + data[c].MR_entry[e].comments + '</p></td><td><a href="/detail/' + data[c].MR_entry[e].rmdb_id + '" class="row thumbnail pull-left"><img src="/site_data/thumbnail/' + data[c].MR_entry[e].rmdb_id + '.gif" width="100%"/></a><br/></td></tr>';
+                    }
+                } else {
+                    pan_html += '<li><h3><span class="label label-info">Mutation Rescue</span></h3></li><div class="row">';
+                    for (var e in data[c].MR_entry) {
+                        pan_html += '<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 entry-list"><a href="/detail/' + data[c].MR_entry[e].rmdb_id + '" class="thumbnail"><p class="lead" style="padding-top:10px;"><span class="label label-default">' + colorRmdbId(data[c].MR_entry[e].rmdb_id) + '</span></p><img src="/site_data/thumbnail/' + data[c].MR_entry[e].rmdb_id + '.gif"/><br/></a></div>';
                     }
                     pan_html += '</div>';
                 }
