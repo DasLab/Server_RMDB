@@ -71,7 +71,7 @@ def browse_json_list(names_d):
     for c in names_d:
         entries = RMDBEntry.objects.filter(constructsection__name=c['name']).filter(status='PUB').order_by('rmdb_id', '-version')
         entry_ids = []
-        (SS_entries, TT_entries, MA_entries, MM_entries, MR_entries) = ([], [], [], [])
+        (SS_entries, TT_entries, MA_entries, MM_entries, MR_entries) = ([], [], [], [], [])
 
         for e in entries:
             if e.rmdb_id not in entry_ids:
