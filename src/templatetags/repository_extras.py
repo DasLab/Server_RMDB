@@ -30,8 +30,10 @@ register.filter('color_eterna_id', color_eterna_id)
 
 
 def get_exp_type(string):
-    if string == "SS" or string == "TT" or string == "DC":
+    if string == "SS" or string == "DC":
         string = '<span class="label label-primary">Standard State</span>'
+    elif string == "TT":
+        string = '<span class="label label-warning">Titration</span>'
     elif string == "MM":
         string = '<span class="label label-success">Mutate And Map</span>'
     elif string == "MR":
