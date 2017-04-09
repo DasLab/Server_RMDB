@@ -20,14 +20,16 @@ function render_status(string) {
 
 function render_type(string) {
     var span_class = 'default';
-    if (string == 'Standard State') {
+    if (string == 'Standard State' || string == 'Deep Chemical Mapping') {
         span_class = 'primary';
     } else if (string == 'Mutate And Map') {
         span_class = 'success';
+    } else if (string == 'Mutation Rescue') {
+        span_class = 'info';
     } else if (string == 'MOHCA') {
         span_class = 'danger';
     } else if (string == 'Titration') {
-        span_class = 'info';
+        span_class = 'warning';
     }
     return '<span class="label label-' + span_class + '">' + string + '</span>';
 }

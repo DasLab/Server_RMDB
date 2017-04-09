@@ -271,15 +271,17 @@ def review_entry(new_stat, rmdb_id):
 def on_entry_save(sender, instance, **kwargs):
     job1 = threading.Thread(target=call_command, args=('stats',))
     job2 = threading.Thread(target=update_user_stats, args=(instance.owner,))
+    job3 = threading.Thread(target=call_command, args=('make_json', instance.rmdb_id))
     job1.start()
     job2.start()
+    job3.start()
 
-    if os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
-        json = do_get_stats(instance.rmdb_id)
-        if json is None: return
+    # if os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
+    #     json = do_get_stats(instance.rmdb_id)
+    #     if json is None: return
 
-        json['status'] = instance.status
-        simplejson.dump(json, open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
+    #     json['status'] = instance.status
+    #     simplejson.dump(json, open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
 
 
 @receiver(post_delete, sender=RMDBEntry)
@@ -291,9 +293,9 @@ def on_entry_del(sender, instance, **kwargs):
 
     ver = instance.version
     ver_list = get_entry_version(instance.rmdb_id)
-    is_last = not any([x > ver for x in ver_list])
+    is_last = any([x > ver for x in ver_list])
 
-    if (not is_last) and os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
+    if is_last and os.path.exists('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], instance.rmdb_id)):
         json = do_get_stats(instance.rmdb_id)
         if json is None: return
         json['versions'] = ver_list

@@ -66,18 +66,21 @@ function render_status(string) {
 
 function render_type(string) {
     var span_class = 'default';
-    if (string == 'SS') {
+    if (string == 'SS' || string == 'DC') {
         string = 'Standard State';
         span_class = 'primary';
     } else if (string == 'MM') {
         string = 'Mutate And Map';
         span_class = 'success';
+    } else if (string == 'MR') {
+        string = 'Mutation Rescue';
+        span_class = 'info';
     } else if (string == 'MA') {
         string = 'MOHCA';
         span_class = 'danger';
     } else if (string == 'TT') {
         string = 'Titration';
-        span_class = 'info';
+        span_class = 'warning';
     }
     return '<span class="label label-' + span_class + '">' + string + '</span>';
 }
