@@ -29,3 +29,10 @@
 - Read and understand Pablo's legacy code
 - Fix it and bring back online
 - Allow retrieving Construct, instead of concatenation of RDAT as a unit
+
+#### 6. _[Less important]_ Miscellaneous
+_added by Rhiju_  
+- use one of the beautiful JS PDB viewers to display data on 3D models if user provides PDB ID or model.
+- contact Sanbonmatsu lab and others to deposit their data
+- update the cache settings so that browsers actually see updates
+- update Latest News to have events from 2016 and 2017
