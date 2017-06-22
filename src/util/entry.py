@@ -128,6 +128,7 @@ def process_upload(form, upload_file, user):
                     isatabfile.load(rf.name)
                     rdatfile = isatabfile.toRDAT()
                 except Exception:
+                    print traceback.format_exc()
                     error_msg.append('Invalid ISATAB file; please check and resubmit.')
                     flag = 1
             else:
@@ -135,6 +136,7 @@ def process_upload(form, upload_file, user):
                     rdatfile.load(rf)
                     isatabfile = rdatfile.toISATAB()
                 except Exception:
+                    print traceback.format_exc()
                     error_msg.append('Invaid RDAT file; please check and resubmit.')
                     flag = 1
 

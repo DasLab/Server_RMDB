@@ -13,11 +13,13 @@ from github import Github
 from src.settings import *
 
 
+DIST_NAMES_STD = ['ribokit/MAPseeker', 'DasLab/REEFFIT', 'ribokit/Biers', 'ribokit/RDATKit', 'ribokit/HiTRACE']
+
 class Command(BaseCommand):
     help = 'Retrieves all code releases from Github as zip archives.'
 
     def add_arguments(self, parser):
-        parser.add_argument('--repo', nargs='+', type=str, help="List of repositories, choose from ('DasLab/MAPseeker', 'DasLab/REEFFIT', 'DasLab/Biers', 'hitrace/RDATKit', 'hitrace/HiTRACE).")
+        parser.add_argument('--repo', nargs='+', type=str, help="List of repositories, choose from ('" + "', '".join(DIST_NAMES_STD) + "').")
 
 
     def handle(self, *args, **options):
@@ -25,16 +27,14 @@ class Command(BaseCommand):
         self.stdout.write('%s:\t%s' % (time.ctime(), ' '.join(sys.argv)))
 
         flag = False
-        dist_names_std = ['DasLab/MAPseeker', 'DasLab/REEFFIT', 'DasLab/Biers', 'hitrace/RDATKit', 'hitrace/HiTRACE']
         if options['repo']:
             dist_names = []
             repos = [repo.lower() for repo in options['repo']]
-            for repo in dist_names_std:
+            for repo in DIST_NAMES_STD:
                 if repo.lower() in repos:
                     dist_names.append(repo)
         else:
-            dist_names = dist_names_std
-
+            dist_names = DIST_NAMES_STD
 
         try:
             gh = Github(login_or_token=GIT["ACCESS_TOKEN"])

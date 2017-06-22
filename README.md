@@ -27,7 +27,7 @@ simplejson >= 3.8.1
 rdatkit >= 1.0.2
 ```
 
-The `rdatkit` package is available internally at https://github.com/hitrace/rdatkit/.
+The `rdatkit` package is available internally at https://github.com/ribokit/rdatkit/.
 
 The `gviz-api.py` is available at https://github.com/google/google-visualization-python/.
 
