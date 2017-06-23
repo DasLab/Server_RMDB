@@ -30,7 +30,7 @@
 	},
 
 	"GIT": {
-		"REPOSITORY": "org_name/repo_name",
+		"REPOSITORY": "DasLab/Server_RMDB",
 
 		"USERNAME": "login",
 		"PASSWORD": "password",

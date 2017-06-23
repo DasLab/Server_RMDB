@@ -13,7 +13,7 @@ from github import Github
 from src.settings import *
 
 
-DIST_NAMES_STD = ['ribokit/MAPseeker', 'DasLab/REEFFIT', 'ribokit/Biers', 'ribokit/RDATKit', 'ribokit/HiTRACE']
+DIST_NAMES_STD = ['ribokit/MAPseeker', 'ribokit/REEFFIT', 'ribokit/Biers', 'ribokit/RDATKit', 'ribokit/HiTRACE']
 
 class Command(BaseCommand):
     help = 'Retrieves all code releases from Github as zip archives.'
