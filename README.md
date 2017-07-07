@@ -27,11 +27,30 @@ simplejson >= 3.8.1
 rdatkit >= 1.0.2
 ```
 
-The `rdatkit` package is available internally at https://github.com/ribokit/rdatkit/.
+The `rdatkit` package is available internally at [`RDATKit`](https://github.com/ribokit/rdatkit/).
 
-The `gviz-api.py` is available at https://github.com/google/google-visualization-python/.
+The `gviz-api.py` is available at [`google-visualization-python`](https://github.com/google/google-visualization-python/).
 
-The `django-filemanager` is a modified version of https://github.com/IMGIITRoorkee/django-filemanager/. The source code is available internally. Install with `sudo python setup.py install`.
+The `django-filemanager` is a modified version of [`django-filemanager`](https://github.com/IMGIITRoorkee/django-filemanager/). The source code is available internally at this [fork](https://github.com/t47io/django-filemanager/).
+
+Install with:
+
+```sh
+cd ~
+git clone https://github.com/ribokit/rdatkit.git
+cd rdatkit
+sudo python setup.py install
+
+cd ..
+git clone https://github.com/google/google-visualization-python.git
+cd google-visualization-python
+sudo python setup.py install
+
+cd ..
+git clone https://github.com/t47io/django-filemanager.git
+cd django-filemanager
+sudo python setup.py install
+```
 
 **RMDB Server** also requires proper setup of `imagemagick`, `optipng`, `VARNA.jar`, `mysql.server`, `apache2`, `mod_wsgi`, `openssl`, `gdrive`, `awscli`, and `cron` jobs.
 
@@ -47,15 +66,17 @@ cd path/to/server_RMDB/repo
 python manage.py runserver
 ```
 
+The server should be running at `localhost:8000` with a python session interactive in terminal.
+
 ## Documentation
 
-- Documentation is available at admin [manual](https://rmdb.stanford.edu/admin/man/) and [reference](https://rmdb.stanford.edu/admin/ref/).
+- ~~Documentation is available at admin [manual](https://rmdb.stanford.edu/admin/man/) and [reference](https://rmdb.stanford.edu/admin/ref/).~~
 
-- Alternatively, read the repository [**Wiki**](https://github.com/t47io/Django-Server-RMDB/wiki/).
+- ~~Alternatively, read the repository [**Wiki**](https://github.com/DasLab/Server_RMDB/wiki/).~~
 
 ## License
 
-**Copyright &copy; 2014-2016: Siqi Tian _[[t47](https://t47.io/)]_, Das Lab, Stanford University. All Rights Reserved.**
+**Copyright &copy; 2014-2017: Siqi Tian _[[t47](https://t47.io/)]_, Das Lab, Stanford University. All Rights Reserved.**
 
 **RMDB Server** _Source Code_ is proprietary and confidential. Unauthorized copying of this repository, via any medium, is strictly prohibited.
 
