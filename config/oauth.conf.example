@@ -32,9 +32,6 @@
 	"GIT": {
 		"REPOSITORY": "DasLab/Server_RMDB",
 
-		"USERNAME": "login",
-		"PASSWORD": "password",
-
 		"CLIENT_ID": "client_id",
 		"CLIENT_SECRET": "client_secret",
 
