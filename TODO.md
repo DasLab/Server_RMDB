@@ -4,10 +4,6 @@
 - Migrate and clean `src/helper/*.py` to `src/util`, which overlaps with other tasks
 - Write server docs and wiki
 
-#### 1. Secondary structure visualization:
-- Integrate `Forna-2D` (http://nibiru.tbi.univie.ac.at/forna/). Use the fornac.js for front-end (https://github.com/pkerpedjiev/forna)
-- _[Less important]_ Provide VARNA JAR/applet (restore from old page, currently disabled); or just provide/cache a static VARNA image for quick view
-
 #### 2. RESTful API
 - Check and test legacy API code
 - _[Less important]_ Make API fully RESTful, support for CRUD operations
@@ -32,7 +28,16 @@
 
 #### 6. _[Less important]_ Miscellaneous
 _added by Rhiju_  
-- use one of the beautiful JS PDB viewers to display data on 3D models if user provides PDB ID or model.
+- use one of the beautiful JS PDB viewers to display data on *3D models* if user provides PDB ID or model.
 - contact Sanbonmatsu lab and others to deposit their data
 - update the cache settings so that browsers actually see updates
 - update Latest News to have events from 2016 and 2017
+– update RMDB Pubmed IDs for standardization paper — get joe’s help to update database.
+- RMDB needs to move to rmdb.org or rna-map.org or `rmdb.io`
+- Deposit deanonymized RDATs for RNA puzzles.
+- update RMDB to include data from (sripakdeevong, 2011) paper.
+
+### DONE
+#### 1. Secondary structure visualization:
+- Integrate `Forna-2D` (http://nibiru.tbi.univie.ac.at/forna/). Use the fornac.js for front-end (https://github.com/pkerpedjiev/forna)
+- ~~_[Less important]_ Provide VARNA JAR/applet (restore from old page, currently disabled); or just provide/cache a static VARNA image for quick view~~ VARNA is dead.
