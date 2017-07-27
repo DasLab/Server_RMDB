@@ -181,12 +181,18 @@ def save_json_tags(entry):
     tags_annotation = {'annotation': entry.annotations}
 
     c = ConstructSection.objects.get(entry=entry)
+    # Get the Reactivity data
     c.datas = DataSection.objects.filter(construct_section=c).order_by('id')
+
+    # Enumerate each of the data sets, construct the reactivity array.
+    tags_reactivity = {}
     tags_data_annotation = {}
     for i, d in enumerate(c.datas):
         d.annotations = trim_combine_annotation(DataAnnotation.objects.filter(section=d).order_by('name'))
         tags_data_annotation[i] = d.annotations
+        tags_reactivity[i + 1] = d.values.split(',')
     tags_annotation['data_annotation'] = tags_data_annotation
+    tags_annotation['data_reactivity'] = tags_reactivity
 
     c.err_ncol = c.datas[0].errors.split(',')
     c.err_ncol = 0 if (len(c.err_ncol) == 1 and (not len(c.err_ncol[0]))) else len(c.err_ncol)
