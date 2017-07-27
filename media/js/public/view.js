@@ -10,6 +10,17 @@ $(document).ready(function () {
                 fill_tags();
                 init_panel_size();
 
+                // Load the reactivity data
+                load_reactivity_data(tags.data_reactivity);
+
+                // var container = new FornaContainer("#rna-structure", {'applyForce': false});
+                //
+                // var options = {'structure': '((..((....)).(((....))).))',
+                //                 'sequence': 'CGCUUCAUAUAAUCCUAAUGACCUAU'
+                // };
+                //
+                // container.addRNA(options.structure, options);
+
                 setTimeout(function() {
                     if ((tags.data_nrow >= 300 | tags.data_ncol >= 300) & $(location).attr("href").indexOf("?full=1") == -1) {
                         $("#main").html('<p class="text-center lead">Click to <a class="btn btn-danger" id="btn_load_heatmap"><span class="glyphicon glyphicon-hourglass"></span>&nbsp;&nbsp;Load&nbsp;</a> the Interactive Heatmap ...</p><p class="text-center"><i>(This dataset is large (<code>' + tags.data_nrow + '-by-' + tags.data_ncol + '</code>). Rendering may take a few seconds.)</i></p><img id="img_preview" src="/site_data/image/' + rmdb_id + '-rx.png" class="center-block well"/>');

@@ -185,3 +185,59 @@ function fill_tags() {
 
 }
 
+function load_reactivity_data(data_sets) {
+
+    var select = $('#tag_reactivity_sets');
+
+    // Check if need to show the RNA structure.
+    if (data_sets === undefined || Object.keys(data_sets).length === 0) {
+        $('#rna_structure_panel').hide();
+        return;
+    }
+
+    //
+    if(select.prop) {
+      var options = select.prop('options');
+    }
+    else {
+      var options = select.attr('options');
+    }
+
+    // Remove the current options.
+    $('option', select).remove();
+    for(var index in data_sets) {
+		options[options.length] = new Option(index, data_sets[index].join(" "));
+	}
+
+    // Make the "first" option selected
+    select.find('option:eq(0)').prop('selected', true);
+    // Load the RNA structure based on the selection
+    load_rna_structure();
+}
+
+/**
+         * Load RNA structure based on the reactivity data set selection.
+         */
+        function load_rna_structure() {
+            var select = $('#tag_reactivity_sets');
+
+            if (select.val() === null) {
+                return;
+            }
+
+            var container = new fornac.FornaContainer("#rna-structure", {
+                'applyForce': true,
+                'allowPanningAndZooming': true,
+                'initialSize':[600, 600]
+            });
+            var options = {
+                'structure': tags.structure, // from "tags" json data.
+                'sequence': tags.sequence
+            };
+
+            // Add RNA Structure
+            container.addRNA(options.structure, options);
+            // Add coloring data - reactivity data
+            // NOTE: each of the reactivities is joint by `space`.
+            container.addCustomColorsText(select.val());
+        }
