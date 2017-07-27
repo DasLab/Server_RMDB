@@ -3,7 +3,9 @@
 {% load widget_tweaks %}
 
 {% block head %}
-<link rel="stylesheet" href="/site_media/css/{{DEBUG_DIR}}svg{{DEBUG_STR}}.css" />
+    <script type='text/javascript' src='/site_media/js/fornac/scripts/fornac.js'></script>
+    <link rel="stylesheet" href="/site_media/js/fornac/styles/fornac.css" />
+    <link rel="stylesheet" href="/site_media/css/{{DEBUG_DIR}}svg{{DEBUG_STR}}.css" />
 {% endblock %}
 
 
@@ -153,7 +155,21 @@
 			</div>
 
 			<div role="tabpanel" class="tab-pane active fade in side_block" id="tab_left_4">
-
+                <!-- RNA Structure -->
+                <div id="rna_structure_panel">
+                    <div class="row">
+                        <div class="form-inline">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                <label label for="id_type" class="pull-right">Reactivity Sets:</label>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <select class="" id="tag_reactivity_sets">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="rna-structure"></div>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -568,6 +584,15 @@
 			version = "{{version}}";
 		}
 	</script>
+
+    <script type='text/javascript'>
+        "use strict";
+
+        $('#tag_reactivity_sets').on('change', function (e) {
+            load_rna_structure();
+        });
+
+    </script>
 
 	{% if not DEBUG_DIR %}
 	<script type="text/javascript" src="/site_media/js/public/view_util.js"></script>
