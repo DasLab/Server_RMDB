@@ -11,15 +11,7 @@ $(document).ready(function () {
                 init_panel_size();
 
                 // Load the reactivity data
-                load_reactivity_data(tags.data_reactivity);
-
-                // var container = new FornaContainer("#rna-structure", {'applyForce': false});
-                //
-                // var options = {'structure': '((..((....)).(((....))).))',
-                //                 'sequence': 'CGCUUCAUAUAAUCCUAAUGACCUAU'
-                // };
-                //
-                // container.addRNA(options.structure, options);
+                load_reactivity_data(tags.data_reactivity, tags.data_annotation);
 
                 setTimeout(function() {
                     if ((tags.data_nrow >= 300 | tags.data_ncol >= 300) & $(location).attr("href").indexOf("?full=1") == -1) {
