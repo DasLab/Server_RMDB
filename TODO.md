@@ -36,9 +36,9 @@ _added by Rhiju_
 - RMDB needs to move to rmdb.org or rna-map.org or `rmdb.io`
 - Deposit deanonymized RDATs for RNA puzzles.
 - update RMDB to include data from (sripakdeevong, 2011) paper.
-— Featured Contributor: Julius Lucks [and set up for: Karissa, Alain, molecules, etc.]
-— need to move ribokit/primerize/mapseeker licensing over to (new) ribokit server and database instead of hosted at RMDB.
-– set up ribokit licensing database on RMDB (eventually move out)
+- Featured Contributor: Julius Lucks [and set up for: Karissa, Alain, molecules, etc.]
+- need to move ribokit/primerize/mapseeker licensing over to (new) ribokit server and database instead of hosted at RMDB.
+- set up ribokit licensing database on RMDB (eventually move out of RMDB and into ribokit)
 
 
 ### DONE
