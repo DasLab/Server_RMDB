@@ -15,7 +15,7 @@ function show_tag_ann(tag_idx) {
         } else {
             tag_html += '<tr class="tag-temp tag-browse"><td></td><td class="lead text-right align-center"><span class="label label-danger">' + j + '</span></td><td class="lead">';
         }
-        for (var k in i[j]) {
+        for (var k = 0; k < i[j].length; k++) {
             if (k != i[j].length - 1) { tag_html += '<p style="padding-bottom:5px;">'; }
             if (j.toUpperCase() === 'SEQUENCE' | j.toUpperCase() === 'STRUCTURE') { 
                 var seq_tmp = wbr(i[j][k]);
