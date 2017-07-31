@@ -109,6 +109,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //performance is an issue
 	    };
 
+	    self.reactivity = {
+	    	'reactivityScaleMin': 0,
+			'reactivityScaleMax': 1
+		};
+
 	    if (arguments.length > 1) {
 	        for (var option in passedOptions) {
 	            if (self.options.hasOwnProperty(option)) self.options[option] = passedOptions[option];
@@ -254,7 +259,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            self.extraLinks = self.extraLinks.concat(newLinks);
 	        }
 
-	        if ('avoidOthers' in passedOptions) self.addRNAJSON(rnaJson, passedOptions.avoidOthers);else self.addRNAJSON(rnaJson, true);
+	        if ('avoidOthers' in passedOptions)
+	        	self.addRNAJSON(rnaJson, passedOptions.avoidOthers);
+	        else
+	        	self.addRNAJSON(rnaJson, true);
 
 	        return rnaJson;
 	    };
@@ -579,13 +587,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        self.customColors = json;
 	    };
 
-	    self.addCustomColorsText = function (customColorsText) {
+	    self.addCustomColorsText = function (customColorsText, minReactivity, maxReactivity) {
 	        var cs = new _rnautils.ColorScheme(customColorsText);
 	        self.customColors = cs.colorsJson;
+
+	        self.reactivity.reactivityScaleMin = minReactivity || 0;
+	        self.reactivity.reactivityScaleMax = maxReactivity || 1;
+
 	        // TODO - Change the default color
 	        // Default: `range: [ 'white', 'steelblue' ]`
 	        self.customColors['range'] = ['white', 'orange', 'red'];
-	        self.customColors['domain'] = [0, 0.5, 1];
+	        // self.customColors['domain'] = [0, 0.5, 1];
+			var middle = (self.reactivity.reactivityScaleMin + self.reactivity.reactivityScaleMax) / 2
+	        self.customColors['domain'] = [self.reactivity.reactivityScaleMin, middle, self.reactivity.reactivityScaleMax];
 	        // console.log(self.customColors);
 	        self.changeColorScheme('custom');
 	    };
@@ -771,7 +785,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Add color legend
 	            // self.options.svg
 	            // self.options.svgW
-	            var linearGradient = self.options.svg.append("defs").append("linearGradient").attr("id", "legend-reactivity").attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%");
+	            var linearGradient = self.options.svg.append("defs")
+					.append("linearGradient")
+					.attr("id", "legend-reactivity")
+					.attr("x1", "0%")
+					.attr("y1", "0%")
+					.attr("x2", "100%")
+					.attr("y2", "0%");
 
 	            linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "white").attr("stop-opacity", 1);
 
@@ -779,21 +799,44 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red").attr("stop-opacity", 1);
 
-	            var legendsvg = self.options.svg.append("g").attr("class", "legendWrapper").attr("transform", "translate(" + self.options.svgW / 2 + "," + (self.options.svgH - 40) + ")");
+	            var legendsvg = self.options.svg.append("g")
+					.attr("class", "legendWrapper")
+					.attr("transform", "translate(" + self.options.svgW / 2 + "," + (self.options.svgH - 40) + ")");
 
 	            var legendWidth = 200;
-	            legendsvg.append("rect").attr("class", "legendRect").attr("x", -legendWidth / 2).attr("y", 0).attr("width", legendWidth).attr("height", 10).style("stroke", "gray").style("stroke-width", 0.5).style("fill", "url(#legend-reactivity)");
+	            legendsvg.append("rect")
+					.attr("class", "legendRect")
+					.attr("x", -legendWidth / 2)
+					.attr("y", 0)
+					.attr("width", legendWidth)
+					.attr("height", 10)
+					.style("stroke", "gray")
+					.style("stroke-width", 0.5)
+					.style("fill", "url(#legend-reactivity)");
 
 	            //Append title
-	            legendsvg.append("text").attr("class", "legendTitle").attr("x", 0).attr("y", -10).style("text-anchor", "middle").text("Reactivity");
+	            legendsvg.append("text")
+					.attr("class", "legendTitle")
+					.attr("x", 0)
+					.attr("y", -10)
+					.style("text-anchor", "middle")
+					.text("Reactivity");
 
 	            //
-	            var xScale = _d2.default.scale.linear().range([-legendWidth / 2, legendWidth / 2]).domain([0, 1]);
+	            var xScale = _d2.default.scale.linear()
+					.range([-legendWidth / 2, legendWidth / 2])
+					.domain([self.reactivity.reactivityScaleMin, self.reactivity.reactivityScaleMax]);
 
-	            var xAxis = _d2.default.svg.axis().orient("bottom").ticks(5).scale(xScale);
+	            var xAxis = _d2.default.svg.axis()
+					.orient("bottom")
+					.ticks(5)
+					.scale(xScale);
 
 	            //Set up X axis
-	            legendsvg.append("g").attr("class", "axis").attr("transform", "translate(0," + 10 + ")").call(xAxis);
+	            legendsvg.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(0," + 10 + ")")
+					.call(xAxis);
 	        }
 	    };
 
