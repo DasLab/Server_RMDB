@@ -15,7 +15,7 @@ function show_tag_ann(tag_idx) {
         } else {
             tag_html += '<tr class="tag-temp tag-browse"><td></td><td class="lead text-right align-center"><span class="label label-danger">' + j + '</span></td><td class="lead">';
         }
-        for (var k in i[j]) {
+        for (var k = 0; k < i[j].length; k++) {
             if (k != i[j].length - 1) { tag_html += '<p style="padding-bottom:5px;">'; }
             if (j.toUpperCase() === 'SEQUENCE' | j.toUpperCase() === 'STRUCTURE') { 
                 var seq_tmp = wbr(i[j][k]);
@@ -185,12 +185,20 @@ function fill_tags() {
 
 }
 
-function load_reactivity_data(data_sets) {
+/**
+ * Load the reactivity data from the json file and feed it to the selector.
+ *
+ * It also need the "annotation" data when doing the prep.
+ *
+ * @param data_sets
+ * @param annotation_sets
+ */
+function load_reactivity_data(reactivity_sets, annotation_sets) {
 
     var select = $('#tag_reactivity_sets');
 
     // Check if need to show the RNA structure.
-    if (data_sets === undefined || Object.keys(data_sets).length === 0) {
+    if (reactivity_sets === undefined || Object.keys(reactivity_sets).length === 0) {
         $('#rna_structure_panel').hide();
         return;
     }
@@ -205,8 +213,17 @@ function load_reactivity_data(data_sets) {
 
     // Remove the current options.
     $('option', select).remove();
-    for(var index in data_sets) {
-		options[options.length] = new Option(index, data_sets[index].join(" "));
+    for(var index in reactivity_sets) {
+        var annotation = null;
+        if (annotation_sets.hasOwnProperty(index - 1)) {  // Reactivity data array start with "1" while Annotation data starts with "0"
+            var modifier_array = annotation_sets[index - 1]['modifier'];
+            if (Array.isArray(modifier_array)) {
+                annotation = annotation_sets[index - 1]['modifier'].join('-');
+            }
+        }
+
+        // For the "value" of the selector, add the "modifier" annotation info if available.
+		options[options.length] = new Option(annotation === null? index : index + '-' + annotation, reactivity_sets[index].join(' '));
 	}
 
     // Make the "first" option selected
@@ -216,28 +233,28 @@ function load_reactivity_data(data_sets) {
 }
 
 /**
-         * Load RNA structure based on the reactivity data set selection.
-         */
-        function load_rna_structure() {
-            var select = $('#tag_reactivity_sets');
+ * Load RNA structure based on the reactivity data set selection.
+ */
+function load_rna_structure() {
+    var select = $('#tag_reactivity_sets');
 
-            if (select.val() === null) {
-                return;
-            }
+    if (select.val() === null) {
+        return;
+    }
 
-            var container = new fornac.FornaContainer("#rna-structure", {
-                'applyForce': true,
-                'allowPanningAndZooming': true,
-                'initialSize':[600, 600]
-            });
-            var options = {
-                'structure': tags.structure, // from "tags" json data.
-                'sequence': tags.sequence
-            };
+    var container = new fornac.FornaContainer("#rna-structure", {
+        'applyForce': true,
+        'allowPanningAndZooming': true,
+        'initialSize':[600, 600]
+    });
+    var options = {
+        'structure': tags.structure, // from "tags" json data.
+        'sequence': tags.sequence
+    };
 
-            // Add RNA Structure
-            container.addRNA(options.structure, options);
-            // Add coloring data - reactivity data
-            // NOTE: each of the reactivities is joint by `space`.
-            container.addCustomColorsText(select.val());
-        }
+    // Add RNA Structure
+    container.addRNA(options.structure, options);
+    // Add coloring data - reactivity data
+    // NOTE: each of the reactivities is joint by `space`.
+    container.addCustomColorsText(select.val());
+}
