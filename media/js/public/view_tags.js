@@ -242,6 +242,11 @@ function load_rna_structure() {
         return;
     }
 
+    var reactivity = [];
+    reactivity = select.val().split(' ').map(Number).filter(Boolean);
+    var maxReactvity = Math.max.apply(null, reactivity);
+    var minReactvity = Math.min.apply(null, reactivity);
+
     var container = new fornac.FornaContainer("#rna-structure", {
         'applyForce': true,
         'allowPanningAndZooming': true,
@@ -256,5 +261,5 @@ function load_rna_structure() {
     container.addRNA(options.structure, options);
     // Add coloring data - reactivity data
     // NOTE: each of the reactivities is joint by `space`.
-    container.addCustomColorsText(select.val());
+    container.addCustomColorsText(select.val(), minReactvity, maxReactvity);
 }
