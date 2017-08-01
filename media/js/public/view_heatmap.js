@@ -42,6 +42,9 @@ function draw_heatmap(json) {
                 .attr("height", total_h + main_margin.top + main_margin.bottom)
                 .append("g");
 
+    // Update the parent container's witdth to fit the current `svg`
+    $("#main").css("width", total_w + main_margin.left + main_margin.right);
+
     var y_label_bg = svg.selectAll("g")
                     .data(row_names).enter()
                     .append("text")

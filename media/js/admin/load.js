@@ -28,6 +28,9 @@ xmlhttp.onreadystatechange = function() {
             document.write('<link rel="stylesheet" href="/site_media/css/bootstrap.min.css" \/>');
         }
 
+        // Load custom CSS
+        document.write('<link rel="stylesheet" href="/site_media/css/style.css" \/>');
+
         if (DEBUG_DIR) {
             document.write('<link rel="stylesheet" href="/site_media/css/' + DEBUG_DIR + 'theme' + DEBUG_STR + '.css" \/>');
         } else {
