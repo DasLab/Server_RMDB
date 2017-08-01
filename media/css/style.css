@@ -21,3 +21,15 @@
 .heatmap-container {
     overflow: auto;
 }
+
+#bar_plot_details_tab {
+    height: 100%;
+}
+#bar_plot_details {
+    height: 100%;
+    overflow: auto;
+}
+#panel_svg {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
