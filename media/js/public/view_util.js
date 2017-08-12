@@ -14,9 +14,6 @@ function open_panel(id) {
             $("#left_panel").css("z-index", 10);
         }
         $("#" + id + "_panel").addClass("visible").animate({"margin-left":"0px"}, 500).css("z-index", "100");
-
-        // When overlay shows, disable the "scrolling" of background body.
-        document.body.classList.toggle('noscroll', true);
     }
 }
 
@@ -32,7 +29,6 @@ function close_panel(id) {
             $("#img-buttons").css("margin-top", parseInt($("#img-buttons").css("margin-top")) + parseInt($(".panel_close").css("height")));
         }
         $("#" + id + "_panel").removeClass("visible").animate({'margin-left':"-" + $("#" + id + "_panel").css("width")}, 500);
-        document.body.classList.toggle('noscroll', false);
     }
 }
 

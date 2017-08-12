@@ -19,7 +19,8 @@ function show_tag_ann(tag_idx) {
             if (k != i[j].length - 1) { tag_html += '<p style="padding-bottom:5px;">'; }
             if (j.toUpperCase() === 'SEQUENCE' | j.toUpperCase() === 'STRUCTURE') { 
                 var seq_tmp = wbr(i[j][k]);
-                for (var l in seq_tmp) {
+                // Enumerate an array
+                for (var l = 0; l < seq_tmp.length; l++) {
                     tag_html += '<p style="padding-bottom:5px;"><samp><span class="label label-warning">' + seq_tmp[l] + '</span></samp></p>';
                 }
             } else {
