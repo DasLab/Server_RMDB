@@ -4,6 +4,9 @@
 - Migrate and clean `src/helper/*.py` to `src/util`, which overlaps with other tasks
 - Write server docs and wiki
 
+### Bug fix
+- submission hangs if authors is not specified.
+
 #### RESTful API
 - Check and test legacy API code
 - _[Less important]_ Make API fully RESTful, support for CRUD operations
@@ -32,7 +35,7 @@ _added by Rhiju_
 - contact Sanbonmatsu lab and others to deposit their data
 - update the cache settings so that browsers actually see updates
 - update Latest News to have events from 2016 and 2017
-– update RMDB Pubmed IDs for standardization paper — get joe’s help to update database.
+– update RMDB Pubmed IDs for standardization paper and all other papers — get joe’s help to update database.
 - RMDB needs to move to rmdb.org or rna-map.org or `rmdb.io`
 - Deposit deanonymized RDATs for RNA puzzles.
 - update RMDB to include data from (sripakdeevong, 2011) paper.
