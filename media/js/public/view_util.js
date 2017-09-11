@@ -38,7 +38,9 @@ function init_panel_size() {
     $(".side_block").css("max-height", parseInt($("#left_panel").css("height")) - 20);
     $("#left-buttons").css("margin-top", parseInt($("#left_panel").css("height")) * 0.8 - parseInt($("#left-buttons").css("height")) - parseInt($(".left_close").css("height")) * 2);
 
-    $("#img_panel").css("width", $(window).width() - 75).css("height", "500px").css("top", $(window).height() - parseInt($("#img_panel").css("height")));
+    $("#img_panel").css("width", Math.max($(window).width() / 2, 800))
+        .css("height", "500px")
+        .css("top", $(window).height() - parseInt($("#img_panel").css("height")));
     $("#img-buttons").css("margin-top", parseInt($("#left-buttons").css("height")) + parseInt($("#left-buttons").css("margin-top")) - parseInt($("#img_panel").css("top")) + parseInt($(".navbar-fixed-top").css("height")) - 1);
     $("#svg_parent").css("width", parseInt($("#panel_svg").css("height")) - 90);
 
