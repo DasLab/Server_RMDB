@@ -29,7 +29,7 @@
     </div>
     <br/>
 
-    <form enctype="multipart/form-data" method="post" action="/deposit/submit/">
+    <form enctype="multipart/form-data" method="post" action="/deposit/submit/" id="upload_form">
         {% csrf_token %}
         <div class="row">
             <div class="col-lg-7 col-md-7 col-sm-12 col-sm-12">
@@ -69,13 +69,15 @@
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Upload File:</div>
                             <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8">
-                                <div class="input-group">
+                                <!--<div class="input-group">
                                     <input class="form-control" type="text" id="id_disp" name="disp" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
                                     <span class="input-group-btn">
                                         <button class="btn btn-info" type="button" id="id_browse">&nbsp;<span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Browse&nbsp;</button>
                                     </span>
                                 </div>
-                                {% render_field form.file class+="hidden" %}
+                                {% render_field form.file class+="hidden" %}-->
+                                {% render_field form.file class="filestyle" data-btnClass="btn-primary" data-placeholder="No File Selected"%}
+
                             </div>
                         </div>
                         <br/>
@@ -85,7 +87,7 @@
                             <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8">{% render_field form.description class+="form-control" rows="6" %}</div>
                         </div>
                     </div>
-                    <br/>
+
                 </div>
             </div>
 
@@ -141,7 +143,7 @@
                     <button type="submit" class="btn btn-success clickable" id="btn_submit">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Submit&nbsp;</button>
                 &nbsp;&nbsp;
                 <a class="btn btn-default clickable" href="/deposit/submit/">&nbsp;<span class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Clear&nbsp;</a>
-                </p>                
+                </p>
             </div>
         </div>
     </form>
@@ -166,8 +168,8 @@
                 <br/>
                 <p>
                     <b>**</b>
-                    {% if entry.status == 'REV' %}
-                        Your submission has been acknowledged by the RMDB team. We will review your entry shortly. For any questions, please feel free to <a href="/help/about/#contact">&nbsp;<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Contact Us&nbsp;</a>.
+                    {% if entry.status != 'PUB' %}
+                        Your submission is currently hidden from the public. You can change it anytime by <a href="/entry_manage">&nbsp;<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Entry Management&nbsp;</a>.
                     {% else %}
                         To visit your entry, click here: <a class="btn btn-danger" href="/detail/{{ entry.rmdb_id }}">&nbsp;<span class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;Detail&nbsp;</a>.
                     {% endif %}
@@ -184,10 +186,11 @@
                     {% endfor %}
                 </ul>
             </div>
-            {% endif %}            
+            {% endif %}
         </div>
     </div>
 
+    <!--<div id="wait" class="modal" aria-hidden="true"></div>-->
 
     <div id="stat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalStat" aria-hidden="true">
         <div class="modal-dialog">
@@ -218,35 +221,47 @@
         </div>
     </div>
 
+
+
 </div>
 <br/>
 
 {% endblock %}
 
 {% block script %}
+    <script type="text/javascript" src="/site_media/js/bootstrap-filestyle.min.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('.dropdown-toggle').removeClass("active");
             $("#nav_deposit").addClass("active");
             $("#nav_logo").css("text-decoration","none");
+            //$("#wait").fadeOut(500);
 
-            $("#id_browse").on("click", function(event) {
-                event.preventDefault();
-                $("#id_file").trigger("click");
-            });
-            $("#id_file").on("change", function () {
-                $("#id_disp").val($(this).val().replace("C:\\fakepath\\", ""));
-            });
+            //$("#id_browse").on("click", function(event) {
+            //    event.preventDefault();
+            //    $("#id_file").trigger("click");
+            //});
+            //$("#id_file").on("change", function () {
+            //    console.log($(this).val());
+            //    $("#id_disp").val($(this).val().replace("C:\\fakepath\\", ""));
+            //});
             $("#id_useid").on("click", function () {
-                $("#id_rmdb_id").val($("#id_disp").val().replace(".rdat", ""));
+                $("#id_rmdb_id").val($("#id_file").val().replace("C:\\fakepath\\", "").replace(".rdat", ""));
             });
 
             var col_h = Math.max($("#col-1").height(), $("#col-2").height()) + 35;
             $("#col-1").css("height", col_h);
             $("#col-2").css("height", col_h);
 
-            $("#btn_submit").on("click", function() {
+            $("#upload_form").on("submit", function () {
+               console.log("submit the form");
                 $("#stat").modal("show");
+                //$("#wait").fadeIn(500);
+            });
+
+            //$("#btn_submit").on("click", function() {
+                //$("#stat").modal("show");
                 // setInterval(function() {
                 //     console.log("check");
                 //     $.ajax({
@@ -260,7 +275,7 @@
                 //         }
                 //     });                    
                 // }, 500);
-            });
+            //});
         });
     </script>
 
