@@ -91,6 +91,7 @@ def validate_file(file_path, link_path, input_type):
 
 
 def process_upload(form, upload_file, user):
+    # print '****************** Processing Upload ******************'
     (error_msg, flag, entry) = ([], 0, '')
     rmdb_id = form.cleaned_data['rmdb_id'].upper()
 
@@ -107,6 +108,7 @@ def process_upload(form, upload_file, user):
             txt = filter(lambda x: 'experimentType:' in x, txt)
             is_eterna = ("ETERNA" in rmdb_id)
             if txt:
+                # find the experimentType(eg. StandardState) in txt
                 txt = txt[0]
                 txt = txt[txt.find('experimentType:'):]
                 txt = txt[txt.find(':')+1 : txt.find('\t')]
@@ -152,6 +154,7 @@ def process_upload(form, upload_file, user):
 
 
 def submit_entry(form, user, upload_file, rdatfile, isatabfile):
+    # print '****************** Submitting Entry ******************'
     error_msg = []
     rmdb_id = form.cleaned_data['rmdb_id'].upper()
 
