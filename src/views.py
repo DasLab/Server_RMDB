@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.utils.encoding import smart_str
 
+
 from rdatkit import SecondaryStructure
 
 from src.env import error400, error401, error403, error404, error500, error503
@@ -213,9 +214,12 @@ def validate(request):
 
 @login_required
 def upload(request):
+    print '****************** Upload view ******************'
     flag = 0
     if request.method == 'POST':
+        print '****************** Creating Form ******************'
         form = UploadForm(request.POST, request.FILES)
+        print '****************** Form Created ******************'
         if form.is_valid():
             upload_file = request.FILES['file']
             user = request.user
@@ -223,12 +227,17 @@ def upload(request):
 
             if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
                 os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
+
+            # return HttpResponseRedirect('/success/url/')
         else:
+            print '****************** Form not valid ******************'
             flag = 1
             (error_msg, entry) = ([], '')
             if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
             if 'file' in form.errors: error_msg.append('Input file field is required.')
             if 'authors' in form.errors: error_msg.append('Authors field is required.')
+
+    print '****************** Flag = ', flag, ' ******************'
 
     if not flag:
         (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
@@ -273,6 +282,7 @@ def get_stats(request):
         json[key] = '{:,}'.format(json[key])
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
+
 def get_news(request):
     n_news = 12
     news = NewsItem.objects.all().order_by('-date')[:n_news]
@@ -280,6 +290,7 @@ def get_news(request):
     for i, n in enumerate(news):
         json[i] = {'content': n.content, 'date': n.date.strftime('%b %d, %Y')}
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
+
 
 def get_recent(request):
     entries = RMDBEntry.objects.all().filter(status='PUB').order_by('-creation_date')
@@ -301,6 +312,7 @@ def get_recent(request):
         entries_list.append(e_temp)
     return HttpResponse(simplejson.dumps(entries_list, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
+
 def get_browse(request, keyword):
     if keyword in ('general', 'puzzle', 'eterna'):
         json = simplejson.load(open('%s/cache/stat_browse_%s.json' % (MEDIA_ROOT, keyword), 'r'))
@@ -319,5 +331,66 @@ def test(request):
 
     raise ValueError
     return HttpResponse(content="", status=200)
+
+
+#
+# Down below create by Chunwen Xiong
+#
+
+
+@login_required
+def entry_manage(request):
+    user = request.user
+    user_id = user.id
+    entries = RMDBEntry.objects.filter(owner_id=user_id).order_by('-id')
+    json = {'entries': entries}
+    return render(request, PATH.HTML_PATH['entry_manage'], json)
+
+
+@login_required
+def edit_entry(request, rmdb_id, entry_id):
+    entry = RMDBEntry.objects.get(id=entry_id)
+    if entry.owner != request.user:
+        return error403(request, reason="You are not allowed to edit other user's entries!")
+    # json = {'entry': entry}
+    # return render(request, PATH.HTML_PATH['entry_edit'], json)
+
+    publication = Publication.objects.get(id=entry.publication_id)
+
+    initial_value = {'rmdb_id': entry.rmdb_id,
+                     'entry_status':entry.status,
+                     'description': entry.description,
+                     'comments': entry.comments,
+                     'authors':publication.authors,
+                     'pubmed_id': publication.pubmed_id,
+                     'publication_title': publication.title
+                     }
+
+    (error_msg, flag, form) = ([], 0, UpdateForm(initial=initial_value))
+    return render(request, PATH.HTML_PATH['entry_edit'],
+                  {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry, "publication":publication})
+
+
+@login_required
+def update_entry(request, entry_id):
+    entry = RMDBEntry.objects.get(id=entry_id)
+    publication = Publication.objects.get(id=entry.publication_id)
+
+    flag = 0
+    if request.method == 'POST':
+        form = UpdateForm(request.POST, request.FILES, initial={'rmdb_id': entry.rmdb_id})
+        if form.is_valid():
+            upload_file = request.FILES['file']
+            user = request.user
+            (error_msg, flag, entry) = process_upload(form, upload_file, user)
+
+            if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
+                os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
+        else:
+            flag = 1
+            (error_msg, entry) = ([], '')
+            if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
+            if 'file' in form.errors: error_msg.append('Input file field is required.')
+            if 'authors' in form.errors: error_msg.append('Authors field is required.')
 
 

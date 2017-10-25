@@ -265,6 +265,21 @@ class UploadForm(forms.Form):
     description = forms.CharField(widget=forms.Textarea, required=False)
 
 
+class UpdateForm(forms.Form):
+    exp_type = forms.ChoiceField(required=True, choices=ENTRY_TYPE_CHOICES)
+    #file_type = forms.ChoiceField(required=True, choices=FORMAT_TYPE_CHOICES)
+    #file = forms.FileField(required=True)
+    entry_status = forms.ChoiceField(required=True, choices=ENTRY_STATUS_CHOICES)
+
+    rmdb_id = forms.CharField(required=True, max_length=25)
+    publication_title = forms.CharField(required=False, max_length=255)
+    pubmed_id = forms.CharField(required=False, max_length=31)
+    authors = forms.CharField(required=True, max_length=255)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+    comments = forms.CharField(widget=forms.Textarea, required=False)
+
+
+
 class ReviewForm(forms.Form):
     new_stat = forms.ChoiceField(required=True, choices=ENTRY_STATUS_CHOICES)
     rmdb_id = forms.CharField(required=True)
