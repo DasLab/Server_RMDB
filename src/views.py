@@ -3,9 +3,8 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.utils.encoding import smart_str
-
-
-from rdatkit import SecondaryStructure
+from django.db.models import Max
+from django.db.models import Q
 
 from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
@@ -214,12 +213,9 @@ def validate(request):
 
 @login_required
 def upload(request):
-    print '****************** Upload view ******************'
     flag = 0
     if request.method == 'POST':
-        print '****************** Creating Form ******************'
         form = UploadForm(request.POST, request.FILES)
-        print '****************** Form Created ******************'
         if form.is_valid():
             upload_file = request.FILES['file']
             user = request.user
@@ -230,14 +226,11 @@ def upload(request):
 
             # return HttpResponseRedirect('/success/url/')
         else:
-            print '****************** Form not valid ******************'
             flag = 1
             (error_msg, entry) = ([], '')
-            if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
-            if 'file' in form.errors: error_msg.append('Input file field is required.')
-            if 'authors' in form.errors: error_msg.append('Authors field is required.')
-
-    print '****************** Flag = ', flag, ' ******************'
+            # if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
+            # if 'file' in form.errors: error_msg.append('Input file field is required.')
+            # if 'authors' in form.errors: error_msg.append('Authors field is required.')
 
     if not flag:
         (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
@@ -341,8 +334,16 @@ def test(request):
 @login_required
 def entry_manage(request):
     user = request.user
-    user_id = user.id
-    entries = RMDBEntry.objects.filter(owner_id=user_id).order_by('-id')
+    owned_entries = RMDBEntry.objects.filter(owner=user)
+    latest_versions = owned_entries.values('rmdb_id').annotate(latest_version=Max('version'))
+    # latest_versions_dict = {each['rmdb_id']:each['latest_version'] for each in latest_versions}
+    # print latest_versions_dict
+
+    q_statement = Q()
+    for pair in latest_versions:
+        q_statement |= (Q(rmdb_id=pair['rmdb_id']) & Q(version=pair['latest_version']))
+
+    entries = owned_entries.filter(q_statement).order_by('-id')
     json = {'entries': entries}
     return render(request, PATH.HTML_PATH['entry_manage'], json)
 
@@ -389,8 +390,8 @@ def update_entry(request, entry_id):
         else:
             flag = 1
             (error_msg, entry) = ([], '')
-            if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
-            if 'file' in form.errors: error_msg.append('Input file field is required.')
-            if 'authors' in form.errors: error_msg.append('Authors field is required.')
+            # if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
+            # if 'file' in form.errors: error_msg.append('Input file field is required.')
+            # if 'authors' in form.errors: error_msg.append('Authors field is required.')
 
 
