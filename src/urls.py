@@ -10,6 +10,9 @@ from src.settings import MEDIA_ROOT, DEBUG, IS_MAINTENANCE, env
 from src import user
 from src import views
 from src.util import api
+from django.contrib.auth import views as auth_views
+from env import PATH
+
 # from src.helper.helper_api import *
 
 admin.site = AdminSitePlus()
@@ -66,6 +69,16 @@ else:
         url(r'^login/?$', user.user_login),
         url(r'^register/?$', user.register),
         url(r'^logout/?$', user.user_logout),
+        url(r'^edit_profile/?$', user.edit_profile),
+        # url(r'^change_password/?$', auth_views.PasswordChangeView.as_view(template_name=PATH.HTML_PATH['change_password'])),
+
+        # url(r'^change_password/done/?$', auth_views.password_change_done, {'template_name': PATH.HTML_PATH['change_password_done']}, name='password_change_done'),
+
+        # url(r'^change_password/?$', auth_views.PasswordChangeView.as_view()),
+        # url("^password_change/done/$", auth_views.PasswordChangeDoneView.as_view()),
+
+        url(r'^change_password/?$', user.change_password),
+        url(r'^change_password/done/?$', user.change_password_done, name='change_password_done'),
 
         # url(r'^render_structure/?$', views.render_structure),
 
@@ -113,6 +126,8 @@ else:
         url(r'^entry_manage$', views.entry_manage),
         url(r'^entry_manage/entry_edit/(?P<rmdb_id>\w+)/(?P<entry_id>\d+)/?$', views.edit_entry),
         url(r'^entry_manage/update_entry/(?P<entry_id>\d+)/?$', views.update_entry),
+
+        url('^', include('django.contrib.auth.urls')),
     ]
 
     if DEBUG: urlpatterns.append(url(r'^test/?$', views.test))

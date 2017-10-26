@@ -3,8 +3,11 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.db import IntegrityError
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.shortcuts import render
+from django.core.urlresolvers import reverse
 
 import datetime
 import string
@@ -79,6 +82,7 @@ def is_valid_name(input, char_allow, length):
         if char not in src: return 0
     return 1
 
+
 def is_valid_email(input):
     input_split = input.split("@")
     if len(input_split) != 2: return 0
@@ -88,6 +92,7 @@ def is_valid_email(input):
     for char in input_split:
         if not is_valid_name(char, "", 1): return 0
     return 1
+
 
 def check_login_register(form):
     error_msg = []
@@ -152,6 +157,7 @@ def register(request):
                 except Exception:
                     print traceback.format_exc()
                     error_msg.append('Unknown error. Please contact admin.')
+        """
         else:
             if 'username' in form.errors: error_msg.append('Username field is required.')
             if 'password' in form.errors: error_msg.append('Password field is required.')
@@ -161,6 +167,7 @@ def register(request):
             if 'department' in form.errors: error_msg.append('Department field is required.')
             if 'email' in form.errors: error_msg.append('Email field is required.')
             error_msg.append('Form invalid: missing required field(s).')
+        """
 
     return render(request, PATH.HTML_PATH['register'], {'reg_form': form, 'error_msg': error_msg, 'flag': flag})
 
@@ -175,3 +182,61 @@ def user_logout(request):
 def browse(request, path):
     fm = FileManager(MEDIA_ROOT + '/data')
     return fm.render(request, path)
+
+
+def edit_profile(request):
+    error_msg = []
+    flag = 0
+
+    usr = request.user
+    rmdb_usr = RMDBUser.objects.get(user=usr)
+    initial_value = {"username": usr.username,
+                     "first_name": usr.first_name,
+                     "last_name": usr.last_name,
+                     "institution":rmdb_usr.institution,
+                     "department":rmdb_usr.department,
+                     "email": usr.email,
+                     }
+    form = ProfileForm(initial=initial_value)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, initial=initial_value)
+        if form.is_valid():
+            try:
+                usr.email = form.cleaned_data['email']
+                usr.first_name = form.cleaned_data['first_name']
+                usr.last_name = form.cleaned_data['last_name']
+                usr.save()
+
+                rmdb_usr.institution = form.cleaned_data['institution']
+                rmdb_usr.department = form.cleaned_data['department']
+                rmdb_usr.save()
+
+                flag = 1
+            except IntegrityError:
+                error_msg.append('Username already exists. Try another.')
+            except Exception:
+                print traceback.format_exc()
+                error_msg.append('Unknown error. Please contact admin.')
+
+    return render(request, PATH.HTML_PATH['edit_profile'],
+                  {'prof_form': form, 'error_msg': error_msg, 'flag': flag, 'usr': usr})
+
+
+def change_password(request):
+    message = ''
+
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            # messages.success(request, 'Your password was successfully updated!')
+            return HttpResponseRedirect(reverse('change_password_done'))
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, PATH.HTML_PATH['change_password'], {'form': form})
+
+
+def change_password_done(request):
+    return render(request, PATH.HTML_PATH['change_password_done'])
