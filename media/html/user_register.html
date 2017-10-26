@@ -18,7 +18,7 @@
                         <div class="panel-heading">
                             <h2 class="panel-title"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Account Login</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" id="col-1">
                             <div class="row" data-toggle="popover" data-placement="bottom" title="User ID" data-content="It must be at least 3 characters long. Alphanumeric characters only. Previously used User IDs are not available.">
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;User Name:</span>
@@ -48,9 +48,9 @@
                         <div class="panel-heading">
                             <h2 class="panel-title"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Contact Information</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" id="col-2">
                             <br/>
-                            <div class="row" data-toggle="popover" data-placement="bottom" title="Contact Name" data-content="First name must be at least 3 characters, while last time must be at least 2 characters.">
+                            <div class="row" data-toggle="popover" data-placement="bottom" title="Contact Name" data-content="First name must be at least 3 characters, while last name must be at least 2 characters.">
                                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;First Name:</span>
                                 </div>
@@ -58,14 +58,14 @@
                                     {% render_field reg_form.first_name class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">
+                                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Last Name:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
                                     {% render_field reg_form.last_name class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
-                                <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
+                                <!--<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>-->
                             </div>
                             <br/>
                             <div class="row" data-toggle="popover" data-placement="bottom" title="Affiliation" data-content="Institution and department names must be at least 4 characters long.">
@@ -76,22 +76,22 @@
                                     {% render_field reg_form.institution class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">
+                                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-tower"></span>&nbsp;&nbsp;Department:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
                                     {% render_field reg_form.department class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
-                                <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
+                                <!--<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>-->
                             </div>
                             <br/>
                             <div class="row" data-toggle="popover" data-placement="bottom" title="Email" data-content="Please use valid email address.">
                                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;E-mail Address:</span>
                                 </div>
-                                <div class="col-lg-8 col-md-8 col-sm-7 col-xs-7">{% render_field reg_form.email class+="form-control" %}</div>
-                                <div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
+                                <div class="col-lg-9 col-md-9 col-sm-7 col-xs-7">{% render_field reg_form.email class+="form-control" %}</div>
+                                <!--<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>-->
                             </div>
                             <br/>
                         </div>
@@ -140,6 +140,7 @@
 
 </div>
 <br/>
+</div>
 {% endblock %}
 
 
@@ -149,7 +150,12 @@
             $('.dropdown-toggle').removeClass("active");
             $("#nav_deposit").addClass("active");
             $("#nav_logo").css("text-decoration","none");
+
+            var col_h = Math.max($("#col-1").height(), $("#col-2").height()) + 20;
+            $("#col-1").css("height", col_h);
+            $("#col-2").css("height", col_h);
         });
     </script>
 
 {% endblock %}
+</div>
