@@ -91,6 +91,7 @@ def validate_file(file_path, link_path, input_type):
 
 
 def process_upload(form, upload_file, user):
+    # print '****************** Processing Upload ******************'
     (error_msg, flag, entry) = ([], 0, '')
     rmdb_id = form.cleaned_data['rmdb_id'].upper()
 
@@ -107,6 +108,7 @@ def process_upload(form, upload_file, user):
             txt = filter(lambda x: 'experimentType:' in x, txt)
             is_eterna = ("ETERNA" in rmdb_id)
             if txt:
+                # find the experimentType(eg. StandardState) in txt
                 txt = txt[0]
                 txt = txt[txt.find('experimentType:'):]
                 txt = txt[txt.find(':')+1 : txt.find('\t')]
@@ -152,6 +154,7 @@ def process_upload(form, upload_file, user):
 
 
 def submit_entry(form, user, upload_file, rdatfile, isatabfile):
+    # print '****************** Submitting Entry ******************'
     error_msg = []
     rmdb_id = form.cleaned_data['rmdb_id'].upper()
 
@@ -171,8 +174,17 @@ def submit_entry(form, user, upload_file, rdatfile, isatabfile):
         current_version = 0
         owner = None
 
-    entry = RMDBEntry(type=form.cleaned_data['exp_type'], rmdb_id=rmdb_id, authors=form.cleaned_data['authors'], publication=publication, comments=rdatfile.comments, description=form.cleaned_data['description'], data_count=0, construct_count=0, version=current_version + 1, owner=user)
-    entry.status = 'PUB' if user.is_staff else 'REV'
+    entry = RMDBEntry(type=form.cleaned_data['exp_type'],
+                      rmdb_id=rmdb_id,
+                      authors=form.cleaned_data['authors'],
+                      publication=publication,
+                      comments=rdatfile.comments,
+                      description=form.cleaned_data['description'],
+                      data_count=0,
+                      construct_count=0,
+                      version=current_version + 1,
+                      owner=user,
+                      status=form.cleaned_data['entry_status'])
     # rmdb_id_series = entry.rmdb_id[:entry.rmdb_id.rfind('_')]
     # current_id = int(entry.rmdb_id[entry.rmdb_id.rfind('_')+1:])
     # entry.latest = -1

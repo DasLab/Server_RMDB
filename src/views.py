@@ -3,8 +3,8 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render
 from django.utils.encoding import smart_str
-
-from rdatkit import SecondaryStructure
+from django.db.models import Max
+from django.db.models import Q
 
 from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
@@ -223,12 +223,14 @@ def upload(request):
 
             if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
                 os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
+
+            # return HttpResponseRedirect('/success/url/')
         else:
             flag = 1
             (error_msg, entry) = ([], '')
-            if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
-            if 'file' in form.errors: error_msg.append('Input file field is required.')
-            if 'authors' in form.errors: error_msg.append('Authors field is required.')
+            # if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
+            # if 'file' in form.errors: error_msg.append('Input file field is required.')
+            # if 'authors' in form.errors: error_msg.append('Authors field is required.')
 
     if not flag:
         (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
@@ -273,6 +275,7 @@ def get_stats(request):
         json[key] = '{:,}'.format(json[key])
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
+
 def get_news(request):
     n_news = 12
     news = NewsItem.objects.all().order_by('-date')[:n_news]
@@ -280,6 +283,7 @@ def get_news(request):
     for i, n in enumerate(news):
         json[i] = {'content': n.content, 'date': n.date.strftime('%b %d, %Y')}
     return HttpResponse(simplejson.dumps(json, sort_keys=True, indent=' ' * 4), content_type='application/json')
+
 
 def get_recent(request):
     entries = RMDBEntry.objects.all().filter(status='PUB').order_by('-creation_date')
@@ -301,6 +305,7 @@ def get_recent(request):
         entries_list.append(e_temp)
     return HttpResponse(simplejson.dumps(entries_list, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
+
 def get_browse(request, keyword):
     if keyword in ('general', 'puzzle', 'eterna'):
         json = simplejson.load(open('%s/cache/stat_browse_%s.json' % (MEDIA_ROOT, keyword), 'r'))
@@ -319,5 +324,69 @@ def test(request):
 
     raise ValueError
     return HttpResponse(content="", status=200)
+
+
+#
+# Down below create by Chunwen Xiong
+#
+
+
+@login_required
+def entry_manage(request):
+    user = request.user
+    owned_entries = RMDBEntry.objects.filter(owner=user)
+    latest_versions = owned_entries.values('rmdb_id').annotate(latest_version=Max('version'))
+    # latest_versions_dict = {each['rmdb_id']:each['latest_version'] for each in latest_versions}
+    # print latest_versions_dict
+
+    q_statement = Q()
+    for pair in latest_versions:
+        q_statement |= (Q(rmdb_id=pair['rmdb_id']) & Q(version=pair['latest_version']))
+
+    entries = owned_entries.filter(q_statement).order_by('-id')
+    json = {'entries': entries}
+    return render(request, PATH.HTML_PATH['entry_manage'], json)
+
+
+@login_required
+def edit_entry(request, rmdb_id, entry_id):
+    entry = RMDBEntry.objects.get(id=entry_id)
+    if entry.owner != request.user:
+        return error403(request, reason="You are not allowed to edit other user's entries!")
+
+    initial_value = {'entry_status':entry.status,
+                     'description': entry.description,
+                     'authors':entry.publication.authors,
+                     'pubmed_id': entry.publication.pubmed_id,
+                     'publication_title': entry.publication.title
+                     }
+
+    (error_msg, flag, form) = ([], 0, UpdateForm(initial=initial_value))
+
+    if request.method == 'POST':
+        form = UpdateForm(request.POST, initial=initial_value)
+        if form.is_valid():
+            try:
+                entry.status =form.cleaned_data['entry_status']
+                entry.description=form.cleaned_data['description']
+                entry.save(force_update=True)
+
+                publication = Publication.objects.get(id=entry.publication_id)
+                publication.authors=form.cleaned_data['authors']
+                publication.pubmed_id=form.cleaned_data['pubmed_id']
+                publication.title=form.cleaned_data['publication_title']
+                publication.save(force_update=True)
+                flag = 2
+            except Exception:
+                flag = 1
+                print traceback.format_exc()
+                error_msg.append('Unknown error. Please contact admin.')
+
+
+
+    return render(request, PATH.HTML_PATH['entry_edit'], {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry})
+
+
+
 
 

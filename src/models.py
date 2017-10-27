@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django import forms
+from django.core import validators
+from django.contrib.auth.forms import PasswordChangeForm
 # from django.utils.html import format_html
 
 from src.settings import *
@@ -21,13 +23,21 @@ ENTRY_TYPE_CHOICES = (
     ('TT', 'Titration'),
     ('DC', 'Deep Chemical Mapping'),
 )
-
+'''
 ENTRY_STATUS_CHOICES = (
     ('REC', 'Received'),
     ('REV', 'Under Review'),
     ('HOL', 'On Hold'),
     ('PUB', 'Published'),
 )
+'''
+
+
+ENTRY_STATUS_CHOICES = (
+    ('UNP', 'Unpublished'),
+    ('PUB', 'Published'),
+)
+
 
 DOWNLOAD_SRC_CHOICES = (
     ('reeffit', 'REEFFIT'),
@@ -249,6 +259,57 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(required=True, max_length=255)
 
 
+class ProfileForm(forms.Form):
+    first_name = forms.CharField(required=True, max_length=255, validators=[
+        validators.RegexValidator(
+            regex='^[\w\- ]{3,}$',
+            message='First name must be at least 3 characters. And can only contain Alphanumeric characters, whitespace and -',
+            code='invalid_first_name'
+        ),
+    ])
+    last_name = forms.CharField(required=True, max_length=255, validators=[
+        validators.RegexValidator(
+            regex='^[\w\- ]{2,}$',
+            message='Last name must be at least 2 characters. And can only contain Alphanumeric characters, whitespace and -',
+            code='invalid_last_name'
+        ),
+    ])
+    institution = forms.CharField(required=True, max_length=255, validators=[
+        validators.RegexValidator(
+            regex='^[\w\- ]{4,}$',
+            message='Institution must be at least 4 characters. And can only contain Alphanumeric characters, whitespace and ()-,',
+            code='invalid_institution'
+        ),
+    ])
+    department = forms.CharField(required=True, max_length=255, validators=[
+        validators.RegexValidator(
+            regex='^[\w\- \(\),]{4,}$',
+            message='Department must be at least 4 characters. And can only contain Alphanumeric characters, whitespace and ()-,',
+            code='invalid_department'
+        ),
+    ])
+    email = forms.EmailField(required=True, max_length=255)
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    """
+    A Custom PasswordChangeForm for minimum password length validation.
+    """
+
+    def clean_new_password1(self):
+        """
+        Validates that the new_password1.
+        """
+        password = self.cleaned_data.get('new_password1')
+        # Add your custom validation
+        if len(password) < 6:
+            raise forms.ValidationError(
+                'password too short',
+                code='password_too_short',
+            )
+        return password
+
+
 class SearchForm(forms.Form):
     sstring = forms.CharField(required=True, max_length=63)
 
@@ -257,12 +318,22 @@ class UploadForm(forms.Form):
     exp_type = forms.ChoiceField(required=True, choices=ENTRY_TYPE_CHOICES)
     file_type = forms.ChoiceField(required=True, choices=FORMAT_TYPE_CHOICES)
     file = forms.FileField(required=True)
+    entry_status = forms.ChoiceField(required=True, choices=ENTRY_STATUS_CHOICES)
 
     rmdb_id = forms.CharField(required=True, max_length=25)
     publication = forms.CharField(required=False, max_length=255)
     pubmed_id = forms.CharField(required=False, max_length=31)
     authors = forms.CharField(required=True, max_length=255)
     description = forms.CharField(widget=forms.Textarea, required=False)
+
+
+class UpdateForm(forms.Form):
+    entry_status = forms.ChoiceField(required=True, choices=ENTRY_STATUS_CHOICES)
+    description = forms.CharField(widget=forms.Textarea, required=False)
+
+    authors = forms.CharField(required=True, max_length=255)
+    pubmed_id = forms.CharField(required=False, max_length=31)
+    publication_title = forms.CharField(required=False, max_length=255)
 
 
 class ReviewForm(forms.Form):

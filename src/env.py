@@ -68,8 +68,14 @@ class SYS_PATH(Singleton):
             'adv_search': MEDIA_ROOT + '/media/html/search_advanced.html',
             'adv_search_res': MEDIA_ROOT + '/media/html/search_advanced_results.html',
 
+            'entry_manage': MEDIA_ROOT + '/media/html/entry_manage.html',
+            'entry_edit': MEDIA_ROOT + '/media/html/entry_edit.html',
+
             'register': MEDIA_ROOT + '/media/html/user_register.html',
             'login': MEDIA_ROOT + '/media/html/user_login.html',
+            'edit_profile': MEDIA_ROOT + '/media/html/edit_profile.html',
+            'change_password': MEDIA_ROOT + '/media/html/change_password.html',
+            'change_password_done': MEDIA_ROOT + '/media/html/change_password_done.html',
 
             'admin_apache': MEDIA_ROOT + '/media/html/admin_apache.html',
             'admin_aws': MEDIA_ROOT + '/media/html/admin_aws.html',
@@ -123,7 +129,8 @@ def error401(request, status=True):
 def error403(request, status=True, reason=""):
     status = (request.GET['status'].lower() != 'false') if 'status' in request.GET else status
     status = 403 if status else 200
-    return render(request, PATH.HTML_PATH['403'], status=status)
+    json = {'reason': reason}
+    return render(request, PATH.HTML_PATH['403'], status=status, context=json)
 
 def error404(request, status=True):
     status = (request.GET['status'].lower() != 'false') if 'status' in request.GET else status

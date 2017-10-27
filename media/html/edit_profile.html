@@ -1,4 +1,5 @@
 {% extends "media/html/_public.html" %}
+{% load repository_extras %}
 {% load widget_tweaks %}
 
 {% block content %}
@@ -7,10 +8,10 @@
     <div class="row">
         <h3>
             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;
-            MyRMDB Account Registration
+            Edit MyRMDB Profile
         </h3>
         <br/>
-        <form method="post" action="/register/">
+        <form method="post" action="/edit_profile/">
             {% csrf_token %}
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -23,23 +24,22 @@
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;User Name:</span>
                                 </div>
-                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{% render_field reg_form.username class+="form-control" %}</div>
-                            </div>
-                            <br/>
-                            <div class="row" data-toggle="popover" data-placement="bottom" title="Password" data-content="It must be at least 6 characters long. No limit on combinations.">
-                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-                                    <span class="pull-right"><span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;Password:</span>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                    <input type="text" placeholder={{ usr.username }} disabled="disabled" class="form-control" maxlength="31">
                                 </div>
-                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{% render_field reg_form.password class+="form-control" %}</div>
                             </div>
                             <br/>
-                            <div class="row" data-toggle="popover" data-placement="bottom" title="Password" data-content="Type your password for a second time. Both times must match.">
+                            <br/>
+                            <div class="row">
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-                                    <span class="text-right pull-right"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;Repeat Password:</span>
                                 </div>
-                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">{% render_field reg_form.repeat_password class+="form-control" %}</div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7"><a href="/change_password" class="btn btn-default right">Change Password</a></div>
                             </div>
-                            <br/>
+                            <!--<br/>
+                            <div class="row">
+                                <p class="text-center">(principal investigator)</p>
+                            </div>-->
+
                         </div>
                     </div>
                 </div>
@@ -55,44 +55,51 @@
                                     <span class="pull-right"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;First Name:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
-                                    {% render_field reg_form.first_name class+="form-control" %}
+                                    {% render_field prof_form.first_name class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
+
                                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Last Name:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
-                                    {% render_field reg_form.last_name class+="form-control" %}
+                                    {% render_field prof_form.last_name class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
                                 <!--<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>-->
                             </div>
+                            <div class="help-inline" style="color:red;font-size:85%;">{{ prof_form.first_name.errors }}</div>
+                            <div class="help-inline" style="color:red;font-size:85%;">{{ prof_form.last_name.errors }}</div>
+
                             <br/>
                             <div class="row" data-toggle="popover" data-placement="bottom" title="Affiliation" data-content="Institution and department names must be at least 4 characters long.">
                                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                 <span class="pull-right"><span class="glyphicon glyphicon-education"></span>&nbsp;&nbsp;Insititution:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
-                                    {% render_field reg_form.institution class+="form-control" %}
+                                    {% render_field prof_form.institution class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-tower"></span>&nbsp;&nbsp;Department:</span>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-7 col-xs-7">
-                                    {% render_field reg_form.department class+="form-control" %}
+                                    {% render_field prof_form.department class+="form-control" %}
                                     <br class="hidden-lg hidden-md" />
                                 </div>
                                 <!--<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>-->
                             </div>
+                            <div class="help-inline" style="color:red;font-size:85%;">{{ prof_form.institution.errors }}</div>
+                            <div class="help-inline" style="color:red;font-size:85%;">{{ prof_form.department.errors }}</div>
                             <br/>
                             <div class="row" data-toggle="popover" data-placement="bottom" title="Email" data-content="Please use valid email address.">
                                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;E-mail Address:</span>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-7 col-xs-7">{% render_field reg_form.email class+="form-control" %}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-7 col-xs-7">{% render_field prof_form.email class+="form-control" %}</div>
                                 <!--<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>-->
                             </div>
+                            <div class="help-inline" style="color:red;font-size:85%;">{{ prof_form.email.errors }}</div>
                             <br/>
                         </div>
                     </div>
@@ -103,8 +110,8 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="pull-right">
                         <button type="submit" class="btn btn-inverse">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Submit&nbsp;</button>
-                        &nbsp;
-                        <a href="/register/" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Clear&nbsp;</a>
+
+                        <button type="reset" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Reset&nbsp;</button>
                     </div>
                 </div>
             </div>
@@ -113,13 +120,17 @@
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            {% if flag == 1 %}
+            {% if flag == 1 and prof_form.changed_data%}
                 <div class="alert alert-success" role="alert">
                     <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                    <b>SUCCESS</b>: Your MyRMDB account has been processed. Thank you for registration. Now you can 
-                    <a href="/login/" class="btn btn-inverse">
-                        <span class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;Sign In&nbsp;
-                    </a>.
+                    <b>SUCCESS</b>: Your MyRMDB profile has been updated, the following fields has been changed:
+                    <ul>
+                        {% for field in prof_form.changed_data %}
+                        <li>
+                            {{ field|get_user_field }}
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             {% endif %}
 
@@ -138,6 +149,8 @@
         </div>
     </div>
 
+
+
 </div>
 <br/>
 </div>
@@ -154,8 +167,9 @@
             var col_h = Math.max($("#col-1").height(), $("#col-2").height()) + 20;
             $("#col-1").css("height", col_h);
             $("#col-2").css("height", col_h);
+
+
         });
     </script>
 
 {% endblock %}
-</div>
