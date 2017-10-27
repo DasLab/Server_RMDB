@@ -353,45 +353,40 @@ def edit_entry(request, rmdb_id, entry_id):
     entry = RMDBEntry.objects.get(id=entry_id)
     if entry.owner != request.user:
         return error403(request, reason="You are not allowed to edit other user's entries!")
-    # json = {'entry': entry}
-    # return render(request, PATH.HTML_PATH['entry_edit'], json)
 
-    publication = Publication.objects.get(id=entry.publication_id)
-
-    initial_value = {'rmdb_id': entry.rmdb_id,
-                     'entry_status':entry.status,
+    initial_value = {'entry_status':entry.status,
                      'description': entry.description,
-                     'comments': entry.comments,
-                     'authors':publication.authors,
-                     'pubmed_id': publication.pubmed_id,
-                     'publication_title': publication.title
+                     'authors':entry.publication.authors,
+                     'pubmed_id': entry.publication.pubmed_id,
+                     'publication_title': entry.publication.title
                      }
 
     (error_msg, flag, form) = ([], 0, UpdateForm(initial=initial_value))
-    return render(request, PATH.HTML_PATH['entry_edit'],
-                  {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry, "publication":publication})
 
-
-@login_required
-def update_entry(request, entry_id):
-    entry = RMDBEntry.objects.get(id=entry_id)
-    publication = Publication.objects.get(id=entry.publication_id)
-
-    flag = 0
     if request.method == 'POST':
-        form = UpdateForm(request.POST, request.FILES, initial={'rmdb_id': entry.rmdb_id})
+        form = UpdateForm(request.POST, initial=initial_value)
         if form.is_valid():
-            upload_file = request.FILES['file']
-            user = request.user
-            (error_msg, flag, entry) = process_upload(form, upload_file, user)
+            try:
+                entry.status =form.cleaned_data['entry_status']
+                entry.description=form.cleaned_data['description']
+                entry.save(force_update=True)
 
-            if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
-                os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
-        else:
-            flag = 1
-            (error_msg, entry) = ([], '')
-            # if 'rmdb_id' in form.errors: error_msg.append('RMDB_ID field is required.')
-            # if 'file' in form.errors: error_msg.append('Input file field is required.')
-            # if 'authors' in form.errors: error_msg.append('Authors field is required.')
+                publication = Publication.objects.get(id=entry.publication_id)
+                publication.authors=form.cleaned_data['authors']
+                publication.pubmed_id=form.cleaned_data['pubmed_id']
+                publication.title=form.cleaned_data['publication_title']
+                publication.save(force_update=True)
+                flag = 2
+            except Exception:
+                flag = 1
+                print traceback.format_exc()
+                error_msg.append('Unknown error. Please contact admin.')
+
+
+
+    return render(request, PATH.HTML_PATH['entry_edit'], {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry})
+
+
+
 
 

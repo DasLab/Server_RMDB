@@ -125,7 +125,6 @@ else:
 
         url(r'^entry_manage$', views.entry_manage),
         url(r'^entry_manage/entry_edit/(?P<rmdb_id>\w+)/(?P<entry_id>\d+)/?$', views.edit_entry),
-        url(r'^entry_manage/update_entry/(?P<entry_id>\d+)/?$', views.update_entry),
 
         url('^', include('django.contrib.auth.urls')),
     ]

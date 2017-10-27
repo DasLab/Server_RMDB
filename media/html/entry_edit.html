@@ -41,10 +41,10 @@
 
         <hr/>
 
-        <form enctype="multipart/form-data" method="post" action="/entry_manage/update_entry/{{ entry.id }}">
+        <form enctype="multipart/form-data" method="post" action="/entry_manage/entry_edit/{{ entry.rmdb_id }}/{{ entry.id }}">
             {% csrf_token %}
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-sm-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h2 class="panel-title">
@@ -54,82 +54,40 @@
                         </div>
 
                         <div class="panel-body" id="col-1">
-                            <div class="row">
+                            <div class="row" >
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-
-                                <!--<div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Format:</div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{% render_field form.file_type class+="form-control" %}</div>
-                            <br class="hidden-lg hidden-md" />
-                            <br class="hidden-lg hidden-md" />
-                            <div class="hidden-lg hidden-md col-sm-1 col-xs-1"></div>-->
-
-                                <!--<div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">Experiment Type:</div>
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{% render_field form.exp_type class+="form-control" %}</div>-->
-                            </div>
-                            <br/>
-
-                            <div class="row" data-toggle="popover" data-placement="bottom" title="RMDB ID"
-                                 data-content="It must be of the format XXXXX_YYY_DDDD, where X and Y are alphanumeric uppercase characters and D are digits. X can be 5-7 length, Y can be 3-4 and D can only be 4. Example: RNAPZ6_DMS_0001.">
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">RMDB_ID:</div>
-                                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8">
-                                    <div class="input-group">
-                                        {% render_field form.rmdb_id class+="form-control" %}
-                                        <!--<span class="input-group-btn">
-                                        <button class="btn btn-warning" type="button" id="id_useid">&nbsp;<span class="glyphicon glyphicon-console"></span>&nbsp;&nbsp;Use File Name&nbsp;</button>
-                                        </span>-->
-                                    </div>
+                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">RMDB_ID:</div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                        <input class="form-control" type="text" placeholder={{ entry.rmdb_id }} disabled="disabled" style="cursor:text;"/>
                                 </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Version:</div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6"><input class="form-control" type="text" placeholder={{ entry.version }} disabled="disabled" style="cursor:text;"/></div>
                             </div>
                             <br/>
 
                             <div class="row">
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                                 <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Status:</div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{% render_field form.entry_status class+="form-control" value=form.entry_status. %}</div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{% render_field form.entry_status class+="form-control" value=form.entry_status %}</div>
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Version:</div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><input class="form-control" type="text" placeholder={{ entry.version }} disabled="disabled" style="cursor:text;"/></div>
-                                <!--<br class="hidden-lg hidden-md"/>
-                                <br class="hidden-lg hidden-md"/>
-                                <div class="hidden-lg hidden-md col-sm-1 col-xs-1"></div>-->
+                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Co_owners:</div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"></div>
                             </div>
                             <br/>
-
-                            <!--<div class="row">
-                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Upload File:</div>
-                            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8">
-                                <div class="input-group">
-                                    <input class="form-control" type="text" id="id_disp" name="disp" placeholder="No file chosen" disabled="disabled" style="cursor:text;"/>
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-info" type="button" id="id_browse">&nbsp;<span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Browse&nbsp;</button>
-                                    </span>
-                                </div>
-                                {% render_field form.file class+="hidden" %}
-                            </div>
-                        </div>
-                        <br/>-->
 
                             <div class="row">
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Description: (<i>optional</i>)</div>
-                                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8">{% render_field form.description class+="form-control" rows="5" %}</div>
+                                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8">{% render_field form.description class+="form-control" rows="6" %}</div>
                             </div>
                             <br/>
 
-                            <div class="row">
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Comments: (<i>optional</i>)</div>
-                                <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8">{% render_field form.comments class+="form-control" rows="5" %}</div>
-                            </div>
-
                         </div>
-                        <br/>
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <h2 class="panel-title">
@@ -177,100 +135,46 @@
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
-                    <div class="box save-box">
-                        <br/>
-                        <p class="pull-right">
-                        <p class="pull-right">
-                            <button type="submit" class="btn btn-high btn-success pull-right" name="_save"
-                                    style="width:150px;min-height:40px"><span
-                                    class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Save
-                            </button>
-                        </p>
-                        <br/>
 
-                        <p class="pull-right">
-                            <button type="submit" name="_continue" class=" btn btn-high btn-warning pull-right"
-                                    style="width:150px;min-height:40px"><span
-                                    class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;Save and <br>Continue
-                                Editing
-                            </button>
-                        </p>
-                        <br/>
-
-                        <p class="pull-right">
-                            <button type="submit" name="_addanother" class="btn btn-warning pull-right"
-                                    style="width:150px;min-height:40px"><span
-                                    class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;Save and <br>Add Another
-                            </button>
-                        </p>
-                        <br/>
-
-                        <a href="delete/" class="text-error deletelink btn btn-danger pull-right"
-                           style="width:150px;min-height:40px"><span
-                                class="glyphicon glyphicon-minus-sign"></span>&nbsp;&nbsp;Delete</a>
-                        </p>
-                    </div>
-                </div>
 
             </div>
 
-            <!--<div class="row">
+            <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <p class="pull-right">
-                        <button type="submit" class="btn btn-success clickable" id="btn_submit">&nbsp;<span
-                                class="glyphicon glyphicon-ok-sign"></span>&nbsp;&nbsp;Save&nbsp;
-                        </button>
-                        &nbsp;&nbsp;
-                        <a class="btn btn-default clickable" href="/deposit/submit/">&nbsp;<span
-                                class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Clear&nbsp;</a>
-                    </p>
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-inverse">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Save&nbsp;</button>
+
+                        <button type="reset" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Reset&nbsp;</button>
+                    </div>
                 </div>
-            </div>-->
+            </div>
         </form>
+
+        <div class="row">
+            <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10">
+                <p>Note: If you want to update a new version of RMDB file.
+                    Go to<a href="/deposit/submit">&nbsp;<b>&nbsp;Deposit&nbsp;</b></a>, and upload it as the same RMDB ID.
+                </p>
+            </div>
+
+            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2"></div>
+        </div>
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <hr/>
                 {% if flag == 2 %}
                     <div class="alert alert-success" role="alert">
-                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                        <img src="/site_data/thumbnail/{{ entry.rmdb_id }}.gif"
-                             style="float:right; width:200px; padding-right:10px;">
-                        <b>SUCCESS</b>: Your RMDB entry has been submitted.
-                        <br/>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <br/>
-                        <p>Entry <span class="label label-inverse">RMDB ID</span>: <span class="lead"><span
-                                class="label label-default">{% autoescape off %}
-                            {{ entry.rmdb_id|color_rmdb_id }}{% endautoescape %}</span></span>, <u>Version</u>:
-                            <mark>{{ entry.version }}</mark>
-                        </p>
-                        <p>Entry <span class="label label-danger">experimentType</span>:
-                            {% autoescape off %}{{ entry.type|get_exp_type }}{% endautoescape %}</p>
-                        <p>Entry <span class="label label-violet">Owner</span>: <kbd>{{ entry.owner }}</kbd>, <span
-                                class="label label-brown">Authors</span>: <i>{{ entry.authors }}</i></p>
-                        <p>Entry <span class="label label-violet">Stats</span>: <u># of Constructs</u>:
-                            <code>{{ entry.construct_count }}</code>, <u># of Data Points</u>:
-                            <code>{{ entry.data_count }}</code></p>
-                        <br/>
-                        <p>Entry <u>Status</u>: <span class="lead">{% autoescape off %}
-                            {{ entry.status|get_rev_stat }}{% endautoescape %}</span></p>
-                        <br/>
-                        <p>
-                            <b>**</b>
-                            {% if entry.status == 'REV' %}
-                                Your submission has been acknowledged by the RMDB team. We will review your entry
-                                shortly. For any questions, please feel free to
-                                <a href="/help/about/#contact">&nbsp;<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Contact
-                                    Us&nbsp;</a>.
-                            {% else %}
-                                To visit your entry, click here:
-                                <a class="btn btn-danger" href="/detail/{{ entry.rmdb_id }}">&nbsp;<span
-                                        class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;Detail&nbsp;</a>.
-                            {% endif %}
-                        </p>
-                    </div>
+                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                    <b>SUCCESS</b>: Your RMDB Entry has been updated, the following fields has been changed:
+                    <ul>
+                        {% for field in form.changed_data %}
+                        <li>
+                            {{ field|get_entry_field }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
                 {% elif flag == 1 and error_msg %}
                     <div class="alert alert-danger" role="alert">
                         <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
@@ -287,35 +191,6 @@
         </div>
 
 
-        <div id="stat" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalStat" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content panel-warning">
-                    <div class="modal-header panel-heading">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="stat_label">
-                            <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
-                            &nbsp;&nbsp;Entry Submission
-                        </h4>
-                    </div>
-                    <div class="modal-body panel-body">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <p><b>Please wait while we are processing your entry submission:</b></p>
-                                <ul>
-                                    <li id="step_1">Checking and uploading RDAT file ...</li>
-                                    <li id="step_2">Updating database entry ...</li>
-                                    <li id="step_3">Generating json data files ...</li>
-                                    <li id="step_4">Generating image files ...</li>
-                                    <li id="step_5">Running secondary structure predictions ...</li>
-                                </ul>
-                                <br/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
     <br/>
@@ -329,37 +204,9 @@
             $("#nav_deposit").addClass("active");
             $("#nav_logo").css("text-decoration", "none");
 
-            $("#id_browse").on("click", function (event) {
-                event.preventDefault();
-                $("#id_file").trigger("click");
-            });
-            $("#id_file").on("change", function () {
-                $("#id_disp").val($(this).val().replace("C:\\fakepath\\", ""));
-            });
-            $("#id_useid").on("click", function () {
-                $("#id_rmdb_id").val($("#id_disp").val().replace(".rdat", ""));
-            });
-
             var col_h = Math.max($("#col-1").height(), $("#col-2").height()) + 35;
             $("#col-1").css("height", col_h);
             $("#col-2").css("height", col_h);
-
-            $("#btn_submit").on("click", function () {
-                $("#stat").modal("show");
-                // setInterval(function() {
-                //     console.log("check");
-                //     $.ajax({
-                //         url:'/site_data/tmp.txt',
-                //         type: 'GET',
-                //         dataType:'text',
-                //         async: false,
-                //         success: function(data) {
-                //             console.log("got it");
-                //             console.log(data);
-                //         }
-                //     });
-                // }, 500);
-            });
         });
     </script>
 

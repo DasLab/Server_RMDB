@@ -2,36 +2,25 @@
 
 {% block content %}
     <div class="container">
-        <h3>
-            <span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;
-            Entry Management
-        </h3>
-
         {% if entries %}
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                    <h3>
+                        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;
+                        Entry Management
+                        <span class="pull-right" style="font-weight:normal; font-size: 12px;">(Click values in first column to edit)</span>
+                    </h3>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5"></div>
+            </div>
+
+
+
             <table id="entry_list" class="table table-striped table-hover">
                 <thead>
                 <tr>
-
-                    <!--<th scope="col" class="action-checkbox-column info">
-
-                        <div class="text"><div class="checkbox"><label><input type="checkbox" id="action-toggle" class="" style=""><span class="cr"><span class="cr-icon glyphicon glyphicon-ok"></span></span><span style="padding-left: 10px;"></span></label></div>
-                        </div>
-                    </th>-->
-
                     <th scope="col"
                         class="id-column sortable column-id sorted descending info col-lg-1 col-md-1 col-sm-1 col-xs-1">
-
-
-                        <!--<div class="relative-wrapper">
-                            <div class="pull-right">
-
-                                <a href="?o=1" class="toggle descending" title="Toggle sorting"><span class="glyphicon glyphicon-chevron-up"></span></a>
-                                <a class="sortremove" href="?o=" title="Remove from sorting"><span class="glyphicon glyphicon-remove"></span></a>
-                            </div>
-                        </div>
-                        -->
-
-
                         <div class="text">
                             <a href="?o=1"><span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;ID</a>
                         </div>
@@ -99,27 +88,12 @@
 
                 <ul>
                     {% for entry in entries %}
-                        <!-- <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> -->
-                        <!-- using app_name: polls -->
-                        <!--<li><a href="entry_manage/{{ entry.id }}/entry_edit">{{ entry.id }}</a></li>-->
-
                         <tr class="row1">
-                            <!--<td class="action-checkbox">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="_selected_action" value={{ entry.id }} class="action-select">
-                                            <span class="cr">
-                                                <span class="cr-icon glyphicon glyphicon-ok">
-                                                </span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </td>-->
                             <th class="field-id">
                                 <a href="entry_manage/entry_edit/{{ entry.rmdb_id }}/{{ entry.id }}">{{ entry.id }}</a>
                             </th>
                             <td class="field-rmdb_id">
-                                <kbd>{{ entry.rmdb_id }}</kbd>
+                                <a href="detail/{{ entry.rmdb_id }}"><kbd>{{ entry.rmdb_id }}</kbd></a>
                             </td>
                             <td class="field-version">{{ entry.version }}</td>
                             <td class="field-status">
@@ -138,7 +112,10 @@
 
             </table>
         {% else %}
-            <h3 style="margin: auto;width: 50%;">No Entries are available.</h3>
+            <br/>
+            <div class="row">
+                <h3 class="text-center">No Entries are available.</h3>
+            </div>
         {% endif %}
     </div>
 
