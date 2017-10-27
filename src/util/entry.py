@@ -170,6 +170,9 @@ def submit_entry(form, user, upload_file, rdatfile, isatabfile):
         if owner != user and (not user.is_staff):
             error_msg.append('RMDB entry %s exists and you cannot update it since you are not the owner.' % rmdb_id)
             return (error_msg, '')
+        for previous_entry in entries:
+            previous_entry.status=form.cleaned_data['entry_status']
+            previous_entry.save(force_update=True)
     else:
         current_version = 0
         owner = None

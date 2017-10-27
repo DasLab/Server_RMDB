@@ -367,7 +367,13 @@ def edit_entry(request, rmdb_id, entry_id):
         form = UpdateForm(request.POST, initial=initial_value)
         if form.is_valid():
             try:
-                entry.status =form.cleaned_data['entry_status']
+                prev_entries = RMDBEntry.objects.filter(rmdb_id=rmdb_id)
+                for each_entry in prev_entries:
+                    each_entry.status = form.cleaned_data['entry_status']
+                    each_entry.save(force_update=True)
+                    # print each_entry.rmdb_id, each_entry.version, each_entry.status
+
+                entry.status = form.cleaned_data['entry_status']
                 entry.description=form.cleaned_data['description']
                 entry.save(force_update=True)
 
@@ -376,6 +382,8 @@ def edit_entry(request, rmdb_id, entry_id):
                 publication.pubmed_id=form.cleaned_data['pubmed_id']
                 publication.title=form.cleaned_data['publication_title']
                 publication.save(force_update=True)
+
+
                 flag = 2
             except Exception:
                 flag = 1

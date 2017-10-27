@@ -74,6 +74,17 @@ def get_rev_stat(string):
 register.filter('get_rev_stat', get_rev_stat)
 
 
+def get_status(string):
+    if string == "PUB":
+        string = 'Published'
+    elif string == "UNP":
+        string = 'Unpublished'
+    else:
+        string = 'Unknown'
+    return string
+register.filter('get_status', get_status)
+
+
 def get_entry_field(string):
     if string == "entry_status":
         string = 'Status'
