@@ -184,6 +184,10 @@ def browse(request, path):
     return fm.render(request, path)
 
 
+#
+# Down below create by Chunwen Xiong
+#
+
 def edit_profile(request):
     error_msg = []
     flag = 0

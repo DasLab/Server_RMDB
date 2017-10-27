@@ -41,7 +41,8 @@
 
         <hr/>
 
-        <form enctype="multipart/form-data" method="post" action="/entry_manage/entry_edit/{{ entry.rmdb_id }}/{{ entry.id }}">
+        <form enctype="multipart/form-data" method="post"
+              action="/entry_manage/entry_edit/{{ entry.rmdb_id }}/{{ entry.id }}">
             {% csrf_token %}
             <div class="row">
                 <div class="col-lg-7 col-md-7 col-sm-12 col-sm-12">
@@ -54,15 +55,20 @@
                         </div>
 
                         <div class="panel-body" id="col-1">
-                            <div class="row" >
+                            <div class="row">
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                                 <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">RMDB_ID:</div>
                                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                                        <input class="form-control" type="text" placeholder={{ entry.rmdb_id }} disabled="disabled" style="cursor:text;"/>
+                                    <input class="form-control" type="text"
+                                           placeholder={{ entry.rmdb_id }} disabled="disabled" style="cursor:text;"/>
                                 </div>
 
+
+                                <div class="hidden-lg hidden-md col-sm-1 col-xs-1"></div>
                                 <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Version:</div>
-                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6"><input class="form-control" type="text" placeholder={{ entry.version }} disabled="disabled" style="cursor:text;"/></div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6"><input class="form-control" type="text"
+                                                                                        placeholder={{ entry.version }} disabled="disabled"
+                                                                                        style="cursor:text;"/></div>
                             </div>
                             <br/>
 
@@ -70,9 +76,6 @@
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                                 <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Status:</div>
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{% render_field form.entry_status class+="form-control" value=form.entry_status %}</div>
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Co_owners:</div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"></div>
                             </div>
                             <br/>
 
@@ -81,8 +84,52 @@
                                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Description: (<i>optional</i>)</div>
                                 <div class="col-lg-9 col-md-9 col-sm-8 col-xs-8">{% render_field form.description class+="form-control" rows="6" %}</div>
                             </div>
-                            <br/>
 
+                            <!-- add co-owners -->
+                            <!--<div class="row">
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Co-owners: (<i>optional</i>)</div>
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#addUsersModal">Add Co-owners
+                                    </button>
+                                </div>
+
+
+                                <div id="addUsersModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;
+                                                </button>
+                                                <h4 class="modal-title">Please search by username</h4>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div class="form-group">
+                                                    <label for="username">Username:</label>
+                                                    <input type="text" class="form-control" id="username">
+                                                    <span id="addUsersErr" style="color: red"></span>
+                                                </div>
+                                                <button type="button" class="btn btn-primary" id="addUsersButton">
+                                                    Search
+                                                </button>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" id="addUsersDiv"></div>
+
+
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -136,15 +183,18 @@
                 </div>
 
 
-
             </div>
 
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="pull-right">
-                        <button type="submit" class="btn btn-inverse">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Save&nbsp;</button>
+                        <button type="submit" class="btn btn-inverse">&nbsp;<span
+                                class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Save&nbsp;
+                        </button>
 
-                        <button type="reset" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Reset&nbsp;</button>
+                        <button type="reset" class="btn btn-default">&nbsp;<span
+                                class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Reset&nbsp;
+                        </button>
                     </div>
                 </div>
             </div>
@@ -153,7 +203,8 @@
         <div class="row">
             <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10">
                 <p>Note: If you want to update a new version of RMDB file.
-                    Go to<a href="/deposit/submit">&nbsp;<b>&nbsp;Deposit&nbsp;</b></a>, and upload it as the same RMDB ID.
+                    Go to<a href="/deposit/submit">&nbsp;<b>&nbsp;Deposit&nbsp;</b></a>, and upload it as the same RMDB
+                    ID.
                 </p>
             </div>
 
@@ -163,18 +214,18 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <hr/>
-                {% if flag == 2 %}
+                {% if flag == 2 and form.changed_data %}
                     <div class="alert alert-success" role="alert">
-                    <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                    <b>SUCCESS</b>: Your RMDB Entry has been updated, the following fields has been changed:
-                    <ul>
-                        {% for field in form.changed_data %}
-                        <li>
-                            {{ field|get_entry_field }}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                        <b>SUCCESS</b>: Your RMDB Entry has been updated, the following fields has been changed:
+                        <ul>
+                            {% for field in form.changed_data %}
+                                <li>
+                                    {{ field|get_entry_field }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 {% elif flag == 1 and error_msg %}
                     <div class="alert alert-danger" role="alert">
                         <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
@@ -189,7 +240,6 @@
                 {% endif %}
             </div>
         </div>
-
 
 
     </div>
@@ -207,6 +257,26 @@
             var col_h = Math.max($("#col-1").height(), $("#col-2").height()) + 35;
             $("#col-1").css("height", col_h);
             $("#col-2").css("height", col_h);
+
+            function removeUser(event) {
+                console.log(event.currentTarget);
+            }
+
+            $("#addUsersButton").click(function () {
+                $("#addUsersModal #addUsersErr").html("");
+                var username = $("#addUsersModal #username").val();
+                if (!username) {
+                    $("#addUsersModal #addUsersErr").html("Username can not be blank!")
+                    return
+                }
+
+                //TO DO VERIFY WITH API
+                $("#addUsersDiv").append('<button class="btn btn-xs btn-info username-btn" type="button" data-username = "' + username + '">' + username + '</button>')
+                $("#addUsersModal button.close").click();
+
+            })
+
+
         });
     </script>
 
