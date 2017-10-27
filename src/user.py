@@ -190,8 +190,7 @@ def edit_profile(request):
 
     usr = request.user
     rmdb_usr = RMDBUser.objects.get(user=usr)
-    initial_value = {"username": usr.username,
-                     "first_name": usr.first_name,
+    initial_value = {"first_name": usr.first_name,
                      "last_name": usr.last_name,
                      "institution":rmdb_usr.institution,
                      "department":rmdb_usr.department,
