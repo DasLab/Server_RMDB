@@ -111,6 +111,8 @@ class RMDBEntry(models.Model):
     is_trace = models.BooleanField(default=False, verbose_name='Contans TRACE Field?', help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry has data in TRACE field.')
     is_eterna = models.BooleanField(default=False, verbose_name='Is Eterna Dataset?', help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry is from Eterna.')
 
+    co_owners = models.ManyToManyField(User, related_name='%(class)s_co_owners')
+
     def short_desp(self):
         return self.description[:100] + '...'
     short_desp.short_description = 'Short Description'
@@ -168,6 +170,8 @@ class RMDBUser(models.Model):
     entry_count = models.IntegerField(verbose_name='Total Entries')
     last_entry = models.CharField(max_length=25, null=True, verbose_name='Last Submitted RMDB ID')
     last_date = models.DateField(null=True, verbose_name='Last Submission Date')
+
+    principal_investigator = models.ManyToManyField(User, related_name='%(class)s_p_investigator')
 
     def __unicode__(self):
         try:
