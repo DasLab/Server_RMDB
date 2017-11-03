@@ -370,8 +370,6 @@ def edit_entry(request, rmdb_id, entry_id):
         co_owner_changes = False
         form = UpdateForm(request.POST, initial=initial_value)
         formset = CoOwnersFormSet(request.POST, initial=initial_value_formset)
-        # print formset
-        # print initial_value_formset
 
         if form.is_valid() and formset.is_valid():
             # update entry
@@ -394,6 +392,12 @@ def edit_entry(request, rmdb_id, entry_id):
                 publication.pubmed_id=form.cleaned_data['pubmed_id']
                 publication.title=form.cleaned_data['publication_title']
                 publication.save(force_update=True)
+
+                # update formset
+                updated_value_formset = [{'co_owner':co_owner} for co_owner in entry.co_owners.all() if co_owner != request.user]
+                CoOwnersFormSet = formset_factory(CoOwnerForm, formset=BaseCoOwnerFormSet,
+                                                  extra=0 if updated_value_formset else 1)
+                formset = CoOwnersFormSet(initial=updated_value_formset)
 
 
                 flag = 2
