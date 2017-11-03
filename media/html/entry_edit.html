@@ -76,6 +76,13 @@
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
                                 <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Status:</div>
                                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">{% render_field form.entry_status class+="form-control" value=form.entry_status %}</div>
+
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                                <div class="col-lg-2 col-md-2 col-sm-5 col-xs-5">Owner:</div>
+                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6"><input class="form-control" type="text"
+                                                                                        placeholder={{ entry.owner }} disabled="disabled"
+                                                                                        style="cursor:text;"/></div>
+
                             </div>
                             <br/>
 
@@ -199,6 +206,9 @@
                                     {{ co_owner_form.co_owner }}
                                 </div>
                             {% endfor %}
+                            <br/>
+                            <br/>
+                            <div class="help" style="color:red;font-size:90%;">{{ formset.non_form_errors }}</div>
                         </div>
                     </div>
                 </div>
