@@ -8,6 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
+from django.forms import formset_factory
 
 import datetime
 import string
@@ -130,9 +131,13 @@ def register(request):
     flag = 0
     form = RegisterForm()
 
+    PInvesFormSet = formset_factory(PInvesForm, formset=BasePInvesFormSet)
+    formset = PInvesFormSet()
+
     if request.method == 'POST':
         form = RegisterForm(request.POST)
-        if form.is_valid():
+        formset = PInvesFormSet(request.POST)
+        if form.is_valid() and formset.is_valid():
             error_msg = check_login_register(form)
 
             if not error_msg:
@@ -150,8 +155,14 @@ def register(request):
                     rmdb_user.department = form.cleaned_data['department']
                     rmdb_user.save()
 
+                    rmdb_user, p_inves_changes = save_p_inves(rmdb_user, formset, user)
+
                     flag = 1
+
+                    # update form and formset
+                    formset = PInvesFormSet()
                     form = RegisterForm()
+
                 except IntegrityError:
                     error_msg.append('Username already exists. Try another.')
                 except Exception:
@@ -169,7 +180,10 @@ def register(request):
             error_msg.append('Form invalid: missing required field(s).')
         """
 
-    return render(request, PATH.HTML_PATH['register'], {'reg_form': form, 'error_msg': error_msg, 'flag': flag})
+    return render(request, PATH.HTML_PATH['register'], {'reg_form': form,
+                                                        'formset': formset,
+                                                        'error_msg': error_msg,
+                                                        'flag': flag})
 
 
 
@@ -188,9 +202,31 @@ def browse(request, path):
 # Down below create by Chunwen Xiong
 #
 
+def save_p_inves(rmdb_usr, formset, user):
+    p_inves_changes = False
+    pre_p_investigator = set(rmdb_usr.principal_investigator.all())
+    cur_p_investigator = set()
+    for p_inves_form in formset:
+        if p_inves_form.cleaned_data:
+            p_inves = User.objects.get(username=p_inves_form.cleaned_data['p_inves'])
+            # don't add user to principal investigator
+            if p_inves != user:
+                cur_p_investigator.add(p_inves)
+
+    if pre_p_investigator != cur_p_investigator:
+        p_inves_changes = True
+        rmdb_usr.principal_investigator.clear()
+        for p_inves in cur_p_investigator:
+            rmdb_usr.principal_investigator.add(p_inves)
+        rmdb_usr.save()
+
+    return rmdb_usr,p_inves_changes
+
+
 def edit_profile(request):
     error_msg = []
     flag = 0
+    p_inves_changes = False
 
     usr = request.user
     rmdb_usr = RMDBUser.objects.get(user=usr)
@@ -202,9 +238,15 @@ def edit_profile(request):
                      }
     form = ProfileForm(initial=initial_value)
 
+    initial_value_formset = [{'p_inves': p_inves} for p_inves in rmdb_usr.principal_investigator.all() if p_inves != usr]
+
+    PInvesFormSet = formset_factory(PInvesForm, formset=BasePInvesFormSet, extra=0 if initial_value_formset else 1)
+    formset = PInvesFormSet(initial=initial_value_formset)
+
     if request.method == 'POST':
         form = ProfileForm(request.POST, initial=initial_value)
-        if form.is_valid():
+        formset = PInvesFormSet(request.POST, initial=initial_value_formset)
+        if form.is_valid() and formset.is_valid():
             try:
                 usr.email = form.cleaned_data['email']
                 usr.first_name = form.cleaned_data['first_name']
@@ -215,15 +257,27 @@ def edit_profile(request):
                 rmdb_usr.department = form.cleaned_data['department']
                 rmdb_usr.save()
 
+                rmdb_usr, p_inves_changes = save_p_inves(rmdb_usr, formset, usr)
+
+                # update formset
+                updated_value_formset = [{'p_inves': p_inves} for p_inves in rmdb_usr.principal_investigator.all()
+                                         if p_inves != usr]
+                PInvesFormSet = formset_factory(PInvesForm, formset=BasePInvesFormSet,
+                                                extra=0 if updated_value_formset else 1)
+                formset = PInvesFormSet(initial=updated_value_formset)
+
                 flag = 1
-            except IntegrityError:
-                error_msg.append('Username already exists. Try another.')
             except Exception:
                 print traceback.format_exc()
                 error_msg.append('Unknown error. Please contact admin.')
 
     return render(request, PATH.HTML_PATH['edit_profile'],
-                  {'prof_form': form, 'error_msg': error_msg, 'flag': flag, 'usr': usr})
+                  {'prof_form': form,
+                   'formset': formset,
+                   'error_msg': error_msg,
+                   'flag': flag,
+                   'p_inves_changes': p_inves_changes,
+                   'usr': usr})
 
 
 def change_password(request):

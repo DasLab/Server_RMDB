@@ -20,15 +20,14 @@
                             <h2 class="panel-title"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;Account Login</h2>
                         </div>
                         <div class="panel-body" id="col-1">
-                            <div class="row" data-toggle="popover" data-placement="bottom" title="User ID" data-content="It must be at least 3 characters long. Alphanumeric characters only. Previously used User IDs are not available.">
+                            <div class="row">
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                                     <span class="pull-right"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;User Name:</span>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                                    <input type="text" placeholder={{ usr.username }} disabled="disabled" class="form-control" maxlength="31">
+                                    <span class="btn btn-default" style="pointer-events: none">{{ usr.username }}</span>
                                 </div>
                             </div>
-                            <br/>
                             <br/>
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
@@ -40,6 +39,28 @@
                                 <p class="text-center">(principal investigator)</p>
                             </div>-->
 
+                        </div>
+                    </div>
+
+                    <div class="panel panel-orange">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
+                                Principal Investigator
+                            </h2>
+                        </div>
+                        <div class="panel-body" id="col-3">
+                            <!-- edit co-owners -->
+                            {{ formset.management_form }}
+
+                            {% for p_inves_form in formset %}
+                                <div class="p-investigator-formset">
+                                    {{ p_inves_form.p_inves }}
+                                </div>
+                            {% endfor %}
+                            <br/>
+                            <br/>
+                            <div class="help" style="color:red;font-size:90%;">{{ formset.non_form_errors }}</div>
                         </div>
                     </div>
                 </div>
@@ -103,28 +124,33 @@
                             <br/>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="pull-right">
-                        <button type="submit" class="btn btn-inverse">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Submit&nbsp;</button>
+                        <button type="submit" class="btn btn-success clickable">&nbsp;<span
+                                class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Save&nbsp;
+                        </button>
 
-                        <button type="reset" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Reset&nbsp;</button>
+                        <a class="btn btn-default clickable" href="/edit_profile/">&nbsp;<span
+                                class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Reset&nbsp;</a>
                     </div>
+
                 </div>
+
             </div>
+
         </form>
         <br/><br/>
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            {% if flag == 1 and prof_form.changed_data%}
+            {% if flag == 1 and prof_form.changed_data or flag == 1 and p_inves_changes%}
                 <div class="alert alert-success" role="alert">
                     <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
                     <b>SUCCESS</b>: Your MyRMDB profile has been updated, the following fields has been changed:
                     <ul>
+                        {% if p_inves_changes %}
+                                Principal Investigator
+                            {% endif %}
                         {% for field in prof_form.changed_data %}
                         <li>
                             {{ field|get_user_field }}
@@ -158,17 +184,21 @@
 
 
 {% block script %}
+
+    <script type="text/javascript" src="/site_media/js/jquery.formset.js"></script>
+
+    <script>
+        $('.p-investigator-formset').formset({
+            addText: '<br/><button class="btn btn-info btn-sm">Add Principal Investigator</button>',
+            deleteText: '<span class="glyphicon glyphicon-remove-sign"></span><p></p>',
+        });
+    </script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('.dropdown-toggle').removeClass("active");
             $("#nav_deposit").addClass("active");
             $("#nav_logo").css("text-decoration","none");
-
-            var col_h = Math.max($("#col-1").height(), $("#col-2").height()) + 20;
-            $("#col-1").css("height", col_h);
-            $("#col-2").css("height", col_h);
-
-
         });
     </script>
 

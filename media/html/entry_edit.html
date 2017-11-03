@@ -189,10 +189,18 @@
                         <div class="panel-heading">
                             <h2 class="panel-title">
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
-                                Edit Co-owners
+                                Co-owners
                             </h2>
                         </div>
                         <div class="panel-body" id="col-3">
+                            {% if rmdb_usr.principal_investigator.all %}
+                             <div class="row" style="padding-left:1em">Owner's Principal Investigator:
+                                {% for p_inves in rmdb_usr.principal_investigator.all %}
+                                    <span class="btn btn-default btn-sm" style="pointer-events: none">&nbsp;{{ p_inves }}</span>
+                                {% endfor %}</div>
+                            <br/>
+                            {% endif %}
+
                             <!-- edit co-owners -->
                             {{ formset.management_form }}
 
@@ -214,9 +222,8 @@
                                 class="glyphicon glyphicon-play-circle"></span>&nbsp;&nbsp;Save&nbsp;
                         </button>
 
-                        <button type="reset" class="btn btn-default clickable">&nbsp;<span
-                                class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Reset&nbsp;
-                        </button>
+                        <a class="btn btn-default clickable" href="/entry_manage/entry_edit/{{ entry.rmdb_id }}/{{ entry.id }}">&nbsp;<span
+                                class="glyphicon glyphicon-remove-circle"></span>&nbsp;&nbsp;Reset&nbsp;</a>
                     </div>
                 </div>
 
@@ -281,7 +288,7 @@
     <script>
         $('.co-owner-formset').formset({
             addText: '<br/><button class="btn btn-info btn-sm">Add Co-owner</button>',
-            deleteText: '<span class="glyphicon glyphicon-remove-sign"></span>',
+            deleteText: '<span class="glyphicon glyphicon-remove-sign"></span><p></p>',
         });
     </script>
 

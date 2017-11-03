@@ -170,9 +170,12 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile):
         if owner != user and (not user.is_staff):
             error_msg.append('RMDB entry %s exists and you cannot update it since you are not the owner.' % rmdb_id)
             return (error_msg, '')
-        for previous_entry in entries:
-            previous_entry.status=form.cleaned_data['entry_status']
-            previous_entry.save(force_update=True)
+
+        current_status = prev_entry.status
+        if current_status != form.cleaned_data['entry_status']:
+            for previous_entry in entries:
+                previous_entry.status=form.cleaned_data['entry_status']
+                previous_entry.save(force_update=True)
     else:
         current_version = 0
         owner = None
@@ -218,14 +221,17 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile):
 
 
 def save_co_owners(entry, formset, user):
+    rmdb_usr = RMDBUser.objects.get(user=user)
+    p_inves = set(rmdb_usr.principal_investigator.all())
+
     co_owner_changes = False
     pre_co_owners = set(entry.co_owners.all())
     cur_co_owners = set()
     for co_owner_form in formset:
         if co_owner_form.cleaned_data:
             co_owner = User.objects.get(username=co_owner_form.cleaned_data['co_owner'])
-            # don't add owner to co-owner
-            if co_owner != entry.owner:
+            # don't add Owner and Principal Investigator to co-owner
+            if co_owner != entry.owner and co_owner not in p_inves:
                 cur_co_owners.add(co_owner)
     # always add user to co-owner if he's not owner
     if entry.owner != user:

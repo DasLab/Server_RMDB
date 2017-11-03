@@ -334,7 +334,7 @@ class UploadForm(forms.Form):
 
 class BaseCoOwnerFormSet(BaseFormSet):
     def clean(self):
-        """ Checks if the co-owner exits """
+        """ Checks if the user exits """
         if any(self.errors):
             # Don't bother validating the formset unless each form is valid on its own
             return
@@ -349,10 +349,29 @@ class BaseCoOwnerFormSet(BaseFormSet):
                     )
 
 
+class BasePInvesFormSet(BaseFormSet):
+    def clean(self):
+        """ Checks if the user exits """
+        if any(self.errors):
+            # Don't bother validating the formset unless each form is valid on its own
+            return
+        for form in self.forms:
+            if form.cleaned_data:
+                try:
+                    User.objects.get(username=form.cleaned_data['p_inves'])
+                except User.DoesNotExist:
+                    raise forms.ValidationError(
+                        'User %s does not exit, please check the username.' % (form.cleaned_data['p_inves']),
+                        code='p_inves_not_exit',
+                    )
 
 
 class CoOwnerForm(forms.Form):
     co_owner = forms.CharField(max_length=31)
+
+
+class PInvesForm(forms.Form):
+    p_inves = forms.CharField(max_length=31)
 
 
 class UpdateForm(forms.Form):

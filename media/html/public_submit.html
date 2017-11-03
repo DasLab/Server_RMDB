@@ -168,10 +168,18 @@
                         <div class="panel-heading">
                             <h2 class="panel-title">
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
-                                Add Co-owners
+                                Co-owners
                             </h2>
                         </div>
                         <div class="panel-body" id="col-3">
+                            {% if rmdb_usr.principal_investigator.all %}
+                            <div class="row" style="padding-left:1em">Principal Investigator:
+                                {% for p_inves in rmdb_usr.principal_investigator.all %}
+                                    <span class="btn btn-default btn-sm" style="pointer-events: none">&nbsp;{{ p_inves }}</span>
+                                {% endfor %}</div>
+                            <br/>
+                            {% endif %}
+
                             <!-- add co-owners -->
                             {{ formset.management_form }}
 
@@ -222,10 +230,12 @@
                         <p>Entry <span class="label label-danger">experimentType</span>:
                             {% autoescape off %}{{ entry.type|get_exp_type }}{% endautoescape %}</p>
                         <p>Entry <span class="label label-violet">Owner</span>: <kbd>{{ entry.owner }}</kbd>,
-                            <span class="label label-orange">Co-owners</span>:
-                            {% for co_owner in entry.co_owners.all %}
-                            <i>{{ co_owner }},</i>
-                            {% endfor %}
+                            {% if entry.co_owners.all %}
+                                <span class="label label-orange">Co-owners</span>:
+                                {% for co_owner in entry.co_owners.all %}
+                                    <i>{{ co_owner }},</i>
+                                {% endfor %}
+                            {% endif %}
                             <span class="label label-brown">Authors</span>: <i>{{ entry.authors }}</i>
                         </p>
                         <p>Entry <span class="label label-violet">Stats</span>: <u># of Constructs</u>:
@@ -308,7 +318,7 @@
     <script>
         $('.co-owner-formset').formset({
             addText: '<br/><button class="btn btn-info btn-sm">Add Co-owner</button>',
-            deleteText: '<span class="glyphicon glyphicon-remove-sign"></span>',
+            deleteText: '<span class="glyphicon glyphicon-remove-sign"></span><p></p>',
         });
     </script>
 
@@ -340,7 +350,6 @@
                 $("#stat").modal("show");
                 //$("#wait").fadeIn(500);
             });
-
 
 
             //$("#btn_submit").on("click", function() {
