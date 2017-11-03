@@ -112,7 +112,8 @@
                             {{ formset.management_form }}
 
                             {% for p_inves_form in formset %}
-                                <div class="p-investigator-formset">
+                                <div class="p-investigator-formset" data-toggle="popover" data-placement="bottom" title="Principal Investigator"
+                                     data-content="For long-term maintenance of the entry, you can put the account name of your principal investigator, who will by default have edit privileges on your entries. You can change this later in the Edit Profile page.">
                                     Username: {{ p_inves_form.p_inves }}&nbsp;
                                 </div>
                             {% endfor %}

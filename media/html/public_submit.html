@@ -184,7 +184,8 @@
                             {{ formset.management_form }}
 
                             {% for co_owner_form in formset %}
-                                <div class="co-owner-formset">
+                                <div class="co-owner-formset" data-toggle="popover" data-placement="bottom" title="Co-owners"
+                                     data-content="You can add Co-owners using their account name, and they will have edit privileges on this entry. Anyone who has the entry edit privileges can edit Co-owners in the Entry Management.">
                                     Username: {{ co_owner_form.co_owner }}&nbsp;
                                 </div>
                             {% endfor %}
