@@ -23,7 +23,7 @@
                     <th scope="col"
                         class="id-column sortable column-id sorted descending info col-lg-1 col-md-1 col-sm-1 col-xs-1">
                         <div class="text">
-                            <a href="?o=1"><span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;ID</a>
+                            <a href="?o=1"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Action</a>
                         </div>
                     </th>
                     <th scope="col"
@@ -50,7 +50,7 @@
                             <a href="?o=4.-1"><span class="glyphicon glyphicon-hourglass"></span>&nbsp;&nbsp;Status</a>
                         </div>
                     </th>
-                    <th scope="col" class="type-column sortable column-type info col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    <th scope="col" class="type-column sortable column-type info col-lg-1 col-md-1 col-sm-1 col-xs-1">
 
 
                         <div class="text">
@@ -82,6 +82,13 @@
                                 Constructs</a>
                         </div>
                     </th>
+                    <th scope="col" class="type-column sortable column-type info col-lg-1 col-md-1 col-sm-1 col-xs-1">
+
+
+                        <div class="text">
+                            <a href="?o=9.-1"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Owner</a>
+                        </div>
+                    </th>
                 </tr>
                 </thead>
 
@@ -91,7 +98,7 @@
                     {% for entry in entries %}
                         <tr class="row1">
                             <th class="field-id">
-                                <a href="entry_manage/entry_edit/{{ entry.rmdb_id }}/{{ entry.id }}">{{ entry.id }}</a>
+                                <a href="entry_manage/entry_edit/{{ entry.rmdb_id }}/{{ entry.id }}" class="btn btn-primary btn-xs"> Edit </a>
                             </th>
                             <td class="field-rmdb_id">
                                 <a href="detail/{{ entry.rmdb_id }}"><kbd>{{ entry.rmdb_id }}</kbd></a>
@@ -106,6 +113,9 @@
                             <td class="field-short_desp">{{ entry.short_desp|truncatechars:"100" }}</td>
                             <td class="field-data_count"><code>{{ entry.data_count }}</code></td>
                             <td class="field-construct_count"><code>{{ entry.construct_count }}</code></td>
+                            <td class="field-owner">
+                                <span class="label label-success">{{ entry.owner }}</span>
+                            </td>
                         </tr>
                     {% endfor %}
                 </ul>

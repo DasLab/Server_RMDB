@@ -4,6 +4,7 @@ from django import forms
 from django.core import validators
 from django.contrib.auth.forms import PasswordChangeForm
 # from django.utils.html import format_html
+from django.forms import BaseFormSet
 
 from src.settings import *
 
@@ -329,6 +330,29 @@ class UploadForm(forms.Form):
     pubmed_id = forms.CharField(required=False, max_length=31)
     authors = forms.CharField(required=True, max_length=255)
     description = forms.CharField(widget=forms.Textarea, required=False)
+
+
+class BaseCoOwnerFormSet(BaseFormSet):
+    def clean(self):
+        """ Checks if the co-owner exits """
+        if any(self.errors):
+            # Don't bother validating the formset unless each form is valid on its own
+            return
+        for form in self.forms:
+            if form.cleaned_data:
+                try:
+                    User.objects.get(username=form.cleaned_data['co_owner'])
+                except User.DoesNotExist:
+                    raise forms.ValidationError(
+                        'User %s does not exit, please check the username.' % (form.cleaned_data['co_owner']),
+                        code='co_owner_not_exit',
+                    )
+
+
+
+
+class CoOwnerForm(forms.Form):
+    co_owner = forms.CharField(max_length=31)
 
 
 class UpdateForm(forms.Form):

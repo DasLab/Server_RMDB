@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.utils.encoding import smart_str
 from django.db.models import Max
 from django.db.models import Q
+from django.forms import formset_factory
 
 from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
@@ -214,12 +215,15 @@ def validate(request):
 @login_required
 def upload(request):
     flag = 0
+    CoOwnersFormSet = formset_factory(CoOwnerForm,  formset=BaseCoOwnerFormSet)
+
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
-        if form.is_valid():
+        formset = CoOwnersFormSet(request.POST)
+        if form.is_valid() and formset.is_valid():
             upload_file = request.FILES['file']
             user = request.user
-            (error_msg, flag, entry) = process_upload(form, upload_file, user)
+            (error_msg, flag, entry) = process_upload(form, formset, upload_file, user)
 
             if os.path.exists('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name)):
                 os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
@@ -233,8 +237,8 @@ def upload(request):
             # if 'authors' in form.errors: error_msg.append('Authors field is required.')
 
     if not flag:
-        (error_msg, flag, entry, form) = ([], 0, '', UploadForm())
-    return render(request, PATH.HTML_PATH['upload'], {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry})
+        (error_msg, flag, entry, form, formset) = ([], 0, '', UploadForm(), CoOwnersFormSet())
+    return render(request, PATH.HTML_PATH['upload'], {'form': form, 'formset': formset, 'error_msg': error_msg, 'flag': flag, 'entry': entry})
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -334,16 +338,12 @@ def test(request):
 @login_required
 def entry_manage(request):
     user = request.user
-    owned_entries = RMDBEntry.objects.filter(owner=user)
-    latest_versions = owned_entries.values('rmdb_id').annotate(latest_version=Max('version'))
-    # latest_versions_dict = {each['rmdb_id']:each['latest_version'] for each in latest_versions}
-    # print latest_versions_dict
-
+    latest_versions = RMDBEntry.objects.values('rmdb_id').annotate(latest_version=Max('version'))
     q_statement = Q()
     for pair in latest_versions:
         q_statement |= (Q(rmdb_id=pair['rmdb_id']) & Q(version=pair['latest_version']))
 
-    entries = owned_entries.filter(q_statement).order_by('-id')
+    entries = RMDBEntry.objects.filter(q_statement).filter(Q(owner=user) | Q(co_owners=user)).distinct().order_by('-id')
     json = {'entries': entries}
     return render(request, PATH.HTML_PATH['entry_manage'], json)
 
@@ -351,7 +351,7 @@ def entry_manage(request):
 @login_required
 def edit_entry(request, rmdb_id, entry_id):
     entry = RMDBEntry.objects.get(id=entry_id)
-    if entry.owner != request.user:
+    if entry.owner != request.user and request.user not in entry.co_owners.all():
         return error403(request, reason="You are not allowed to edit other user's entries!")
 
     initial_value = {'entry_status':entry.status,
@@ -360,22 +360,34 @@ def edit_entry(request, rmdb_id, entry_id):
                      'pubmed_id': entry.publication.pubmed_id,
                      'publication_title': entry.publication.title
                      }
+    initial_value_formset = [{'co_owner':co_owner} for co_owner in entry.co_owners.all() if co_owner != request.user]
 
-    (error_msg, flag, form) = ([], 0, UpdateForm(initial=initial_value))
+    CoOwnersFormSet = formset_factory(CoOwnerForm, formset=BaseCoOwnerFormSet, extra=0 if initial_value_formset else 1)
 
     if request.method == 'POST':
+        error_msg = []
+        flag = 0
+        co_owner_changes = False
         form = UpdateForm(request.POST, initial=initial_value)
-        if form.is_valid():
+        formset = CoOwnersFormSet(request.POST, initial=initial_value_formset)
+        # print formset
+        # print initial_value_formset
+
+        if form.is_valid() and formset.is_valid():
+            # update entry
             try:
-                prev_entries = RMDBEntry.objects.filter(rmdb_id=rmdb_id)
-                for each_entry in prev_entries:
-                    each_entry.status = form.cleaned_data['entry_status']
-                    each_entry.save(force_update=True)
-                    # print each_entry.rmdb_id, each_entry.version, each_entry.status
+                if entry.status != form.cleaned_data['entry_status']:
+                    # update all previous entry status for this rmdb id
+                    prev_entries = RMDBEntry.objects.filter(rmdb_id=rmdb_id)
+                    for each_entry in prev_entries:
+                        each_entry.status = form.cleaned_data['entry_status']
+                        each_entry.save(force_update=True)
 
                 entry.status = form.cleaned_data['entry_status']
                 entry.description=form.cleaned_data['description']
                 entry.save(force_update=True)
+
+                entry, co_owner_changes = save_co_owners(entry, formset, request.user)
 
                 publication = Publication.objects.get(id=entry.publication_id)
                 publication.authors=form.cleaned_data['authors']
@@ -389,10 +401,18 @@ def edit_entry(request, rmdb_id, entry_id):
                 flag = 1
                 print traceback.format_exc()
                 error_msg.append('Unknown error. Please contact admin.')
+    else:
+        (error_msg, flag, co_owner_changes, form, formset) = \
+            ([], 0, False, UpdateForm(initial=initial_value), CoOwnersFormSet(initial=initial_value_formset))
 
 
 
-    return render(request, PATH.HTML_PATH['entry_edit'], {'form': form, 'error_msg': error_msg, 'flag': flag, 'entry': entry})
+    return render(request, PATH.HTML_PATH['entry_edit'], {'form': form,
+                                                          'formset': formset,
+                                                          'error_msg': error_msg,
+                                                          'flag': flag,
+                                                          'co_owner_changes': co_owner_changes,
+                                                          'entry': entry})
 
 
 
