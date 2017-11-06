@@ -11,6 +11,7 @@ from src import user
 from src import views
 from src.util import api
 from django.contrib.auth import views as auth_views
+from src.models import CustomSetPasswordForm, CustomPasswordResetForm
 from env import PATH
 
 # from src.helper.helper_api import *
@@ -80,6 +81,14 @@ else:
         url(r'^change_password/?$', user.change_password),
         url(r'^change_password/done/?$', user.change_password_done, name='change_password_done'),
 
+        url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+            auth_views.password_reset_confirm, {'set_password_form': CustomSetPasswordForm},
+            name='password_reset_confirm'),
+        url(r'^password_reset/$', auth_views.password_reset,
+            {'password_reset_form': CustomPasswordResetForm},name='password_reset'),
+        url(r'^password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
+        url(r'^reset/done/?$', auth_views.password_reset_complete, name='password_reset_complete'),
+
         # url(r'^render_structure/?$', views.render_structure),
 
         # url(r'^api/entry/fetch/(?P<rmdb_id>\w+)$', api_fetch_entry),
@@ -127,6 +136,7 @@ else:
         url(r'^entry_manage/entry_edit/(?P<rmdb_id>\w+)/(?P<entry_id>\d+)/?$', views.edit_entry),
 
         url('^', include('django.contrib.auth.urls')),
+
     ]
 
     if DEBUG: urlpatterns.append(url(r'^test/?$', views.test))

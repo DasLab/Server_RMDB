@@ -33,6 +33,7 @@ WSGI_APPLICATION = 'src.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 DATABASES = {'default': env.db_url(), }
+DATABASES['default']['OPTIONS']={'init_command': 'SET default_storage_engine=MYISAM'}
 LOGIN_URL = '/login/'
 
 MANAGERS = ADMINS = ( (env('ADMIN_NAME'), env('ADMIN_EMAIL')), )
