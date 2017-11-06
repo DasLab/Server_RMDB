@@ -281,8 +281,6 @@ def edit_profile(request):
 
 
 def change_password(request):
-    message = ''
-
     if request.method == 'POST':
         form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():

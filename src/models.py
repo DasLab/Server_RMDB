@@ -2,9 +2,12 @@ from django.contrib.auth.models import User
 from django.db import models
 from django import forms
 from django.core import validators
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm, PasswordResetForm
 # from django.utils.html import format_html
 from django.forms import BaseFormSet
+from django.db.models import Q
+from django.utils.translation import gettext, gettext_lazy as _
+from django.contrib.auth.tokens import default_token_generator
 
 from src.settings import *
 
@@ -33,12 +36,10 @@ ENTRY_STATUS_CHOICES = (
 )
 '''
 
-
 ENTRY_STATUS_CHOICES = (
     ('UNP', 'Unpublished'),
     ('PUB', 'Published'),
 )
-
 
 DOWNLOAD_SRC_CHOICES = (
     ('reeffit', 'REEFFIT'),
@@ -51,7 +52,8 @@ DOWNLOAD_SRC_CHOICES = (
 
 class NewsItem(models.Model):
     date = models.DateField(verbose_name='Display Date')
-    content = models.TextField(blank=True, verbose_name='Main Text Content', help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;HTML supported.')
+    content = models.TextField(blank=True, verbose_name='Main Text Content',
+                               help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;HTML supported.')
 
     class Meta():
         verbose_name = 'News Item'
@@ -60,7 +62,8 @@ class NewsItem(models.Model):
 
 class HistoryItem(models.Model):
     date = models.DateField(verbose_name='Display Date')
-    content = models.TextField(blank=False, verbose_name='HTML Content', help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;HTML supported.')
+    content = models.TextField(blank=False, verbose_name='HTML Content',
+                               help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;HTML supported.')
 
     class Meta():
         verbose_name = 'History Item'
@@ -68,8 +71,10 @@ class HistoryItem(models.Model):
 
 
 class Publication(models.Model):
-    title = models.TextField(help_text='<i class="icon-bullhorn"></i> Do <span class="label label-danger">NOT</span> use "CamelCase / InterCaps / CapWords". Only capitalize the first word.')
-    authors = models.TextField(help_text='<span class="glyphicon glyphicon-user"></span>&nbsp; Follow the format seen on the website: <span class="label label-inverse">Das, R.,</span>.')
+    title = models.TextField(
+        help_text='<i class="icon-bullhorn"></i> Do <span class="label label-danger">NOT</span> use "CamelCase / InterCaps / CapWords". Only capitalize the first word.')
+    authors = models.TextField(
+        help_text='<span class="glyphicon glyphicon-user"></span>&nbsp; Follow the format seen on the website: <span class="label label-inverse">Das, R.,</span>.')
     pubmed_id = models.CharField(max_length=30, verbose_name='PubMed ID')
 
     def __unicode__(self):
@@ -82,8 +87,10 @@ class Publication(models.Model):
 
 
 class Organism(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Organism Name', help_text='<i class="icon-bullhorn"></i> Use binomial nomenclature.')
-    tax_id = models.IntegerField(verbose_name='Taxonomy ID', help_text='<i class="icon-credit-card"></i> Follow <a href="http://www.ncbi.nlm.nih.gov/taxonomy/" target="_blank">http://www.ncbi.nlm.nih.gov/taxonomy/&nbsp;<i class="icon-new-window"></i></a>.')
+    name = models.CharField(max_length=255, verbose_name='Organism Name',
+                            help_text='<i class="icon-bullhorn"></i> Use binomial nomenclature.')
+    tax_id = models.IntegerField(verbose_name='Taxonomy ID',
+                                 help_text='<i class="icon-credit-card"></i> Follow <a href="http://www.ncbi.nlm.nih.gov/taxonomy/" target="_blank">http://www.ncbi.nlm.nih.gov/taxonomy/&nbsp;<i class="icon-new-window"></i></a>.')
 
     def __unicode__(self):
         return u'%s; TAX_ID:%s' % (self.name, self.tax_id)
@@ -98,24 +105,31 @@ class RMDBEntry(models.Model):
     version = models.IntegerField(default=1, verbose_name='Revision')
     status = models.CharField(max_length=3, choices=ENTRY_STATUS_CHOICES)
     type = models.CharField(max_length=3, choices=ENTRY_TYPE_CHOICES, verbose_name='Experiment Type')
-    supercede_by = models.CharField(max_length=25, null=True, blank=True, verbose_name='Superceded By', help_text='<span class="glyphicon glyphicon-share"></span>&nbsp;<span class="label label-danger">RMDB_ID</span> of entry that supercedes this one. Leave emtpy if does not apply.')
+    supercede_by = models.CharField(max_length=25, null=True, blank=True, verbose_name='Superceded By',
+                                    help_text='<span class="glyphicon glyphicon-share"></span>&nbsp;<span class="label label-danger">RMDB_ID</span> of entry that supercedes this one. Leave emtpy if does not apply.')
 
-    authors = models.TextField(help_text='<span class="glyphicon glyphicon-user"></span>&nbsp; Follow the format seen on the website: <span class="label label-inverse">Das, R.,</span>.')
-    description = models.TextField(blank=True, help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;Description of this entry submitted by user.')
-    comments = models.TextField(blank=True, help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;Description of this entry from the RDAT file.')
+    authors = models.TextField(
+        help_text='<span class="glyphicon glyphicon-user"></span>&nbsp; Follow the format seen on the website: <span class="label label-inverse">Das, R.,</span>.')
+    description = models.TextField(blank=True,
+                                   help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;Description of this entry submitted by user.')
+    comments = models.TextField(blank=True,
+                                help_text='<span class="glyphicon glyphicon-edit"></span>&nbsp;Description of this entry from the RDAT file.')
     pdb = models.CharField(max_length=255, null=True, blank=True, verbose_name='PDB Entries')
     organism = models.ForeignKey(Organism, null=True, blank=True)
     publication = models.ForeignKey(Publication)
 
     data_count = models.IntegerField(verbose_name='Data Count')
     construct_count = models.IntegerField(verbose_name='Construct Count')
-    is_trace = models.BooleanField(default=False, verbose_name='Contans TRACE Field?', help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry has data in TRACE field.')
-    is_eterna = models.BooleanField(default=False, verbose_name='Is Eterna Dataset?', help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry is from Eterna.')
+    is_trace = models.BooleanField(default=False, verbose_name='Contans TRACE Field?',
+                                   help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry has data in TRACE field.')
+    is_eterna = models.BooleanField(default=False, verbose_name='Is Eterna Dataset?',
+                                    help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry is from Eterna.')
 
     co_owners = models.ManyToManyField(User, related_name='%(class)s_co_owners')
 
     def short_desp(self):
         return self.description[:100] + '...'
+
     short_desp.short_description = 'Short Description'
     short_desp.admin_order_field = 'description'
 
@@ -186,11 +200,13 @@ class RMDBUser(models.Model):
 
     def full_name(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)
+
     full_name.short_description = 'Full Name'
     full_name.admin_order_field = 'user.first_name'
 
     def affiliation(self):
         return '%s - %s' % (self.institution, self.department)
+
     affiliation.admin_order_field = 'institution'
 
 
@@ -217,7 +233,6 @@ FORMAT_TYPE_CHOICES = (
     ('rdat', 'RDAT'),
     ('isatab', 'ISATAB'),
 )
-
 
 SEC_STRUCT_ELEMS_CHOICES = (
     ('dangles', 'Dangles'),
@@ -300,19 +315,65 @@ class CustomPasswordChangeForm(PasswordChangeForm):
     """
     A Custom PasswordChangeForm for minimum password length validation.
     """
+    new_password1 = forms.CharField(widget=forms.PasswordInput, min_length=6, label='New Password')
+    new_password2 = forms.CharField(widget=forms.PasswordInput, min_length=6, label='Confirm new password')
 
-    def clean_new_password1(self):
-        """
-        Validates that the new_password1.
-        """
-        password = self.cleaned_data.get('new_password1')
-        # Add your custom validation
-        if len(password) < 6:
+
+class CustomSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(widget=forms.PasswordInput, min_length=6, label='New Password')
+    new_password2 = forms.CharField(widget=forms.PasswordInput, min_length=6, label='Confirm new password')
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    username = forms.CharField(label=_("Username"), required=False, max_length=31)
+    email = forms.EmailField(label=_("Email"), required=False, max_length=254)
+
+    error_messages = {
+        'unknown_email': "That email address doesn't have an associated user account, or the user account is inactive",
+        'unknown_username': "That username doesn't have an associated user account, or the user account is inactive",
+        'empty_form': "You must specify either email or username",
+        'both_filled': "You should specify only email or username, not both."
+    }
+
+    def clean(self):
+        if any(self.errors):
+            # Don't bother validating the formset unless each form is valid on its own
+            return
+
+        email = self.cleaned_data.get('email', '')
+        username = self.cleaned_data.get('username', '')
+        if not (email or username):
             raise forms.ValidationError(
-                'password too short',
-                code='password_too_short',
+                self.error_messages['empty_form'],
+                code='empty_form'
             )
-        return password
+        elif email and username:
+            raise forms.ValidationError(
+                self.error_messages['both_filled'],
+                code='both_filled'
+            )
+        elif email:
+            """
+            Validates that an active user exists with the given email address.
+            """
+            self.users_cache = User.objects.filter(email=email)
+            if not len(self.users_cache) or not any(user.is_active for user in self.users_cache):
+                raise forms.ValidationError(
+                    self.error_messages['unknown_email'],
+                    code='unknown_email'
+                )
+        else:
+            """
+                Validates that an active user exists with the given username.
+            """
+            try:
+                email = User.objects.get(Q(username=username), Q(is_active=True)).email
+                self.cleaned_data["email"] = email
+            except User.DoesNotExist:
+                raise forms.ValidationError(
+                    self.error_messages['unknown_username'],
+                    code='unknown_username',
+                )
 
 
 class SearchForm(forms.Form):
@@ -463,6 +524,7 @@ WEEKDAY_CHOICES = (
     ('6', 'Saturday'),
 )
 
+
 class BackupForm(forms.Form):
     time_backup = forms.TimeField(required=True)
     time_upload = forms.TimeField(required=True)
@@ -479,18 +541,22 @@ def rmdb_user(request):
         user = None
     return {'rmdb_user': user}
 
+
 def search_form(request):
     return {'search_form': SearchForm()}
+
 
 def banner_stat(request):
     json = simplejson.load(open('%s/cache/stat_stats.json' % MEDIA_ROOT, 'r'))
     return {'N_constructs': '{:,}'.format(json['N_constructs'])}
+
 
 def debug_flag(request):
     if DEBUG:
         return {'DEBUG_STR': '', 'DEBUG_DIR': ''}
     else:
         return {'DEBUG_STR': '.min', 'DEBUG_DIR': 'min/'}
+
 
 def ga_tracker(request):
     return {'TRACKING_ID': GA['TRACKING_ID']}
