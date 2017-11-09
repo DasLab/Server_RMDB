@@ -229,11 +229,7 @@ def upload(request):
                 os.remove('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], upload_file.name))
 
             # update formset
-            updated_value_formset = [{'co_owner': co_owner} for co_owner in entry.co_owners.all() if
-                                     co_owner != request.user]
-            CoOwnersFormSet = formset_factory(CoOwnerForm, formset=BaseCoOwnerFormSet,
-                                              extra=0 if updated_value_formset else 1)
-            formset = CoOwnersFormSet(initial=updated_value_formset)
+            formset = CoOwnersFormSet()
 
             # return HttpResponseRedirect('/success/url/')
         else:
