@@ -143,8 +143,8 @@ def process_upload(form, formset, upload_file, user):
                     flag = 1
 
         if not flag:
-            (error_msg, entry) = submit_entry(form, formset, user, upload_file, rdatfile, isatabfile)
             flag = 2
+            (error_msg, flag, entry) = submit_entry(form, formset, user, upload_file, rdatfile, isatabfile, flag)
 
     except Exception:
         flag = 1
@@ -153,7 +153,7 @@ def process_upload(form, formset, upload_file, user):
     return (error_msg, flag, entry)
 
 
-def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile):
+def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile, flag):
     # print '****************** Submitting Entry ******************'
     error_msg = []
     rmdb_id = form.cleaned_data['rmdb_id'].upper()
@@ -169,7 +169,8 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile):
 
         if owner != user and (not user.is_staff):
             error_msg.append('RMDB entry %s exists and you cannot update it since you are not the owner.' % rmdb_id)
-            return (error_msg, '')
+            flag = 1
+            return (error_msg, flag, '')
 
         current_status = prev_entry.status
         if current_status != form.cleaned_data['entry_status']:
@@ -217,7 +218,7 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile):
 
     (error_msg, entry) = save_rdat(entry, upload_file, rdatfile, isatabfile, error_msg)
     if not DEBUG: send_notify_emails(entry, user.email)
-    return (error_msg, entry)
+    return (error_msg, flag, entry)
 
 
 def save_co_owners(entry, formset, user):
@@ -237,6 +238,7 @@ def save_co_owners(entry, formset, user):
     if entry.owner != user:
         cur_co_owners.add(user)
 
+    # update co-owners
     if pre_co_owners != cur_co_owners:
         co_owner_changes = True
         entry.co_owners.clear()
