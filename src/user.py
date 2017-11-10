@@ -9,6 +9,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.forms import formset_factory
+from django.middleware.csrf import rotate_token
 
 import datetime
 import string
@@ -189,6 +190,7 @@ def register(request):
 
 def user_logout(request):
     logout(request)
+    rotate_token(request)
     return HttpResponseRedirect("/")
 
 
