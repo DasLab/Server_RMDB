@@ -73,7 +73,7 @@ def validate_file(file_path, link_path, input_type):
         try:
             input_file.load(tmp_file)
             messages = input_file.validate()
-        except AttributeError, e:
+        except Exception, e:
             flag = 1
             errors.append('Invalid input file format: %s' % e)
         tmp_file.close()
