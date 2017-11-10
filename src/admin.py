@@ -28,10 +28,11 @@ class EntryAnnotationInLine(admin.TabularInline):
 
 class EntryAdmin(admin.ModelAdmin):
     inlines = [EntryAnnotationInLine, ConstructInLine]
-    list_display = ('id', 'rmdb_id', 'version', 'status', 'type', 'short_desp', 'data_count', 'construct_count')
+    list_display = ('id', 'rmdb_id', 'version', 'status', 'type', 'short_desp', 'data_count', 'construct_count', 'owner')
     ordering = ('-id',)
     fieldsets = [
-        (format_html('<span class="glyphicon glyphicon-book"></span>&nbsp;Entry Basics'), {'fields': ['rmdb_id', ('status', 'version', 'supercede_by'), ('owner', 'type'), 'authors', 'publication', 'description', 'comments', ('is_trace', 'is_eterna'), ('data_count', 'construct_count'), ('organism', 'pdb')]}),
+        (format_html('<span class="glyphicon glyphicon-book"></span>&nbsp;Entry Basics'),
+         {'fields': ['rmdb_id', ('status', 'version', 'supercede_by'), ('owner', 'type'), 'co_owners', 'authors', 'publication', 'description', 'comments', ('is_trace', 'is_eterna'), ('data_count', 'construct_count'), ('organism', 'pdb')]}),
     ]
 
 class PublicationAdmin(admin.ModelAdmin):
@@ -62,13 +63,15 @@ class HistoryItemAdmin(admin.ModelAdmin):
         (format_html('<span class="glyphicon glyphicon-comment"></span>&nbsp;Contents'), {'fields': ['date', 'content']}),
     ]
 
+
 class RMDBUserAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'full_name', 'affiliation', 'last_date')
     ordering = ('-id',)
     fieldsets = [
-        (format_html('<span class="glyphicon glyphicon-user"></span>&nbsp;Personal Information'), {'fields': ['user', 'institution', 'department']}),
+        (format_html('<span class="glyphicon glyphicon-user"></span>&nbsp;Personal Information'), {'fields': ['user', 'principal_investigator', 'institution', 'department']}),
         (format_html('<span class="glyphicon glyphicon-dashboard"></span>&nbsp;Personal Statistics'), {'fields': ['entry_count', ('data_count', 'construct_count'), ('last_entry', 'last_date')]})
     ]
+
 
 class SourceDownloaderAdmin(admin.ModelAdmin):
     list_display = ('date', 'rmdb_user', 'package')
