@@ -166,9 +166,13 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile, flag):
         prev_entry = entries[0]
         current_version = prev_entry.version
         owner = prev_entry.owner
+        p_inves_list = RMDBUser.objects.get(user=owner).principal_investigator.all()
 
-        if owner != user and (not user.is_staff):
-            error_msg.append('RMDB entry %s exists and you cannot update it since you are not the owner.' % rmdb_id)
+        if owner != user\
+                and (not user.is_staff)\
+                and user not in prev_entry.co_owners.all()\
+                and user not in p_inves_list:
+            error_msg.append('RMDB entry %s exists and you cannot update it since you don\'t have the edit privilege to it.' % rmdb_id)
             flag = 1
             return (error_msg, flag, '')
 
@@ -190,7 +194,7 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile, flag):
                       data_count=0,
                       construct_count=0,
                       version=current_version + 1,
-                      owner=user,
+                      owner=owner if owner else user,
                       status=form.cleaned_data['entry_status'])
 
 
@@ -222,8 +226,8 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile, flag):
 
 
 def save_co_owners(entry, formset, user):
-    rmdb_usr = RMDBUser.objects.get(user=user)
-    p_inves = set(rmdb_usr.principal_investigator.all())
+    rmdb_owner = RMDBUser.objects.get(user=entry.owner)
+    owners_PI = rmdb_owner.principal_investigator.all()
 
     co_owner_changes = False
     pre_co_owners = set(entry.co_owners.all())
@@ -231,11 +235,12 @@ def save_co_owners(entry, formset, user):
     for co_owner_form in formset:
         if co_owner_form.cleaned_data:
             co_owner = User.objects.get(username=co_owner_form.cleaned_data['co_owner'])
-            # don't add Owner and Principal Investigator to co-owner
-            if co_owner != entry.owner and co_owner not in p_inves:
+            # don't add Owner to co-owner
+            if co_owner != entry.owner:
                 cur_co_owners.add(co_owner)
-    # always add user to co-owner if he's not owner
-    if entry.owner != user:
+    # always add user to co-owner if he's not owner or owner's PI
+    # users can't remove self from co-owner list
+    if user != entry.owner and user not in owners_PI:
         cur_co_owners.add(user)
 
     # update co-owners
