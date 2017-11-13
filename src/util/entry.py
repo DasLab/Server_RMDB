@@ -226,11 +226,8 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile, flag):
 
 
 def save_co_owners(entry, formset, user):
-    rmdb_owner = RMDBUser.objects.get(user=entry.owner)
-    owners_PI = rmdb_owner.principal_investigator.all()
-
     co_owner_changes = False
-    pre_co_owners = set(entry.co_owners.all())
+    pre_co_owners = entry.co_owners.all()
     cur_co_owners = set()
     for co_owner_form in formset:
         if co_owner_form.cleaned_data:
@@ -238,9 +235,9 @@ def save_co_owners(entry, formset, user):
             # don't add Owner to co-owner
             if co_owner != entry.owner:
                 cur_co_owners.add(co_owner)
-    # always add user to co-owner if he's not owner or owner's PI
+    # always add user to co-owner if he's a previous co-owner
     # users can't remove self from co-owner list
-    if user != entry.owner and user not in owners_PI:
+    if user in pre_co_owners:
         cur_co_owners.add(user)
 
     # update co-owners
