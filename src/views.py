@@ -106,10 +106,13 @@ def detail(request, rmdb_id):
     except (RMDBEntry.DoesNotExist, IndexError):
         return error404(request)
 
-    json = {'rmdb_id': entry.rmdb_id, 'status': entry.status, 'is_isatab': is_isatab, 'entry_id': entry.id}
+    json = {'rmdb_id': entry.rmdb_id,
+            'status': entry.status,
+            'actual_status': entry.status,
+            'is_isatab': is_isatab,
+            'entry_id': entry.id}
 
     if entry.status != "PUB":
-        actual_status = 'UNP'
         status = 'UNP'
         # if unpublished, owner, co-owners and owner's PI can still see the detail
         user = request.user
@@ -121,8 +124,7 @@ def detail(request, rmdb_id):
 
         json.update({'version': entry.version,
                      'rev_form': ReviewForm(initial={'rmdb_id': entry.rmdb_id}),
-                     'status': status,
-                     'actual_status': actual_status})
+                     'status': status})
     return render(request, PATH.HTML_PATH['detail'], json)
 
 
