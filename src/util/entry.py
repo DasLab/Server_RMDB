@@ -227,7 +227,7 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile, flag):
 
 def save_co_owners(entry, formset, user):
     co_owner_changes = False
-    pre_co_owners = entry.co_owners.all()
+    pre_co_owners = set(entry.co_owners.all())
     cur_co_owners = set()
     for co_owner_form in formset:
         if co_owner_form.cleaned_data:
