@@ -180,7 +180,7 @@ def submit_entry(form, formset, user, upload_file, rdatfile, isatabfile, flag):
         if current_status != form.cleaned_data['entry_status']:
             for previous_entry in entries:
                 previous_entry.status=form.cleaned_data['entry_status']
-                previous_entry.save(force_update=True)
+                previous_entry.save()
     else:
         current_version = 0
         owner = None
