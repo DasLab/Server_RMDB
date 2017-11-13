@@ -6,6 +6,7 @@ from django.utils.encoding import smart_str
 from django.db.models import Max
 from django.db.models import Q
 from django.forms import formset_factory
+from django.middleware.csrf import rotate_token
 
 from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
@@ -230,6 +231,7 @@ def validate(request):
 
 @login_required
 def upload(request):
+    rotate_token(request)
     flag = 0
     CoOwnersFormSet = formset_factory(CoOwnerForm,  formset=BaseCoOwnerFormSet)
 
