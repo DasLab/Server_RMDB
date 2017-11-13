@@ -382,10 +382,9 @@ def edit_entry(request, rmdb_id, entry_id):
     entry = RMDBEntry.objects.get(id=entry_id)
     usr = request.user
     p_inves_list = RMDBUser.objects.get(user=entry.owner).principal_investigator.all()
+
     if entry.owner != usr and usr not in entry.co_owners.all() and usr not in p_inves_list:
         return error403(request, reason="You are not allowed to edit other user's entries!")
-
-
 
     initial_value = {'entry_status':entry.status,
                      'description': entry.description,
@@ -442,15 +441,14 @@ def edit_entry(request, rmdb_id, entry_id):
         (error_msg, flag, co_owner_changes, form, formset) = \
             ([], 0, False, UpdateForm(initial=initial_value), CoOwnersFormSet(initial=initial_value_formset))
 
-
-
     return render(request, PATH.HTML_PATH['entry_edit'], {'form': form,
                                                           'formset': formset,
                                                           'error_msg': error_msg,
                                                           'flag': flag,
                                                           'co_owner_changes': co_owner_changes,
                                                           'entry': entry,
-                                                          'rmdb_usr': RMDBUser.objects.get(user=entry.owner)})
+                                                          'owner': RMDBUser.objects.get(user=entry.owner),
+                                                          'user': usr})
 
 
 
