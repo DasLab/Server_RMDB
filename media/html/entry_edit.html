@@ -193,12 +193,21 @@
                             </h2>
                         </div>
                         <div class="panel-body" id="col-3">
-                            {% if rmdb_usr.principal_investigator.all %}
-                             <div class="row" style="padding-left:1em">Owner's Principal Investigator:
-                                {% for p_inves in rmdb_usr.principal_investigator.all %}
+                            {% if owner.principal_investigator.all %}
+                             <div class="row" style="padding-left:1em">
+                                 Owner's Principal Investigator:
+                                {% for p_inves in owner.principal_investigator.all %}
                                     <span class="btn btn-default btn-sm" style="pointer-events: none">&nbsp;{{ p_inves }}</span>
-                                {% endfor %}</div>
+                                {% endfor %}
+                             </div>
                             <br/>
+                            {% endif %}
+
+                            {% if user in entry.co_owners.all %}
+                                <div class="row" style="padding-left:1em">
+                                    Username: <span class="btn btn-default btn-sm" style="pointer-events: none">{{ user.username }}</span>
+                                </div>
+                                <br/>
                             {% endif %}
 
                             <!-- edit co-owners -->
@@ -288,7 +297,7 @@
 
     <script>
         $('.co-owner-formset').formset({
-            addText: '<br/><button class="btn btn-info btn-sm">Add Co-owner</button>',
+            addText: '<br/><button class="btn btn-info btn-sm">Add More</button>',
             deleteText: '<span class="glyphicon glyphicon-remove-sign"></span><p></p>',
         });
     </script>

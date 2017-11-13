@@ -34,6 +34,7 @@ class EntryAdmin(admin.ModelAdmin):
         (format_html('<span class="glyphicon glyphicon-book"></span>&nbsp;Entry Basics'),
          {'fields': ['rmdb_id', ('status', 'version', 'supercede_by'), ('owner', 'type'), 'co_owners', 'authors', 'publication', 'description', 'comments', ('is_trace', 'is_eterna'), ('data_count', 'construct_count'), ('organism', 'pdb')]}),
     ]
+    search_fields = ['rmdb_id']
 
 class PublicationAdmin(admin.ModelAdmin):
     list_display = ('id', 'pubmed_id', 'authors', 'title')
@@ -71,6 +72,7 @@ class RMDBUserAdmin(admin.ModelAdmin):
         (format_html('<span class="glyphicon glyphicon-user"></span>&nbsp;Personal Information'), {'fields': ['user', 'principal_investigator', 'institution', 'department']}),
         (format_html('<span class="glyphicon glyphicon-dashboard"></span>&nbsp;Personal Statistics'), {'fields': ['entry_count', ('data_count', 'construct_count'), ('last_entry', 'last_date')]})
     ]
+    search_fields = ['user__username']
 
 
 class SourceDownloaderAdmin(admin.ModelAdmin):

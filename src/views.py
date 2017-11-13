@@ -6,6 +6,7 @@ from django.utils.encoding import smart_str
 from django.db.models import Max
 from django.db.models import Q
 from django.forms import formset_factory
+from django.middleware.csrf import rotate_token
 
 from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
@@ -106,9 +107,25 @@ def detail(request, rmdb_id):
     except (RMDBEntry.DoesNotExist, IndexError):
         return error404(request)
 
-    json = {'rmdb_id': entry.rmdb_id, 'status': entry.status, 'is_isatab': is_isatab}
+    json = {'rmdb_id': entry.rmdb_id,
+            'status': entry.status,
+            'actual_status': entry.status,
+            'is_isatab': is_isatab,
+            'entry_id': entry.id}
+
     if entry.status != "PUB":
-        json.update({'version': entry.version, 'rev_form': ReviewForm(initial={'rmdb_id': entry.rmdb_id})})
+        status = 'UNP'
+        # if unpublished, owner, co-owners and owner's PI can still see the detail
+        user = request.user
+        p_inves_list = RMDBUser.objects.get(user=entry.owner).principal_investigator.all()
+        if entry.owner == user \
+                or user in entry.co_owners.all() \
+                or user in p_inves_list:
+            status = 'PUB'
+
+        json.update({'version': entry.version,
+                     'rev_form': ReviewForm(initial={'rmdb_id': entry.rmdb_id}),
+                     'status': status})
     return render(request, PATH.HTML_PATH['detail'], json)
 
 
@@ -214,6 +231,7 @@ def validate(request):
 
 @login_required
 def upload(request):
+    rotate_token(request)
     flag = 0
     CoOwnersFormSet = formset_factory(CoOwnerForm,  formset=BaseCoOwnerFormSet)
 
@@ -366,10 +384,9 @@ def edit_entry(request, rmdb_id, entry_id):
     entry = RMDBEntry.objects.get(id=entry_id)
     usr = request.user
     p_inves_list = RMDBUser.objects.get(user=entry.owner).principal_investigator.all()
+
     if entry.owner != usr and usr not in entry.co_owners.all() and usr not in p_inves_list:
         return error403(request, reason="You are not allowed to edit other user's entries!")
-
-
 
     initial_value = {'entry_status':entry.status,
                      'description': entry.description,
@@ -426,15 +443,14 @@ def edit_entry(request, rmdb_id, entry_id):
         (error_msg, flag, co_owner_changes, form, formset) = \
             ([], 0, False, UpdateForm(initial=initial_value), CoOwnersFormSet(initial=initial_value_formset))
 
-
-
     return render(request, PATH.HTML_PATH['entry_edit'], {'form': form,
                                                           'formset': formset,
                                                           'error_msg': error_msg,
                                                           'flag': flag,
                                                           'co_owner_changes': co_owner_changes,
                                                           'entry': entry,
-                                                          'rmdb_usr': RMDBUser.objects.get(user=entry.owner)})
+                                                          'owner': RMDBUser.objects.get(user=entry.owner),
+                                                          'user': usr})
 
 
 

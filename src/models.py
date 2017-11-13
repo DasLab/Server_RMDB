@@ -125,7 +125,7 @@ class RMDBEntry(models.Model):
     is_eterna = models.BooleanField(default=False, verbose_name='Is Eterna Dataset?',
                                     help_text='<span class="glyphicon glyphicon-check"></span>&nbsp; Check if this entry is from Eterna.')
 
-    co_owners = models.ManyToManyField(User, related_name='%(class)s_co_owners')
+    co_owners = models.ManyToManyField(User, related_name='%(class)s_co_owners', blank=True)
 
     def short_desp(self):
         return self.description[:100] + '...'
@@ -186,7 +186,7 @@ class RMDBUser(models.Model):
     last_entry = models.CharField(max_length=25, null=True, verbose_name='Last Submitted RMDB ID')
     last_date = models.DateField(null=True, verbose_name='Last Submission Date')
 
-    principal_investigator = models.ManyToManyField(User, related_name='%(class)s_p_investigator')
+    principal_investigator = models.ManyToManyField(User, related_name='%(class)s_p_investigator', blank=True)
 
     def __unicode__(self):
         try:
