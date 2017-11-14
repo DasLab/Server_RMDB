@@ -1,7 +1,6 @@
 ## To-do wish-list for RMDB dev
 
 ### Bug fix
-- submission hangs if authors is not specified.
 - update the cache settings so that browsers actually see updates
 
 #### RESTful API
@@ -15,18 +14,20 @@
 - Try nodejs pre-render of d3 heatmap and cache on server side, to reduce client side burden
 
 #### Entry management
-- entry management system 
 -- contact Sanbonmatsu lab and others to deposit their data  [rhiju]
 - Featured Contributor: Julius Lucks [and set up for: Karissa, Alain, molecules, etc.]
 - Deposit deanonymized RDATs for RNA puzzles. [rhiju]
 - update RMDB to include data from (sripakdeevong, 2011) paper. [rhiju]
+- Add Sort Function to Entry Management page.
+- Split Entries in to sections based on the relationship to them (Owner, Co-owner, Principal Investigator).
 
 #### Miscellaneous
 – update RMDB Pubmed IDs for standardization paper and all other papers — get joe’s help to update database.
 - use one of the beautiful JS PDB viewers to display data on *3D models* if user provides PDB ID or model.
 - RMDB needs to move to rmdb.org or rna-map.org or `rmdb.io`
 - need to move ribokit/primerize/mapseeker licensing over to (new) ribokit server and database instead of hosted at RMDB.
-
+- Add Email verification Function for Registration and Updata Email in Profile.
+- Improve fromset display for add co-owners and principal investigator.
 ----------------------------------------------------------------------------------------------------------
 
 
@@ -54,4 +55,8 @@
 ~~- Migrate and clean `src/helper/*.py` to `src/util`, which overlaps with other tasks~~
 ~~- Write server docs and wiki~~
 ~~- update Latest News to have events from 2016 and 2017~~
+~~### Bug fix~~
+~~- submission hangs if authors is not specified.~~
+~~#### Entry management~~
+~~- entry management system ~~
 
