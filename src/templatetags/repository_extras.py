@@ -3,6 +3,8 @@ from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
 from src.models import *
+import traceback
+from src.env import MEDIA_ROOT
 
 register = template.Library()
 
@@ -113,3 +115,16 @@ def get_user_field(string):
         string = 'Email'
     return string
 register.filter('get_user_field', get_user_field)
+
+
+def add_timestamp(path):
+    try:
+        # Get the files modification time
+        mtime = os.stat(MEDIA_ROOT + '/media' + path.replace('/site_media', '')).st_mtime
+        include = "%s?%d" % (path, mtime)
+        return include
+    except Exception:
+        # In case of error return the include without the added query parameter.
+        print traceback.format_exc()
+        return path
+register.filter('add_timestamp', add_timestamp)
