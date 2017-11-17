@@ -1,7 +1,6 @@
 ## To-do wish-list for RMDB dev
 
 ### Bug fix
-- update the cache settings so that browsers actually see updates
 
 #### RESTful API
 - Check and test legacy API code
@@ -59,4 +58,5 @@
 ~~- submission hangs if authors is not specified.~~
 ~~#### Entry management~~
 ~~- entry management system ~~
-
+~~### Bug fix~~
+~~- update the cache settings so that browsers actually see updates~~
