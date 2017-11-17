@@ -376,7 +376,11 @@ class CustomPasswordResetForm(PasswordResetForm):
                 )
 
     def get_users(self, email):
-        users = User.objects.filter(email=email)
+        username = self.cleaned_data.get('username', '')
+        if username:
+            users = User.objects.filter(username=username)
+        else:
+            users = User.objects.filter(email=email)
         return (u for u in users if u.has_usable_password())
 
 
