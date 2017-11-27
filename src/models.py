@@ -356,24 +356,32 @@ class CustomPasswordResetForm(PasswordResetForm):
             """
             Validates that an active user exists with the given email address.
             """
-            self.users_cache = User.objects.filter(email=email)
-            if not len(self.users_cache) or not any(user.is_active for user in self.users_cache):
+            self.users_cache = User.objects.filter(Q(email=email), Q(is_active=True))
+            if not len(self.users_cache):
                 raise forms.ValidationError(
                     self.error_messages['unknown_email'],
                     code='unknown_email'
                 )
         else:
             """
-                Validates that an active user exists with the given username.
+                Validates that an user exists with the given username.
             """
             try:
-                email = User.objects.get(Q(username=username), Q(is_active=True)).email
+                email = User.objects.get(username=username).email
                 self.cleaned_data["email"] = email
             except User.DoesNotExist:
                 raise forms.ValidationError(
                     self.error_messages['unknown_username'],
                     code='unknown_username',
                 )
+
+    def get_users(self, email):
+        username = self.cleaned_data.get('username', '')
+        if username:
+            users = User.objects.filter(username=username)
+        else:
+            users = User.objects.filter(Q(email=email), Q(is_active=True))
+        return (u for u in users if u.has_usable_password())
 
 
 class SearchForm(forms.Form):

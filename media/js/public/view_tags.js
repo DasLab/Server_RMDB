@@ -253,10 +253,23 @@ function load_rna_structure() {
         'allowPanningAndZooming': true,
         'initialSize':[600, 600]
     });
+
     var options = {
         'structure': tags.structure, // from "tags" json data.
         'sequence': tags.sequence
     };
+
+    var index = $('#tag_reactivity_sets :selected').html().split("-")[0];
+    var annotation_sets = tags.data_annotation;
+    if (annotation_sets.hasOwnProperty(index - 1)) {  // Reactivity data array start with "1" while Annotation data starts with "0"
+            var selected_set = annotation_sets[index - 1];
+            if (selected_set.hasOwnProperty('structure')) {
+                options.structure = selected_set.structure[0];
+            }
+            if (selected_set.hasOwnProperty('sequence')) {
+                options.sequence = selected_set.sequence[0];
+            }
+        }
 
     // Add RNA Structure
     container.addRNA(options.structure, options);
