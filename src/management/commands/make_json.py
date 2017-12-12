@@ -41,10 +41,7 @@ class Command(BaseCommand):
         for i, rmdb_id in enumerate(all_rdats):
             try:
                 rmdb_id = rmdb_id.upper().strip()
-                entry = RMDBEntry.objects.filter(rmdb_id=rmdb_id).order_by('-id')
-                if len(entry):
-                    entry = entry[0]
-                else:
+                if not RMDBEntry.objects.filter(rmdb_id=rmdb_id).exists():
                     self.stdout.write("\033[41mERROR\033[0m: RMDBEntry does not exist: \033[94m%s\033[0m" % rmdb_id)
 
                 save_json(rmdb_id)
