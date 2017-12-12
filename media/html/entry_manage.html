@@ -58,7 +58,7 @@
                         </div>
                     </th>
                     <th scope="col"
-                        class="short_desp-column sortable column-short_desp info col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                        class="short_desp-column sortable column-short_desp info col-lg-2 col-md-2 col-sm-2 col-xs-2">
 
 
                         <div class="text">
@@ -66,11 +66,19 @@
                         </div>
                     </th>
                     <th scope="col"
+                        class="pmid-column sortable column-pmid info col-lg-1 col-md-1 col-sm-1 col-xs-1">
+
+
+                        <div class="text">
+                            <a href="?o=7.-1"><span class="glyphicon glyphicon-new-window"></span>&nbsp;&nbsp;PMID</a>
+                        </div>
+                    </th>
+                    <th scope="col"
                         class="data_count-column sortable column-data_count info col-lg-1 col-md-1 col-sm-1 col-xs-1">
 
 
                         <div class="text">
-                            <a href="?o=7.-1"><span class="glyphicon glyphicon-signal"></span>&nbsp;&nbsp;# Data Points</a>
+                            <a href="?o=8.-1"><span class="glyphicon glyphicon-signal"></span>&nbsp;&nbsp;# Data Points</a>
                         </div>
                     </th>
                     <th scope="col"
@@ -78,7 +86,7 @@
 
 
                         <div class="text">
-                            <a href="?o=8.-1"><span class="glyphicon glyphicon-signal"></span>&nbsp;&nbsp;#
+                            <a href="?o=9.-1"><span class="glyphicon glyphicon-signal"></span>&nbsp;&nbsp;#
                                 Constructs</a>
                         </div>
                     </th>
@@ -86,7 +94,7 @@
 
 
                         <div class="text">
-                            <a href="?o=9.-1"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Owner</a>
+                            <a href="?o=10.-1"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Owner</a>
                         </div>
                     </th>
                 </tr>
@@ -110,7 +118,16 @@
                             <td class="field-type">
                                 <span class="label label-info">{{ entry.type }}</span>
                             </td>
-                            <td class="field-short_desp">{{ entry.short_desp|truncatechars:"100" }}</td>
+                            <td class="field-short_desp">{{ entry.short_desp|truncatechars:"60" }}</td>
+                            <td class="field-pmid">
+                                {% if entry.publication.pubmed_id %}
+                                <a target="_blank" rel="noopener noreferrer external" href="http://www.ncbi.nlm.nih.gov/pubmed/{{ entry.publication.pubmed_id }}">
+                                    <cite>{{ entry.publication.pubmed_id }}</cite>
+                                </a>
+                                {% else %}
+                                    N.A
+                                {% endif %}
+                            </td>
                             <td class="field-data_count"><code>{{ entry.data_count }}</code></td>
                             <td class="field-construct_count"><code>{{ entry.construct_count }}</code></td>
                             <td class="field-owner">
