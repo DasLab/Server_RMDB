@@ -44,6 +44,44 @@
         <form enctype="multipart/form-data" method="post"
               action="/entry_manage/entry_edit/{{ entry.rmdb_id }}/{{ entry.id }}">
             {% csrf_token %}
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    {% if flag == 2 and form.changed_data or flag == 2 and co_owner_changes %}
+                        <div class="alert alert-success" role="alert">
+                            <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                            <b>SUCCESS</b>: Your RMDB Entry has been updated, the following fields has been changed:
+                            <ul>
+                                {% if co_owner_changes %}
+                                    Co-owners
+                                {% endif %}
+                                {% for field in form.changed_data %}
+                                    <li>
+                                        {{ field|get_entry_field }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <br>
+                            To visit your entry, click here:
+                            <a class="btn btn-danger btn-xs" href="/detail/{{ entry.rmdb_id }}">
+                                &nbsp;<span class="glyphicon glyphicon-share"></span>&nbsp;&nbsp;Detail&nbsp;</a>.
+                            <!--Now you can <a href="/entry_manage" class="btn btn-info btn-xs">Continue Manage the entries</a>-->
+                        </div>
+                    {% elif flag == 1 and error_msg %}
+                        <div class="alert alert-danger" role="alert">
+                            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
+                            <b>ERROR</b>: The following messages were produced:
+                            <br/>
+                            <ul>
+                                {% for msg in error_msg %}
+                                    <li>{{ msg }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-lg-7 col-md-7 col-sm-12 col-sm-12">
                     <div class="panel panel-primary">
@@ -252,39 +290,7 @@
             <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2"></div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <hr/>
-                {% if flag == 2 and form.changed_data or flag == 2 and co_owner_changes %}
-                    <div class="alert alert-success" role="alert">
-                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                        <b>SUCCESS</b>: Your RMDB Entry has been updated, the following fields has been changed:
-                        <ul>
-                            {% if co_owner_changes %}
-                                Co-owners
-                            {% endif %}
-                            {% for field in form.changed_data %}
-                                <li>
-                                    {{ field|get_entry_field }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <!--Now you can <a href="/entry_manage" class="btn btn-info btn-xs">Continue Manage the entries</a>-->
-                    </div>
-                {% elif flag == 1 and error_msg %}
-                    <div class="alert alert-danger" role="alert">
-                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>&nbsp;&nbsp;
-                        <b>ERROR</b>: The following messages were produced:
-                        <br/>
-                        <ul>
-                            {% for msg in error_msg %}
-                                <li>{{ msg }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
+
 
 
     </div>

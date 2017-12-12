@@ -56,7 +56,7 @@ else:
         url(r'^tools/?$', views.tools),
         url(r'^tools/license/?(?P<keyword>\w+)/$', views.tools_license),
         url(r'^tools/download/(?P<keyword>\w+)/?$', views.tools_download),
-        url(r'^tools/download/(?P<keyword>\w+)/(?P<tag>\w+)/?$', views.tools_link),
+        url(r'^tools/download/(?P<keyword>\w+)/(?P<tag>[\w.]+)/?$', views.tools_link),
         url(r'^tools/docs/(?P<keyword>\w+)/?$', views.tutorial),
         url(r'^rdatkit/?$', views.tutorial, {'keyword': 'rdatkit'}),
         url(r'^hitrace/?$', views.tutorial, {'keyword': 'hitrace'}),
