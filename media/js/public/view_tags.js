@@ -74,6 +74,7 @@ function fill_tags() {
         $("#link_pubmed").attr("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + tags.pubmed_id);
     }else{
         $("#link_pubmed").css("display", "none");
+        $("#publication_rec").css("display", "none");
     }
 
     $("#tag_description").text(tags.description);
