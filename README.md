@@ -68,6 +68,20 @@ python manage.py runserver
 
 The server should be running at `localhost:8000` with a python session interactive in terminal.
 
+To generate the JSON file for one entry, use:
+
+```bash
+cd path/to/server_RMDB/repo
+python manage.py make_json RMDB_ID
+```
+
+for all entries:
+
+```bash
+cd path/to/server_RMDB/repo
+python manage.py make_json -A
+```
+
 ## Documentation
 
 - ~~Documentation is available at admin [manual](https://rmdb.stanford.edu/admin/man/) and [reference](https://rmdb.stanford.edu/admin/ref/).~~
