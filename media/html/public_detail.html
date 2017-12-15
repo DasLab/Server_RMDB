@@ -449,7 +449,13 @@
 							PMID: <span id="tag_pubmed"></span> 
 							<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
 						</a>
-					</p>
+                    </p>
+                    <br/>
+                    <p>
+                        {% autoescape off %}
+                            {{ pubmed_info|citation_format }}
+                        {% endautoescape %}
+                    </p>
 
 					<p><span class="lead"><span class="label label-brown">Description</span></span></p>
 					<p id="tag_description"></p>

@@ -113,3 +113,14 @@ def get_user_field(string):
         string = 'Email'
     return string
 register.filter('get_user_field', get_user_field)
+
+
+def citation_format(t):
+    if len(t) == 1:
+        string = t[0]
+    else:
+        DOI = t[-1]
+        string = ('%s. %s<br/><b>%s</b><br/><i>%s </i>%s' % t[:5]) + \
+                 ('<br><a target="_blank" href="http://dx.doi.org/%s">DOI : %s <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>' % (DOI, DOI) if DOI else '')
+    return string
+register.filter('citation_format', citation_format)
