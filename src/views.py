@@ -154,8 +154,7 @@ def get_pubmed_info(pmid):
             DOI = data.get('DOI','')
 
             return (authors, year, title, journal, page, DOI)
-        except Exception:
-            print traceback.format_exc()
+        except RuntimeError:
             return ("Couldn't find the document by this PMID.",)
     else:
         return ("",)
