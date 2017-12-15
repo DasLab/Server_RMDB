@@ -83,12 +83,6 @@ cd path/to/server_RMDB/repo
 python manage.py make_json -A
 ```
 
-## Documentation
-
-- ~~Documentation is available at admin [manual](https://rmdb.stanford.edu/admin/man/) and [reference](https://rmdb.stanford.edu/admin/ref/).~~
-
-- ~~Alternatively, read the repository [**Wiki**](https://github.com/DasLab/Server_RMDB/wiki/).~~
-
 ## License
 
 **Copyright &copy; 2014-2017: Siqi Tian _[[t47](https://t47.io/)]_, Das Lab, Stanford University. All Rights Reserved.**
@@ -120,8 +114,6 @@ Things that should _NOT_ need care (done automatically):
 - Data/config backup [weekly on Sun morning by cron]
 
 Keep an eye on them when fail (you get admin email notice)
-
-> Should write complete docs/wiki like this: https://github.com/t47io/django-Primerize-server/wiki
 
 
 ## Reference
