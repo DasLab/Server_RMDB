@@ -36,12 +36,14 @@
 				<ul class="nav nav-tabs tab-top" role="tablist">
 					<li role="presentation" class="active"><a href="#gen" aria-controls="gen" role="tab" data-toggle="tab">General</a></li>
 					<li role="presentation"><a href="#ann" aria-controls="ann" role="tab" data-toggle="tab">Annotations</a></li>
-				</ul>
+                </ul>
 
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active tab-inner" id="gen">
-
+                        <a target="_blank" href="https://rmdb.stanford.edu/deposit/specs/#construct">
+                            <img class="pull-right" src="/site_media/images/sidebar_link.png" style="width: 4%;height: auto;"/>
+                        </a>
 						<table class="table table-hover">
 							<thead>
 								<tr>
@@ -128,6 +130,9 @@
 					</div>
 
 					<div role="tabpanel" class="tab-pane tab-inner" id="ann">
+                        <a target="_blank" href="https://rmdb.stanford.edu/deposit/specs/#annotation">
+                            <img class="pull-right" src="/site_media/images/sidebar_link.png" style="width: 4%;height: auto;"/>
+                        </a>
 						<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
 							<thead>
 								<tr>
@@ -294,6 +299,22 @@
 					</div>
 					<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11" id="svg_parent"><svg class="chart"></svg></div>
 				</div>
+                <!-- RNA Structure -->
+                <!--<div id="rna_structure_panel">
+                    <div class="row">
+                        <div class="form-inline">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                <label label for="id_type" class="pull-right">Reactivity Sets:</label>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <select class="" id="tag_reactivity_sets">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="rna-structure"></div>
+                </div>-->
+
 				<div class="row" id="tag_browse">
 					<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
 						<tr id="tag_barplot">
@@ -439,19 +460,19 @@
 					<h3 class="panel-title"><b>Citation</b></h3>
 				</div>
 				<div class="panel-body" id="panel_cit">
-					<p><span class="lead"><span class="label label-brown">Publication</span></span></p>
+					<p><span class="lead"><span class="label label-brown">Entry</span></span></p>
 					<p>
 						<i id="tag_author"></i>. 
 						<br/>
-						<b id="tag_title"></b>. 
-						<br/>
-						<a target="_blank" rel="noopener noreferrer external" id="link_pubmed">
-							PMID: <span id="tag_pubmed"></span> 
+						<b id="tag_title"></b>.
+                    </p>
+                    <p><span class="lead" id="publication_rec"><span class="label label-brown">Publication</span></span></p>
+                    <p>
+                        <a target="_blank" rel="noopener noreferrer external" id="link_pubmed">
+							PMID: <span id="tag_pubmed"></span>
 							<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
 						</a>
-                    </p>
-                    <br/>
-                    <p>
+                        <br>
                         {% autoescape off %}
                             {{ pubmed_info|citation_format }}
                         {% endautoescape %}
