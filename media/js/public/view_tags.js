@@ -69,8 +69,13 @@ function fill_tags() {
     $("#tag_structure").text(tags.structure);
     $("#tag_author").text(tags.authors);
     $("#tag_title").text(tags.pub_title);
-    $("#tag_pubmed").text(tags.pubmed_id);
-    $("#link_pubmed").attr("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + tags.pubmed_id);
+    if(/^\d+$/.test(tags.pubmed_id)) {
+        $("#tag_pubmed").text(tags.pubmed_id);
+        $("#link_pubmed").attr("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + tags.pubmed_id);
+    }else{
+        $("#link_pubmed").css("display", "none");
+    }
+
     $("#tag_description").text(tags.description);
 
     $("#img_prv").attr("src", "/site_data/image/" + rmdb_id + "-rx.png");

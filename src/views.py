@@ -7,10 +7,11 @@ from django.db.models import Max
 from django.db.models import Q
 from django.forms import formset_factory
 from django.middleware.csrf import rotate_token
+from Bio import Entrez
 
 from src.env import error400, error401, error403, error404, error500, error503
 from src.models import *
-from src.settings import *
+
 
 # from src.helper.helpers import *
 # from src.helper.helper_api import *
@@ -20,6 +21,8 @@ from src.util.entry import *
 from src.util.media import *
 from src.util.stats import *
 from src.util.util import *
+from src.settings import EMAIL_HOST_USER
+
 
 from datetime import datetime
 import simplejson
@@ -107,11 +110,16 @@ def detail(request, rmdb_id):
     except (RMDBEntry.DoesNotExist, IndexError):
         return error404(request)
 
+    # get citation information from Pubmed by PMID
+    Entrez.email = EMAIL_HOST_USER
+    pubmed_info = get_pubmed_info(entry.publication.pubmed_id)
+
     json = {'rmdb_id': entry.rmdb_id,
             'status': entry.status,
             'actual_status': entry.status,
             'is_isatab': is_isatab,
-            'entry_id': entry.id}
+            'entry_id': entry.id,
+            'pubmed_info': pubmed_info}
 
     if entry.status != "PUB":
         status = 'UNP'
@@ -128,6 +136,29 @@ def detail(request, rmdb_id):
                      'status': status})
     return render(request, PATH.HTML_PATH['detail'], json)
 
+def get_pubmed_info(pmid):
+    if pmid.isdigit():
+        try:
+            handle = Entrez.esummary(db='pubmed', id=pmid, retmode='xml')
+            xml_data = Entrez.read(handle)
+            handle.close()
+
+            data = xml_data[0]
+
+            authors = ','.join(data.get("AuthorList", []))
+            SO = data.get("SO", "")
+            date, page = SO.split(';') if SO and ';' in SO else ('', '')
+            year = ('(%s)' % (date.split()[0])) if date else ''
+            title = '"%s"' % (data.get('Title', ''))
+            journal = data.get('FullJournalName', '')
+            DOI = data.get('DOI','')
+
+            return (authors, year, title, journal, page, DOI)
+        except Exception:
+            print traceback.format_exc()
+            return ("Couldn't find the document by this PMID.",)
+    else:
+        return ("",)
 
 def predict(request):
     # if request.method != 'POST':
