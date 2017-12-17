@@ -38,7 +38,7 @@ $(document).ready(function() {
       }
       $("#slide_index").html(ind_html);
       $("#slide_body").html(body_html);
-      $("#panel_slide").removeClass('place_holder').css("height", 400);
+      $("#panel_slide").removeClass('place_holder').css("height", 350);
 
       $(".carousel-inner > .item:first-child").addClass("active");
       $(".carousel-indicators > li:first-child").addClass("active");
