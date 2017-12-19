@@ -165,6 +165,10 @@ def ref(request):
     return render(request, PATH.HTML_PATH['admin_ref'])
 
 
+def setup(request):
+    return render(request, PATH.HTML_PATH['admin_setup'])
+
+
 def get_ver(request):
     stats = simplejson.load(open('%s/cache/stat_ver.json' % MEDIA_ROOT, 'r'))
     return HttpResponse(simplejson.dumps(stats, sort_keys=True, indent=' ' * 4), content_type='application/json')
@@ -199,6 +203,7 @@ admin.site.register_view('git_stat/', view=git_stat, visible=False)
 admin.site.register_view('dir/', view=dir, visible=False)
 admin.site.register_view('man/', view=man, visible=False)
 admin.site.register_view('ref/', view=ref, visible=False)
+admin.site.register_view('setup/', view=setup, visible=False)
 
 admin.site.register_view('sys_stat/', view=sys_stat, visible=False)
 admin.site.register_view('get_ver/', view=get_ver, visible=False)

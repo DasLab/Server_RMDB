@@ -557,6 +557,14 @@ ul.breadcrumb > li.active {
   transition: all 0.4s ease 0s;
   /*margin: 0px 0px;*/
 }
+
+#setup_wrapper {
+  padding-left: 10%;
+  transition: all 0.4s ease 0s;
+  padding-right: 10%;
+  /*margin: 0px 0px;*/
+}
+
 #sidebar-wrapper {
   margin-left: -250px; left: 250px;
   width: 250px; height: 100%;

@@ -85,6 +85,7 @@ class SYS_PATH(Singleton):
             'admin_dir': MEDIA_ROOT + '/media/html/admin_dir.html',
             'admin_man': MEDIA_ROOT + '/media/html/admin_man.html',
             'admin_ref': MEDIA_ROOT + '/media/html/admin_ref.html',
+            'admin_setup': MEDIA_ROOT + '/media/html/admin_setup.html',
 
             '400': MEDIA_ROOT + '/media/html/error_400.html',
             '401': MEDIA_ROOT + '/media/html/error_401.html',
