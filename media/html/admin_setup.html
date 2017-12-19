@@ -1,0 +1,113 @@
+{% extends "admin/base.html" %}
+{% load i18n admin_static %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block content %}
+	<div id="content-main">
+		<p>&nbsp;</p>
+    <div id="setup_wrapper">
+        <h1 id="developmentenv.setupguideforrmdb">Development Env. Setup Guide for RMDB</h1>
+        <blockquote>
+            <p>Updated: 2017&ndash;07&ndash;28</p>
+        </blockquote>
+        <h2 id="developmentenv.overview">Development Env. Overview</h2>
+        <ul>
+            <li>Python Version: <strong>~2.7</strong></li>
+            <li>DB - <strong>MySQL</strong></li>
+            <li>Web Framework - <a href="https://www.djangoproject.com/">Django</a></li>
+        </ul>
+        <h2 id="devenv.setup">Dev Env. Setup</h2>
+        <p>The env. needs DB data and static files to run locally. You can download them from the production server,
+            inside the folder <code>backup</code> under the web app folder.</p>
+        <blockquote>
+            <p>Web app folder should be under <code>/home/ubuntu/Server_RMDB/</code></p>
+        </blockquote>
+        <p>Once downloaded,</p>
+        <ul>
+            <li>Import the DB backup file (<code>backup_mysql</code>) into your local MySQL instance. ( One way to do it
+                is type the following command in terminal: mysql -u username -p database_name &lt; &nbsp;backup_mysql.sql&nbsp;)
+            </li>
+            <li>Extract and copy the contents of the file <code>backup_static.tgz</code> to the project folder. It then
+                should have folder named <code>data</code> under the root folder and a bunch of subfolders, like <code>file</code>,
+                <code>image</code>, <code>json</code>, etc.
+                <ul>
+                    <li><strong>NOTE</strong>: If needed, you may need to modify the permission of these copied folder
+                        and files.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h3 id="setuppythondependencies">Set up Python Dependencies</h3>
+        <p>The basic dependencies are defined in the file <code>requirements.txt</code> inside the project folder.&nbsp;
+        </p>
+        <p><strong>NOTE</strong>: Most of the dependencies from <code>requirements.txt</code>&nbsp;can be installed
+            using pip, except the following packages:<br/> - <code>django-filemanager</code><br/> -
+            <code>gviz-api.py</code><br/> - <code>rdatkit</code></p>
+        <p>For rdatkit, following the instructions on <a href="https://github.com/ribokit/RDATKit">RDATKit</a></p>
+        <p>For the other two dependencies:</p>
+        <pre>
+            <code class="(null)">
+                cd ~
+                git clone https://github.com/google/google-visualization-python.git
+                cd google-visualization-python
+                python setup.py install
+
+                cd ..
+                git clone https://github.com/t47io/django-filemanager.git
+                cd django-filemanager
+                python setup.py install
+                <br/>
+            </code>
+        </pre>
+        <p><strong>Note</strong>: If you face problem with upgrade <code>pytz</code>, try download the latest version of
+            Python 2.7</p>
+        <h3 id="prepthecode">Prep the Code</h3>
+        <h4 id="modifytheconfigfiles">Modify the <code>config</code> Files</h4>
+        <p>Under the folder <code>config</code>, copy all <code>.example</code> files to a new files without the <code>.example</code>
+            extension.</p>
+        <pre>
+            <code class="(null)">
+            cp -n config/cron.conf.example config/cron.conf
+            cp -n config/env.conf.example config/env.conf
+            cp -n config/oauth.conf.example config/oauth.conf
+            cp -n config/t47_dev.py.example config/t47_dev.py
+            </code>
+        </pre>
+        <p>Also make sure the flag <code>IS_DEVEL = 1</code> is set inside the file <code>t47_dev.py</code> so that the
+            system knows it is under <strong>Development</strong>.</p>
+        <h4 id="setdbaccess">Edit env.conf</h4>
+        <p>DB access is set by the field <code>DATABASE_URL</code> inside the config file <code>env.conf</code>.
+            Configue it to the DB where you import the DB file in the previous step.</p>
+        <p>Set other configurations in <code>env.conf</code> as the same in the&nbsp;production server.</p>
+        <h4 id="prepthecachefolder">Prep the <code>cache</code> Folder</h4>
+        <p>Download the folder <code>cache</code>&nbsp;with all the files in it from the production server, then move
+            the <code>cache</code>&nbsp;folder to the&nbsp;<strong>project root folder</strong></p>
+        <blockquote>
+            <p>Cache folder should be under <code>/home/ubuntu/Server_RMDB/</code></p>
+        </blockquote>
+        <h3 id="startthedevserver">Start the Dev Server</h3>
+        <p>Under the <strong>project root folder</strong>, run the following command to start the local server.</p>
+        <pre><code class="(null)">python manage.py runserver</code></pre>
+        <p>If having error, try to fix it based on the actual error output. Normally it would be about some Python
+            package missing.</p>
+        <div style="display: none;"><br/>
+            <!--This seemingly unnecessary div markup is the only thing keeping this script working after Markdown conversion. Trust me.-->
+            <br/> <br/></div>
+        <!-- ##END MARKED WRAPPER## --></div>
+
+
+	</div>
+{% endblock %}
+
+{% block extrajs %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// $("#iframe").css("width", parseInt($("#content").css("width")) - 50);
+			// $("#iframe").css("height", $("#footer").position().top - $("#content").position().top - 175);
+			$("ul.breadcrumb").append('<li class="active"><span style="color: #000;" class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;Site Documentation</li>');
+		});
+	</script>
+
+{% endblock %}
+
