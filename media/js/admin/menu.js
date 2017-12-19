@@ -134,6 +134,12 @@ $(document).ready(function () {
         $("#nav_doc_lg").addClass("active");
         $("ul.breadcrumb").css("border-bottom", "5px solid #c28fdd");
         $('<li><span style="color: #000;" class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;<a href="">Reference</a></li>').insertAfter($("ul.breadcrumb > li:first"));
+    }else if ($(location).attr("href").indexOf("admin/setup") != -1) {
+        $("#nav_setup").addClass("active");
+        $("#nav_doc").addClass("active");
+        $("#nav_doc_lg").addClass("active");
+        $("ul.breadcrumb").css("border-bottom", "5px solid #c28fdd");
+        $('<li><span style="color: #000;" class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;<a href="">Setup Guide</a></li>').insertAfter($("ul.breadcrumb > li:first"));
     } else {
         $("#nav_home").addClass("active");
         $("#nav_home_lg").addClass("active");
