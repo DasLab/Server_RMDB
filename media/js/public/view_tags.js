@@ -74,10 +74,16 @@ function fill_tags() {
         $("#link_pubmed").attr("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + tags.pubmed_id);
     }else{
         $("#link_pubmed").css("display", "none");
-        $("#publication_rec").css("display", "none");
+        $("#show_publication").css("display", "none");
     }
 
-    $("#tag_description").text(tags.description);
+    var tags_description = tags.description.trim();
+    if(tags_description){
+        $("#tag_description").text(tags_description);
+    }else{
+        $("#show_description").css("display", "none");
+    }
+
 
     $("#img_prv").attr("src", "/site_data/image/" + rmdb_id + "-rx.png");
     $("#dl_isatab").attr("href", "/site_data/file/" + tags.rmdb_id + "/" + tags.rmdb_id + "_" + tags.version + ".xls");
@@ -99,14 +105,14 @@ function fill_tags() {
         $("#tag_supercede").html('<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>&nbsp;&nbsp;Latest&nbsp;</button>');
     }
 
-    if (tags.pdb_ids) {
+    if (tags.pdb_ids.length > 0) {
         var pdb_html = '';
         for (var i in tags.pdb_ids) {
             pdb_html += '<a href="http://www.pdb.org/pdb/explore/explore.do?structureId=' + tags.pdb_ids[i] + '">' + tags.pdb_ids[i] + ' <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>, ';
         }
         $("#tag_pdb").html(pdb_html);
     } else {
-        $("#tag_pdb").text('N/A');
+        $("#show_pdb").css("display", "none");
     }
 
     var col_h = Math.max(parseInt($("#panel_con").css("height")), parseInt($("#panel_cit").css("height")));
