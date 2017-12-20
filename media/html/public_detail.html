@@ -22,7 +22,7 @@
 			</li>
 			<br/>
 			<li role="presentation" class="left_tab left_group">
-				<a href="#tab_left_4" aria-controls="tab_left_4" role="tab" data-toggle="tab">Structure</a>
+				<a href="#tab_left_4" aria-controls="tab_left_4" role="tab" data-toggle="tab">Reactivity</a>
 			</li>
 			<br/>
 			<li class="left_close panel_close">
@@ -159,9 +159,45 @@
 				</div>
 			</div>
 
-			<div role="tabpanel" class="tab-pane active fade in side_block" id="tab_left_4">
+			<div role="tabpanel" class="tab-pane active fade in side_block" style="margin-top: 10px" id="tab_left_4">
+                <div class="row">
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
+							<button id="svg_top" class="btn btn-default">
+								<span class="glyphicon glyphicon-fast-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+							<button id="svg_up" class="btn btn-default">
+								<span class="glyphicon glyphicon-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+						</p>
+						<p>
+							<input type="text" class="form-control" id="page_num" style="width:60px; text-align: center;" />
+						</p>
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
+							<button id="svg_down" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+							<button id="svg_bottom" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-fast-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
+							</button>
+						</p>
+						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
+							<a id="svg_save" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+							</a>
+							<button id="svg_setting" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+							</button>
+							<button id="svg_clear" class="btn btn-default right-block">
+								<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+							</button>
+						</p>
+					</div>
+					<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11" id="svg_parent"><svg class="chart"></svg></div>
+				</div>
+
                 <!-- RNA Structure -->
-                <div id="rna_structure_panel">
+                <div id="rna_structure_panel" style="margin-right: 40px">
                     <div class="row">
                         <div class="form-inline">
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
@@ -175,6 +211,28 @@
                     </div>
                     <div id="rna-structure"></div>
                 </div>
+
+                <div class="row" id="tag_browse" style="margin-right: 20px; margin-left: 10px">
+                    <a target="_blank" href="https://rmdb.stanford.edu/deposit/specs/#annotation">
+                                <img class="pull-right" src="/site_media/images/sidebar_link.png" style="width: 4%;height: auto;"/>
+                            </a>
+					<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
+						<tr id="tag_barplot">
+							<td class="lead text-right align-center">
+                                <span class="label label-primary">DATA_ANNOTATION</span>
+                            </td>
+							<td></td>
+							<td></td>
+
+				        </tr>
+						<tr>
+							<th class="col-lg-2 col-md-2 col-sm-3 col-xs-4"></th>
+							<th class="col-lg-2 col-md-2 col-sm-3 col-xs-4"></th>
+							<th class="col-lg-8 col-md-8 col-sm-6 col-xs-4"></th>
+						</tr>
+					</table>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -245,94 +303,7 @@
 
 </div>
 
-<div id="img_panel" class="side_panel well">
-	<div role="tabpanel" class="tabbable tabs-right" id="bar_plot_details_tab">
-		<ul class="nav nav_tabs side_tab" role="tablist" id="img-buttons">
-			<li class="left_close barplot_close">
-				<a class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-			</li>
-			<br/>
-			<li role="presentation" class="left_tab left_alone active">
-				<a href="#panel_svg" role="tab" data-toggle="tab">Bar Plot</a>
-			</li>
-			<br/>
-			<li class="left_close barplot_close">
-				<a class="text-center"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-			</li>
-		</ul>
-		<br/>
 
-		<div class="tab-content" id="bar_plot_details" >
-			<div role="tabpanel" class="tab-pane active fade in side_block" id="panel_svg">
-				<div class="row">
-					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" style="width:90px;">
-						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
-							<button id="svg_top" class="btn btn-default">
-								<span class="glyphicon glyphicon-fast-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
-							</button>
-							<button id="svg_up" class="btn btn-default">
-								<span class="glyphicon glyphicon-backward" aria-hidden="true" style="transform:rotate(90deg);"></span>
-							</button>
-						</p>
-						<p>
-							<input type="text" class="form-control" id="page_num" style="text-align: center;"/>
-						</p>
-						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
-							<button id="svg_down" class="btn btn-default right-block">
-								<span class="glyphicon glyphicon-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
-							</button>
-							<button id="svg_bottom" class="btn btn-default right-block">
-								<span class="glyphicon glyphicon-fast-forward" aria-hidden="true" style="transform:rotate(90deg);"></span>
-							</button>
-						</p>
-						<p class="btn-group-vertical" role="group" style="padding-left:10px;">
-							<a id="svg_save" class="btn btn-default right-block">
-								<span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
-							</a>
-							<button id="svg_setting" class="btn btn-default right-block">
-								<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-							</button>
-							<button id="svg_clear" class="btn btn-default right-block">
-								<span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-							</button>
-						</p>
-					</div>
-					<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11" id="svg_parent"><svg class="chart"></svg></div>
-				</div>
-                <!-- RNA Structure -->
-                <!--<div id="rna_structure_panel">
-                    <div class="row">
-                        <div class="form-inline">
-                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-                                <label label for="id_type" class="pull-right">Reactivity Sets:</label>
-                            </div>
-                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                                <select class="" id="tag_reactivity_sets">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="rna-structure"></div>
-                </div>-->
-
-				<div class="row" id="tag_browse">
-					<table class="table table-hover" style="word-wrap:break-word;word-break:break-word;">
-						<tr id="tag_barplot">
-							<td class="lead text-right align-center"><span class="label label-primary">DATA_ANNOTATION</span></td>
-							<td></td>
-							<td></td>
-				        </tr>
-						<tr>
-							<th class="col-lg-2 col-md-2 col-sm-3 col-xs-4"></th>
-							<th class="col-lg-2 col-md-2 col-sm-3 col-xs-4"></th>
-							<th class="col-lg-8 col-md-8 col-sm-6 col-xs-4"></th>
-						</tr>
-					</table>						
-				</div>
-			</div>
-		</div> 
-	</div>
-</div>
 
 
 <div class="container">
