@@ -93,8 +93,8 @@ python manage.py make_json -A
 
 #### 0. Server login and update:
 - contact admin for the amazon.pem
-- use "ssh -i amazon.pem ubuntu@ec2-52-39-26-41.us-west-2.compute.amazonaws.com" to login
-- use "sync" to merge and update produciton version
+- use `ssh -i amazon.pem ubuntu@ec2-52-39-26-41.us-west-2.compute.amazonaws.com` to login
+- use `sync` to merge and update produciton version
 
 #### 1. 500 Errors:
 - Investigate **immediately** (you get admin email notice)
