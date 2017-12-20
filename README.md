@@ -83,9 +83,14 @@ cd path/to/server_RMDB/repo
 python manage.py make_json -A
 ```
 
+## TODO
+* The major incomplete task is a total transfer of licensing of RiboKit packages out of RMDB and into [ribokit-license.stanford.edu](ribokit-license.stanford.edu). That repo is hosted at https://github.com/DasLab/Server_Ribokit_License . Its almost ready except for automatic pulls of RiboKit packages, which is coded up in Server_RMDB `dist.py` but has not yet been transferred over due to problems setting up `oauth`/Github authorization.
+* Other RMDB server issues and feature wish list are described in [issues](https://github.com/DasLab/Server_RMDB/issues).
+
+
 ## License
 
-**Copyright &copy; 2014-2017: Siqi Tian _[[t47](https://t47.io/)]_, Das Lab, Stanford University. All Rights Reserved.**
+**Copyright &copy; 2014-2017: Siqi Tian _[[t47](https://t47.io/)]_; 2017 Chunwen Xiong; 2017 Das Lab, Stanford University. All Rights Reserved.**
 
 **RMDB Server** _Source Code_ is proprietary and confidential. Unauthorized copying of this repository, via any medium, is strictly prohibited.
 
