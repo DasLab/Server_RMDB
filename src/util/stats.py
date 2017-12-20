@@ -1,4 +1,5 @@
 import textwrap
+from django.db.models import Max
 
 from src.models import *
 
@@ -97,12 +98,19 @@ def browse_json_list(names_d):
 
 
 def get_rmdb_category(flag):
+    latest_versions = RMDBEntry.objects.values('rmdb_id').annotate(latest_version=Max('version'))
+    q_statement = Q()
+    for pair in latest_versions:
+        q_statement |= (Q(entry__rmdb_id=pair['rmdb_id']) & Q(entry__version=pair['latest_version']))
+
+    LatestConstructSec = ConstructSection.objects.filter(q_statement)
+
     if flag == "puzzle":
-        names_d = ConstructSection.objects.filter(name__icontains='Puzzle').values('name').distinct()
+        names_d = LatestConstructSec.filter(name__icontains='Puzzle').values('name').distinct()
     elif flag == "eterna":
-        names_d = ConstructSection.objects.filter(name__icontains='EteRNA').values('name').distinct()
+        names_d = LatestConstructSec.filter(name__icontains='EteRNA').values('name').distinct()
     else:
-        names_d = ConstructSection.objects.exclude(name__icontains='EteRNA').exclude(name__icontains='Puzzle').values('name').distinct()
+        names_d = LatestConstructSec.exclude(name__icontains='EteRNA').exclude(name__icontains='Puzzle').values('name').distinct()
     names_d = names_d.order_by('name')
     return browse_json_list(names_d)
 
