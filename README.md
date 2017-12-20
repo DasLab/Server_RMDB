@@ -91,19 +91,24 @@ python manage.py make_json -A
 
 ## Maintenance for RMDB ops
 
-#### 0. 500 Errors:
+#### 0. Server login and update:
+- contact admin for the amazon.pem
+- use "ssh -i amazon.pem ubuntu@ec2-52-39-26-41.us-west-2.compute.amazonaws.com" to login
+- use "sync" to merge and update produciton version
+
+#### 1. 500 Errors:
 - Investigate **immediately** (you get admin email notice)
 - Hot fix or escalate issue, or disable
 
-#### 1. AWS instance monitoring:
+#### 2. AWS instance monitoring:
 - Subscribe to alerts
 - Respond when server is down (e.g. check logs, restart)
 
-#### 2. New entry actions:
+#### 3. New entry actions:
 - Examine and approve for newly submitted entries by non-Admin users (rare)
 - Check if heatmap and meta data for new entry is correct (should success)
 
-#### 3. HTTPS certificate renewal:
+#### 4. HTTPS certificate renewal:
 - Due on _Sep 22 2018_
 
 Things that should _NOT_ need care (done automatically):
