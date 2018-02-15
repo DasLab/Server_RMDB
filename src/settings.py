@@ -137,7 +137,7 @@ class ExceptionUserInfoMiddleware(object):
             pass
 
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -148,7 +148,7 @@ MIDDLEWARE_CLASSES = [
 
     'src.settings.ExceptionUserInfoMiddleware',
 ]
-if not DEBUG: MIDDLEWARE_CLASSES.insert(0, 'django.middleware.security.SecurityMiddleware')
+if not DEBUG: MIDDLEWARE.insert(0, 'django.middleware.security.SecurityMiddleware')
 
 
 TEMPLATES = [{
