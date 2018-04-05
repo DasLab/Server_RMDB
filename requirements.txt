@@ -1,6 +1,6 @@
 biopython == 1.71
 boto == 2.48.0
-Django == 1.11.12
+Django == 1.9.13
 django-adminplus == 0.5
 django-crontab == 0.7.1
 django-environ == 0.4.4
