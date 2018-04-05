@@ -543,7 +543,7 @@ class BackupForm(forms.Form):
 
 
 def rmdb_user(request):
-    if hasattr(request, 'user') and request.user.is_authenticated():
+    if request.user.is_authenticated():
         user = RMDBUser.objects.get(user=request.user)
     else:
         user = None

@@ -17,7 +17,6 @@ import traceback
 
 from filemanager import FileManager
 
-from src.env import error403
 from src.models import *
 
 
@@ -227,9 +226,6 @@ def save_p_inves(rmdb_usr, formset, user):
 
 
 def edit_profile(request):
-    if not hasattr(request, 'user'):
-        return error403(request)
-
     error_msg = []
     flag = 0
     p_inves_changes = False
@@ -287,9 +283,6 @@ def edit_profile(request):
 
 
 def change_password(request):
-    if not hasattr(request, 'user'):
-        return error403(request)
-
     if request.method == 'POST':
         form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():
