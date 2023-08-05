@@ -14,46 +14,65 @@
 				<div class="panel-body scroll_nav">
 					<div class="list-group">
 						<a class="list-group-item active alert-default nav-list-item" id="buttonAll">
-							<h4 class="list-group-item-heading">
-								<span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-              					&nbsp;&nbsp;All
-              				</h4>
-							<p class="list-group-item-text">
-								# Entries: 
-								<span class="badge" id="N_all"></span>
-							</p>
+							<div>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+									&nbsp;&nbsp;All
+								</h4>
+								<p class="list-group-item-text">
+									# Entries: 
+									<span class="badge" id="N_all"></span>
+								</p>
+							</div>
 						</a>
 						<a class="list-group-item alert-danger nav-list-item" id="buttonGeneral">
-							<h4 class="list-group-item-heading">
-								<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-              					&nbsp;&nbsp;General
-              				</h4>
-							<p class="list-group-item-text">
-								# Entries: 
-								<span class="badge" id="N_general"></span>
-							</p>
+							<div>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+									&nbsp;&nbsp;General
+								</h4>
+								<p class="list-group-item-text">
+									# Entries: 
+									<span class="badge" id="N_general"></span>
+								</p>
+							</div>
 						</a>
 						<a class="list-group-item alert-success nav-list-item" id="buttonPuzzle">
-							<h4 class="list-group-item-heading">
-								<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
-              					&nbsp;&nbsp;RNA Puzzles
-              				</h4>
-							<p class="list-group-item-text">
-								# Entries: 
-								<span class="badge" id="N_puzzle"></span>
-							</p>
+							<div>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+									&nbsp;&nbsp;RNA Puzzles
+								</h4>
+								<p class="list-group-item-text">
+									# Entries: 
+									<span class="badge" id="N_puzzle"></span>
+								</p>	
+							</div>
 						</a>
 						<a class="list-group-item alert-info nav-list-item" id="buttonEterna">
-							<h4 class="list-group-item-heading">
-								<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-              					&nbsp;&nbsp;Eterna
-              				</h4>
-							<p class="list-group-item-text">
-								# Entries: 
-								<span class="badge" id="N_eterna"></span>
-							</p>
+							<div>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+									&nbsp;&nbsp;Eterna
+								</h4>
+								<p class="list-group-item-text">
+									# Entries: 
+									<span class="badge" id="N_eterna"></span>
+								</p>
+							</div>
 						</a>
 					</div>
+					<a href="/site_data/published_rdat.zip">
+						<button type="button" class="btn btn-outline-primary" style="width: 100%; display:flex; justify-content: center; align-items: center;">
+							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cloud-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+								<path d="M19 18a3.5 3.5 0 0 0 0 -7h-1a5 4.5 0 0 0 -11 -2a4.6 4.4 0 0 0 -2.1 8.4"></path>
+								<path d="M12 13l0 9"></path>
+								<path d="M9 19l3 3l3 -3"></path>
+						</svg>
+							Download Selected Files
+						</button>
+					</a>
 				</div>
 			</div>
 
@@ -138,4 +157,5 @@
 {% block script %}
 	<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}browse{{DEBUG_STR}}.js"></script>  
 {% endblock %}
+
 
