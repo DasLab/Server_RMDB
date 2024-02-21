@@ -38,7 +38,9 @@ def get_entry_version(rmdb_id):
 
 
 def temp_file(file_name):
-    open('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_name.name), 'w').write(file_name.read())
+    f = open('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_name.name), 'w')
+    f.write(file_name.read())
+    f.close()
     return open('%s/%s' % (PATH.DATA_DIR['TMP_DIR'], file_name.name), 'r')
 
 
