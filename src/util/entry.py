@@ -120,9 +120,6 @@ def process_upload(form, formset, upload_file, user):
                 if exp_type != 'StandardState':
                     flag = 1
                     error_msg.append('Use StandardState for Eterna entries.')
-            elif exp_type != 'MOHCA':
-                flag = 1
-                error_msg.append('Missing experimentType.')
 
             rf.seek(0)
             if form.cleaned_data['file_type'] == 'isatab':
