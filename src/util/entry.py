@@ -141,6 +141,7 @@ def process_upload(form, formset, upload_file, user):
                     print traceback.format_exc()
                     error_msg.append('Invaid RDAT file; please check and resubmit.')
                     flag = 1
+            rf.close()
 
         if not flag:
             flag = 2

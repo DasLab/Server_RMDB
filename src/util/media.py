@@ -158,7 +158,9 @@ def save_json_heatmap(entry):
         data_mean = mean(data_mean)
 
         json = {'data': data_matrix, 'peak_max': data_max, 'peak_min': round(data_min, 3), 'peak_mean': round(data_mean, 3), 'peak_sd': round(data_sd, 3), 'row_lim': row_limits, 'x_labels': x_labels, 'y_labels': y_labels, 'precalc_structures': precalc_structures}
-        simplejson.dump(json, open('%s/%s-hmap.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
+        f = open('%s/%s-hmap.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w')
+        simplejson.dump(json, f, sort_keys=True, indent=' ' * 4)
+        f.close()
     except ConstructSection.DoesNotExist:
         return None
 
@@ -209,7 +211,9 @@ def save_json_tags(entry):
     tags_construct = {'sequence': c.sequence, 'structure': c.structure, 'offset': c.offset, 'sequence_len': len(c.sequence), 'structure_len': len(c.structure), 'data_nrow': len(c.datas), 'data_ncol': len(c.datas[0].values.split(',')), 'err_ncol': c.err_ncol, 'xsel_len': c.xsel_len, 'seqpos_len': c.seqpos_len, 'seqpos': c.seqpos, 'name': c.name}
 
     tags_all = dict(tags_basic.items() + tags_construct.items() + tags_annotation.items())
-    simplejson.dump(tags_all, open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w'), sort_keys=True, indent=' ' * 4)
+    f = open('%s/%s-tags.json' % (PATH.DATA_DIR['JSON_DIR'], entry.rmdb_id), 'w')
+    simplejson.dump(tags_all, f, sort_keys=True, indent=' ' * 4)
+    f.close()
 
 
 def save_json(rmdb_id):
