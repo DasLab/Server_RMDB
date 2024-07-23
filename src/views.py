@@ -232,22 +232,19 @@ def predict(request):
 def str_view(request):
     return render(request, PATH.HTML_PATH['index'])
 
-
-def search(request):
-    if request.method == 'POST':
-        return error400(request)
-    else:
-        form = SearchForm(request.GET)
-        if form.is_valid():
-            sstring = form.cleaned_data['sstring'].encode('utf-8', 'ignore')
-            return render(request, PATH.HTML_PATH['search_res'], {'sstring': sstring})
-        else:
-            return render(request, PATH.HTML_PATH['search_res'], {'sstring': ''})
-
-
-def advanced_search(request):
-    return error503(request)
-
+# Disabling old search functionality in favor of data table search
+# def search(request):
+#     if request.method == 'POST':
+#         return error400(request)
+#     else:
+#         form = SearchForm(request.GET)
+#         if form.is_valid():
+#             sstring = form.cleaned_data['sstring'].encode('utf-8', 'ignore')
+#             return render(request, PATH.HTML_PATH['search_res'], {'sstring': sstring})
+#         else:
+#             return render(request, PATH.HTML_PATH['search_res'], {'sstring': ''})
+# def advanced_search(request):
+#     return error503(request)
 
 def validate(request):
     flag = -1

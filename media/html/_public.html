@@ -312,22 +312,25 @@
 				<br class="hidden-lg hidden-md" />
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-				<form class="pull-right" action="/search/" method="get">
+				<!-- <form class="pull-right" action="/search/" method="get"> -->
 					<div class="input-group">
 						{% render_field search_form.sstring class+="form-control input-lg" placeholder="Search by keyword" %}
 						<div class="input-group-btn">
-							<button class="btn btn-lg btn-success clickable">
+							<button class="btn btn-lg btn-success clickable" onClick="(function(e){
+								window.location = `/browse/table?search=${document.getElementById('id_sstring').value}`
+								return false;
+							})(arguments[0]);return false;" >
 								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;&nbsp;Search&nbsp;
 							</button> 
 						</div>
 					</div>
-				</form>
+				<!-- </form> -->
 				<br/><br/><br/>
 				&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="/advanced_search/" class="disabled" style="text-decoration:line-through; display:none;" disabled onclick="return false;">
+				<!-- <a href="/advanced_search/" class="disabled" style="text-decoration:line-through; display:none;" disabled onclick="return false;">
 					<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>&nbsp;
 					Advanced Search
-				</a>
+				</a> -->
 			</div>
 		</div>
 	</div>
