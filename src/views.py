@@ -27,6 +27,7 @@ from src.settings import EMAIL_HOST_USER
 from datetime import datetime
 import simplejson
 # import traceback
+import gc
 
 dist_dict = {'mapseeker': 'MAPseeker', 'reeffit': 'REEFFIT', 'hitrace': 'HiTRACE', 'rdatkit': 'RDATKit', 'biers': 'Biers'}
 
@@ -259,6 +260,7 @@ def validate(request):
 
     if flag == -1:
         (messages, errors, flag, form) = ([], [], 0, ValidateForm())
+    gc.collect()
     return render(request, PATH.HTML_PATH['validate'], {'form': form, 'val_errs': errors, 'val_msgs': messages, 'flag': flag})
 
 
@@ -292,6 +294,7 @@ def upload(request):
 
     if not flag:
         (error_msg, flag, entry, form, formset) = ([], 0, '', UploadForm(), CoOwnersFormSet())
+    gc.collect()
     return render(request, PATH.HTML_PATH['upload'], {'form': form,
                                                       'formset': formset,
                                                       'error_msg': error_msg,
