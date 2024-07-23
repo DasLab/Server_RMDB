@@ -39,6 +39,7 @@ else:
     urlpatterns = [
         url(r'^$', views.index),
         url(r'^browse/?$', views.browse),
+        url(r'^browse/table/?$', views.browseTable),
         url(r'^detail/(?P<rmdb_id>\w{,20})$', views.detail),
 
         url(r'^help/about/?$', views.about),
@@ -113,6 +114,8 @@ else:
         url(r'^get_news/?$', views.get_news),
         url(r'^get_recent/?$', views.get_recent),
         url(r'^get_browse/(?P<keyword>\w+)/?$', views.get_browse),
+        url(r'^get_browse_table/?$', views.get_browse_table),
+
 
         url(r'^error/400/?$', views.error400),
         url(r'^error/401/?$', views.error401),

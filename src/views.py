@@ -37,6 +37,9 @@ def index(request):
 def browse(request):
     return render(request, PATH.HTML_PATH['browse'])
 
+def browseTable(request):
+    return render(request, PATH.HTML_PATH['browse_table'])
+
 def specs(request):
     return render(request, PATH.HTML_PATH['specs'])
 
@@ -373,6 +376,26 @@ def get_browse(request, keyword):
     else:
         return error400(request)
 
+def get_browse_table(request):
+    entryList = []
+    entries = RMDBEntry.objects.all().select_related("publication").filter(status='PUB').order_by('-creation_date')
+    for entry in entries:
+        entryList.append({
+            'rmdb_id': entry.rmdb_id,
+            'creation_date': entry.creation_date.isoformat(),
+            'version': entry.version,
+            'status': entry.status,
+            'supercede': entry.supercede_by, 
+            'type': entry.type,
+            'authors': entry.authors,
+            'comments': entry.comments,
+            'datapoints': entry.data_count,
+            'constructs': entry.construct_count,
+            'pubmed_id': entry.publication.pubmed_id,
+            'pubmed_title': entry.publication.title,
+            'pdb': entry.pdb,
+        })
+    return HttpResponse(simplejson.dumps(entryList, sort_keys=True, indent=' ' * 4), content_type='application/json')
 
 def ping_test(request):
     return HttpResponse(content="", status=200)
