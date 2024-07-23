@@ -28,6 +28,12 @@ class Command(BaseCommand):
             # which is handled by writing the entry rdat dir to a dict keyed by rmdb_id
             entries = RMDBEntry.objects.all().filter(status='PUB')
             for entry in list(entries):
+                # If the entry was superceded by another entry, don't include it
+                if entry.supercede_by:
+                    print(entry.rmdb_id, ' : ', entry.supercede_by)
+                    # print("Skipping")
+                    # print(entry.rmdb_id)
+                    continue        
                 entryDict[entry.rmdb_id] = '%s%s' % (PATH.DATA_DIR['FILE_DIR'], entry.rmdb_id)
 
             # For each entry, get the path to the associated rdat and write to zip file

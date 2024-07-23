@@ -65,7 +65,8 @@ else:
         url(r'^reeffit/?$', views.tutorial, {'keyword': 'reeffit'}),
         url(r'^biers/?$', views.tutorial, {'keyword': 'biers'}),
 
-        url(r'^search/?$', views.search),
+        # Disabling old search functionality in favor of data table search
+        # url(r'^search/?$', views.search),
         # url(r'^advanced_search/?$', views.advanced_search),
 
         url(r'^login/?$', user.user_login),
@@ -137,7 +138,7 @@ else:
 
         url(r'^entry_manage$', views.entry_manage),
         url(r'^entry_manage/entry_edit/(?P<rmdb_id>\w+)/(?P<entry_id>\d+)/?$', views.edit_entry),
-
+ 
         url('^', include('django.contrib.auth.urls')),
 
     ]
