@@ -1,0 +1,204 @@
+{% extends "media/html/_public.html" %}
+
+{% block content %}
+<div class="" id="categories">
+	<div class="row">
+		<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4" id="side">
+						<div class="panel panel-warning" id="side_bar" data-spy="affix">
+				<div class="panel-heading">
+		            <h3 class="panel-title">
+		            	<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+              			&nbsp;&nbsp;Categories
+              		</h3>
+				</div>
+				<div class="panel-body scroll_nav">
+					<div class="list-group">
+						<a class="list-group-item active alert-default nav-list-item" id="buttonAll">
+							<div>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+									&nbsp;&nbsp;All
+								</h4>
+								<p class="list-group-item-text">
+									# Entries: 
+									<span class="badge" id="N_all"></span>
+								</p>
+							</div>
+						</a>
+						<a class="list-group-item alert-danger nav-list-item" id="buttonGeneral">
+							<div>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+									&nbsp;&nbsp;General
+								</h4>
+								<p class="list-group-item-text">
+									# Entries: 
+									<span class="badge" id="N_general"></span>
+								</p>
+							</div>
+						</a>
+						<a class="list-group-item alert-success nav-list-item" id="buttonPuzzle">
+							<div>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
+									&nbsp;&nbsp;RNA Puzzles
+								</h4>
+								<p class="list-group-item-text">
+									# Entries: 
+									<span class="badge" id="N_puzzle"></span>
+								</p>	
+							</div>
+						</a>
+						<a class="list-group-item alert-info nav-list-item" id="buttonEterna">
+							<div>
+								<h4 class="list-group-item-heading">
+									<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+									&nbsp;&nbsp;Eterna
+								</h4>
+								<p class="list-group-item-text">
+									# Entries: 
+									<span class="badge" id="N_eterna"></span>
+								</p>
+							</div>
+						</a>
+					</div>
+					<a href="/site_data/published_rdat.zip">
+						<button type="button" class="btn btn-outline-primary" style="width: 100%; display:flex; justify-content: center; align-items: center;">
+							<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cloud-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+								<path d="M19 18a3.5 3.5 0 0 0 0 -7h-1a5 4.5 0 0 0 -11 -2a4.6 4.4 0 0 0 -2.1 8.4"></path>
+								<path d="M12 13l0 9"></path>
+								<path d="M9 19l3 3l3 -3"></path>
+						</svg>
+							Download Selected Files
+						</button>
+					</a>
+				</div>
+			</div>
+		</div>
+		
+		<h2 style="font-size: 24px; margin-bottom: 24px;">
+			<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+			&nbsp;&nbsp;Browse RMDB
+		</h2>
+		<div class="col-lg-9 col-md-9 col-sm-8 col-xs-8" id="main">
+			<div class="theme-showcase" style="padding-right:25px;" role="main">
+				<table id="entryTable" class="table table-bordered display" style="cursor: pointer;">
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="/site_media/js/public/{{DEBUG_DIR}}browse{{DEBUG_STR}}.js"></script> 
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+<script>
+	$(document).ready( function () {
+		const table = new DataTable('#entryTable', {
+			// Define data source; currently uses a view route, but should eventually target an API
+			ajax: {
+				url: '/get_browse_table/',
+				dataSrc: function(entries) {
+					{
+						const uniqueEntries = {};
+
+						entries.forEach(entry => {
+							const { rmdb_id, version } = entry;
+							if (!uniqueEntries[rmdb_id]) {
+								uniqueEntries[rmdb_id] = entry;
+							} else {
+								const currentVersion = Number(version);
+								const storedVersion = Number(uniqueEntries[rmdb_id].version);
+
+								if (currentVersion > storedVersion) {
+										uniqueEntries[rmdb_id] = entry;
+									}
+								}
+							});
+
+						return Object.values(uniqueEntries);
+					}
+				}
+			},
+			columns: [
+			{ data: 'rmdb_id', title: 'RMDB ID'},
+			// { data: 'comments', title: 'Comments'},
+			{ data: 'authors', title: 'Authors'},
+			{ data: 'creation_date', title: 'Date', render: DataTable.render.datetime('Do MMM YYYY')},
+			{ data: 'pubmed_id', title: "PubMed ID"},
+			{ data: 'pdb', title: "PDB ID"},
+			{ 
+				data: 'type', 
+				title: 'Experiment Type',
+				render: (data, type, row) => {
+					const experiments = {
+						'SS': 'Standard State',
+						'MM': 'Mutate and Map',
+						'MR': 'Mutation Rescue',
+						'MA': 'MOHCA',
+						'TT': 'Titration',
+						'DC': 'Deep Chemical Mapping',
+					};
+					
+					return experiments[data];
+				},
+			},
+			{ data: 'constructs', title: 'Number of Constructs'},
+			{ data: 'datapoints', title: 'Number of Datapoints'},
+			{ data: 'version', title: 'Version'},
+			{ data: 'supercede', title: 'Supercede'},
+
+			],
+			// Initizalize sort by date
+			order: [[2, 'desc']],
+			fixedHeader: {
+				header: true,
+				footer: true,
+			},
+			scrollX: true,
+			// Populate search input with query search string if present
+			search: {
+        search: new URLSearchParams(window.location.search).get("search") ?? ''
+    	},
+			initComplete: function () {
+				this.api()
+				.columns()
+				.every(function () {
+					let column = this;
+					let title = column.header().textContent;
+					
+					// Create input element
+					let input = document.createElement('input');
+					input.placeholder = title;
+					column.header().replaceChildren(input);
+					
+					// Event listener for user input
+					input.addEventListener('keyup', () => {
+						if (column.search() !== this.value) {
+							column.search(input.value).draw();
+						}
+					});
+				});
+
+				// Force redraw to address responsive column width issue
+				table.columns.adjust().draw();
+			}
+		})
+
+		// Set up event listener; on row click, we navigate to the
+		// detail view for the selected entry
+		table.on('click', 'tbody tr', function() {
+			const data = table.row(this).data();			
+			window.location.href = `/detail/${data.rmdb_id}`;
+		})
+	});
+
+	
+</script>
+{% endblock %}
+
+

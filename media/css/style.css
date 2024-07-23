@@ -33,3 +33,11 @@
     overflow-x: auto;
     overflow-y: hidden;
 }
+#buttonAll, #buttonGeneral, #buttonPuzzle, #buttonEterna {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+} 
+#buttonAll.active:hover, #buttonGeneral.active:hover, #buttonPuzzle.active:hover, #buttonEterna.active:hover {
+    color: #2f71aa;
+}

@@ -47,6 +47,7 @@ class SYS_PATH(Singleton):
         self.HTML_PATH = {
             'index': MEDIA_ROOT + '/media/html/public_index.html',
             'browse': MEDIA_ROOT + '/media/html/public_browse.html',
+            'browse_table': MEDIA_ROOT + '/media/html/public_browse_table.html',
             'detail': MEDIA_ROOT + '/media/html/public_detail.html',
 
             'about': MEDIA_ROOT + '/media/html/public_about.html',

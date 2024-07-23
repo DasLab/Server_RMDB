@@ -106,7 +106,7 @@ class RMDBEntry(models.Model):
     status = models.CharField(max_length=3, choices=ENTRY_STATUS_CHOICES)
     type = models.CharField(max_length=3, choices=ENTRY_TYPE_CHOICES, verbose_name='Experiment Type')
     supercede_by = models.CharField(max_length=25, null=True, blank=True, verbose_name='Superceded By',
-                                    help_text='<span class="glyphicon glyphicon-share"></span>&nbsp;<span class="label label-danger">RMDB_ID</span> of entry that supercedes this one. Leave emtpy if does not apply.')
+                                    help_text='<span class="glyphicon glyphicon-share"></span>&nbsp;<span class="label label-danger">RMDB_ID</span> of entry that supercedes this one. Leave empty if does not apply.')
 
     authors = models.TextField(
         help_text='<span class="glyphicon glyphicon-user"></span>&nbsp; Follow the format seen on the website: <span class="label label-inverse">Das, R.,</span>.')
