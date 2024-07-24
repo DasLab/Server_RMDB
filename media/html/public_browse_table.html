@@ -173,6 +173,8 @@
 					
 					// Create input element
 					let input = document.createElement('input');
+					// Populate element with search from URL querystring if present
+					input.value = new URLSearchParams(window.location.search).get(`${this.dataSrc()}`) ?? ''
 					input.placeholder = title;
 					column.header().replaceChildren(input);
 					
@@ -182,6 +184,9 @@
 							column.search(input.value).draw();
 						}
 					});
+
+					// Search and draw column with query populated search term
+					column.search(input.value).draw();
 				});
 
 				// Force redraw to address responsive column width issue

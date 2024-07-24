@@ -72,6 +72,7 @@ function fill_tags() {
     if(/^\d+$/.test(tags.pubmed_id)) {
         $("#tag_pubmed").text(tags.pubmed_id);
         $("#link_pubmed").attr("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + tags.pubmed_id);
+        $("#link_relatedEntries").attr("href", "/browse/table?pubmed_id=" + tags.pubmed_id);
     }else{
         $("#link_pubmed").css("display", "none");
         $("#show_publication").css("display", "none");
