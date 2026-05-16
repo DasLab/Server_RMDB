@@ -1,8 +1,30 @@
 # RMDB RNA Mapping DataBase
 
+> **⚠️ This server has been decommissioned (May 2026).** The AWS EC2 instance has been terminated. See [Migration](#migration) below for the current site and archive details.
+
 <img src="https://rmdb.stanford.edu/site_media/images/logo_rmdb.png" alt="RMDB Logo" width="200" align="right">
 
-This is the _Source Code_ repository for **RMDB** RNA Mapping DataBase **Server**. The production server is freely accessible at https://rmdb.stanford.edu/.
+This is the _Source Code_ repository for **RMDB** RNA Mapping DataBase **Server**. The production server was freely accessible at https://rmdb.stanford.edu/.
+
+## Migration
+
+In May 2026, `rmdb.stanford.edu` was migrated from this Django/MySQL AWS server to a static GitHub Pages site.
+
+| | Details |
+|---|---|
+| **New site** | https://rmdb.stanford.edu/ (GitHub Pages) |
+| **New site repo** | https://github.com/DasLab/rmdb.github.io |
+| **RDAT data hosting** | GitHub Releases on the new-site repo, split across 5 subcategory tags: [`data-eterna`](https://github.com/DasLab/rmdb.github.io/releases/tag/data-eterna), [`data-puzzle`](https://github.com/DasLab/rmdb.github.io/releases/tag/data-puzzle), [`data-riboswitches`](https://github.com/DasLab/rmdb.github.io/releases/tag/data-riboswitches), [`data-rna-structures`](https://github.com/DasLab/rmdb.github.io/releases/tag/data-rna-structures), [`data-general`](https://github.com/DasLab/rmdb.github.io/releases/tag/data-general) |
+| **rdat_kit package** | https://github.com/ribokit/rdatkit (v1.8.1, Python 3) — provides `rdat_kit validate`, `rdat_kit to_md`, `rdat_kit thumbnail` for contributors |
+| **Archive** | DasLab Shared Drive → Projects → AWS Server Archives → [RMDB_2026/](https://drive.google.com/drive/folders/1Qsm-pF3VX27nC5rkgzNrpRVvqPGPYs5N) |
+| **Archive contents** | `rmdb_aws_archive.tar.gz` (Django app, 14 GB), `rmdb_db.sql.gz` (MySQL dump, 1.4 GB), `README.docx` + `README.md` |
+| **AMI snapshot** | `rmdb-final-2026-05-15` (us-west-2) |
+
+To run the old site locally from the archive, see `README.docx` in the Google Drive folder above. The bundled `Dockerfile` + `docker-compose.yml` + `entrypoint.sh` bring up a faithful copy at `http://localhost:8001/`.
+
+To contribute a new entry to the new site, see <https://rmdb.stanford.edu/contribute/>.
+
+---
 
 ## Installation
 
@@ -133,4 +155,3 @@ Keep an eye on them when fail (you get admin email notice)
 >*Bioinformatics* **28 (22)**: 3006-3008.
 
 by [**t47**](http://t47.io/), *March 2016*.
-
